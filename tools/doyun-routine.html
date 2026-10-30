@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#4f8cff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="도윤이 일과" />
+  
+  <title>도윤이 집에 온 뒤 일과</title>
+  <style>
+    :root{
+      --ink:#183153; --muted:#6d7b90; --blue:#4f8cff; --blue2:#eaf3ff;
+      --orange:#ff9d4d; --orange2:#fff1df; --green:#58b978; --green2:#eaf8ef;
+      --pink:#ef6f92; --pink2:#ffeaf0; --purple:#8c78e8; --purple2:#f1edff;
+      --yellow:#ffd85b; --yellow2:#fff8d8; --card:#ffffff; --bg:#f5f8ff;
+      --shadow:0 10px 30px rgba(36,65,110,.10);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",sans-serif;background:var(--bg);color:var(--ink)}
+    button,input{font:inherit}
+    .app{max-width:720px;margin:0 auto;min-height:100vh;padding-bottom:90px}
+    header{
+      padding:26px 20px 20px;
+      background:linear-gradient(145deg,#dcecff,#fff8dc 55%,#ffe7ef);
+      border-radius:0 0 30px 30px;
+      box-shadow:var(--shadow);
+    }
+    .eyebrow{font-weight:800;color:#3b6fc8;font-size:14px}
+    h1{font-size:30px;line-height:1.12;margin:6px 0 8px}
+    .sub{color:var(--muted);font-weight:650;line-height:1.5}
+    .date{margin-top:10px;font-size:14px;color:#4c6480}
+    .hero{
+      display:grid;grid-template-columns:1fr 132px;gap:12px;margin-top:18px;align-items:stretch
+    }
+    .score,.return-card{background:rgba(255,255,255,.82);backdrop-filter:blur(7px);border-radius:22px;padding:16px;box-shadow:0 8px 22px rgba(55,80,120,.08)}
+    .score strong{font-size:34px}
+    .score small{display:block;color:var(--muted);margin-top:4px}
+    .bar{height:12px;background:#e8edf5;border-radius:999px;overflow:hidden;margin-top:12px}
+    .bar > i{display:block;height:100%;background:linear-gradient(90deg,#4f8cff,#73c9ff);width:0%;transition:.35s}
+    .return-card{text-align:center;background:linear-gradient(160deg,#fff7ce,#fff)}
+    .return-card .big{font-size:35px;line-height:1}
+    .return-card b{display:block;margin-top:6px}
+    main{padding:18px}
+    .section-title{display:flex;justify-content:space-between;align-items:end;margin:10px 2px 12px}
+    .section-title h2{font-size:20px;margin:0}
+    .section-title span{font-size:13px;color:var(--muted)}
+    .mission-list{display:grid;gap:12px}
+    .mission{
+      display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;
+      background:var(--card);border-radius:22px;padding:14px;box-shadow:var(--shadow);
+      border:2px solid transparent;transition:.2s;
+    }
+    .mission.done{opacity:.8;border-color:#91d6a5;background:#f6fff8}
+    .mission.done .mission-title{text-decoration:line-through;text-decoration-thickness:2px}
+    .icon{width:54px;height:54px;border-radius:18px;display:grid;place-items:center;font-size:28px}
+    .c1{background:var(--blue2)} .c2{background:var(--orange2)} .c3{background:var(--green2)}
+    .c4{background:var(--pink2)} .c5{background:var(--purple2)} .c6{background:var(--yellow2)}
+    .mission-title{font-weight:900;font-size:17px}
+    .mission-desc{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.35}
+    .check{
+      width:44px;height:44px;border-radius:50%;border:2px solid #d7deea;background:#fff;
+      font-size:22px;display:grid;place-items:center;cursor:pointer;transition:.2s
+    }
+    .mission.done .check{background:#58b978;border-color:#58b978;color:white}
+    .actions{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+    .mini{border:0;background:#eff4fb;color:#355678;padding:7px 10px;border-radius:12px;font-size:12px;font-weight:800}
+    .focus-box{
+      margin-top:18px;padding:18px;border-radius:24px;background:linear-gradient(140deg,#fff,#f0edff);
+      box-shadow:var(--shadow)
+    }
+    .focus-box h3{margin:0 0 7px;font-size:19px}
+    .focus-box p{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.45}
+    .return-btn{
+      width:100%;border:0;border-radius:18px;padding:14px;background:#7b68db;color:white;
+      font-weight:900;font-size:16px;box-shadow:0 7px 16px rgba(103,83,190,.22)
+    }
+    .week{
+      display:grid;grid-template-columns:repeat(7,1fr);gap:7px;background:white;padding:14px;border-radius:24px;box-shadow:var(--shadow)
+    }
+    .day{text-align:center;border-radius:16px;padding:9px 3px;background:#f7f9fd;min-width:0}
+    .day.today{outline:2px solid var(--blue);background:#eef5ff}
+    .dow{font-size:12px;color:var(--muted);font-weight:800}
+    .stars{font-weight:900;font-size:16px;margin-top:4px}
+    .tiny{font-size:10px;color:#8592a4;margin-top:2px}
+    .rewards{display:grid;gap:9px}
+    .reward{background:white;border-radius:18px;padding:13px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px}
+    .reward .badge{width:46px;font-weight:900}
+    .reward .rtext{flex:1;font-weight:800}
+    .reward .lock{font-size:20px}
+    .reward.open{background:#fff9d9}
+    .tip{margin-top:18px;background:#eaf8ef;border-radius:22px;padding:16px;font-size:14px;line-height:1.5}
+    .tip b{display:block;margin-bottom:4px}
+    details{margin-top:18px;background:#fff;border-radius:20px;padding:14px 16px;box-shadow:var(--shadow)}
+    summary{font-weight:900;cursor:pointer}
+    .settings{display:grid;gap:10px;margin-top:12px}
+    .settings label{font-size:13px;color:var(--muted)}
+    .settings input{width:100%;padding:10px;border:1px solid #dbe2ec;border-radius:12px;margin-top:4px}
+    .danger{border:0;background:#fff0f0;color:#b84242;padding:10px;border-radius:12px;font-weight:800}
+    .timer{
+      position:fixed;left:50%;transform:translateX(-50%);bottom:18px;width:min(92%,680px);
+      background:#183153;color:white;border-radius:22px;padding:12px 14px;display:none;align-items:center;gap:10px;
+      box-shadow:0 15px 40px rgba(19,42,77,.30);z-index:20
+    }
+    .timer.show{display:flex}
+    .timer .time{font-size:24px;font-weight:950;min-width:76px}
+    .timer .tlabel{flex:1;font-size:13px;color:#d7e1ef}
+    .timer button{border:0;border-radius:12px;padding:9px 12px;font-weight:900}
+    .toast{
+      position:fixed;left:50%;top:18px;transform:translate(-50%,-140%);background:#183153;color:#fff;
+      border-radius:999px;padding:12px 18px;font-weight:850;z-index:30;transition:.28s;box-shadow:var(--shadow)
+    }
+    .toast.show{transform:translate(-50%,0)}
+    .install{display:none;margin-top:10px;border:0;background:#183153;color:white;padding:10px 14px;border-radius:14px;font-weight:850}
+
+    .timer-modal{
+      position:fixed;inset:0;background:rgba(19,42,77,.38);display:none;align-items:center;justify-content:center;
+      padding:20px;z-index:40
+    }
+    .timer-modal.show{display:flex}
+    .timer-card{
+      width:min(92vw,420px);background:white;border-radius:26px;padding:22px;box-shadow:0 20px 60px rgba(19,42,77,.28)
+    }
+    .timer-card h3{margin:0 0 8px;font-size:22px}
+    .timer-card p{margin:0 0 16px;color:var(--muted);font-size:14px}
+    .time-inputs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:end}
+    .time-inputs label{font-size:13px;color:var(--muted);font-weight:800}
+    .time-inputs input{
+      width:100%;margin-top:6px;padding:13px;border:1px solid #dbe2ec;border-radius:14px;
+      font-size:20px;font-weight:900;text-align:center
+    }
+    .colon{font-size:24px;font-weight:900;padding-bottom:12px}
+    .quick-times{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .quick-times button{border:0;background:#eef4ff;color:#355678;padding:9px 12px;border-radius:12px;font-weight:850}
+    .timer-modal-actions{display:flex;gap:10px;margin-top:14px}
+    .timer-modal-actions button{flex:1;border:0;border-radius:14px;padding:12px;font-weight:900}
+    .timer-cancel{background:#edf1f6;color:#52647a}
+    .timer-start{background:#4f8cff;color:white}
+
+    @media (max-width:480px){
+      h1{font-size:27px}.hero{grid-template-columns:1fr 116px}.mission{grid-template-columns:48px 1fr auto}.icon{width:48px;height:48px}
+      main{padding:14px}.week{gap:4px;padding:10px}.day{padding:8px 1px}.stars{font-size:14px}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="eyebrow">오늘도 하나씩 해내는 중 ⭐</div>
+    <h1>도윤이의 집에 온 뒤 미션</h1>
+    <div class="sub">몸을 먼저 움직이고, 짧게 집중하고, 쉬었다가 다시 돌아오기!</div>
+    <div id="todayText" class="date"></div>
+    <button id="installBtn" class="install">📱 홈 화면에 앱으로 설치</button>
+
+    <div class="hero">
+      <div class="score">
+        <div>오늘의 별</div>
+        <strong><span id="score">0</span> ⭐</strong>
+        <small id="scoreMsg">하나씩 시작해보자!</small>
+        <div class="bar"><i id="progressBar"></i></div>
+      </div>
+      <div class="return-card">
+        <div class="big">↩️</div>
+        <b>다시 돌아오기</b>
+        <div style="font-size:12px;color:#6d7b90;margin-top:4px">오늘 <span id="returnCount">0</span>번 성공!</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">
+      <h2>오늘의 순서</h2><span>끝나면 ✓ 눌러요</span>
+    </div>
+    <div id="missions" class="mission-list"></div>
+
+    <div class="focus-box">
+      <h3>🌟 가장 중요한 미션</h3>
+      <p>딴생각을 했거나 자리에서 일어나도 괜찮아요. <b>다시 문제로 돌아오면 성공!</b></p>
+      <button id="returnBtn" class="return-btn">↩️ 나 다시 돌아왔어요!</button>
+    </div>
+
+    <div class="section-title" style="margin-top:24px">
+      <h2>이번 주 별판</h2><span>매일 자동으로 기록돼요</span>
+    </div>
+    <div id="week" class="week"></div>
+
+    <div class="section-title" style="margin-top:24px">
+      <h2>별 보상</h2><span id="weekTotalText"></span>
+    </div>
+    <div id="rewards" class="rewards"></div>
+
+    <div class="tip">
+      <b>💬 도윤이에게 이렇게 말해요</b>
+      “도윤아, 다 하자가 아니라 <b>이거 하나만</b>.”<br>
+      “쉬어도 괜찮아. <b>다시 돌아오면 성공</b>이야.”
+    </div>
+
+    <details>
+      <summary>👨‍👩‍👦 부모님 설정</summary>
+      <div class="settings">
+        <label>별 10개 보상<input id="r1" value="엄마·아빠와 좋아하는 놀이 10분"></label>
+        <label>별 20개 보상<input id="r2" value="주말 놀이 하나 고르기"></label>
+        <label>별 30개 보상<input id="r3" value="가족 특별 활동 고르기"></label>
+        <button id="saveRewards" class="mini">보상 저장</button>
+        <button id="resetToday" class="danger">오늘 기록만 초기화</button>
+      </div>
+    </details>
+  </main>
+</div>
+
+<div id="timer" class="timer">
+  <div id="timerTime" class="time">05:00</div>
+  <div class="tlabel"><b id="timerLabel">집중 시간</b><br><span>시간이 끝나면 쉬어요.</span></div>
+  <button id="timerPause">잠깐</button>
+  <button id="timerClose">닫기</button>
+</div>
+
+<div id="timerModal" class="timer-modal">
+  <div class="timer-card">
+    <h3 id="timerModalTitle">타이머 시간 설정</h3>
+    <p>도윤이 컨디션에 맞게 원하는 시간으로 바꿔주세요.</p>
+    <div class="time-inputs">
+      <label>분
+        <input id="timerMinInput" type="number" min="0" max="60" value="5">
+      </label>
+      <div class="colon">:</div>
+      <label>초
+        <input id="timerSecInput" type="number" min="0" max="59" value="0">
+      </label>
+    </div>
+    <div class="quick-times">
+      <button onclick="setQuickTime(2)">2분</button>
+      <button onclick="setQuickTime(3)">3분</button>
+      <button onclick="setQuickTime(5)">5분</button>
+      <button onclick="setQuickTime(10)">10분</button>
+    </div>
+    <div class="timer-modal-actions">
+      <button class="timer-cancel" onclick="closeTimerSetting()">취소</button>
+      <button class="timer-start" onclick="confirmTimerSetting()">이 시간으로 시작</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast">⭐ 잘했어!</div>
+
+<script>
+const missions = [
+  {id:"arrive", icon:"🎒", color:"c1", title:"집에 오기 · 정리", desc:"가방 정리 · 물통 꺼내기 · 물 한 잔"},
+  {id:"move", icon:"💪", color:"c2", title:"몸 깨우기", desc:"철봉 5번 또는 쿠션 밀기 · 점프 · 스트레칭", timer:3},
+  {id:"snack", icon:"🍌", color:"c3", title:"간식 & 쉬기", desc:"간식 먹고 잠깐 자유롭게 쉬기", timer:5},
+  {id:"study1", icon:"✏️", color:"c4", title:"숙제 집중 1차", desc:"5분만! 문제 1~3개부터 시작", timer:5},
+  {id:"break", icon:"🤸", color:"c5", title:"몸 쉬기", desc:"철봉 3번 · 스트레칭 · 점프 10번", timer:2},
+  {id:"study2", icon:"📘", color:"c4", title:"숙제 집중 2차", desc:"다시 5분! 할 수 있는 만큼", timer:5},
+  {id:"talk", icon:"💬", color:"c6", title:"이야기 시간", desc:"학교에서 있었던 일 · 하고 싶었던 말", timer:3},
+  {id:"finish", icon:"🧺", color:"c1", title:"마무리", desc:"책가방 정리 · 내일 준비물 확인"},
+  {id:"free", icon:"🧩", color:"c3", title:"자유시간", desc:"블록 · 책 · 그림 · 좋아하는 놀이"}
+];
+
+const pad=n=>String(n).padStart(2,"0");
+const localDate=(d=new Date())=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const todayKey=localDate();
+const key=`doyoon:${todayKey}`;
+let state = JSON.parse(localStorage.getItem(key) || '{"done":{},"returns":0}');
+let rewardNames = JSON.parse(localStorage.getItem("doyoon:rewards") || '["엄마·아빠와 좋아하는 놀이 10분","주말 놀이 하나 고르기","가족 특별 활동 고르기"]');
+
+function save(){
+  localStorage.setItem(key, JSON.stringify(state));
+  const score = Object.values(state.done).filter(Boolean).length;
+  localStorage.setItem(`doyoon:score:${todayKey}`, String(score));
+  render();
+}
+function toast(msg){
+  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),1300);
+}
+function toggleMission(id){
+  state.done[id]=!state.done[id];
+  save();
+  if(state.done[id]) toast("⭐ 하나 해냈어!");
+}
+function addReturn(){
+  state.returns=(state.returns||0)+1;
+  save(); toast("↩️ 다시 돌아온 게 진짜 성공!");
+}
+function render(){
+  const host=document.getElementById("missions"); host.innerHTML="";
+  missions.forEach(m=>{
+    const div=document.createElement("div");
+    div.className="mission"+(state.done[m.id]?" done":"");
+    div.innerHTML=`
+      <div class="icon ${m.color}">${m.icon}</div>
+      <div>
+        <div class="mission-title">${m.title}</div>
+        <div class="mission-desc">${m.desc}</div>
+        ${m.timer?`<div class="actions">
+          <button class="mini" onclick="openTimerSetting('${m.id}','${m.title.replaceAll("'","")}',${m.timer})">⏱ 시간 설정</button>
+          <button class="mini" onclick="speak('${m.title.replaceAll("'","")}')">🔊 들어보기</button>
+        </div>`:""}
+      </div>
+      <button class="check" aria-label="완료 체크" onclick="toggleMission('${m.id}')">${state.done[m.id]?"✓":""}</button>`;
+    host.appendChild(div);
+  });
+  const score=Object.values(state.done).filter(Boolean).length;
+  document.getElementById("score").textContent=score;
+  document.getElementById("returnCount").textContent=state.returns||0;
+  document.getElementById("progressBar").style.width=(score/missions.length*100)+"%";
+  document.getElementById("scoreMsg").textContent =
+    score===0 ? "하나씩 시작해보자!" :
+    score<4 ? "좋아, 천천히 가고 있어!" :
+    score<missions.length ? "벌써 많이 해냈어!" : "오늘 미션 완료! 정말 멋져!";
+  renderWeek(); renderRewards();
+}
+function getMonday(d){
+  const x=new Date(d); x.setHours(12,0,0,0);
+  const day=x.getDay()||7; x.setDate(x.getDate()-day+1); return x;
+}
+function renderWeek(){
+  const host=document.getElementById("week"); host.innerHTML="";
+  const mon=getMonday(new Date()); const names=["월","화","수","목","금","토","일"];
+  let total=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(mon); d.setDate(mon.getDate()+i);
+    const dk=localDate(d);
+    const sc=Number(localStorage.getItem(`doyoon:score:${dk}`)||0); total+=sc;
+    const cell=document.createElement("div");
+    cell.className="day"+(dk===todayKey?" today":"");
+    cell.innerHTML=`<div class="dow">${names[i]}</div><div class="stars">${sc?sc+"⭐":"·"}</div><div class="tiny">${d.getMonth()+1}/${d.getDate()}</div>`;
+    host.appendChild(cell);
+  }
+  document.getElementById("weekTotalText").textContent=`이번 주 ${total}⭐`;
+}
+function weeklyTotal(){
+  const mon=getMonday(new Date()); let total=0;
+  for(let i=0;i<7;i++){
+    const d=new Date(mon); d.setDate(mon.getDate()+i);
+    total += Number(localStorage.getItem(`doyoon:score:${localDate(d)}`)||0);
+  }
+  return total;
+}
+function renderRewards(){
+  const total=weeklyTotal(), thresholds=[10,20,30], host=document.getElementById("rewards"); host.innerHTML="";
+  thresholds.forEach((t,i)=>{
+    const open=total>=t;
+    const div=document.createElement("div"); div.className="reward"+(open?" open":"");
+    div.innerHTML=`<div class="badge">${t} ⭐</div><div class="rtext">${rewardNames[i]}</div><div class="lock">${open?"🎉":"🔒"}</div>`;
+    host.appendChild(div);
+  });
+}
+
+let timerId=null, remain=0, paused=false;
+let pendingTimer={id:null,label:"",defaultMin:5};
+
+function openTimerSetting(id,label,defaultMin){
+  pendingTimer={id,label,defaultMin};
+  const saved = JSON.parse(localStorage.getItem("doyoon:timerSettings") || "{}");
+  const totalSec = saved[id] ?? (defaultMin*60);
+  document.getElementById("timerModalTitle").textContent = `${label} 시간 설정`;
+  document.getElementById("timerMinInput").value = Math.floor(totalSec/60);
+  document.getElementById("timerSecInput").value = totalSec%60;
+  document.getElementById("timerModal").classList.add("show");
+}
+function closeTimerSetting(){
+  document.getElementById("timerModal").classList.remove("show");
+}
+function setQuickTime(min){
+  document.getElementById("timerMinInput").value=min;
+  document.getElementById("timerSecInput").value=0;
+}
+function confirmTimerSetting(){
+  const min=Math.max(0,Math.min(60,Number(document.getElementById("timerMinInput").value)||0));
+  const sec=Math.max(0,Math.min(59,Number(document.getElementById("timerSecInput").value)||0));
+  const total=min*60+sec;
+  if(total<=0){toast("시간을 1초 이상으로 설정해 주세요.");return;}
+  const saved=JSON.parse(localStorage.getItem("doyoon:timerSettings")||"{}");
+  saved[pendingTimer.id]=total;
+  localStorage.setItem("doyoon:timerSettings",JSON.stringify(saved));
+  closeTimerSetting();
+  startTimerSeconds(total,pendingTimer.label);
+}
+function startTimerSeconds(totalSec,label){
+  clearInterval(timerId); remain=totalSec; paused=false;
+  document.getElementById("timerLabel").textContent=label;
+  document.getElementById("timerPause").textContent="잠깐";
+  document.getElementById("timer").classList.add("show");
+  tickTimer();
+  timerId=setInterval(()=>{
+    if(!paused){
+      remain--; tickTimer();
+      if(remain<=0){
+        clearInterval(timerId);
+        toast("⏰ 끝! 잘했어!");
+        speak("끝! 잘했어. 이제 다음 순서로 가보자.");
+      }
+    }
+  },1000);
+}
+function tickTimer(){
+  document.getElementById("timerTime").textContent=`${pad(Math.floor(remain/60))}:${pad(remain%60)}`;
+}
+function speak(text){
+  if("speechSynthesis" in window){
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(`도윤아, ${text}. 하나씩 해보자.`);
+    u.lang="ko-KR"; u.rate=.9; speechSynthesis.speak(u);
+  } else toast("이 기기에서는 음성 기능을 지원하지 않아요.");
+}
+
+document.getElementById("returnBtn").onclick=addReturn;
+document.getElementById("timerPause").onclick=()=>{paused=!paused; document.getElementById("timerPause").textContent=paused?"계속":"잠깐"};
+document.getElementById("timerClose").onclick=()=>{clearInterval(timerId);document.getElementById("timer").classList.remove("show")};
+document.getElementById("saveRewards").onclick=()=>{
+  rewardNames=[document.getElementById("r1").value,document.getElementById("r2").value,document.getElementById("r3").value]; localStorage.setItem("doyoon:rewards",JSON.stringify(rewardNames)); renderRewards(); toast("보상을 저장했어요!");
+};
+document.getElementById("resetToday").onclick=()=>{
+  if(confirm("오늘 체크 기록만 지울까요?")){state={done:{},returns:0};save();}
+};
+
+const now=new Date();
+document.getElementById("todayText").textContent =
+  `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 · 오늘의 도윤이`;
+
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt",(e)=>{
+  e.preventDefault(); deferredPrompt=e;
+  const b=document.getElementById("installBtn"); b.style.display="inline-block";
+  b.onclick=async()=>{deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; b.style.display="none";};
+});
+
+render();
+</script>
+</body>
+</html>

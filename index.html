@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>달누리반 디지털 배움터 & 교실 플랫폼</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --primary-dark: #3730A3;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text: #1E293B;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --radius: 16px;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+    header {
+      background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+      color: white;
+      padding: 40px 20px 32px;
+      text-align: center;
+      position: relative;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 4px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 12px;
+      backdrop-filter: blur(4px);
+    }
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .filter-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tab-btn {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .search-box {
+      flex: 1;
+      max-width: 280px;
+      min-width: 200px;
+    }
+    .search-box input {
+      width: 100%;
+      padding: 9px 16px;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      outline: none;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .search-box input:focus {
+      border-color: var(--primary);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .card-icon {
+      font-size: 2rem;
+      background: var(--primary-light);
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      flex-shrink: 0;
+    }
+    .card-meta {
+      flex: 1;
+    }
+    .card-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+    .tag-study { background: #E0E7FF; color: #4338CA; }
+    .tag-festival { background: #FEE2E2; color: #B91C1C; }
+    .tag-auto { background: #FEF3C7; color: #B45309; }
+    .tag-family { background: #DCFCE7; color: #15803D; }
+    .tag-hub { background: #F3E8FF; color: #7E22CE; }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      border: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    .btn-secondary {
+      background: #F1F5F9;
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: #E2E8F0;
+    }
+
+    /* Modal / Viewer */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      flex-direction: column;
+    }
+    .modal.open {
+      display: flex;
+    }
+    .modal-header {
+      background: white;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .modal-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .modal-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: white;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .modal-body {
+      flex: 1;
+      background: #FFFFFF;
+      position: relative;
+    }
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-badge">🌙 교실과 가정의 디지털 배움터</div>
+    <h1>달누리반 통합 플랫폼</h1>
+    <p class="subtitle">선생님의 정성이 담긴 놀이·탐구 도감, 동산 페스티벌, 수업 도구들이 한곳에 모였습니다.</p>
+  </header>
+
+  <div class="container">
+    <div class="controls">
+      <div class="filter-tabs">
+        <button class="tab-btn active" data-cat="all">🌟 전체</button>
+        <button class="tab-btn" data-cat="study">🎒 수업 & 탐구</button>
+        <button class="tab-btn" data-cat="festival">🎪 동산 페스티벌</button>
+        <button class="tab-btn" data-cat="auto">⚙️ 수업 자동화</button>
+        <button class="tab-btn" data-cat="family">🏡 우리 가족</button>
+      </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="도구 검색...">
+      </div>
+    </div>
+
+    <div class="grid" id="toolGrid">
+      <!-- Spotlight Automation Tool -->
+      <div class="card" data-cat="auto" style="border: 2px solid #6366F1; background: #FDFEFE;">
+        <div class="card-top">
+          <div class="card-icon" style="background:#EEF2FF; color:#4F46E5;">✨</div>
+          <div class="card-meta">
+            <span class="card-tag tag-auto" style="background:#6366F1; color:white;">NEW 수업 자동화</span>
+            <div class="card-title">그림책 수업 올인원 자동화 엔진</div>
+          </div>
+        </div>
+        <div class="card-desc">그림책 한 권으로 생각지도·교실환경(캔바)·음식도감·사후놀이·안전교육·요리PPT까지 원클릭 자동 완성!</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('그림책 수업 올인원 자동화 엔진', 'tools/book-lesson-generator.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/book-lesson-generator.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <!-- Study tools -->
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">🍃</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">나뭇잎 탐구도감</div>
+          </div>
+        </div>
+        <div class="card-desc">나뭇잎이 궁금해요! 자연 관찰과 나뭇잎 특징을 쉽게 알아보는 인터랙티브 도감입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('나뭇잎 탐구도감', 'tools/leaf-guide.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/leaf-guide.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">🧠</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">달누리 생각지도</div>
+          </div>
+        </div>
+        <div class="card-desc">아이들의 생각과 이야기를 마인드맵과 씽킹맵 형태로 생생하게 기록하는 도구입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('달누리 생각지도', 'tools/mindmap.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/mindmap.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">🍂</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">가을탐구 공방</div>
+          </div>
+        </div>
+        <div class="card-desc">전시와 그림책 공방 탐구 활동 가이드 및 결과물 제작 도구입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('가을탐구 공방', 'tools/autumn-workshop.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/autumn-workshop.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">🍜</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">우리반 면쌀놀이 도감</div>
+          </div>
+        </div>
+        <div class="card-desc">맛있는 발견! 면과 쌀 놀이 탐구 활동과 아이들의 작품을 모아둔 도감입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('우리반 면쌀놀이 도감', 'tools/rice-noodle-play.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/rice-noodle-play.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">📚</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">주말이야기 작은책방</div>
+          </div>
+        </div>
+        <div class="card-desc">달누리 친구들의 주말 이야기와 추억을 함께 모아 읽는 작은 책방입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('주말이야기 작은책방', 'tools/weekend-bookstore.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/weekend-bookstore.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">📖</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">책과 함께 마음이자라요</div>
+          </div>
+        </div>
+        <div class="card-desc">가족과 함께하는 독서 활동과 따뜻한 마음 성장 기록 공간입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('책과 함께 마음이자라요', 'tools/family-bookstore.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/family-bookstore.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="study">
+        <div class="card-top">
+          <div class="card-icon">🍁</div>
+          <div class="card-meta">
+            <span class="card-tag tag-study">수업 & 탐구</span>
+            <div class="card-title">가을 독파민 챌린지</div>
+          </div>
+        </div>
+        <div class="card-desc">가을 독서의 즐거움을 듬뿍 채우는 달누리 독파민 챌린지 활동 도구입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('가을 독파민 챌린지', 'tools/dopamine-challenge.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/dopamine-challenge.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <!-- Festival tools -->
+      <div class="card" data-cat="festival">
+        <div class="card-top">
+          <div class="card-icon">💌</div>
+          <div class="card-meta">
+            <span class="card-tag tag-festival">동산 페스티벌</span>
+            <div class="card-title">2026 동산 페스티벌 초대장</div>
+          </div>
+        </div>
+        <div class="card-desc">학부모님과 소중한 손님들을 모시는 동산 페스티벌 모바일 초대장입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('동산 페스티벌 초대장', 'tools/festival-invitation.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/festival-invitation.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="festival">
+        <div class="card-top">
+          <div class="card-icon">🎟️</div>
+          <div class="card-meta">
+            <span class="card-tag tag-festival">동산 페스티벌</span>
+            <div class="card-title">환영 안내 & 입장권</div>
+          </div>
+        </div>
+        <div class="card-desc">학부모님용 모바일 환영 안내와 축제 부스 입장권 티켓 연동 도구입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('환영 안내 & 입장권', 'tools/festival-parent.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/festival-parent.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="festival">
+        <div class="card-top">
+          <div class="card-icon">🎪</div>
+          <div class="card-meta">
+            <span class="card-tag tag-festival">동산 페스티벌</span>
+            <div class="card-title">교사용 축제 운영 시스템</div>
+          </div>
+        </div>
+        <div class="card-desc">페스티벌 현장 운영, 부스 현황, 참가 확인 및 관리를 위한 교사용 종합 관제 도구입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('교사용 축제 운영', 'tools/festival-teacher.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/festival-teacher.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <!-- Automation tools -->
+      <div class="card" data-cat="auto">
+        <div class="card-top">
+          <div class="card-icon">⚙️</div>
+          <div class="card-meta">
+            <span class="card-tag tag-auto">수업 자동화</span>
+            <div class="card-title">수업자동화 플랫폼 (놀이~도감)</div>
+          </div>
+        </div>
+        <div class="card-desc">아이들의 놀이 발견에서 도감 제작까지 연결하는 인터랙티브 수업 자동화 시스템입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('수업자동화 플랫폼', 'tools/automation-v1.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/automation-v1.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <div class="card" data-cat="auto">
+        <div class="card-top">
+          <div class="card-icon">🏛️</div>
+          <div class="card-meta">
+            <span class="card-tag tag-auto">허브 포털</span>
+            <div class="card-title">달누리반 오리지널 포털</div>
+          </div>
+        </div>
+        <div class="card-desc">약속카드, 생일룰렛, 소장도서가베 등 교실 활동 메뉴가 담긴 원본 플랫폼 허브입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('달누리반 오리지널 포털', 'tools/dalnuri-original-hub.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/dalnuri-original-hub.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+      <!-- Family tools -->
+      <div class="card" data-cat="family">
+        <div class="card-top">
+          <div class="card-icon">👦</div>
+          <div class="card-meta">
+            <span class="card-tag tag-family">우리 가족</span>
+            <div class="card-title">도윤이 집에 온 뒤 일과</div>
+          </div>
+        </div>
+        <div class="card-desc">집에 돌아온 후 손 씻기부터 숙제, 휴식까지 즐겁게 해내는 도윤이 전용 루틴 앱입니다.</div>
+        <div class="card-actions">
+          <button class="btn btn-primary" onclick="openViewer('도윤이 일과', 'tools/doyun-routine.html')">바로 열기</button>
+          <a class="btn btn-secondary" href="tools/doyun-routine.html" target="_blank">새 창</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Viewer Modal -->
+  <div class="modal" id="viewerModal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">도구 이름</div>
+      <div class="modal-actions">
+        <a class="modal-btn" id="modalExternalBtn" href="#" target="_blank">새 창으로 열기 ↗</a>
+        <button class="modal-btn" onclick="closeViewer()">✕ 닫기</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <iframe class="modal-iframe" id="modalIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <script>
+    // Tab filter
+    const tabs = document.querySelectorAll('.tab-btn');
+    const cards = document.querySelectorAll('.card');
+    const searchInput = document.getElementById('searchInput');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        filterCards();
+      });
+    });
+
+    searchInput.addEventListener('input', filterCards);
+
+    function filterCards() {
+      const activeCat = document.querySelector('.tab-btn.active').dataset.cat;
+      const query = searchInput.value.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const cat = card.dataset.cat;
+        const text = card.textContent.toLowerCase();
+        const matchesCat = activeCat === 'all' || cat === activeCat;
+        const matchesQuery = query === '' || text.includes(query);
+
+        if (matchesCat && matchesQuery) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Modal Viewer
+    function openViewer(title, url) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalIframe').src = url;
+      document.getElementById('modalExternalBtn').href = url;
+      document.getElementById('viewerModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeViewer() {
+      document.getElementById('viewerModal').classList.remove('open');
+      document.getElementById('modalIframe').src = '';
+      document.body.style.overflow = 'auto';
+    }
+
+    // ESC key closes viewer
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeViewer();
+    });
+  </script>
+</body>
+</html>

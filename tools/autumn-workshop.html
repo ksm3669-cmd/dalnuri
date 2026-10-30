@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>달누리 가을탐구 · 전시와 그림책 공방</title>
+<style>
+  :root{
+    --bg:#f7f0e5; --paper:#fffdf9; --paper-2:#fff8ef; --ink:#40362f; --soft:#7d7064;
+    --line:#e6d8c7; --forest:#5b7861; --maple:#c66f49; --ginkgo:#b08320; --berry:#b7687a;
+    --sky:#88a8b4; --shadow:0 12px 28px rgba(87,63,41,.08); --radius:26px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+    background:radial-gradient(circle at top left,#fdfbf6 0,#f8f2e8 40%,#f4ecde 100%);color:var(--ink);line-height:1.6}
+  .wrap{max-width:1280px;margin:0 auto;padding:18px 16px 70px}
+  button,input,textarea,select{font:inherit;color:inherit}
+  button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--ginkgo);outline-offset:3px}
+
+  .hero{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,249,239,.92));
+    border:1.5px solid var(--line);border-radius:32px;padding:24px;box-shadow:var(--shadow)}
+  .wash{position:absolute;border-radius:50%;filter:blur(6px);opacity:.3;pointer-events:none}
+  .w1{right:20px;top:14px;width:220px;height:90px;background:#edc46f}
+  .w2{left:-20px;bottom:-14px;width:210px;height:110px;background:#d98d74}
+  .eyebrow{display:inline-block;padding:6px 12px;border-radius:999px;background:#f2e7d8;border:1px solid #ead9c2;color:var(--forest);font-size:13px;font-weight:800}
+  h1{margin:10px 0 8px;font-size:clamp(28px,4vw,40px);line-height:1.2}
+  .hero p{margin:8px 0;color:var(--soft);max-width:60ch}
+  .settings-open{position:absolute;right:20px;top:18px;z-index:5;border:1.5px solid var(--line);background:rgba(255,255,255,.92);
+    color:var(--forest);padding:10px 14px;border-radius:999px;font-size:14px;font-weight:900;cursor:pointer}
+
+  .record-shell{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:18px}
+  @media(max-width:980px){.record-shell{grid-template-columns:1fr}}
+  .card{background:rgba(255,253,249,.94);border:1.5px solid var(--line);border-radius:28px;padding:20px;box-shadow:var(--shadow)}
+  .card h2{margin:0;font-size:26px;line-height:1.25}
+  .card .sub{margin:6px 0 0;color:var(--soft);font-size:14.5px}
+  .field{display:grid;gap:7px;margin-bottom:13px;min-width:0}
+  .field label{font-size:15px;font-weight:800}
+  .field small{font-size:12.5px;color:var(--soft)}
+  input[type=text],textarea,select{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:16px;background:#fff}
+  textarea{min-height:92px;resize:vertical}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+  .chips{display:flex;gap:9px;flex-wrap:wrap}
+  .chip{padding:11px 14px;border-radius:17px;border:2px solid var(--line);background:#fff;cursor:pointer;font-weight:800;font-size:15px}
+  .chip[aria-pressed="true"]{border-color:var(--c);background:var(--cbg);color:var(--ct)}
+  .chip.pb{--c:var(--maple);--cbg:#fff2ec;--ct:#8f4a2f}
+  .chip.pd{--c:var(--ginkgo);--cbg:#fff7e2;--ct:#6b530e}
+  .chip.pa{--c:var(--forest);--cbg:#edf5ef;--ct:#3c5844}
+  .chip.tq{--c:var(--maple);--cbg:#fff2ec;--ct:#8f4a2f}
+  .chip.tk{--c:var(--sky);--cbg:#eef4f7;--ct:#3e6271}
+  .chip.tp{--c:var(--berry);--cbg:#fdeff2;--ct:#8a4354}
+  .withmic{display:flex;gap:10px;align-items:flex-start}
+  .withmic textarea{flex:1;min-width:0}
+  .mic{width:62px;min-height:56px;border-radius:16px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:23px}
+  .mic[aria-pressed="true"]{background:var(--maple);border-color:var(--maple);color:#fff}
+  .hint{padding:11px 13px;border-radius:14px;background:#fff8ef;border:1px dashed #e5d3b8;color:#7a6553;font-size:13px}
+  .photo-wrap{border:2px dashed var(--line);border-radius:20px;padding:15px;background:#fffaf2;text-align:center}
+  .photo-wrap img{display:none;width:100%;max-height:230px;object-fit:cover;border-radius:16px;border:1px solid var(--line);margin-top:10px}
+  .actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:6px}
+  .btn{border:0;border-radius:16px;padding:13px 17px;font-size:15px;font-weight:800;cursor:pointer;min-height:46px}
+  .btn.primary{background:var(--forest);color:#fff}
+  .btn.warm{background:var(--maple);color:#fff}
+  .btn.gold{background:var(--ginkgo);color:#fff}
+  .btn.line{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+  .btn.danger{background:#a95749;color:#fff}
+  .status{margin-top:10px;color:var(--soft);font-size:14px;min-height:22px}
+
+  .side-grid{display:grid;gap:14px}
+  .quick{border:1.5px solid var(--line);border-radius:20px;padding:16px;background:linear-gradient(180deg,#fffefb,#fff7eb)}
+  .quick h3{margin:0 0 8px;font-size:19px}
+  .quick p{margin:0 0 10px;color:var(--soft);font-size:13.5px}
+  .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:12px;text-align:center}
+  .stat b{display:block;font-size:24px}
+  .stat span{font-size:12.5px;color:var(--soft)}
+  .stat.key{border-color:var(--forest);background:#f1f7f2}
+
+  .tabs{display:flex;gap:9px;flex-wrap:wrap;margin:22px 0 0}
+  .tab{padding:12px 17px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-size:15px;font-weight:800;cursor:pointer}
+  .tab[aria-selected="true"]{background:var(--forest);border-color:var(--forest);color:#fff}
+  .panel[hidden]{display:none}
+  .section{margin-top:16px}
+  .section-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:14px}
+  .section-title h2{margin:0;font-size:27px}
+  .section-title p{margin:6px 0 0;color:var(--soft);font-size:14px;max-width:62ch}
+  .legend{display:flex;gap:8px;flex-wrap:wrap}
+  .legend span{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:13px;color:var(--soft)}
+  .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+  .dot.pb{background:var(--maple)} .dot.pd{background:var(--ginkgo)} .dot.pa{background:var(--forest)}
+  .empty{padding:26px 16px;border:1.5px dashed var(--line);border-radius:20px;background:#fffefb;color:var(--soft);text-align:center}
+
+  /* 탐구의 길 */
+  .childpick{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
+  .cpick{padding:10px 15px;border-radius:999px;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-weight:800;font-size:14.5px}
+  .cpick[aria-pressed="true"]{background:var(--forest);border-color:var(--forest);color:#fff}
+  .lane{display:grid;grid-template-columns:120px minmax(0,1fr);gap:14px;align-items:start;margin-bottom:6px}
+  @media(max-width:700px){.lane{grid-template-columns:1fr;gap:8px}}
+  .lane-head{position:sticky;top:10px;padding:12px 14px;border-radius:18px;color:#fff;font-weight:900;text-align:center}
+  .lane-head small{display:block;font-weight:700;font-size:12px;opacity:.9}
+  .lane.pb .lane-head{background:var(--maple)} .lane.pd .lane-head{background:var(--ginkgo)} .lane.pa .lane-head{background:var(--forest)}
+  .lane-body{display:grid;gap:11px;padding-bottom:18px;border-left:3px solid var(--line);padding-left:16px;margin-left:4px}
+  @media(max-width:700px){.lane-body{margin-left:0}}
+  .leaf{background:#fff;border:1.5px solid #eadfce;border-left:8px solid var(--pc,var(--line));border-radius:0 22px 22px 0;padding:14px 16px}
+  .leaf.pb{--pc:var(--maple)} .leaf.pd{--pc:var(--ginkgo)} .leaf.pa{--pc:var(--forest)}
+  .leaf .kind{display:inline-block;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:900;background:#f6efe5;color:#6d5a46;margin-bottom:8px}
+  .leaf .big{font-size:19px;font-weight:900;line-height:1.65;word-break:keep-all}
+  .leaf img{width:100%;max-height:200px;object-fit:cover;border-radius:15px;border:1px solid var(--line);margin-top:10px}
+  .leaf .meta{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--soft);margin-top:9px}
+  .leaf .memo{margin-top:8px;padding-top:8px;border-top:1px dashed #d7ccbc;color:#6d6258;font-size:13px}
+  .leaf .rowbtn{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+  .mini{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:12.5px;cursor:pointer;color:var(--soft);min-height:34px}
+  .mini.del{color:#a95749;border-color:#e6cdc6}
+  .answers{margin-top:11px;padding-top:11px;border-top:2px dotted #ddd0bd;display:grid;gap:9px}
+  .answers .alabel{font-size:12.5px;color:var(--forest);font-weight:900}
+  .answer{background:#f3f8f4;border:1px solid #d7e6da;border-radius:16px;padding:11px 13px;font-size:16px;font-weight:800;line-height:1.6}
+  .answer small{display:block;font-weight:700;color:var(--soft);font-size:12px;margin-top:4px}
+
+  /* 벽면판 */
+  .map-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  @media(max-width:1080px){.map-grid{grid-template-columns:1fr}}
+  .col-head{text-align:center;margin-bottom:12px}
+  .col-head span{display:inline-block;padding:11px 19px;border-radius:999px;font-size:19px;font-weight:900;color:#fff}
+  .col-head .pb{background:var(--maple)} .col-head .pd{background:var(--ginkgo)} .col-head .pa{background:var(--forest)}
+  .bundle{background:rgba(255,255,255,.85);border:1.5px solid var(--line);border-radius:22px;padding:13px;margin-bottom:13px}
+  .bundle-name{display:inline-block;padding:6px 12px;border-radius:999px;background:#fbf6ef;border:1px solid var(--line);font-weight:900;margin-bottom:9px;font-size:14px}
+
+  /* 그림책 */
+  .book-controls{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px}
+  .shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .book{background:linear-gradient(180deg,#fffefb,#f9f1e5);border:1.5px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:var(--shadow)}
+  .cover{padding:20px;min-height:170px;background:linear-gradient(180deg,#f9efdc,#fffefb)}
+  .cover .sticker{display:inline-block;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;color:var(--forest);font-weight:800}
+  .cover h3{margin:9px 0 2px;font-size:28px;line-height:1.25;color:#59493d}
+  .cover p{margin:0;color:var(--soft);font-size:13.5px}
+  .pages{padding:14px;display:grid;gap:12px}
+  .page{background:#fffdf9;border:1.5px solid var(--line);border-radius:20px;padding:15px}
+  .page .pn{font-size:12px;color:var(--soft);font-weight:800}
+  .page h4{margin:5px 0 8px;font-size:19px}
+  .page q{display:block;margin:6px 0;font-size:18px;font-weight:900;line-height:1.7}
+  .page img{width:100%;max-height:170px;object-fit:cover;border-radius:15px;border:1px solid var(--line);margin:9px 0}
+  .page .home{background:#f3f8f4;border:1px dashed #cfe0d4;border-radius:15px;padding:12px;font-size:13.5px;color:#4f6b57}
+
+  /* 저장 경고 배너 */
+  .alert{display:none;margin:0 0 14px;border:2px solid #d9a08f;background:#fff4ef;border-radius:20px;padding:16px 18px}
+  .alert.on{display:block}
+  .alert b{display:block;font-size:17px;margin-bottom:6px;color:#9a4a33}
+  .alert p{margin:0 0 8px;font-size:14px;color:#6f5a50;line-height:1.8}
+  .alert ol{margin:0 0 10px;padding-left:20px;font-size:13.5px;color:#6f5a50;line-height:1.9}
+
+  /* 단계 도움말 */
+  .prompts{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+  .prompt{border:1.5px dashed #ddcdb6;background:#fffaf2;border-radius:14px;padding:8px 12px;font-size:13.5px;
+    color:#6d5a46;cursor:pointer;text-align:left;min-height:38px}
+  .prompt:hover{border-color:var(--ginkgo);background:#fff6e6}
+  .plabel{font-size:12.5px;color:var(--soft);font-weight:800;margin-top:10px}
+
+  /* 그림책 슬라이드 뷰어 */
+  .viewer{display:grid;gap:12px}
+  .vstage{position:relative;border:1.5px solid var(--line);border-radius:26px;background:#fffdf9;
+    min-height:420px;padding:26px 24px;display:flex;flex-direction:column;overflow:hidden;touch-action:pan-y}
+  .vstage.cover{background:linear-gradient(180deg,#f9efdc,#fffefb);align-items:center;justify-content:center;text-align:center}
+  .vstage .vnum{font-size:12px;color:var(--soft);font-weight:800;margin-bottom:8px}
+  .vstage h3{margin:0 0 12px;font-size:20px;color:var(--forest)}
+  .vstage .vtext{font-size:clamp(21px,3.4vw,28px);font-weight:900;line-height:1.7;word-break:keep-all}
+  .vstage .vtext.ans{color:#3c5844;margin-top:14px}
+  .vstage img{max-width:100%;max-height:230px;object-fit:cover;border-radius:18px;border:1px solid var(--line);margin-bottom:14px;align-self:center}
+  .vstage .vmemo{margin-top:auto;padding-top:14px;font-size:13.5px;color:var(--soft)}
+  .vstage .vhome{background:#f3f8f4;border:1px dashed #cfe0d4;border-radius:18px;padding:16px;font-size:15px;line-height:1.9;color:#45604d}
+  .vstage .ctitle{font-size:clamp(30px,5vw,42px);font-weight:900;line-height:1.25;color:#59493d;margin:10px 0}
+  .vnav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .vnav .vcount{font-size:14px;color:var(--soft);font-weight:800;font-variant-numeric:tabular-nums}
+  .vbtn{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:12px 20px;font-size:15px;font-weight:800;cursor:pointer;min-height:48px}
+  .vbtn:disabled{opacity:.4;cursor:default}
+  .vdots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+  .vdot{width:10px;height:10px;border-radius:50%;background:#e0d4c2;border:0;padding:0;cursor:pointer}
+  .vdot[aria-current="true"]{background:var(--forest);transform:scale(1.3)}
+
+  .print-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  @media(max-width:860px){.print-grid{grid-template-columns:1fr}}
+  .print-box{border:1.5px solid var(--line);border-radius:22px;padding:18px;background:linear-gradient(180deg,#fffefb,#fff7ec)}
+  .print-box h3{margin:0 0 7px;font-size:20px}
+  .print-box p{margin:0 0 12px;color:var(--soft);font-size:13.5px}
+  .toggle{display:flex;align-items:center;gap:10px;font-size:14px;margin:10px 0}
+  .toggle input{width:22px;height:22px}
+
+  .modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(57,48,40,.3)}
+  .modal.open{display:flex}
+  .modal-card{width:min(720px,100%);max-height:90vh;overflow:auto;background:#fffdf9;border:1.5px solid var(--line);border-radius:28px;padding:20px}
+  .modal-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding-bottom:13px;border-bottom:1px solid var(--line)}
+  .modal-head h2{margin:0;font-size:24px}
+  .xbtn{border:1px solid var(--line);background:#fff;border-radius:999px;width:42px;height:42px;font-size:18px;cursor:pointer}
+  .sect{padding:17px 0;border-bottom:1px dashed var(--line)}
+  .sect:last-of-type{border-bottom:0}
+  .sect h3{margin:0 0 6px;font-size:18px}
+  .sect p{margin:0 0 11px;color:var(--soft);font-size:13.5px;line-height:1.8}
+  .storage-box{background:#f7f4ec;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;color:#675d54;line-height:1.75}
+  .danger{background:#fff7f3;border:1px solid #ead5cd;border-radius:18px;padding:14px}
+  .mstatus{min-height:22px;margin-top:10px;font-size:13px;color:var(--forest);font-weight:800}
+
+  .print-area{display:none;background:#fff;color:#000;max-width:1280px;margin:16px auto 40px;
+    padding:12px;border:1.5px solid var(--line);border-radius:22px}
+  .print-area.show{display:block}
+  .pvbar{position:sticky;top:0;z-index:3;background:#fff8ef;border:1.5px solid var(--line);border-radius:16px;
+    padding:12px 14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+  .pvbar b{font-size:16px;flex:1;min-width:150px;color:var(--ink)}
+  .pvbar .tip{flex-basis:100%;font-size:13px;color:var(--soft);line-height:1.7}
+  @media screen{
+    .print-area .psheet,.print-area .pbpage{border:1px solid #e6e0d6;border-radius:8px;margin-bottom:14px;background:#fff}
+  }
+  @media print{
+    body{background:#fff}
+    .wrap,.modal{display:none!important}
+    .print-area{display:block!important;border:0;padding:0;margin:0;max-width:none}
+    .pvbar{display:none!important}
+  }
+    .psheet{page-break-after:always;padding:12mm}
+    .psheet:last-child{page-break-after:auto}
+    .ptitle{font-size:22px;font-weight:900;margin:0 0 3mm}
+    .psub{font-size:12px;color:#555;margin:0 0 6mm}
+    /* 오려 붙이는 전시 카드 */
+    .pcards{display:grid;grid-template-columns:1fr 1fr;gap:6mm}
+    .pcard{border:1.6px dashed #777;border-radius:6mm;padding:6mm;min-height:72mm;display:flex;flex-direction:column;justify-content:space-between}
+    .pcard .tag{font-size:11px;font-weight:900;border:1px solid #888;border-radius:999px;padding:1.5mm 3mm;display:inline-block}
+    .pcard .txt{font-size:19px;font-weight:900;line-height:1.6;margin:4mm 0}
+    .pcard .ft{font-size:11px;color:#555;display:flex;justify-content:space-between}
+    .pcard .lines div{border-bottom:1px dotted #999;height:7mm;margin-top:3mm}
+    /* 탐구의 길 띠 */
+    .ptrail{display:grid;grid-template-columns:repeat(3,1fr);gap:5mm}
+    .pcol{border:1.4px solid #666;border-radius:5mm;padding:4mm}
+    .pcol h3{margin:0 0 3mm;font-size:16px}
+    .pleaf{border:1px solid #bbb;border-radius:4mm;padding:3mm;margin-bottom:3mm}
+    .pleaf .t{font-size:13px;font-weight:900;line-height:1.6}
+    .pleaf .m{font-size:10px;color:#666;margin-top:1.5mm}
+    /* 그림책 */
+    .pbpage{page-break-after:always;padding:14mm;min-height:250mm;display:flex;flex-direction:column}
+    .pbpage:last-child{page-break-after:auto}
+    .pbnum{font-size:11px;color:#777;margin-bottom:3mm}
+    .pbh{font-size:20px;font-weight:900;margin:0 0 5mm}
+    .pbq{font-size:22px;font-weight:900;line-height:1.7;margin:0 0 5mm}
+    .pbimg{max-width:100%;max-height:95mm;object-fit:cover;border:1px solid #bbb;border-radius:4mm;margin-bottom:4mm}
+    .pbmemo{font-size:12px;color:#555}
+    .pblines div{border-bottom:1px dotted #999;height:9mm;margin-top:4mm}
+    .pbcover{text-align:center;padding-top:50mm}
+    .pbcover .k{font-size:13px;color:#555}
+    .pbcover h1{font-size:38px;margin:6mm 0 3mm}
+    .pbbox{border:1.4px dashed #888;border-radius:5mm;padding:6mm;margin-top:auto}
+[hidden]{display:none!important}
+.chip.tm{--c:var(--ginkgo);--cbg:#fff7e2;--ct:#6b530e}.chip[hidden]{display:none!important}
+.inquiry-method-field{margin:5px 0 20px;border:1.5px solid #d9d6bb;border-radius:20px;background:linear-gradient(140deg,#faf9ed,#fffaf0);overflow:hidden}
+.inquiry-method-field>summary{padding:16px 18px;color:#53664b;font-size:16px;font-weight:800;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:12px}.inquiry-method-field>summary:after{content:'＋';font-weight:400;font-size:20px}.inquiry-method-field[open]>summary:after{content:'−'}.inquiry-method-field>summary::-webkit-details-marker{display:none}
+.inquiry-method-inner{padding:0 16px 17px}.inquiry-method-intro{font-size:12.5px;line-height:1.9;color:#736e52;margin:0 0 15px}
+.inquiry-tool-choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.inquiry-tool{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:start;gap:5px;min-width:0;padding:13px 5px 10px;border:1.5px solid #e1d7bd;border-radius:17px;background:#fffdf6;cursor:pointer;color:#596747;text-align:center;transition:border-color .15s,background .15s,transform .15s}
+.inquiry-tool:hover{transform:translateY(-2px)}.inquiry-tool[aria-pressed=true]{border:2px solid #79844f;padding:12.5px 4.5px 9.5px;background:#f0f2dd;box-shadow:inset 0 0 0 2px #fffdf4}
+.inquiry-tool-picture{display:flex;align-items:center;justify-content:center;width:52px;height:48px;background:#eee8d1;border-radius:45% 52% 43% 55%;margin:2px 0 4px}.inquiry-tool:nth-child(3n+2) .inquiry-tool-picture{background:#e3e9dc}.inquiry-tool:nth-child(3n) .inquiry-tool-picture{background:#f3e0cd}.inquiry-tool svg{width:30px;height:30px}.inquiry-tool strong{font-size:12px;line-height:1.6;word-break:keep-all}.inquiry-tool small{font-size:9px!important;line-height:1.6;color:#7a725a!important;word-break:keep-all}.inquiry-tool-check{position:absolute;right:6px;top:5px;background:#6d7e4d;color:white;font-size:10px;border-radius:50%;width:17px;height:17px;display:none}.inquiry-tool[aria-pressed=true] .inquiry-tool-check{display:block}
+.inquiry-tool-other{margin-top:15px}.inquiry-tool-other label{display:block;font-size:12px;font-weight:700;color:#687052;margin-bottom:5px}.inquiry-tool-other input{font-size:13px;padding:10px 12px;border-radius:12px}
+.inquiry-tool-summary{font-size:11px;line-height:1.8;color:#64734f;margin:12px 0 0;min-height:20px}.inquiry-record-tools{margin:13px 0 7px;padding:10px 12px;border:1px solid #d8d6bd;border-radius:12px;background:#f8f8eb;color:#4d6043;text-align:left;break-inside:avoid}.inquiry-record-tools-label{display:block;font-size:10px;letter-spacing:.06em;font-weight:700;margin-bottom:7px;color:#62734f}.inquiry-record-tools>div{display:flex;flex-wrap:wrap;gap:6px}.inquiry-tool-token{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;background:#fffef8;border:1px solid #d7d5bd;border-radius:9px;font-size:11px;line-height:1.6;overflow-wrap:anywhere}.inquiry-tool-token svg{width:19px;height:19px;flex-shrink:0}.vstage .inquiry-record-tools{max-width:480px;width:100%;margin:17px auto}.pbpage .inquiry-tool-token{font-size:13px;padding:6px 9px}.pbpage .inquiry-tool-token svg{width:23px;height:23px}.pleaf .inquiry-record-tools,.pcard .inquiry-record-tools{padding:7px 9px}.pleaf .inquiry-tool-token,.pcard .inquiry-tool-token{font-size:10px}
+@media(max-width:700px){.inquiry-tool-choices{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.inquiry-tool{padding:15px 7px}.inquiry-tool[aria-pressed=true]{padding:14.5px 6.5px}.inquiry-tool strong{font-size:14px}.inquiry-tool small{font-size:11px!important}.inquiry-method-field>summary{font-size:15px}.lane-head{overflow-wrap:anywhere;word-break:keep-all}}
+@media print{.inquiry-record-tools{background:#fff;color:#111;border-color:#888;box-shadow:none}.inquiry-record-tools-label{color:#333}.inquiry-tool-token{background:#fff;color:#111;border-color:#aaa}.inquiry-tool-token svg{color:#333}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="alert" id="saveAlert">
+    <b>지금은 기록이 저장되지 않습니다</b>
+    <p>브라우저가 이 화면에서 저장소를 막고 있어요. 파일을 직접 두 번 눌러 연 경우(주소가 <b>file://</b>로 시작) 크롬은 저장을 허용하지 않습니다.</p>
+    <ol>
+      <li>Netlify 등에 올려 <b>https:// 주소</b>로 열면 바로 저장됩니다.</li>
+      <li>당장 써야 하면 그대로 쓰되, <b>끝나기 전에 설정 → 전체 백업 저장</b>을 꼭 눌러 주세요.</li>
+    </ol>
+    <button class="btn line" id="alertRecheck" type="button">다시 확인</button>
+  </div>
+
+  <section class="hero">
+    <div class="wash w1"></div><div class="wash w2"></div>
+    <button class="settings-open" id="settingsOpen" type="button">⚙ 설정</button>
+    <span class="eyebrow">아이의 말이 전시와 그림책으로 이어지는 곳</span>
+    <h1>달누리 가을탐구 · <br>전시와 그림책 공방</h1>
+    <p>한 번 기록하면 <b>탐구의 길</b>, <b>벽면 전시 카드</b>, <b>아이별 그림책</b>에 함께 쌓입니다. 궁금한 점과 알아볼 방법, 알게 된 점을 담으면 탐구의 과정이 한눈에 보입니다.</p>
+  </section>
+
+  <section class="record-shell">
+    <article class="card">
+      <h2 id="formTitle">① 지금 바로 기록하기</h2>
+      <p class="sub">아이 · 단계 · 말만 넣어도 저장됩니다. 나머지는 선택이에요.</p>
+
+      <div class="grid2" style="margin-top:14px">
+        <div class="field">
+          <label for="childSel">누가</label>
+          <select id="childSel"></select>
+          <small>이름은 설정에서 한 번 등록해 두세요.</small>
+        </div>
+        <div class="field">
+          <label for="topic">탐구 주제</label>
+          <input id="topic" type="text" maxlength="40" placeholder="예: 낙엽 스낵 탐구">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>어떤 탐구를 기록할까요</label>
+        <div class="chips" id="phaseChips" role="group" aria-label="탐구 단계">
+          <button class="chip pb" data-v="before" type="button" aria-pressed="true">🌱 탐구 전</button>
+          <button class="chip pd" data-v="during" type="button" aria-pressed="false">🔍 이렇게 탐구해 봐요</button>
+          <button class="chip pa" data-v="after" type="button" aria-pressed="false">🍂 탐구 후</button>
+        </div>
+        <small id="phaseHint">그림책을 읽고 아직 알아보기 전에 꺼낸 말이에요.</small>
+      </div>
+
+      <div class="field">
+        <label>어떤 말인가요</label>
+        <div class="chips" id="typeChips" role="group" aria-label="기록 유형">
+          <button class="chip tq" data-v="question" type="button" aria-pressed="true">❓ 궁금한 점</button>
+          <button class="chip tk" data-v="knowledge" type="button" aria-pressed="false">💡 알게 된 점</button>
+          <button class="chip tp" data-v="play" type="button" aria-pressed="false">🎈 놀이한 모습</button><button class="chip tm" data-v="method" type="button" aria-pressed="false" hidden>🔎 탐구 방법</button>
+        </div>
+      </div>
+
+<details class="inquiry-method-field" id="inquiryMethodField"><summary>어떤 도구와 방법으로 알아볼까요?</summary><div class="inquiry-method-inner"><p class="inquiry-method-intro">써 보고 싶은 도구나 탐구 방법을 골라요.<br>도구만 골라도 저장할 수 있고, 아래에 구체적인 계획을 적어도 좋아요.</p><div id="inquiryToolChoices" class="inquiry-tool-choices" role="group" aria-label="탐구 도구와 방법 고르기"></div><div class="inquiry-tool-other"><label for="inquiryToolOther">다른 도구나 방법 · 선택</label><input id="inquiryToolOther" type="text" maxlength="80" placeholder="예: 디지털 현미경, 오케이 구글"></div><p id="inquiryToolSummary" class="inquiry-tool-summary" role="status" aria-live="polite"></p><small>실제 도구 사진도 아래 ‘사진’에 담을 수 있어요.</small></div></details>
+      <div class="field" id="parentField" hidden>
+        <label for="parentSel">어떤 궁금증에 대한 답인가요</label>
+        <select id="parentSel"></select>
+        <small>연결해 두면 질문 아래에 답이 매달려 탐구의 길이 생겨요.</small>
+      </div>
+
+      <div class="field">
+        <label for="said" id="saidLabel">아이의 말</label>
+        <div class="withmic">
+          <textarea id="said" placeholder="예: 왜 낙엽 색이 달라져요?"></textarea>
+          <button class="mic" id="micBtn" type="button" aria-pressed="false" aria-label="말로 받아적기">🎤</button>
+        </div>
+        <div class="hint" id="micTip">마이크 버튼을 누르면 말한 내용을 글자로 받습니다. 안 되면 직접 입력해도 됩니다.</div>
+        <div class="plabel" id="promptLabel">이 단계에서 이렇게 물어보세요 · 누르면 교사 메모에 들어갑니다</div>
+        <div class="prompts" id="prompts"></div>
+      </div>
+
+      <div class="field">
+        <label for="note">교사 메모 (선택)</label>
+        <textarea id="note" style="min-height:66px" placeholder="예: 벽면 왼쪽 띠에 붙이기 / 다음 날 다시 물어보기"></textarea>
+      </div>
+
+      <div class="field">
+        <label>사진 (선택)</label>
+        <div class="photo-wrap">
+          <div style="font-weight:800;margin-bottom:5px">탐구 도구 · 놀이 · 작품 · 생각지도 사진</div>
+          <div style="font-size:13px;color:var(--soft)">저장할 때 자동으로 작게 줄입니다.</div>
+          <input id="photoInput" type="file" accept="image/*" style="margin-top:10px">
+          <img id="photoPreview" alt="사진 미리보기">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn primary" id="saveBtn" type="button">📚 저장하기</button>
+        <button class="btn line" id="resetBtn" type="button">입력 지우기</button>
+        <button class="btn line" id="cancelEdit" type="button" hidden>수정 취소</button>
+      </div>
+      <div class="status" id="saveStatus">기록할 내용을 입력한 뒤 저장하기를 눌러 주세요.</div>
+      <div class="hint" id="storageState" style="margin-top:6px">저장소를 확인하고 있어요.</div>
+    </article>
+
+    <aside class="card">
+      <div class="side-grid">
+        <div class="quick">
+          <h3>지금까지</h3>
+          <div class="stats">
+            <div class="stat"><b id="statAll">0</b><span>전체 기록</span></div>
+            <div class="stat"><b id="statChild">0</b><span>아이 수</span></div>
+            <div class="stat"><b id="statQ">0</b><span>궁금한 점</span></div>
+            <div class="stat key"><b id="statLink">0</b><span>답으로 이어진 질문</span></div>
+          </div>
+          <p style="margin-top:11px">마지막 칸이 이 탐구의 핵심 지표입니다. 질문이 답을 만나면 올라갑니다.</p>
+        </div>
+        <div class="quick">
+          <h3>아날로그로 꺼내기</h3>
+          <p>골라 둔 탐구 도구와 방법도 기록과 함께 출력돼요.</p>
+          <div class="actions" style="margin-top:0">
+            <button class="btn line" id="goTrail" type="button">탐구의 길</button>
+            <button class="btn line" id="goWall" type="button">벽면판</button>
+            <button class="btn line" id="goBooks" type="button">그림책</button>
+            <button class="btn line" id="goPrint" type="button">인쇄</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-trail" aria-controls="panel-trail" aria-selected="true" data-tab="trail">🛤 탐구의 길</button>
+    <button class="tab" role="tab" id="tab-wall" aria-controls="panel-wall" aria-selected="false" data-tab="wall">🌳 벽면 전시판</button>
+    <button class="tab" role="tab" id="tab-books" aria-controls="panel-books" aria-selected="false" data-tab="books">📚 아이별 그림책</button>
+    <button class="tab" role="tab" id="tab-print" aria-controls="panel-print" aria-selected="false" data-tab="print">🖨 인쇄</button>
+  </div>
+
+  <section class="panel section" id="panel-trail" role="tabpanel" aria-labelledby="tab-trail">
+    <article class="card">
+      <div class="section-title">
+        <div><h2>🛤 탐구의 길</h2>
+          <p>궁금한 점에서 알아볼 도구와 방법을 고르고, 알게 된 점으로 이어지는 과정을 봅니다. 질문 카드 아래에는 그 질문에 대한 답이 매달립니다.</p></div>
+        <div class="legend">
+          <span><i class="dot pb"></i>탐구 전</span><span><i class="dot pd"></i>이렇게 탐구해 봐요</span><span><i class="dot pa"></i>탐구 후</span>
+        </div>
+      </div>
+      <div class="childpick" id="childPick" role="group" aria-label="아이 고르기"></div>
+      <div id="trailBody"></div>
+    </article>
+  </section>
+
+  <section class="panel section" id="panel-wall" role="tabpanel" aria-labelledby="tab-wall" hidden>
+    <article class="card">
+      <div class="section-title">
+        <div><h2>🌳 벽면 전시판</h2>
+          <p>벽에 붙일 모양 그대로 봅니다. 왼쪽에서 오른쪽으로 탐구가 흘러가고, 각 칸 안에서 아이별로 묶입니다.</p></div>
+      </div>
+      <div class="map-grid">
+        <div><div class="col-head"><span class="pb">🌱 탐구 전</span></div><div id="wallBefore"></div></div>
+        <div><div class="col-head"><span class="pd">🔍 이렇게 탐구해 봐요</span></div><div id="wallDuring"></div></div>
+        <div><div class="col-head"><span class="pa">🍂 탐구 후</span></div><div id="wallAfter"></div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel section" id="panel-books" role="tabpanel" aria-labelledby="tab-books" hidden>
+    <article class="card">
+      <div class="section-title">
+        <div><h2>📚 아이별 그림책</h2>
+          <p>아이마다 한 권이 됩니다. 표지 → 처음 궁금했던 것 → 해 본 것 → 달라진 생각 → 집에서 함께 보기 순서예요.</p></div>
+      </div>
+      <div class="book-controls">
+        <div style="min-width:220px">
+          <label for="childFilter" style="display:block;font-size:14px;font-weight:800;margin-bottom:6px">누구의 책을 볼까요</label>
+          <select id="childFilter"></select>
+        </div>
+        <div class="actions" style="margin-top:0">
+          <button class="btn warm" id="printBookTop" type="button">이 책 인쇄하기</button>
+        </div>
+      </div>
+      <div class="viewer" id="viewer">
+        <div class="vstage" id="vstage" tabindex="0" aria-live="polite"></div>
+        <div class="vnav">
+          <button class="vbtn" id="vprev" type="button">‹ 앞 쪽</button>
+          <span class="vcount" id="vcount">1 / 1</span>
+          <button class="vbtn" id="vnext" type="button">다음 쪽 ›</button>
+        </div>
+        <div class="vdots" id="vdots"></div>
+        <p style="margin:0;text-align:center;font-size:13px;color:var(--soft)">좌우로 밀거나 ← → 키로도 넘길 수 있어요.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel section" id="panel-print" role="tabpanel" aria-labelledby="tab-print" hidden>
+    <article class="card">
+      <div class="section-title">
+        <div><h2>🖨 인쇄 · 아날로그로 꺼내기</h2>
+          <p>화면 기록을 종이로 옮깁니다. 인쇄 창에서 <b>배경 그래픽</b>을 켜면 테두리가 함께 나옵니다.</p></div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="traceOpt"> 손글씨 줄(따라쓰기) 넣기 — 기본은 꺼져 있습니다</label>
+      <div class="print-grid">
+        <div class="print-box">
+          <h3>① 전시 카드</h3>
+          <p>A4 한 장에 두 장씩. 점선대로 오려 벽에 붙입니다. 단계 색 테두리가 함께 나와요.</p>
+          <button class="btn warm" id="printCards" type="button">전시 카드 인쇄</button>
+        </div>
+        <div class="print-box">
+          <h3>② 탐구의 길 띠</h3>
+          <p>전 · 중 · 후 세 칸을 가로로. 벽 띠 위에 그대로 이어 붙입니다.</p>
+          <button class="btn gold" id="printTrail" type="button">띠 인쇄</button>
+        </div>
+        <div class="print-box">
+          <h3>③ 아이별 그림책</h3>
+          <p>한 쪽에 한 장면. 인쇄 설정에서 <b>양면 · 2쪽 모아찍기</b>를 고르면 작은 책이 됩니다.</p>
+          <button class="btn primary" id="printBooks" type="button">그림책 인쇄</button>
+        </div>
+        <div class="print-box">
+          <h3>④ 전시판 한 장</h3>
+          <p>벽면판 전체를 요약해 A4 한 장으로. 교실 문 앞 안내용입니다.</p>
+          <button class="btn line" id="printWall" type="button">전시판 인쇄</button>
+        </div>
+      </div>
+      <div class="hint" style="margin-top:14px">출력물에는 아이 이름이 들어갑니다. 복도 등 외부에 붙일 때는 설정에서 <b>이름 가리기</b>를 켜 주세요.</div>
+      <label class="toggle"><input type="checkbox" id="hideNameOpt"> 인쇄물에서 이름 가리기 (첫 글자만 표시)</label>
+    </article>
+  </section>
+</div>
+
+<div class="modal" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <h2 id="settingsTitle">⚙ 설정</h2>
+      <button class="xbtn" id="settingsClose" type="button" aria-label="설정 닫기">✕</button>
+    </div>
+
+    <section class="sect">
+      <h3>우리 반 아이들</h3>
+      <p>쉼표로 구분해 적어 주세요. 이름 대신 번호도 괜찮습니다. 한 번 등록하면 기록할 때 고르기만 하면 돼요.</p>
+      <textarea id="rosterIn" placeholder="지우, 하린, 민준"></textarea>
+      <div class="actions"><button class="btn primary" id="saveRoster" type="button">명렬 저장</button></div>
+    </section>
+
+    <section class="sect">
+      <h3>저장 상태</h3>
+      <div class="storage-box" id="settingsStorage">확인 중…</div>
+      <p style="margin-top:10px">아이 이름과 사진이 이 기기에 저장됩니다. 공용 기기라면 사용 후 백업하고 초기화해 주세요.</p>
+    </section>
+
+    <section class="sect">
+      <h3>백업 · 다른 기기로 옮기기</h3>
+      <div class="actions">
+        <button class="btn primary" id="backupDownload" type="button">⬇ 전체 백업 저장</button>
+        <button class="btn line" id="backupImportBtn" type="button">⬆ 백업 불러오기</button>
+        <input id="backupImportFile" type="file" accept="application/json,.json" hidden>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label for="restoreMode">불러오기 방식</label>
+        <select id="restoreMode">
+          <option value="merge">기존 기록에 합치기</option>
+          <option value="replace">현재 기록을 백업 내용으로 바꾸기</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h3>기록 관리</h3>
+      <div class="actions"><button class="btn warm" id="demoBtn" type="button">✨ 예시 기록 넣기</button></div>
+      <div class="danger" style="margin-top:13px">
+        <h3>초기화</h3>
+        <p>이 기기의 기록을 모두 지웁니다. 백업 파일에는 영향을 주지 않습니다.</p>
+        <div class="actions">
+          <button class="btn danger" id="clearStep1" type="button">전체 기록 초기화</button>
+          <button class="btn danger" id="clearStep2" type="button" hidden>정말 지웁니다</button>
+          <button class="btn line" id="clearCancel" type="button" hidden>취소</button>
+        </div>
+      </div>
+    </section>
+    <div class="mstatus" id="settingsStatus"></div>
+  </div>
+</div>
+
+<div id="printArea" class="print-area"></div>
+
+<script>
+(function(){
+'use strict';
+var DB_NAME='dalnuri_autumn_atlas_v4', DB_VERSION=1, STORE='entries', META='meta';
+var LEGACY_KEY='dalnuri_autumn_map_books_v1', LEGACY_TOPIC='dalnuri_autumn_map_books_topic';
+var $=function(id){return document.getElementById(id);};
+
+var PHASES=[
+  {v:'before',label:'탐구 전',icon:'🌱',cls:'pb',hint:'그림책을 읽고 아직 알아보기 전에 꺼낸 말이에요.'},
+  {v:'during',label:'이렇게 탐구해 봐요',icon:'🔍',cls:'pd',hint:'궁금한 것을 알아볼 도구와 방법을 골라요.'},
+  {v:'after', label:'탐구 후',icon:'🍂',cls:'pa',hint:'해 보고 난 뒤 처음 생각이 달라진 말이에요.'}
+];
+var TYPES=[
+  {v:'question', label:'궁금한 점', icon:'❓'},
+  {v:'knowledge',label:'알게 된 점', icon:'💡'},
+  {v:'play',     label:'놀이한 모습',icon:'🎈'},
+  {v:'method',   label:'탐구 방법',icon:'🔎'}
+];
+
+var db=null, storageMode='memory';
+var items=[], topic='낙엽 스낵 탐구', roster=[];
+var phase='before', type='question', img='', editId='', parentId='';
+var pickedChild='';
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function ph(v){for(var i=0;i<PHASES.length;i++)if(PHASES[i].v===v)return PHASES[i];return PHASES[0];}
+function ty(v){for(var i=0;i<TYPES.length;i++)if(TYPES[i].v===v)return TYPES[i];return TYPES[0];}
+function dateText(iso){try{return new Date(iso).toLocaleDateString('ko-KR');}catch(e){return '';}}
+function nameOf(n){ if($('hideNameOpt')&&$('hideNameOpt').checked){var s=String(n||'');return s?s.charAt(0)+'○':'';} return n; }
+function byChild(list){var o={};list.forEach(function(x){var k=x.child||'이름 없음';(o[k]=o[k]||[]).push(x);});return o;}
+function sortedNames(o){return Object.keys(o).sort(function(a,b){return a.localeCompare(b,'ko');});}
+function answersOf(id){return items.filter(function(x){return x.parentId===id;});}
+function linkedCount(){var q=items.filter(function(x){return x.type==='question';});return q.filter(function(x){return answersOf(x.id).length>0;}).length;}
+
+/* ---------- 저장소 ---------- */
+function openDatabase(){return new Promise(function(res,rej){
+  if(!('indexedDB' in window))return rej(new Error('no idb'));
+  var req; try{req=indexedDB.open(DB_NAME,DB_VERSION);}catch(e){return rej(e);}
+  req.onupgradeneeded=function(e){var d=e.target.result;
+    if(!d.objectStoreNames.contains(STORE))d.createObjectStore(STORE,{keyPath:'id'});
+    if(!d.objectStoreNames.contains(META))d.createObjectStore(META,{keyPath:'key'});};
+  req.onsuccess=function(){res(req.result);};
+  req.onerror=function(){rej(req.error||new Error('fail'));};
+  req.onblocked=function(){rej(new Error('blocked'));};
+});}
+function idbAll(){return new Promise(function(res,rej){var r=db.transaction(STORE,'readonly').objectStore(STORE).getAll();r.onsuccess=function(){res(r.result||[]);};r.onerror=function(){rej(r.error);};});}
+function idbMeta(k){return new Promise(function(res,rej){var r=db.transaction(META,'readonly').objectStore(META).get(k);r.onsuccess=function(){res(r.result&&r.result.value);};r.onerror=function(){rej(r.error);};});}
+function idbSetMeta(k,v){return new Promise(function(res,rej){var tx=db.transaction(META,'readwrite');tx.objectStore(META).put({key:k,value:v});tx.oncomplete=res;tx.onerror=function(){rej(tx.error);};});}
+function idbPut(it){return new Promise(function(res,rej){var tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(it);tx.oncomplete=res;tx.onerror=function(){rej(tx.error);};});}
+function idbDel(id){return new Promise(function(res,rej){var tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).delete(id);tx.oncomplete=res;tx.onerror=function(){rej(tx.error);};});}
+function idbReplaceAll(list){return new Promise(function(res,rej){var tx=db.transaction(STORE,'readwrite');var s=tx.objectStore(STORE);s.clear();list.forEach(function(x){s.put(x);});tx.oncomplete=res;tx.onerror=function(){rej(tx.error);};});}
+function canLocal(){try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true;}catch(e){return false;}}
+function localWrite(){localStorage.setItem(LEGACY_KEY,JSON.stringify(items));localStorage.setItem(LEGACY_TOPIC,topic);localStorage.setItem(LEGACY_KEY+'_roster',JSON.stringify(roster));}
+
+function storageMsg(){
+  var m = storageMode==='indexeddb' ? '✅ 기기 저장 사용 중 · 새로 열어도 기록이 유지됩니다.'
+        : storageMode==='localstorage' ? '✅ 브라우저 저장 사용 중 · 이 브라우저에서 유지됩니다.'
+        : '⚠️ 임시 저장 중 · 이 환경에서는 영구 저장이 제한됩니다. 백업을 꼭 받아 주세요.';
+  if($('saveAlert'))$('saveAlert').classList.toggle('on',storageMode==='memory');
+  if($('storageState'))$('storageState').textContent=m;
+  if($('settingsStorage'))$('settingsStorage').textContent=m+'  기록 '+items.length+'개 · 아이 '+sortedNames(byChild(items)).length+'명';
+}
+
+async function initStorage(){
+  var legacy={items:[],topic:'',roster:[]};
+  try{
+    var raw=localStorage.getItem(LEGACY_KEY);
+    legacy.items=raw?JSON.parse(raw):[]; if(!Array.isArray(legacy.items))legacy.items=[];
+    legacy.topic=localStorage.getItem(LEGACY_TOPIC)||'';
+    var rr=localStorage.getItem(LEGACY_KEY+'_roster'); legacy.roster=rr?JSON.parse(rr):[];
+  }catch(e){}
+  try{
+    db=await openDatabase(); storageMode='indexeddb';
+    var got=await idbAll(); var tp=await idbMeta('topic'); var rs=await idbMeta('roster');
+    if(!got.length && legacy.items.length){ items=legacy.items.slice(); await idbReplaceAll(items); }
+    else items=got.slice();
+    topic=tp||legacy.topic||topic;
+    roster=Array.isArray(rs)?rs:(legacy.roster||[]);
+    if(!tp)await idbSetMeta('topic',topic);
+  }catch(e){
+    db=null;
+    if(canLocal()){storageMode='localstorage';items=legacy.items.slice();topic=legacy.topic||topic;roster=legacy.roster||[];}
+    else {storageMode='memory';}
+  }
+  items=items.map(migrate).sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
+  $('topic').value=topic;
+  storageMsg(); renderAll();
+}
+function migrate(x){
+  if(!x.phase) x.phase = x.type==='question' ? 'before' : (x.type==='knowledge' ? 'after' : 'during');
+  if(x.parentId==null) x.parentId='';
+  x.tools=validTools(x.tools);x.toolOther=String(x.toolOther||'').slice(0,80);
+  return x;
+}
+async function persistOne(it){
+  try{ if(storageMode==='indexeddb'){await idbPut(it);await idbSetMeta('topic',topic);return true;}
+       if(storageMode==='localstorage'){localWrite();return true;} }
+  catch(e){ if(canLocal()){storageMode='localstorage';try{localWrite();storageMsg();return true;}catch(_){}} storageMode='memory';storageMsg(); }
+  return false;
+}
+async function persistAll(){
+  try{ if(storageMode==='indexeddb'){await idbReplaceAll(items);await idbSetMeta('topic',topic);await idbSetMeta('roster',roster);return true;}
+       if(storageMode==='localstorage'){localWrite();return true;} }
+  catch(e){ if(canLocal()){storageMode='localstorage';try{localWrite();storageMsg();return true;}catch(_){}} storageMode='memory';storageMsg(); }
+  return false;
+}
+async function removeItem(id){
+  items=items.filter(function(x){return x.id!==id;});
+  items.forEach(function(x){ if(x.parentId===id) x.parentId=''; });
+  renderAll();
+  if(storageMode==='indexeddb'){try{await idbDel(id);await idbReplaceAll(items);}catch(e){}}
+  else await persistAll();
+}
+
+/* ---------- 사진 축소 ---------- */
+function shrink(file){return new Promise(function(res){
+  var fr=new FileReader();
+  fr.onload=function(){
+    var im=new Image();
+    im.onload=function(){
+      var max=720,w=im.width,h=im.height,r=Math.min(1,max/Math.max(w,h));
+      var c=document.createElement('canvas');c.width=Math.round(w*r);c.height=Math.round(h*r);
+      c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      try{res(c.toDataURL('image/jpeg',0.62));}catch(e){res('');}
+    };
+    im.onerror=function(){res('');};
+    im.src=fr.result;
+  };
+  fr.onerror=function(){res('');};
+  fr.readAsDataURL(file);
+});}
+
+var INQUIRY_TOOLS=[
+ {id:'magnifier',name:'돋보기',hint:'작은 모습을 살펴봐요',path:'<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6M7 10h6M10 7v6"/>'},
+ {id:'computer',name:'컴퓨터·태블릿',hint:'함께 검색해 보아요',path:'<rect x="2" y="3" width="16" height="12" rx="2"/><path d="M7 20h7M10 15v5M5 7h9M5 10h6"/><rect x="17" y="10" width="5" height="11" rx="1"/>'},
+ {id:'book',name:'그림책·도감',hint:'책에서 찾아보아요',path:'<path d="M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-9 2-3-2-5-3-9-2ZM12 6v15M6 9l3 1M6 13l3 1M15 10l3-1M15 14l3-1"/>'},
+ {id:'observe',name:'직접 관찰',hint:'가까이에서 살펴봐요',path:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>'},
+ {id:'experiment',name:'직접 실험',hint:'비교하며 해 보아요',path:'<path d="M8 3h8M10 3v7L4 20c-.5 1 0 1 1 1h14c1 0 1.5 0 1-1l-6-10V3M7 15h10"/><circle cx="11" cy="17" r=".5"/>'},
+ {id:'ask',name:'사람에게 질문',hint:'친구·선생님께 물어요',path:'<path d="M21 10a7 7 0 0 1-7 7H9l-6 4 2-6a7 7 0 0 1-2-5 8 8 0 0 1 18 0Z"/><path d="M10 7a2 2 0 1 1 3 2c-1 .6-1 1-1 2M12 13h.01"/>'},
+ {id:'camera',name:'카메라',hint:'찍고 다시 살펴봐요',path:'<path d="m8 5 2-2h4l2 2h4a2 2 0 0 1 2 2v12H2V7a2 2 0 0 1 2-2Z"/><circle cx="12" cy="12" r="4"/><path d="M18 8h1"/>'},
+ {id:'measure',name:'자·저울',hint:'길이와 무게를 재요',path:'<path d="M2 4h9v17H2ZM2 8h4M2 12h5M2 16h4M17 3v17M13 7h8M13 7l-2 6h4ZM21 7l-2 6h4ZM14 21h7"/>'}
+];
+var chosenTools=[];
+function toolIcon(tool){return '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">'+tool.path+'</svg>';}
+function validTools(value){return Array.isArray(value)?INQUIRY_TOOLS.filter(function(t){return value.indexOf(t.id)>=0;}).map(function(t){return t.id;}):[];}
+function toolSummary(list,other){return INQUIRY_TOOLS.filter(function(t){return validTools(list).indexOf(t.id)>=0;}).map(function(t){return t.name;}).concat(other?[String(other).slice(0,80)]:[]).join(' · ');}
+function renderTools(){
+ $('inquiryToolChoices').innerHTML=INQUIRY_TOOLS.map(function(t){return '<button class="inquiry-tool" type="button" data-tool="'+t.id+'" aria-pressed="'+String(chosenTools.indexOf(t.id)>=0)+'"><span class="inquiry-tool-picture">'+toolIcon(t)+'</span><strong>'+t.name+'</strong><small>'+t.hint+'</small><span class="inquiry-tool-check" aria-hidden="true">✓</span></button>';}).join('');
+ $('inquiryToolChoices').querySelectorAll('[data-tool]').forEach(function(button){button.onclick=function(){var id=button.dataset.tool;chosenTools=chosenTools.indexOf(id)<0?chosenTools.concat(id):chosenTools.filter(function(v){return v!==id;});renderTools();};});
+ var summary=toolSummary(chosenTools,$('inquiryToolOther').value.trim());$('inquiryToolSummary').textContent=summary?'골랐어요 · '+summary:'함께 써 볼 도구와 방법을 여러 개 골라도 좋아요.';
+}
+function toolsHTML(record){
+ var ids=validTools(record.tools),other=String(record.toolOther||'').slice(0,80);if(!ids.length&&!other)return '';
+ return '<section class="inquiry-record-tools"><span class="inquiry-record-tools-label">탐구 도구·방법</span><div>'+INQUIRY_TOOLS.filter(function(t){return ids.indexOf(t.id)>=0;}).map(function(t){return '<span class="inquiry-tool-token">'+toolIcon(t)+esc(t.name)+'</span>';}).join('')+(other?'<span class="inquiry-tool-token">'+esc(other)+'</span>':'')+'</div></section>';
+}
+function entryText(record){return record.text||(validTools(record.tools).length||record.toolOther?'이 도구와 방법으로 알아봐요.':'');}
+function syncMethodForm(){
+ var method=phase==='during';$('inquiryMethodField').open=method||chosenTools.length>0||!!$('inquiryToolOther').value.trim();
+ document.querySelector('#typeChips [data-v="method"]').hidden=!method;
+ $('saidLabel').textContent=method?'탐구 계획이나 아이의 말 · 도구를 골랐다면 선택':'아이의 말';
+ $('said').placeholder=method?'예: 돋보기로 낙엽 앞뒤를 살펴보고, 컴퓨터로 잎맥을 찾아봐요.':'예: 왜 낙엽 색이 달라져요?';
+ if(!editId)$('saveBtn').textContent=method?'🔍 탐구 방법 저장하기':'📚 저장하기';
+}
+$('inquiryToolOther').oninput=renderTools;
+
+/* ---------- 폼 ---------- */
+function fillChildSel(){
+  var names=roster.slice();
+  var opts='<option value="우리 반 다 같이">우리 반 다 같이</option>'+names.map(function(n){return '<option>'+esc(n)+'</option>';}).join('');
+  var prev=$('childSel').value;
+  $('childSel').innerHTML=opts;
+  if(prev)$('childSel').value=prev;
+  if(!names.length)$('childSel').insertAdjacentHTML('beforeend','<option disabled>설정에서 명렬을 등록해 주세요</option>');
+}
+function fillParentSel(){
+  var child=$('childSel').value;
+  var qs=items.filter(function(x){return x.type==='question'&&(x.child===child||x.child==='우리 반 다 같이');});
+  $('parentSel').innerHTML='<option value="">연결하지 않음</option>'+qs.map(function(q){
+    return '<option value="'+q.id+'"'+(parentId===q.id?' selected':'')+'>'+esc(q.child)+' · '+esc(q.text.slice(0,28))+'</option>';
+  }).join('');
+}
+function setChips(group,val){
+  Array.prototype.forEach.call($(group).querySelectorAll('.chip'),function(b){
+    b.setAttribute('aria-pressed',String(b.dataset.v===val));
+  });
+}
+function syncType(){
+  $('parentField').hidden = (type!=='knowledge');
+  if(type==='knowledge')fillParentSel();
+  syncMethodForm();
+}
+var PROMPTS={
+  before:['○○ 하면 뭐가 떠올라?','왜 그런 것 같아?','제일 궁금한 게 뭐야?','어디서 본 적 있어?'],
+  during:['무엇으로 알아보면 좋을까?','돋보기로 어디를 살펴볼까?','컴퓨터나 책에서 무엇을 찾아볼까?','직접 비교하거나 실험해 볼 수 있을까?','누구에게 물어보면 좋을까?','다른 방법도 생각해 볼까?'],
+  after:['처음 생각이랑 지금 생각이랑 뭐가 달라?','어떻게 알게 됐어?','친구한테 어떻게 설명할래?','아직도 궁금한 거 있어?']
+};
+var TIPS={
+  before:'그림책을 읽고 아직 알아보기 전에 꺼낸 말이에요.',
+  during:'돋보기, 컴퓨터, 책, 실험 등 알아볼 방법을 함께 골라요. 앞으로 해 볼 계획과 실제로 해 본 방법을 모두 담을 수 있어요.',
+  after:'해 보고 난 뒤 처음 생각이 달라진 말이에요.'
+};
+function renderPrompts(){
+  var list=PROMPTS[phase]||[];
+  $('prompts').innerHTML=list.map(function(q){return '<button class="prompt" type="button" data-q="'+esc(q)+'">'+esc(q)+'</button>';}).join('');
+  Array.prototype.forEach.call($('prompts').querySelectorAll('.prompt'),function(b){
+    b.onclick=function(){
+      var cur=$('note').value.trim();
+      $('note').value=(cur?cur+'\n':'')+'교사의 질문: '+b.dataset.q;
+      $('note').focus();
+    };
+  });
+  $('phaseHint').textContent=TIPS[phase]||'';syncMethodForm();
+}
+Array.prototype.forEach.call(document.querySelectorAll('#phaseChips .chip'),function(b){
+  b.onclick=function(){phase=b.dataset.v;if(!editId&&phase==='during')type='method';else if(phase!=='during'&&type==='method')type=phase==='after'?'knowledge':'question';setChips('phaseChips',phase);setChips('typeChips',type);syncType();renderPrompts();};
+});
+Array.prototype.forEach.call(document.querySelectorAll('#typeChips .chip'),function(b){
+  b.onclick=function(){type=b.dataset.v;setChips('typeChips',type);syncType();};
+});
+$('alertRecheck').onclick=function(){location.reload();};
+$('childSel').onchange=function(){if(type==='knowledge')fillParentSel();};
+$('parentSel').onchange=function(){parentId=$('parentSel').value;};
+$('topic').oninput=function(){topic=$('topic').value.trim()||'우리 반 탐구';};
+
+$('photoInput').onchange=async function(e){
+  var f=e.target.files&&e.target.files[0];
+  if(!f){img='';$('photoPreview').style.display='none';return;}
+  $('saveStatus').textContent='사진을 줄이는 중…';
+  img=await shrink(f);
+  if(img){$('photoPreview').src=img;$('photoPreview').style.display='block';$('saveStatus').textContent='사진을 담았어요.';}
+  else $('saveStatus').textContent='사진을 읽지 못했어요. 다른 사진으로 해 주세요.';
+};
+
+function clearForm(){
+  $('said').value='';$('note').value='';$('photoInput').value='';
+  $('photoPreview').removeAttribute('src');$('photoPreview').style.display='none';
+  img='';editId='';parentId='';chosenTools=[];$('inquiryToolOther').value='';renderTools();
+  $('formTitle').textContent='① 지금 바로 기록하기';
+  $('saveBtn').textContent='📚 저장하기';$('cancelEdit').hidden=true;
+  if(type==='knowledge')fillParentSel();syncMethodForm();
+}
+$('resetBtn').onclick=function(){clearForm();$('saveStatus').textContent='입력을 지웠어요.';};
+$('cancelEdit').onclick=function(){clearForm();$('saveStatus').textContent='수정을 취소했어요.';};
+
+$('saveBtn').onclick=async function(){
+  var child=$('childSel').value, text=$('said').value.trim(), note=$('note').value.trim();
+  topic=$('topic').value.trim()||topic;
+  if(!child){$('saveStatus').textContent='먼저 설정에서 우리 반 명렬을 등록해 주세요.';return;}
+  var recordTools=validTools(chosenTools),recordOther=$('inquiryToolOther').value.trim().slice(0,80);
+  if(!text){if(phase==='during'&&(recordTools.length||recordOther)){type='method';setChips('typeChips',type);}else{$('saveStatus').textContent=phase==='during'?'탐구 방법을 고르거나 계획을 적어 주세요.':'아이의 말을 적어 주세요.';$('said').focus();return;}}
+  if(editId){
+    var t=null;for(var i=0;i<items.length;i++)if(items[i].id===editId)t=items[i];
+    if(t){t.child=child;t.phase=phase;t.type=type;t.text=text;t.note=note;t.topic=topic;t.tools=recordTools;t.toolOther=recordOther;
+      t.parentId=(type==='knowledge'?parentId:'');if(img)t.image=img;}
+    renderAll();clearForm();await persistAll();
+    $('saveStatus').textContent='✅ 고쳐서 저장했어요.';
+    return;
+  }
+  var it={id:'e_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),child:child,phase:phase,type:type,
+    topic:topic,text:text,note:note,image:img,tools:recordTools,toolOther:recordOther,parentId:(type==='knowledge'?parentId:''),createdAt:new Date().toISOString()};
+  items.unshift(it);
+  renderAll();clearForm();
+  var ok=await persistOne(it);
+  $('saveStatus').textContent=ok?'✅ 저장 완료 · 길 · 전시판 · 그림책에 모두 반영했어요.':'✅ 화면에는 반영했지만 영구 저장이 제한돼요. 백업을 받아 주세요.';
+};
+
+function startEdit(id){
+  var t=null;for(var i=0;i<items.length;i++)if(items[i].id===id)t=items[i];
+  if(!t)return;
+  editId=id;phase=t.phase;type=t.type;parentId=t.parentId||'';img='';chosenTools=validTools(t.tools);$('inquiryToolOther').value=String(t.toolOther||'').slice(0,80);renderTools();
+  setChips('phaseChips',phase);setChips('typeChips',type);renderPrompts();
+  fillChildSel();$('childSel').value=t.child;syncType();
+  if(type==='knowledge')fillParentSel();
+  $('said').value=t.text;$('note').value=t.note||'';$('topic').value=t.topic||topic;
+  if(t.image){$('photoPreview').src=t.image;$('photoPreview').style.display='block';}
+  $('formTitle').textContent='✏️ 기록 고치기';$('saveBtn').textContent='고쳐서 저장';$('cancelEdit').hidden=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+  $('saveStatus').textContent='사진을 바꾸지 않으면 기존 사진이 그대로 남아요.';
+}
+
+/* ---------- 렌더 ---------- */
+function leafHTML(it,opts){
+  opts=opts||{};
+  var p=ph(it.phase), t=ty(it.type);
+  var ans=answersOf(it.id);
+  var h='<article class="leaf '+p.cls+'">'
+    +'<span class="kind">'+t.icon+' '+t.label+' · '+p.icon+' '+p.label+'</span>'
+    +'<div class="big">'+esc(entryText(it))+'</div>'+toolsHTML(it)
+    +(it.image?'<img src="'+it.image+'" alt="">':'')
+    +'<div class="meta"><span>'+esc(nameOf(it.child))+'</span><span>'+dateText(it.createdAt)+'</span></div>'
+    +(it.note?'<div class="memo">'+esc(it.note)+'</div>':'');
+  if(ans.length){
+    h+='<div class="answers"><span class="alabel">↳ 이 궁금증에 대한 답</span>'
+      +ans.map(function(a){return '<div class="answer">'+esc(a.text)+'<small>'+esc(nameOf(a.child))+' · '+ph(a.phase).label+'</small></div>';}).join('')
+      +'</div>';
+  }
+  if(!opts.noBtn){
+    h+='<div class="rowbtn"><button class="mini" type="button" data-edit="'+it.id+'">고치기</button>'
+      +'<button class="mini del" type="button" data-del="'+it.id+'">지우기</button></div>';
+  }
+  return h+'</article>';
+}
+function bindCards(root){
+  Array.prototype.forEach.call(root.querySelectorAll('[data-edit]'),function(b){b.onclick=function(){startEdit(b.dataset.edit);};});
+  Array.prototype.forEach.call(root.querySelectorAll('[data-del]'),function(b){
+    b.onclick=function(){
+      if(b.dataset.armed){removeItem(b.dataset.del);return;}
+      b.dataset.armed='1';b.textContent='정말 지울까요?';
+      setTimeout(function(){if(b.isConnected){delete b.dataset.armed;b.textContent='지우기';}},4000);
+    };
+  });
+}
+
+function renderChildPick(){
+  var names=sortedNames(byChild(items));
+  if(!pickedChild||names.indexOf(pickedChild)<0)pickedChild=names[0]||'';
+  $('childPick').innerHTML=names.length?names.map(function(n){
+    return '<button class="cpick" type="button" data-c="'+esc(n)+'" aria-pressed="'+(n===pickedChild)+'">'+esc(n)+'</button>';
+  }).join(''):'';
+  Array.prototype.forEach.call($('childPick').querySelectorAll('.cpick'),function(b){
+    b.onclick=function(){pickedChild=b.dataset.c;renderTrail();renderChildPick();};
+  });
+}
+function renderTrail(){
+  var mine=items.filter(function(x){return x.child===pickedChild;});
+  if(!mine.length){$('trailBody').innerHTML='<div class="empty">이 아이의 기록이 아직 없어요.<br>위에서 먼저 기록해 보세요.</div>';return;}
+  var h=PHASES.map(function(p){
+    var list=mine.filter(function(x){return x.phase===p.v;})
+      .filter(function(x){return !(x.parentId&&mine.some(function(y){return y.id===x.parentId;}));})
+      .sort(function(a,b){return String(a.createdAt).localeCompare(String(b.createdAt));});
+    return '<div class="lane '+p.cls+'"><div class="lane-head">'+p.icon+'<br>'+p.label+'<small>'+list.length+'개</small></div>'
+      +'<div class="lane-body">'+(list.length?list.map(function(x){return leafHTML(x);}).join('')
+      :'<div class="empty" style="padding:16px">아직 없어요</div>')+'</div></div>';
+  }).join('');
+  $('trailBody').innerHTML=h;
+  bindCards($('trailBody'));
+}
+function renderWallCol(id,list){
+  var el=$(id);
+  if(!list.length){el.innerHTML='<div class="empty">아직 모인 기록이 없어요.</div>';return;}
+  var g=byChild(list);
+  el.innerHTML=sortedNames(g).map(function(n){
+    return '<div class="bundle"><div class="bundle-name">'+esc(nameOf(n))+'</div>'
+      +g[n].map(function(x){return leafHTML(x);}).join('')+'</div>';
+  }).join('');
+  bindCards(el);
+}
+var vIndex=0, vPages=[], vName='';
+function renderBooks(){
+  var g=byChild(items), names=sortedNames(g), f=$('childFilter'), prev=f.value;
+  f.innerHTML=names.map(function(n){return '<option value="'+esc(n)+'">'+esc(n)+'</option>';}).join('');
+  if(names.indexOf(prev)>=0)f.value=prev; else {f.value=names[0]||'';vIndex=0;}
+  if(f.value!==vName){vName=f.value;vIndex=0;}
+  if(!names.length){
+    vPages=[];
+    $('vstage').className='vstage';
+    $('vstage').innerHTML='<div class="empty" style="border:0;background:none">아직 그림책으로 모인 기록이 없어요.<br>위에서 먼저 기록해 보세요.</div>';
+    $('vcount').textContent='0 / 0';$('vdots').innerHTML='';
+    $('vprev').disabled=true;$('vnext').disabled=true;
+    return;
+  }
+  vPages=buildViewerPages(f.value,g[f.value]||[]);
+  if(vIndex>=vPages.length)vIndex=0;
+  showPage();
+}
+function buildViewerPages(name,list){
+  var b=bookPages(name,list), out=[{t:'cover',name:name,count:b.count,pairs:b.pairs.length}];
+  b.pages.forEach(function(pg){
+    pg.list.forEach(function(x){ out.push({t:'item',h:pg.h,x:x}); });
+  });
+  if(b.pairs.length)out.push({t:'pairs',pairs:b.pairs});
+  out.push({t:'home',name:name});
+  return out;
+}
+function showPage(){
+  var p=vPages[vIndex]; if(!p)return;
+  var st=$('vstage'), h='';
+  st.className='vstage'+(p.t==='cover'?' cover':'');
+  if(p.t==='cover'){
+    h='<div class="vnum">'+esc(topic)+'</div><div class="ctitle">'+esc(nameOf(p.name))+'의<br>가을 탐구책</div>'
+      +'<div class="vnum">기록 '+p.count+'개 · 궁금증이 답을 만난 횟수 '+p.pairs+'번</div>';
+  }else if(p.t==='item'){
+    var x=p.x;
+    h='<div class="vnum">'+vIndex+'쪽 · '+ph(x.phase).icon+' '+esc(p.h)+'</div>'
+      +(x.image?'<img src="'+x.image+'" alt="">':'')
+      +'<div class="vtext">'+esc(entryText(x))+'</div>'+toolsHTML(x)
+      +(x.note?'<div class="vmemo">'+esc(x.note)+'</div>':'');
+  }else if(p.t==='pairs'){
+    h='<div class="vnum">'+vIndex+'쪽</div><h3>궁금증이 답을 만났어요</h3>'
+      +p.pairs.map(function(pr){
+        return '<div class="vtext">❓ '+esc(pr.q.text)+'</div><div class="vtext ans">💡 '+esc(pr.a[0].text)+'</div>';
+      }).join('');
+  }else{
+    h='<div class="vnum">마지막 쪽</div><h3>집에서 함께 보아요</h3>'
+      +'<div class="vhome">아이와 함께 이 책을 넘겨 보세요. <b>만들어 오지 않으셔도 됩니다.</b><br><br>· 제일 마음에 드는 쪽이 어디야?<br>· 집에서도 이런 거 본 적 있어?<br><br>아이가 한 말을 한 줄만 적어 보내 주세요.</div>';
+  }
+  st.innerHTML=h;
+  $('vcount').textContent=(vIndex+1)+' / '+vPages.length;
+  $('vprev').disabled=(vIndex===0);
+  $('vnext').disabled=(vIndex>=vPages.length-1);
+  $('vdots').innerHTML=vPages.map(function(_,i){
+    return '<button class="vdot" type="button" data-i="'+i+'" aria-current="'+(i===vIndex)+'" aria-label="'+(i+1)+'쪽"></button>';
+  }).join('');
+  Array.prototype.forEach.call($('vdots').querySelectorAll('.vdot'),function(b){
+    b.onclick=function(){vIndex=Number(b.dataset.i);showPage();};
+  });
+}
+function vGo(d){var n=vIndex+d; if(n<0||n>=vPages.length)return; vIndex=n; showPage();}
+$('vprev').onclick=function(){vGo(-1);};
+$('vnext').onclick=function(){vGo(1);};
+(function(){
+  var sx=0,sy=0;
+  $('vstage').addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  $('vstage').addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy))vGo(dx<0?1:-1);
+  },{passive:true});
+  document.addEventListener('keydown',function(e){
+    if($('panel-books').hidden)return;
+    if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;
+    if(e.key==='ArrowRight')vGo(1);
+    if(e.key==='ArrowLeft')vGo(-1);
+  });
+})();
+function bookPages(name,list){
+  var before=list.filter(function(x){return x.phase==='before';});
+  var during=list.filter(function(x){return x.phase==='during';});
+  var after =list.filter(function(x){return x.phase==='after';});
+  var pairs=before.filter(function(q){return q.type==='question';}).map(function(q){
+    return {q:q,a:answersOf(q.id)};
+  }).filter(function(p){return p.a.length;});
+  var pages=[];
+  pages.push({h:'내가 처음 궁금했던 것',list:before});
+  pages.push({h:'이렇게 탐구해 봐요',list:during});
+  pages.push({h:'내 생각이 달라졌어요',list:after});
+  return {pages:pages,pairs:pairs,count:list.length};
+}
+function bookHTML(name,list){
+  var b=bookPages(name,list), n=1;
+  var inner=b.pages.map(function(pg){
+    if(!pg.list.length)return '';
+    var s='<div class="page"><div class="pn">'+(++n)+'쪽</div><h4>'+esc(pg.h)+'</h4>'
+      +pg.list.map(function(x){
+        return (x.image?'<img src="'+x.image+'" alt="">':'')+(x.text?'<q>'+esc(x.text)+'</q>':'<p>'+esc(entryText(x))+'</p>')+toolsHTML(x);
+      }).join('');
+    return s+'</div>';
+  }).join('');
+  var chg=b.pairs.length?'<div class="page"><div class="pn">'+(++n)+'쪽</div><h4>궁금증이 답을 만났어요</h4>'
+    +b.pairs.map(function(p){return '<q>❓ '+esc(p.q.text)+'</q><q style="color:#3c5844">💡 '+esc(p.a[0].text)+'</q>';}).join('')+'</div>':'';
+  var home='<div class="page"><div class="pn">마지막 쪽</div><h4>집에서 함께 보아요</h4>'
+    +'<div class="home">이 책을 아이와 함께 넘겨 보세요. 만들어 오지 않으셔도 됩니다.<br><br>· 제일 마음에 드는 쪽이 어디야?<br>· 집에서도 이런 거 본 적 있어?<br><br>아이가 한 말을 한 줄만 적어 보내 주세요.</div></div>';
+  return '<article class="book"><div class="cover"><span class="sticker">'+esc(topic)+'</span>'
+    +'<h3>'+esc(nameOf(name))+'의<br>가을 탐구책</h3><p>기록 '+b.count+'개 · 궁금증이 답을 만난 횟수 '+b.pairs.length+'번</p></div>'
+    +'<div class="pages">'+inner+chg+home+'</div></article>';
+}
+function renderStats(){
+  $('statAll').textContent=items.length;
+  $('statChild').textContent=sortedNames(byChild(items)).length;
+  $('statQ').textContent=items.filter(function(x){return x.type==='question';}).length;
+  $('statLink').textContent=linkedCount();
+}
+function renderAll(){
+  fillChildSel(); if(type==='knowledge')fillParentSel();
+  renderStats();
+  renderChildPick(); renderTrail();
+  renderWallCol('wallBefore',items.filter(function(x){return x.phase==='before';}));
+  renderWallCol('wallDuring',items.filter(function(x){return x.phase==='during';}));
+  renderWallCol('wallAfter', items.filter(function(x){return x.phase==='after';}));
+  renderBooks();
+  storageMsg();
+}
+$('childFilter').onchange=function(){vName=$('childFilter').value;vIndex=0;renderBooks();};
+$('hideNameOpt').onchange=renderAll;
+
+/* ---------- 탭 ---------- */
+var tabs=document.querySelectorAll('.tab');
+function openTab(n){
+  Array.prototype.forEach.call(tabs,function(t){t.setAttribute('aria-selected',String(t.dataset.tab===n));});
+  ['trail','wall','books','print'].forEach(function(k){$('panel-'+k).hidden=(k!==n);});
+  var w=document.querySelector('.tabs'); if(w)window.scrollTo({top:w.offsetTop-10,behavior:'smooth'});
+}
+Array.prototype.forEach.call(tabs,function(t){t.onclick=function(){openTab(t.dataset.tab);};});
+$('goTrail').onclick=function(){openTab('trail');};
+$('goWall').onclick=function(){openTab('wall');};
+$('goBooks').onclick=function(){openTab('books');};
+$('goPrint').onclick=function(){openTab('print');};
+
+/* ---------- 음성 ---------- */
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition, rec=null;
+$('micBtn').onclick=function(){
+  if(!SR){$('micTip').textContent='이 브라우저는 음성 인식을 지원하지 않아요. 직접 입력해 주세요.';return;}
+  if(rec){rec.stop();return;}
+  try{rec=new SR();}catch(e){$('micTip').textContent='마이크를 시작할 수 없어요.';return;}
+  rec.lang='ko-KR';rec.interimResults=true;rec.continuous=false;
+  var base=$('said').value?$('said').value+' ':'';
+  $('micBtn').setAttribute('aria-pressed','true');$('micBtn').textContent='■';
+  $('micTip').textContent='듣고 있어요. 아이가 말하면 글자로 적을게요.';
+  rec.onresult=function(e){var fin=base,int='';
+    for(var i=e.resultIndex;i<e.results.length;i++){var tx=e.results[i][0].transcript;
+      if(e.results[i].isFinal)fin+=tx+' ';else int+=tx;}
+    base=fin;$('said').value=(fin+int).trim();};
+  rec.onend=function(){rec=null;$('micBtn').setAttribute('aria-pressed','false');$('micBtn').textContent='🎤';
+    $('micTip').textContent='적힌 내용을 바로 고칠 수 있어요.';};
+  rec.onerror=function(){$('micTip').textContent='마이크 권한을 확인하거나 직접 입력해 주세요.';};
+  rec.start();
+};
+
+/* ---------- 설정 ---------- */
+function openSet(){$('settingsModal').classList.add('open');$('rosterIn').value=roster.join(', ');storageMsg();}
+function closeSet(){$('settingsModal').classList.remove('open');}
+$('settingsOpen').onclick=openSet;
+$('settingsClose').onclick=closeSet;
+$('settingsModal').onclick=function(e){if(e.target===$('settingsModal'))closeSet();};
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeSet();});
+$('saveRoster').onclick=async function(){
+  roster=$('rosterIn').value.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  fillChildSel();await persistAll();
+  $('settingsStatus').textContent='명렬 '+roster.length+'명을 저장했어요.';
+};
+$('demoBtn').onclick=async function(){
+  var now=Date.now(), mk=function(i,c,p,t,x,par){return {id:'demo_'+now+'_'+i,child:c,phase:p,type:t,topic:'낙엽 스낵 탐구',
+    text:x,note:'',image:'',parentId:par||'',createdAt:new Date(now+i*1000).toISOString()};};
+  var q=mk(1,'지우','before','question','왜 낙엽은 밟으면 바삭 소리가 나요?');
+  var plan=mk(6,'지우','during','method','돋보기로 마른 잎과 갓 떨어진 잎을 자세히 비교해 보고 싶어요.');plan.tools=['magnifier','observe'];
+  var demo=[q,plan,
+    mk(2,'지우','during','play','갓 떨어진 잎이랑 마른 잎이랑 밟아 봤어요.'),
+    mk(3,'지우','after','knowledge','물이 빠지면 바삭해지는 거였어요.',q.id),
+    mk(4,'하린','before','question','낙엽 스낵도 낙엽처럼 바삭해요?'),
+    mk(5,'하린','during','play','또띠아를 낙엽 모양으로 잘라서 구웠어요.')];
+  if(roster.indexOf('지우')<0)roster.push('지우');
+  if(roster.indexOf('하린')<0)roster.push('하린');
+  items=demo.concat(items); topic='낙엽 스낵 탐구'; $('topic').value=topic;
+  renderAll(); await persistAll();
+  $('settingsStatus').textContent='예시를 넣었어요. 실제로 쓰기 전에 초기화해 주세요.';
+};
+$('clearStep1').onclick=function(){$('clearStep1').hidden=true;$('clearStep2').hidden=false;$('clearCancel').hidden=false;};
+$('clearCancel').onclick=function(){$('clearStep1').hidden=false;$('clearStep2').hidden=true;$('clearCancel').hidden=true;};
+$('clearStep2').onclick=async function(){
+  items=[];topic='우리 반 탐구';$('topic').value=topic;
+  $('clearStep1').hidden=false;$('clearStep2').hidden=true;$('clearCancel').hidden=true;
+  renderAll();await persistAll();
+  $('settingsStatus').textContent='전체 기록을 지웠어요.';
+};
+function fdate(){var d=new Date(),p=function(n){return String(n).padStart(2,'0');};
+  return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+$('backupDownload').onclick=function(){
+  var payload={app:'달누리 가을탐구 공방',format:'dalnuri-autumn-backup',version:5,
+    exportedAt:new Date().toISOString(),topic:topic,roster:roster,items:items};
+  try{
+    var b=new Blob([JSON.stringify(payload)],{type:'application/json;charset=utf-8'});
+    var u=URL.createObjectURL(b),a=document.createElement('a');
+    a.href=u;a.download='달누리_탐구백업_'+fdate()+'.json';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(u);},1500);
+    $('settingsStatus').textContent='백업 파일을 만들었어요.';
+  }catch(e){$('settingsStatus').textContent='이 화면에서는 내려받기가 막혀 있어요. 파일로 열거나 웹에 올린 뒤 다시 눌러 주세요.';}
+};
+$('backupImportBtn').onclick=function(){$('backupImportFile').click();};
+$('backupImportFile').onchange=function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  var fr=new FileReader();
+  fr.onload=async function(){
+    try{
+      var d=JSON.parse(fr.result);
+      var inItems=Array.isArray(d)?d:(d&&Array.isArray(d.items)?d.items:null);
+      if(!inItems)throw 0;
+      if($('restoreMode').value==='replace'){items=inItems.slice();}
+      else{var m={};items.forEach(function(x){m[x.id]=x;});
+        inItems.forEach(function(x,i){var c=Object.assign({},x);if(!c.id)c.id='imp_'+Date.now()+'_'+i;m[c.id]=c;});
+        items=Object.keys(m).map(function(k){return m[k];});}
+      items=items.map(migrate).sort(function(a,b){return String(b.createdAt||'').localeCompare(String(a.createdAt||''));});
+      if(d&&d.topic)topic=d.topic;
+      if(d&&Array.isArray(d.roster))roster=Array.from(new Set(roster.concat(d.roster)));
+      $('topic').value=topic;renderAll();
+      var ok=await persistAll();
+      $('settingsStatus').textContent=ok?'백업을 불러와 저장했어요.':'불러왔지만 영구 저장은 제한돼요.';
+    }catch(x){$('settingsStatus').textContent='올바른 백업 파일이 아니에요.';}
+  };
+  fr.readAsText(f);e.target.value='';
+};
+
+/* ---------- 인쇄 ---------- */
+function trace(n){ if(!$('traceOpt').checked)return '';
+  var s='';for(var i=0;i<(n||2);i++)s+='<div></div>';return '<div class="lines">'+s+'</div>';}
+function traceB(n){ if(!$('traceOpt').checked)return '';
+  var s='';for(var i=0;i<(n||3);i++)s+='<div></div>';return '<div class="pblines">'+s+'</div>';}
+
+function printCards(){
+  var pages=[],per=2;
+  for(var i=0;i<items.length;i+=per){
+    var slice=items.slice(i,i+per);
+    pages.push('<section class="psheet"><h1 class="ptitle">'+esc(topic)+' · 전시 카드</h1>'
+      +'<p class="psub">점선을 따라 오려 벽에 붙이세요.</p><div class="pcards">'
+      +slice.map(function(x){
+        return '<div class="pcard"><div><span class="tag">'+ph(x.phase).icon+' '+ph(x.phase).label+' · '+ty(x.type).label+'</span>'
+          +'<div class="txt">'+esc(entryText(x))+'</div>'+toolsHTML(x)+trace(2)+'</div>'
+          +'<div class="ft"><span>'+esc(nameOf(x.child))+'</span><span>'+dateText(x.createdAt)+'</span></div></div>';
+      }).join('')+'</div></section>');
+  }
+  return pages.join('')||'<section class="psheet"><p>기록이 없습니다.</p></section>';
+}
+function printTrail(){
+  return '<section class="psheet"><h1 class="ptitle">'+esc(topic)+' · 탐구의 길</h1>'
+    +'<p class="psub">왼쪽에서 오른쪽으로 벽에 이어 붙이세요. 맨 오른쪽은 비워 두면 "아직 궁금한 것" 자리가 됩니다.</p>'
+    +'<div class="ptrail">'+PHASES.map(function(p){
+      var list=items.filter(function(x){return x.phase===p.v;});
+      return '<div class="pcol"><h3>'+p.icon+' '+p.label+'</h3>'
+        +(list.length?list.map(function(x){
+          return '<div class="pleaf"><div class="t">'+esc(entryText(x))+'</div>'+toolsHTML(x)+'<div class="m">'+esc(nameOf(x.child))+' · '+ty(x.type).label+'</div></div>';
+        }).join(''):'<div style="font-size:11px;color:#777">아직 없습니다</div>')+'</div>';
+    }).join('')+'</div></section>';
+}
+function printWall(){
+  var g=byChild(items);
+  return '<section class="psheet"><h1 class="ptitle">'+esc(topic)+' · 전시판 안내</h1>'
+    +'<p class="psub">기록 '+items.length+'개 · 아이 '+sortedNames(g).length+'명 · 궁금증이 답을 만난 횟수 '+linkedCount()+'번</p>'
+    +'<div class="ptrail">'+PHASES.map(function(p){
+      var l=items.filter(function(x){return x.phase===p.v;});
+      return '<div class="pcol"><h3>'+p.label+' ('+l.length+')</h3>'
+        +l.slice(0,8).map(function(x){return '<div class="pleaf"><div class="t" style="font-size:12px">'+esc(entryText(x))+'</div>'+toolsHTML(x)+'</div>';}).join('')+'</div>';
+    }).join('')+'</div></section>';
+}
+function printBooks(only){
+  var g=byChild(items), names=only&&only!=='all'?[only]:sortedNames(g);
+  return names.map(function(n){
+    var list=g[n]||[], b=bookPages(n,list), out=[], pn=0;
+    out.push('<section class="pbpage pbcover"><div class="k">'+esc(topic)+'</div><h1>'+esc(nameOf(n))+'의<br>가을 탐구책</h1>'
+      +'<div class="k">기록 '+b.count+'개 · 궁금증이 답을 만난 횟수 '+b.pairs.length+'번</div></section>');
+    b.pages.forEach(function(pg){
+      pg.list.forEach(function(x){
+        pn++;
+        out.push('<section class="pbpage"><div class="pbnum">'+pn+'쪽 · '+esc(pg.h)+'</div>'
+          +(x.image?'<img class="pbimg" src="'+x.image+'" alt="">':'')
+          +'<p class="pbq">'+esc(entryText(x))+'</p>'+toolsHTML(x)
+          +(x.note?'<div class="pbmemo">'+esc(x.note)+'</div>':'')
+          +traceB(3)+'</section>');
+      });
+    });
+    if(b.pairs.length){
+      pn++;
+      out.push('<section class="pbpage"><div class="pbnum">'+pn+'쪽 · 궁금증이 답을 만났어요</div>'
+        +b.pairs.map(function(p){return '<p class="pbq">❓ '+esc(p.q.text)+'</p><p class="pbq">💡 '+esc(p.a[0].text)+'</p>';}).join('')
+        +traceB(2)+'</section>');
+    }
+    out.push('<section class="pbpage"><div class="pbnum">마지막 쪽</div><h2 class="pbh">집에서 함께 보아요</h2>'
+      +'<div class="pbbox"><p style="font-size:15px;line-height:1.9;margin:0">아이와 함께 이 책을 넘겨 보세요. <b>만들어 오지 않으셔도 됩니다.</b><br><br>· 제일 마음에 드는 쪽이 어디야?<br>· 집에서도 이런 거 본 적 있어?<br><br>아이가 한 말을 한 줄만 적어 보내 주세요.</p>'
+      +'<div class="pblines"><div></div><div></div></div></div></section>');
+    return out.join('');
+  }).join('')||'<section class="pbpage"><p>기록이 없습니다.</p></section>';
+}
+function doPrint(html,title){
+  var bar='<div class="pvbar"><b>🖨 '+esc(title||'인쇄 미리보기')+'</b>'
+    +'<button class="btn primary" id="pvPrint" type="button">지금 인쇄</button>'
+    +'<button class="btn line" id="pvClose" type="button">닫기</button>'
+    +'<span class="tip">인쇄 창이 안 열리면 브라우저 메뉴(⋮ 또는 공유)에서 <b>인쇄</b>를 누르세요. 휴대폰에서는 <b>PDF로 저장</b>을 고르면 됩니다.</span></div>';
+  var el=$('printArea');
+  el.innerHTML=bar+html;
+  el.classList.add('show');
+  $('pvClose').onclick=function(){el.classList.remove('show');el.innerHTML='';window.scrollTo({top:0,behavior:'smooth'});};
+  $('pvPrint').onclick=function(){try{window.print();}catch(e){}};
+  el.scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(function(){try{window.print();}catch(e){}},400);
+}
+$('printCards').onclick=function(){doPrint(printCards(),'전시 카드');};
+$('printTrail').onclick=function(){doPrint(printTrail(),'탐구의 길 띠');};
+$('printWall').onclick=function(){doPrint(printWall(),'전시판 안내');};
+$('printBooks').onclick=function(){doPrint(printBooks('all'),'반 전체 그림책');};
+$('printBookTop').onclick=function(){doPrint(printBooks($('childFilter').value),esc($('childFilter').value)+'의 그림책');};
+
+renderTools();setChips('phaseChips',phase);setChips('typeChips',type);syncType();renderPrompts();
+initStorage();
+})();
+</script>
+</body>
+</html>
