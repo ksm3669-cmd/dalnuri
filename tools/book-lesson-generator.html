@@ -3,171 +3,702 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>달누리 그림책 수업 올인원 자동화 엔진</title>
+  <title>달누리 그림책 수업 올인원 자동화 엔진 & 교실 슬라이드</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
   <style>
     :root {
       --primary: #4F46E5;
       --primary-light: #EEF2FF;
       --primary-dark: #3730A3;
       --accent: #F59E0B;
+      --accent-light: #FEF3C7;
       --bg: #F8FAFC;
       --card-bg: #FFFFFF;
       --text: #1E293B;
       --text-muted: #64748B;
       --border: #E2E8F0;
-      --radius: 14px;
+      --radius: 16px;
+      --success: #10B981;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 80px; }
+    
     header {
       background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
       color: white;
-      padding: 32px 20px;
+      padding: 30px 20px;
       text-align: center;
+      position: relative;
     }
-    h1 { font-size: 1.7rem; margin-bottom: 6px; }
-    .subtitle { opacity: 0.9; font-size: 0.95rem; }
-    .container { max-width: 960px; margin: 0 auto; padding: 20px; }
-    .input-card {
+    .badge-top {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .subtitle { opacity: 0.9; font-size: 0.92rem; font-weight: 400; }
+    
+    .container { max-width: 980px; margin: 0 auto; padding: 20px 16px; }
+    
+    /* Top generator card */
+    .generator-card {
       background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
       margin-bottom: 24px;
-      box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    .form-group { margin-bottom: 14px; }
-    label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.9rem; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-weight: 700; margin-bottom: 6px; font-size: 0.9rem; color: #334155; }
+    .input-row { display: flex; gap: 10px; }
     input[type="text"] {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
       font-size: 0.95rem;
+      font-weight: 500;
       outline: none;
+      transition: all 0.2s;
     }
-    input[type="text"]:focus { border-color: var(--primary); }
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    }
     .btn-submit {
       background: var(--primary);
       color: white;
       border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
       font-size: 0.95rem;
-      width: 100%;
-      transition: background 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
     }
     .btn-submit:hover { background: var(--primary-dark); }
+
+    /* Tabs */
+    .tabs-wrapper {
+      overflow-x: auto;
+      margin-bottom: 20px;
+      padding-bottom: 4px;
+    }
     .tabs {
       display: flex;
-      flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 20px;
+      min-width: max-content;
     }
     .tab-btn {
       background: white;
       border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: 9999px;
-      font-size: 0.88rem;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
     }
+    .tab-btn:hover { background: #F1F5F9; color: var(--text); }
     .tab-btn.active {
       background: var(--primary);
-      border-color: var(--primary);
       color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
     }
+    .tab-btn.highlight {
+      border-color: var(--accent);
+      color: #B45309;
+      background: var(--accent-light);
+    }
+    .tab-btn.highlight.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* Content Cards */
     .content-section {
+      display: none;
       background: white;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 4px rgb(0 0 0 / 0.04);
-      display: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      animation: fadeIn 0.2s ease-out;
     }
     .content-section.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
-      border-bottom: 2px solid var(--primary-light);
-      padding-bottom: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1.5px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
     }
-    .section-title { font-size: 1.25rem; font-weight: 700; color: var(--primary-dark); }
-    .copy-btn {
-      background: #F1F5F9;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      font-weight: 600;
+    .section-title { font-size: 1.25rem; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 8px; }
+    
+    .action-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-action {
+      background: var(--primary-light);
+      color: var(--primary);
+      border: 1px solid rgba(79, 70, 229, 0.2);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-download {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #A7F3D0;
+    }
+    .btn-download:hover {
+      background: #10B981;
+      color: white;
+    }
+    .btn-tv {
+      background: #FEF3C7;
+      color: #92400E;
+      border-color: #FDE68A;
+    }
+    .btn-tv:hover {
+      background: #F59E0B;
+      color: white;
+    }
+
+    /* Interactive PPT Slide Deck Viewer */
+    .slide-deck-container {
+      background: #0F172A;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+    }
+    .deck-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+    }
+    .slide-canvas {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    .slide {
+      width: 100%;
+      height: 100%;
+      padding: 5% 6%;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      background: #F8FAFC;
+    }
+    .slide.active { display: flex; animation: slideIn 0.25s ease-out; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .deck-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .deck-nav-btn {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
     }
-    .copy-btn:hover { background: #E2E8F0; }
-    .box {
-      background: #F8FAFC;
-      border: 1px solid #E2E8F0;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 14px;
-      font-size: 0.92rem;
-      line-height: 1.6;
+    .deck-nav-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.3); }
+    .deck-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .deck-counter {
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      min-width: 80px;
+      text-align: center;
     }
-    .box h4 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
-    ul, ol { padding-left: 20px; }
-    li { margin-bottom: 6px; }
-    .badge {
+
+    /* Slide specific styles */
+    .slide-badge {
+      display: inline-block;
+      align-self: flex-start;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: clamp(0.7rem, 1.4vw, 0.9rem);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .slide-title {
+      font-size: clamp(1.2rem, 2.5vw, 2.1rem);
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+    .slide-subtitle {
+      font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Slide 1 Cover */
+    .slide-cover {
+      text-align: center;
+      background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+      align-items: center;
+    }
+    .slide-cover .slide-badge { align-self: center; background: white; }
+    .slide-cover .slide-title { font-size: clamp(1.5rem, 3.2vw, 2.6rem); color: var(--primary-dark); }
+    .slide-cover .school-pill {
+      background: #FEF3C7;
+      color: #B45309;
+      font-weight: 800;
+      font-size: clamp(0.75rem, 1.3vw, 0.95rem);
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-top: 14px;
+    }
+
+    /* Grid cards inside slides */
+    .slide-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      height: 65%;
+    }
+    .slide-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      height: 65%;
+    }
+    .slide-card-box {
+      background: white;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .slide-card-box h4 {
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .slide-card-box p, .slide-card-box li {
+      font-size: clamp(0.7rem, 1.15vw, 0.85rem);
+      color: #475569;
+      line-height: 1.35;
+    }
+
+    /* Recipe steps */
+    .step-num {
+      background: var(--primary);
+      color: white;
+      width: clamp(22px, 3vw, 30px);
+      height: clamp(22px, 3vw, 30px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      margin-bottom: 6px;
+    }
+
+    /* Worksheet printable preview */
+    .worksheet-preview {
+      background: white;
+      border: 2px dashed #CBD5E1;
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 14px;
+    }
+    .worksheet-header {
+      text-align: center;
+      border-bottom: 2px solid #334155;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+    .worksheet-title { font-size: 1.4rem; font-weight: 800; }
+    .worksheet-meta { display: flex; justify-content: flex-end; gap: 20px; font-size: 0.9rem; margin-top: 8px; }
+    .taste-boxes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .taste-box {
+      border: 1.5px solid #94A3B8;
+      border-radius: 8px;
+      height: 140px;
+      padding: 10px;
+      position: relative;
+    }
+    .taste-box-label {
+      font-weight: 700;
+      font-size: 0.95rem;
+      background: #F1F5F9;
       display: inline-block;
       padding: 2px 8px;
       border-radius: 4px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-right: 6px;
     }
-    .badge-canva { background: #E0F2FE; color: #0284C7; }
-    .badge-ppt { background: #FEF3C7; color: #D97706; }
+    .taste-box-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      font-size: 0.75rem;
+      color: #94A3B8;
+    }
+
+    /* Prose boxes */
+    .box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-top: 10px;
+    }
+    .box h4 { color: var(--primary); margin-bottom: 8px; font-weight: 700; }
+    .box ul { padding-left: 20px; margin-bottom: 10px; }
+
+    /* Fullscreen mode for slide canvas */
+    :fullscreen .slide-canvas {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      aspect-ratio: auto;
+    }
+    :-webkit-full-screen .slide-canvas {
+      width: 100vw;
+      height: 100vh;
+      border-radius: 0;
+      aspect-ratio: auto;
+    }
   </style>
 </head>
 <body>
 
   <header>
+    <div class="badge-top">🌟 유치원 교실 맞춤형 에듀테크</div>
     <h1>⚙️ 그림책 수업 올인원 자동화 엔진</h1>
-    <p class="subtitle">그림책 한 권으로 생각지도·환경구성·도감·사후활동·안전교육·요리PPT까지 원스톱 완성!</p>
+    <p class="subtitle">그림책 한 권으로 교실 TV 슬라이드 쇼 & .pptx 파일 다운로드 & 생각지도 & 활동지까지 원스톱 완성!</p>
   </header>
 
   <div class="container">
-    <div class="input-card">
+    <!-- Generator card -->
+    <div class="generator-card">
       <div class="form-group">
         <label>📖 그림책 제목 및 소주제</label>
-        <input type="text" id="bookInput" value="달라서 참 좋아 - 친구와 나의 음식 취향 비교 (음식도감)">
+        <div class="input-row">
+          <input type="text" id="bookInput" value="달라서 참 좋아 - 친구와 나의 음식 취향 비교 (음식도감)">
+          <button class="btn-submit" onclick="regeneratePackage()">수업자료 패키지 생성</button>
+        </div>
       </div>
-      <button class="btn-submit" onclick="alert('현재 선미님의 맞춤 패키지(달라서 참 좋아)가 로드되어 있습니다!')">자동 수업자료 패키지 생성</button>
     </div>
 
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('tab-mindmap', this)">🧠 생각지도 발문</button>
-      <button class="tab-btn" onclick="showTab('tab-env', this)">🎨 교실환경 & 캔바</button>
-      <button class="tab-btn" onclick="showTab('tab-dokan', this)">📖 음식도감 서식</button>
-      <button class="tab-btn" onclick="showTab('tab-play', this)">✨ 사후 놀이활동</button>
-      <button class="tab-btn" onclick="showTab('tab-safety', this)">🦺 연계 안전교육</button>
-      <button class="tab-btn" onclick="showTab('tab-cooking', this)">🍳 요리활동 & PPT</button>
+    <!-- Tabs -->
+    <div class="tabs-wrapper">
+      <div class="tabs">
+        <button class="tab-btn highlight active" onclick="showTab('tab-cooking', this)">🖥️ 교실 TV 슬라이드 & PPT 다운로드</button>
+        <button class="tab-btn" onclick="showTab('tab-dokan', this)">📄 음식도감 활동지 (인쇄)</button>
+        <button class="tab-btn" onclick="showTab('tab-mindmap', this)">🧠 생각지도 발문</button>
+        <button class="tab-btn" onclick="showTab('tab-env', this)">🎨 교실환경 & 캔바</button>
+        <button class="tab-btn" onclick="showTab('tab-play', this)">✨ 사후 놀이활동</button>
+        <button class="tab-btn" onclick="showTab('tab-safety', this)">🦺 연계 안전교육</button>
+      </div>
     </div>
 
-    <!-- 1. 생각지도 -->
-    <div id="tab-mindmap" class="content-section active">
+    <!-- 1. 교실 TV 슬라이드 & PPT 다운로드 (메인 탭) -->
+    <div id="tab-cooking" class="content-section active">
+      <div class="section-header">
+        <div class="section-title">
+          <span>🖥️ 교실 TV용 슬라이드 쇼 & 파워포인트 (.pptx)</span>
+        </div>
+        <div class="action-group">
+          <button class="btn-action btn-tv" onclick="toggleFullscreen()">📺 교실 TV 전체화면</button>
+          <a href="../assets/달누리반_그림책_요리수업_달라서참좋아.pptx" download="달누리반_그림책_요리수업_달라서참좋아.pptx" class="btn-action btn-download" style="text-decoration:none;">
+            📥 .pptx 파워포인트 다운로드
+          </a>
+          <button class="btn-action btn-download" onclick="generateDynamicPptx()">⚡ 동적 PPT 생성</button>
+        </div>
+      </div>
+
+      <!-- Slide Deck View -->
+      <div class="slide-deck-container">
+        <div class="deck-top-bar">
+          <div><strong>달누리반 수업 슬라이드</strong> (화살표 키 ◀ / ▶ 로 이동 가능)</div>
+          <div style="opacity:0.8; font-size:0.8rem;">스마트 TV / 전자칠판 바로 연결 지원</div>
+        </div>
+
+        <div class="slide-canvas" id="slideCanvas">
+          <!-- Slide 1: Cover -->
+          <div class="slide slide-cover active" id="slide-1">
+            <div class="slide-badge">📖 그림책 연계 수업 & 요리활동</div>
+            <div class="slide-title" id="slide1-title">달라서 참 좋아!</div>
+            <div class="slide-subtitle" id="slide1-subtitle">친구와 내가 좋아하는 음식 취향 비교 & 무지개 또띠아 롤 만들기</div>
+            <div class="school-pill">🌟 대전 유치원 달누리반 배움터 🌟</div>
+          </div>
+
+          <!-- Slide 2: Book questions -->
+          <div class="slide" id="slide-2">
+            <div class="slide-badge">1단계 : 생각 열기 💭</div>
+            <div class="slide-title">『달라서 참 좋아』 이야기 속으로</div>
+            <div class="slide-grid-2">
+              <div class="slide-card-box" style="border-left: 5px solid var(--primary);">
+                <h4 style="color:var(--primary);">❓ 첫 번째 질문</h4>
+                <p style="font-weight:700; font-size:clamp(0.9rem,1.4vw,1.1rem); margin-bottom:8px;">
+                  "책 속 친구들은 왜 좋아하는 음식이 서로 달랐을까요?"
+                </p>
+                <p>• 태어난 곳과 자라온 환경이 달라요.<br>• 단맛을 좋아하는 친구, 고소한 맛을 좋아하는 친구 모두 달라요!</p>
+              </div>
+              <div class="slide-card-box" style="border-left: 5px solid var(--accent);">
+                <h4 style="color:var(--accent);">💡 상상해 보기</h4>
+                <p style="font-weight:700; font-size:clamp(0.9rem,1.4vw,1.1rem); margin-bottom:8px;">
+                  "만약 세상 모두가 똑같은 음식만 먹는다면 어떨까?"
+                </p>
+                <p>• 매일 같은 밥만 먹으면 심심해요!<br>• 서로 달라서 우리는 맛있는 뷔페처럼 다양한 기쁨을 누려요.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3: Thinking Map 4 Flavors -->
+          <div class="slide" id="slide-3">
+            <div class="slide-badge">2단계 : 취향 지도 🌈</div>
+            <div class="slide-title">우리 반 4가지 맛 취향 지도</div>
+            <div class="slide-grid-4">
+              <div class="slide-card-box" style="background:#FEF2F2; border-color:#FECACA;">
+                <h4 style="color:#DC2626;">🍓 달콤한 맛</h4>
+                <p>딸기, 꿀, 아이스크림, 바나나</p>
+                <p style="margin-top:6px; font-weight:600;">기분이 사르르 녹는 달콤함!</p>
+              </div>
+              <div class="slide-card-box" style="background:#FEFCE8; border-color:#FEF08A;">
+                <h4 style="color:#CA8A04;">🍋 새콤한 맛</h4>
+                <p>레몬, 귤, 플레인 요구르트</p>
+                <p style="margin-top:6px; font-weight:600;">눈이 번쩍 뜨이는 톡톡 상큼함!</p>
+              </div>
+              <div class="slide-card-box" style="background:#F0FDF4; border-color:#BBF7D0;">
+                <h4 style="color:#16A34A;">🧀 고소·짭짤한 맛</h4>
+                <p>슬라이스 치즈, 김, 옥수수</p>
+                <p style="margin-top:6px; font-weight:600;">씹을수록 깊어지는 든든함!</p>
+              </div>
+              <div class="slide-card-box" style="background:#FFF1F2; border-color:#FECDD3;">
+                <h4 style="color:#E11D48;">🌶️ 매콤·아삭한 맛</h4>
+                <p>노랑/빨강 파프리카, 오이</p>
+                <p style="margin-top:6px; font-weight:600;">아삭아삭 씹는 재미가 팡팡!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Safety & Rules -->
+          <div class="slide" id="slide-4">
+            <div class="slide-badge">3단계 : 안전 약속 🦺</div>
+            <div class="slide-title">안전하고 즐거운 요리 약속 3가지</div>
+            <div style="display:flex; flex-direction:column; gap:8px; height:65%; justify-content:center;">
+              <div class="slide-card-box" style="display:flex; flex-direction:row; align-items:center; gap:12px;">
+                <span style="font-size:clamp(1.2rem, 2vw, 1.8rem);">🧼</span>
+                <div>
+                  <h4 style="color:var(--primary); margin:0;">1. 30초 뽀득뽀득 손 씻기</h4>
+                  <p>비누로 손가락 사이, 손등, 손톱 밑까지 깨끗하게 씻어요.</p>
+                </div>
+              </div>
+              <div class="slide-card-box" style="display:flex; flex-direction:row; align-items:center; gap:12px;">
+                <span style="font-size:clamp(1.2rem, 2vw, 1.8rem);">🔪</span>
+                <div>
+                  <h4 style="color:var(--primary); margin:0;">2. 안전칼은 도마 위에서만!</h4>
+                  <p>칼날은 아래로, 장난치거나 친구에게 칼끝을 향하지 않아요.</p>
+                </div>
+              </div>
+              <div class="slide-card-box" style="display:flex; flex-direction:row; align-items:center; gap:12px;">
+                <span style="font-size:clamp(1.2rem, 2vw, 1.8rem);">🤝</span>
+                <div>
+                  <h4 style="color:var(--primary); margin:0;">3. 친구의 알레르기 배려하기</h4>
+                  <p>친구가 못 먹는 재료는 억지로 먹이지 않고 취향을 존중해요.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 5: Recipe Steps -->
+          <div class="slide" id="slide-5">
+            <div class="slide-badge">4단계 : 요리 실습 🌯</div>
+            <div class="slide-title">무지개 또띠아 롤 만들기 (4단계)</div>
+            <div class="slide-grid-4">
+              <div class="slide-card-box">
+                <div class="step-num">1</div>
+                <h4>또띠아 펼치기 🫓</h4>
+                <p>도마 위에 또띠아를 평평하게 펴요.</p>
+              </div>
+              <div class="slide-card-box">
+                <div class="step-num">2</div>
+                <h4>소스 쓱쓱 펴기 🥄</h4>
+                <p>크림치즈나 요거트 소스를 골고루 발라요.</p>
+              </div>
+              <div class="slide-card-box">
+                <div class="step-num">3</div>
+                <h4>취향 재료 쏙쏙 🥗</h4>
+                <p>내가 고른 채소와 치즈를 듬뿍 올려요.</p>
+              </div>
+              <div class="slide-card-box">
+                <div class="step-num">4</div>
+                <h4>돌돌 말아 썰기 🌀</h4>
+                <p>단단하게 말고 안전칼로 한 입 크기로 썰어요.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 6: Share & Finish -->
+          <div class="slide slide-cover" id="slide-6" style="background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);">
+            <div class="slide-badge" style="background:white; color:#B45309;">5단계 : 나눔과 이야기 💬</div>
+            <div class="slide-title" style="color:#78350F;">서로 달라서 더 맛있는 우리 반!</div>
+            <div class="slide-subtitle" style="color:#92400E; max-width:80%;">
+              1. 친구의 또띠아 롤과 내 것은 어떻게 다를까요?<br>
+              2. 친구가 좋아하는 재료도 살짝 맛보며 도전해 봐요!<br>
+              3. 우리 반 『맛있는 취향 도감』에 요리 스티커를 찰칵 붙여요.
+            </div>
+            <div class="school-pill" style="background:white; color:#B45309;">🎉 축하합니다! 맛있는 요리 탐구 완료! 🎉</div>
+          </div>
+        </div>
+
+        <!-- Deck Controls -->
+        <div class="deck-controls">
+          <button class="deck-nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ 이전 슬라이드</button>
+          <div class="deck-counter" id="slideCounter">1 / 6</div>
+          <button class="deck-nav-btn" id="nextBtn" onclick="changeSlide(1)">다음 슬라이드 ▶</button>
+        </div>
+      </div>
+
+      <div class="box">
+        <h4>💡 선생님을 위한 슬라이드 활용 가이드</h4>
+        <ul>
+          <li><strong>TV 연결 시:</strong> 상단의 <strong>[📺 교실 TV 전체화면]</strong> 버튼을 누르시면 교실 전자칠판이나 대형 TV에 16:9 꽉 찬 화면으로 바로 프레젠테이션이 시작됩니다.</li>
+          <li><strong>파워포인트(.pptx) 파일:</strong> <strong>[📥 .pptx 파워포인트 다운로드]</strong>를 누르시면 마이크로소프트 파워포인트, 한컴오피스 한쇼에서 바로 편집 가능한 정식 .pptx 파일이 즉시 다운로드됩니다.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2. 음식도감 활동지 서식 (인쇄 가능) -->
+    <div id="tab-dokan" class="content-section">
+      <div class="section-header">
+        <div class="section-title">📄 우리 반 맛있는 취향 도감 활동지 (A4 서식)</div>
+        <div class="action-group">
+          <button class="btn-action btn-download" onclick="window.print()">🖨️ 활동지 바로 인쇄 / PDF 저장</button>
+          <button class="btn-action" onclick="copyText('dokan-text-box')">텍스트 복사</button>
+        </div>
+      </div>
+      
+      <div class="worksheet-preview" id="worksheet">
+        <div class="worksheet-header">
+          <div class="worksheet-title">🍽️ 우리 반 맛있는 취향 도감 🍽️</div>
+          <div class="worksheet-meta">
+            <span>달누리반</span>
+            <span>이름: ______________</span>
+          </div>
+        </div>
+
+        <p style="font-size:0.95rem; margin-bottom:12px; color:#334155;">
+          <strong>활동 방법:</strong> 내가 좋아하는 맛의 칸에 음식을 그리고 이름을 써보세요! 짝꿍과 어떻게 다른지 비교해 보아요.
+        </p>
+
+        <div class="taste-boxes">
+          <div class="taste-box">
+            <span class="taste-box-label">🍓 달콤한 맛 (Sweet)</span>
+            <span class="taste-box-hint">그림을 그려보세요</span>
+          </div>
+          <div class="taste-box">
+            <span class="taste-box-label">🍋 새콤한 맛 (Sour)</span>
+            <span class="taste-box-hint">그림을 그려보세요</span>
+          </div>
+          <div class="taste-box">
+            <span class="taste-box-label">🧀 고소·짭짤한 맛 (Savory)</span>
+            <span class="taste-box-hint">그림을 그려보세요</span>
+          </div>
+          <div class="taste-box">
+            <span class="taste-box-label">🌶️ 아삭·매콤한 맛 (Crispy)</span>
+            <span class="taste-box-hint">그림을 그려보세요</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; border:1.5px solid #94A3B8; border-radius:8px; padding:12px; height:90px;">
+          <span class="taste-box-label">🤝 짝꿍 취향 탐험하기</span>
+          <p style="font-size:0.85rem; color:#64748B; margin-top:6px;">
+            "내 짝꿍 (________)이가 가장 좋아하는 음식은 (____________)이고, 그 이유는 (________________________) 때문이래요!"
+          </p>
+        </div>
+      </div>
+
+      <div class="box" id="dokan-text-box" style="margin-top:16px;">
+        <h4>[교사용 활동지 안내문]</h4>
+        <p>• A4 한 장으로 깔끔하게 출력하여 유아들이 그림과 스티커로 채울 수 있도록 구성되어 있습니다.</p>
+        <p>• 상단의 <strong>[🖨️ 활동지 바로 인쇄 / PDF 저장]</strong> 버튼을 누르시면 브라우저에서 바로 인쇄하거나 PDF로 저장하실 수 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- 3. 생각지도 -->
+    <div id="tab-mindmap" class="content-section">
       <div class="section-header">
         <div class="section-title">🧠 생각지도 (Thinking Map 발문 구조)</div>
-        <button class="copy-btn" onclick="copyText('box-mindmap')">전체 복사</button>
+        <button class="btn-action" onclick="copyText('box-mindmap')">전체 복사</button>
       </div>
       <div class="box" id="box-mindmap">
         <h4>[중심 주제: 우리 반의 맛있는 생각나무 (서로 다른 입맛, 모두 소중해!)]</h4>
@@ -192,81 +723,56 @@
       </div>
     </div>
 
-    <!-- 2. 교실환경 & 캔바 -->
+    <!-- 4. 환경구성 & 캔바 프롬프트 -->
     <div id="tab-env" class="content-section">
       <div class="section-header">
-        <div class="section-title">🎨 교실 환경구성 & 캔바(Canva) 프롬프트</div>
-        <button class="copy-btn" onclick="copyText('box-env')">전체 복사</button>
+        <div class="section-title">🎨 교실 환경구성 가이드 & 캔바(Canva) 원클릭 프롬프트</div>
+        <button class="btn-action" onclick="copyText('box-env')">전체 복사</button>
       </div>
       <div class="box" id="box-env">
-        <h4>[교실 게시판 & 환경판 타이틀]</h4>
+        <h4>1. 교실 입체 게시판: '달누리 미식가들의 맛있는 식탁'</h4>
         <ul>
-          <li>"달라서 더 맛있는 우리 반 식탁 🍽️"</li>
-          <li>"너의 맛, 나의 맛! 달누리 취향 맛집으로 초대합니다"</li>
+          <li><strong>중앙:</strong> 거대한 접시 모양의 원형 우드락 게시판</li>
+          <li><strong>주변:</strong> 4색 포크와 스푼 라벨 (빨강: 매콤/달콤, 노랑: 새콤, 초록: 신선/채소, 주황: 고소)</li>
+          <li><strong>활동 연계:</strong> 아이들이 그린 '내가 좋아하는 음식'을 원형 접시 위에 뷔페처럼 배치</li>
         </ul>
         <br>
-        <h4>[영역별 환경 세팅 아이디어]</h4>
-        <ul>
-          <li><strong>언어/독서영역:</strong> 『달라서 참 좋아』 원화 및 큐레이션 서가 + '나의 최애 음식 미니북'</li>
-          <li><strong>역할/소꿉영역:</strong> '달누리 뷔페 레스토랑' — 친구의 취향 주문표를 받아 맞춤 요리 차려주기</li>
-          <li><strong>미술영역:</strong> 클레이와 재활용품으로 만드는 '세상에 하나뿐인 나만의 음식 모형 전시'</li>
-        </ul>
-        <br>
-        <h4><span class="badge badge-canva">Canva 복사용 프롬프트</span></h4>
-        <div style="background:#EDF2F7; padding:10px; border-radius:6px; font-family:monospace; margin-top:6px;">
-          귀여운 유치원 음식 일러스트 가랜드, 파스텔톤, 아기자기한 식기, 과일과 야채, 따뜻한 교실 환경판 디자인, A4 가로
+        <h4>2. 캔바(Canva) AI / 템플릿 생성 프롬프트</h4>
+        <div style="background:white; border:1px solid #CBD5E1; padding:12px; border-radius:8px; font-family:monospace; font-size:0.88rem;">
+          Cute cartoon style classroom bulletin board banner illustration, kindergarten children holding various colorful foods like fruits, cheese, tortillas, bright pastel colors, whimsical hand-drawn style, banner text: '달라서 참 좋은 우리들의 맛있는 식탁', highly detailed, warm lighting, vector graphics
         </div>
       </div>
     </div>
 
-    <!-- 3. 음식도감 서식 -->
-    <div id="tab-dokan" class="content-section">
-      <div class="section-header">
-        <div class="section-title">📖 내가 만드는 도감: 『우리 반 맛있는 취향 도감』</div>
-        <button class="copy-btn" onclick="copyText('box-dokan')">전체 복사</button>
-      </div>
-      <div class="box" id="box-dokan">
-        <h4>[활동지 레이아웃 구성안]</h4>
-        <ol>
-          <li><strong>탐험가 이름:</strong> 달누리반 ( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )</li>
-          <li><strong>나의 취향 별명:</strong> 예) 달콤딸기 탐험가, 바삭와플 박사</li>
-          <li><strong>내가 고른 최고의 음식:</strong> [음식 그림 그리기 또는 사진 부착 칸]</li>
-          <li><strong>이 음식의 3가지 매력:</strong>
-            <ul>
-              <li>맛: [ 달콤해요 / 새콤해요 / 고소해요 / 시원해요 ] (동그라미)</li>
-              <li>식감: [ 바삭바삭 / 쫄깃쫄깃 / 부들부들 / 사르르 ]</li>
-              <li>먹을 때 생각나는 순간: (예: 가족과 여행 갔을 때, 비 오는 날)</li>
-            </ul>
-          </li>
-          <li><strong>친구의 취향 한 줄 기록:</strong> "내 짝꿍 ( &nbsp;&nbsp;&nbsp; )이는 ( &nbsp;&nbsp;&nbsp; )을 제일 좋아한대요!"</li>
-          <li><strong>우리의 다름 약속:</strong> "친구의 입맛을 존중하고 '너는 그걸 좋아하는구나!'라고 말하기"</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- 4. 사후 놀이활동 -->
+    <!-- 5. 사후 놀이활동 -->
     <div id="tab-play" class="content-section">
       <div class="section-header">
-        <div class="section-title">✨ 그림책 사후 놀이활동</div>
-        <button class="copy-btn" onclick="copyText('box-play')">전체 복사</button>
+        <div class="section-title">✨ 연계 사후 놀이활동 3종 (영역별 확장)</div>
+        <button class="btn-action" onclick="copyText('box-play')">전체 복사</button>
       </div>
       <div class="box" id="box-play">
-        <h4>1. 신체/게임: '취향 징검다리 건너기'</h4>
-        <p>교실 양쪽에 [밥 vs 면], [따뜻한 국 vs 시원한 과일] 표지판을 두고 음악이 멈추면 내 취향 존으로 이동! 모인 친구들과 하이파이브하며 "너도 면 좋아해?" 이야기 나누기.</p>
+        <h4>1. 신체·동작 놀이: '맛을 온몸으로 표현해요'</h4>
+        <ul>
+          <li>레몬을 먹었을 때의 새콤함(몸을 웅크리고 윙크!), 매운 떡볶이(엉덩이를 씰룩이며 부채질!)를 몸짓으로 표현하고 친구들이 맞히는 퀴즈 놀이.</li>
+        </ul>
         <br>
-        <h4>2. 미술/협동: '우리가 함께 만든 초대형 취향 피자'</h4>
-        <p>커다란 종이 피자 도우에 각자 좋아하는 토핑(종이 찢기, 폼폼이, 단추, 펠트지)을 마음껏 올려 완성하는 협동 작품.</p>
+        <h4>2. 역할·쌓기 놀이: '달누리 세계 맛집 레스토랑'</h4>
+        <ul>
+          <li>블록으로 테이블과 조리대를 만들고, 메뉴판에 다양한 취향의 음식을 적어 주문받고 배려하는 역할극.</li>
+        </ul>
         <br>
-        <h4>3. 언어/인터뷰: '달누리 맛있는 취향 기자단'</h4>
-        <p>마이크를 들고 친구들을 찾아가 "오늘 기분이 좋아지는 음식은 무엇인가요?" 인터뷰하고 취향 스티커 선물하기.</p>
+        <h4>3. 언어·감성 놀이: '맛 표현 사전 만들기'</h4>
+        <ul>
+          <li>"바삭바삭", "말랑말랑", "사르르", "톡톡" 등 다양한 의성어·의태어로 음식의 질감과 느낌을 나누는 언어 카드 놀이.</li>
+        </ul>
       </div>
     </div>
 
-    <!-- 5. 연계 안전교육 -->
+    <!-- 6. 안전교육 -->
     <div id="tab-safety" class="content-section">
       <div class="section-header">
-        <div class="section-title">🦺 연계 안전교육 (식품 안전 & 알레르기 배려)</div>
-        <button class="copy-btn" onclick="copyText('box-safety')">전체 복사</button>
+        <div class="section-title">🦺 연계 안전교육 (영양·알레르기·식사예절)</div>
+        <button class="btn-action" onclick="copyText('box-safety')">전체 복사</button>
       </div>
       <div class="box" id="box-safety">
         <h4>1. 생명 안전: '친구의 알레르기 음식 존중하기'</h4>
@@ -288,45 +794,133 @@
       </div>
     </div>
 
-    <!-- 6. 요리활동 & PPT -->
-    <div id="tab-cooking" class="content-section">
-      <div class="section-header">
-        <div class="section-title">🍳 요리활동 & TV 스크린용 PPT 슬라이드 대본</div>
-        <button class="copy-btn" onclick="copyText('box-cooking')">전체 복사</button>
-      </div>
-      <div class="box" id="box-cooking">
-        <h4>[요리명: 내 맘대로 쏙쏙! 무지개 취향 또띠아 롤]</h4>
-        <p><em>불을 사용하지 않아 안전하며, 아이가 원하는 재료를 '취향대로' 직접 선택할 수 있는 최적의 활동!</em></p>
-        <p><strong>준비물:</strong> 또띠아(또는 식빵), 크림치즈/딸기잼, 파프리카(노랑/빨강), 오이, 치즈, 햄, 옥수수콘</p>
-        <br>
-        <h4><span class="badge badge-ppt">교실 TV PPT 슬라이드 구성안 (총 6장)</span></h4>
-        <ul>
-          <li><strong>슬라이드 1 (표지):</strong> "달라서 더 맛있는 요리 시간! 내 맘대로 또띠아 롤 만들기"</li>
-          <li><strong>슬라이드 2 (안전 약속):</strong> "1) 비누로 깨끗이 손 씻기 2) 빵칼 조심조심 3) 친구와 재료 사이좋게 나누기"</li>
-          <li><strong>슬라이드 3 (재료 탐색):</strong> "어떤 재료들이 모였을까? 색깔을 보고 냄새를 맡아보아요 (나의 원픽 재료 찾기!)"</li>
-          <li><strong>슬라이드 4 (요리 1단계):</strong> "또띠아 위에 소스를 숟가락으로 쓱쓱 펴 발라요"</li>
-          <li><strong>슬라이드 5 (요리 2단계):</strong> "내가 좋아하는 채소와 햄을 쏙쏙 골라 올리고, 김밥처럼 돌돌 말아 빵칼로 썰어요"</li>
-          <li><strong>슬라이드 6 (나눔과 감상):</strong> "짝꿍의 또띠아 롤과 내 것을 비교해 보아요! 서로 어떻게 다를까요?"</li>
-        </ul>
-      </div>
-    </div>
-
   </div>
 
   <script>
+    // Tab switching
     function showTab(tabId, btn) {
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
-      btn.classList.add('active');
       document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
     }
 
-    function copyText(elementId) {
-      const text = document.getElementById(elementId).innerText;
+    // Slide Deck logic
+    let currentSlide = 1;
+    const totalSlides = 6;
+
+    function updateSlide() {
+      for (let i = 1; i <= totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        if (slide) slide.classList.toggle('active', i === currentSlide);
+      }
+      document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+      document.getElementById('prevBtn').disabled = currentSlide === 1;
+      document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+
+    function changeSlide(direction) {
+      const next = currentSlide + direction;
+      if (next >= 1 && next <= totalSlides) {
+        currentSlide = next;
+        updateSlide();
+      }
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') changeSlide(-1);
+      if (e.key === 'ArrowRight') changeSlide(1);
+    });
+
+    // Fullscreen for slide deck
+    function toggleFullscreen() {
+      const canvas = document.getElementById('slideCanvas');
+      if (!document.fullscreenElement) {
+        if (canvas.requestFullscreen) {
+          canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+          canvas.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Dynamic PPTX generation using PptxGenJS
+    function generateDynamicPptx() {
+      if (typeof PptxGenJS === 'undefined') {
+        alert('PPT 생성 라이브러리를 로드 중입니다. 잠시 후 다시 시도해 주세요.');
+        return;
+      }
+      const bookTitle = document.getElementById('bookInput').value;
+      const pptx = new PptxGenJS();
+      pptx.layout = 'LAYOUT_16x9';
+
+      // Slide 1: Cover
+      const s1 = pptx.addSlide();
+      s1.background = { color: 'EEF2FF' };
+      s1.addText('📖 그림책 연계 수업 & 요리활동', { x: 1, y: 1.5, w: '85%', h: 0.5, fontSize: 18, bold: true, color: '4F46E5', align: 'center' });
+      s1.addText(bookTitle, { x: 1, y: 2.3, w: '85%', h: 1.2, fontSize: 36, bold: true, color: '1E293B', align: 'center' });
+      s1.addText('🌟 대전 유치원 달누리반 배움터 🌟', { x: 1, y: 4.5, w: '85%', h: 0.5, fontSize: 16, bold: true, color: 'F59E0B', align: 'center' });
+
+      // Slide 2: Book Question
+      const s2 = pptx.addSlide();
+      s2.background = { color: 'F8FAFC' };
+      s2.addText('1단계 : 생각 열기 💭', { x: 0.8, y: 0.6, w: 10, h: 0.4, fontSize: 14, bold: true, color: '4F46E5' });
+      s2.addText('이야기 속으로 : 우리는 왜 좋아하는 음식이 다를까?', { x: 0.8, y: 1.0, w: 11, h: 0.8, fontSize: 26, bold: true, color: '1E293B' });
+      s2.addText('• 사람마다 자라온 환경과 좋아하는 맛이 달라요.\n• 세상 모든 사람이 똑같은 음식만 먹는다면 어떨까요?\n• 서로 달라서 우리 반은 더 다채롭고 맛있어요!', { x: 1, y: 2.2, w: 11, h: 3.5, fontSize: 18, color: '475569', lineSpacing: 32 });
+
+      // Slide 3: Flavors
+      const s3 = pptx.addSlide();
+      s3.background = { color: 'F8FAFC' };
+      s3.addText('2단계 : 취향 발견 🌈', { x: 0.8, y: 0.6, w: 10, h: 0.4, fontSize: 14, bold: true, color: '4F46E5' });
+      s3.addText('우리 반 4가지 맛 취향 지도', { x: 0.8, y: 1.0, w: 11, h: 0.8, fontSize: 26, bold: true, color: '1E293B' });
+      s3.addText('🍓 달콤한 맛: 딸기, 바나나, 꿀, 아이스크림\n🍋 새콤한 맛: 귤, 레몬, 요구르트\n🧀 고소·짭짤한 맛: 치즈, 김, 옥수수\n🌶️ 아삭·매콤한 맛: 파프리카, 오이', { x: 1, y: 2.2, w: 11, h: 3.5, fontSize: 18, color: '475569', lineSpacing: 32 });
+
+      // Slide 4: Safety
+      const s4 = pptx.addSlide();
+      s4.background = { color: 'F8FAFC' };
+      s4.addText('3단계 : 안전 약속 🦺', { x: 0.8, y: 0.6, w: 10, h: 0.4, fontSize: 14, bold: true, color: '4F46E5' });
+      s4.addText('안전하고 즐거운 요리 약속 3가지', { x: 0.8, y: 1.0, w: 11, h: 0.8, fontSize: 26, bold: true, color: '1E293B' });
+      s4.addText('1. 🧼 비누로 30초 동안 뽀득뽀득 손 씻기\n2. 🔪 안전칼은 도마 위에서만, 칼날은 아래로!\n3. 🤝 친구의 알레르기 음식 존중하기 (억지로 권하지 않아요)', { x: 1, y: 2.2, w: 11, h: 3.5, fontSize: 18, color: '475569', lineSpacing: 36 });
+
+      // Slide 5: Recipe
+      const s5 = pptx.addSlide();
+      s5.background = { color: 'F8FAFC' };
+      s5.addText('4단계 : 요리 실습 🌯', { x: 0.8, y: 0.6, w: 10, h: 0.4, fontSize: 14, bold: true, color: '4F46E5' });
+      s5.addText('알록달록 무지개 또띠아 롤 만들기', { x: 0.8, y: 1.0, w: 11, h: 0.8, fontSize: 26, bold: true, color: '1E293B' });
+      s5.addText('• 1단계: 도마 위에 또띠아를 평평하게 펴기\n• 2단계: 크림치즈나 요거트 소스 바르기\n• 3단계: 내가 고른 취향 재료(치즈, 채소) 듬뿍 올리기\n• 4단계: 단단하게 돌돌 말고 안전칼로 썰기', { x: 1, y: 2.2, w: 11, h: 3.5, fontSize: 18, color: '475569', lineSpacing: 32 });
+
+      // Slide 6: Share
+      const s6 = pptx.addSlide();
+      s6.background = { color: 'FEF3C7' };
+      s6.addText('5단계 : 나눔과 이야기 💬', { x: 1, y: 1.5, w: '85%', h: 0.5, fontSize: 18, bold: true, color: 'B45309', align: 'center' });
+      s6.addText('서로 달라서 더 맛있는 우리 반 파티!', { x: 1, y: 2.2, w: '85%', h: 1.0, fontSize: 32, bold: true, color: '78350F', align: 'center' });
+      s6.addText('친구의 또띠아 롤과 내 것은 어떻게 다를까요?\n우리 반 『맛있는 취향 도감』에 요리 스티커를 찰칵 붙여요!', { x: 1, y: 3.5, w: '85%', h: 1.2, fontSize: 18, color: '92400E', align: 'center', lineSpacing: 28 });
+
+      pptx.writeFile({ fileName: `달누리반_${bookTitle.substring(0, 15).trim()}.pptx` });
+    }
+
+    function regeneratePackage() {
+      const title = document.getElementById('bookInput').value;
+      document.getElementById('slide1-title').innerText = title.split('-')[0].trim();
+      alert(`'${title}' 주제로 수업 슬라이드와 자료가 동적으로 업데이트되었습니다!`);
+    }
+
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(() => {
-        alert('복사되었습니다! 캔바나 한글(HWP) 등에 바로 붙여넣으세요.');
+        alert('내용이 클립보드에 복사되었습니다! 캔바나 한글에 붙여넣으세요.');
+      }).catch(err => {
+        alert('복사에 실패했습니다.');
       });
     }
+
+    // Initialize
+    updateSlide();
   </script>
 </body>
 </html>
