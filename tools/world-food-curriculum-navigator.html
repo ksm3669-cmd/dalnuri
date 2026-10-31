@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11월 세계음식 놀이주간 올인원 수업 내비게이터 | 달누리반</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Gowun+Dodum&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FDFBF7;
+      --card-bg: #FFFFFF;
+      --primary: #EA580C;
+      --primary-light: #FFEDD5;
+      --primary-dark: #C2410C;
+      --green: #15803D;
+      --green-light: #DCFCE7;
+      --blue: #2563EB;
+      --blue-light: #DBEAFE;
+      --purple: #7E22CE;
+      --purple-light: #F3E8FF;
+      --text: #292524;
+      --text-muted: #78716C;
+      --border: #E7E5E4;
+      --radius: 18px;
+      --shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Pretendard', sans-serif;
+      line-height: 1.6;
+      padding-bottom: 80px;
+    }
+    header {
+      background: linear-gradient(135deg, #F97316 0%, #EA580C 50%, #C2410C 100%);
+      color: white;
+      padding: 48px 20px 40px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(234, 88, 12, 0.25);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px);
+      padding: 6px 18px;
+      border-radius: 9999px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-family: 'Jua', sans-serif;
+      letter-spacing: 0.5px;
+    }
+    h1 {
+      font-family: 'Jua', sans-serif;
+      font-size: 2.3rem;
+      font-weight: normal;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    .header-desc {
+      font-size: 1.05rem;
+      opacity: 0.95;
+      max-width: 680px;
+      margin: 0 auto 20px;
+      word-break: keep-all;
+    }
+    .header-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .h-btn {
+      background: white;
+      color: var(--primary-dark);
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      transition: all 0.2s;
+    }
+    .h-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    /* All-in-One Downloads Banner */
+    .hero-download-box {
+      background: white;
+      border: 2px solid #FED7AA;
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 36px;
+      box-shadow: var(--shadow);
+    }
+    .box-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.4rem;
+      color: var(--primary-dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .dl-item {
+      background: #FFF7ED;
+      border: 1px solid #FFEDD5;
+      padding: 16px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s;
+    }
+    .dl-item:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .dl-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #9A3412;
+      margin-bottom: 6px;
+    }
+    .dl-info {
+      font-size: 0.85rem;
+      color: #78716C;
+      margin-bottom: 12px;
+    }
+    .btn-dl {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-dl:hover { background: var(--primary-dark); }
+    .btn-dl-green { background: var(--green); }
+    .btn-dl-green:hover { background: #166534; }
+
+    /* Environment Config 4 Areas */
+    .section-title {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      color: #1C1917;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .area-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .area-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border-top: 5px solid var(--primary);
+    }
+    .area-card.lang { border-top-color: #2563EB; }
+    .area-card.role { border-top-color: #EA580C; }
+    .area-card.art  { border-top-color: #EC4899; }
+    .area-card.sci  { border-top-color: #16A34A; }
+    .area-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .area-badge {
+      font-size: 1.5rem;
+      width: 42px;
+      height: 42px;
+      background: #F5F5F4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+    .area-name {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.15rem;
+    }
+    .area-items {
+      list-style: none;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .area-items li {
+      margin-bottom: 8px;
+      padding-left: 14px;
+      position: relative;
+    }
+    .area-items li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* Week Timeline */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .week-block {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .week-header {
+      padding: 20px 24px;
+      background: #FAFAF9;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .week-tag {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.05rem;
+      padding: 4px 12px;
+      border-radius: 8px;
+      color: white;
+    }
+    .tag-w1 { background: #EA580C; }
+    .tag-w2 { background: #16A34A; }
+    .tag-w3 { background: #2563EB; }
+    .tag-w4 { background: #9333EA; }
+
+    .week-book {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.4rem;
+      color: var(--text);
+    }
+    .week-body {
+      padding: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .step-box {
+      background: #FDFBF7;
+      border: 1px solid #E7E5E4;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .step-num {
+      display: inline-block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #E7E5E4;
+      color: #57534E;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      width: fit-content;
+    }
+    .step-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #1C1917;
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      word-break: keep-all;
+    }
+    .step-links {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .s-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      padding: 6px 10px;
+      background: white;
+      border: 1px solid #FED7AA;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .s-link:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Modal Image Viewer */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .modal.open { display: flex; }
+    .modal-content {
+      background: white;
+      border-radius: var(--radius);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .modal-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title { font-family: 'Jua', sans-serif; font-size: 1.2rem; }
+    .modal-close {
+      background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #78716C;
+    }
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      text-align: center;
+    }
+    .modal-body img {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-badge">🌟 대전동산초병설유치원 달누리반</div>
+    <h1>11월 세계음식 놀이주간 올인원 수업 내비게이터</h1>
+    <p class="header-desc">
+      「세계의 맛있는 이야기 · 나만의 세계 음식도감」 프로젝트의 4주 여정 전체가 교실에서 착착 펼쳐지도록 준비된 원클릭 종합 플랫폼입니다.
+    </p>
+    <div class="header-actions">
+      <a href="../index.html" class="h-btn">🏠 달누리 포털 메인</a>
+      <a href="world-food-encyclopedia.html" class="h-btn" target="_blank">📖 디지털 백과사전 실행</a>
+      <a href="https://dbcldnjs.my.canva.site/cpe4wzn278wt5kr1" class="h-btn" target="_blank">🏪 키오스크 놀이 실행</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- ALL-IN-ONE DOWNLOADS -->
+    <div class="hero-download-box">
+      <div class="box-title">📦 교실 출력 & 수업 준비 올인원 다운로드 허브</div>
+      <div class="download-grid">
+        <div class="dl-item">
+          <div>
+            <div class="dl-name">📄 세계음식도감 16종 통합 PDF (A4 8쪽)</div>
+            <div class="dl-info">15×15cm 정규격 2쪽씩 배치 · 가운데 절취선 · 300DPI 최고화질 인쇄 세트</div>
+          </div>
+          <a href="../assets/달누리반_11월놀이주간_세계음식도감_활동지16종_A4인쇄세트.pdf" class="btn-dl" download>📥 통합 PDF 다운로드</a>
+        </div>
+        <div class="dl-item">
+          <div>
+            <div class="dl-name">🎨 활동지 16종 캔바/PPT 편집용 (.pptx)</div>
+            <div class="dl-info">슬라이드 8장 · 발문 수정 가능 · 캔바(Canva) 100% 호환 편집 파일</div>
+          </div>
+          <a href="../assets/달누리반_세계음식도감_활동지16종_캔바편집용.pptx" class="btn-dl" download>📥 편집용 PPTX 다운로드</a>
+        </div>
+        <div class="dl-item">
+          <div>
+            <div class="dl-name">🏷️ 환경구성 A3 3종 세트 (PDF)</div>
+            <div class="dl-info">세계 음식 주문표 · 영역별 간판/팻말 · 곡식 관찰 및 변신 탐구판</div>
+          </div>
+          <a href="../assets/달누리반_11월놀이주간_환경구성_A3출력세트(3종).pdf" class="btn-dl-green btn-dl" download>📥 환경구성 A3 다운로드</a>
+        </div>
+        <div class="dl-item">
+          <div>
+            <div class="dl-name">💡 수채화 생각지도 3종 세트</div>
+            <div class="dl-info">트리맵(취향) · 더블버블맵(쌀 비교) · 버블맵(밀 음식) 순수 수채화 도안</div>
+          </div>
+          <a href="javascript:void(0)" onclick="openModal('생각지도 3종 모아보기', '../assets/달누리_생각지도_트리맵_우리반음식취향.jpg')" class="btn-dl">👁️ 생각지도 미리보기</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLASSROOM 4 AREAS ENVIRONMENT -->
+    <h2 class="section-title">🏫 교실 4대 영역 환경구성 안내</h2>
+    <div class="area-grid">
+      <div class="area-card lang">
+        <div class="area-header">
+          <div class="area-badge">📖</div>
+          <div class="area-name">언어 영역</div>
+        </div>
+        <ul class="area-items">
+          <li><strong>디지털 백과사전 태블릿 비치</strong> (24개국 61종 음식 탐색)</li>
+          <li><strong>쌀·밀 비교 쟁반 & 실물 재료</strong> 비치</li>
+          <li><strong>나만의 세계 음식 책 만들기</strong> (A4 8쪽 접이식 미니북 인쇄 연계)</li>
+          <li>그림책 4권 상설 비치</li>
+        </ul>
+      </div>
+
+      <div class="area-card role">
+        <div class="area-header">
+          <div class="area-badge">🏪</div>
+          <div class="area-name">역할놀이 영역</div>
+        </div>
+        <ul class="area-items">
+          <li><strong>가게놀이 태블릿 비치</strong> (캔바 키오스크 놀이 실행)</li>
+          <li><strong>세계 여러 나라 음식 주문표</strong> (A3 코팅 비치)</li>
+          <li><strong>냠냠코인 & 주문 영수증</strong> 놀잇감</li>
+          <li>역할 이름표 (요리사, 손님, 주문 받는 친구)</li>
+        </ul>
+      </div>
+
+      <div class="area-card art">
+        <div class="area-header">
+          <div class="area-badge">🎨</div>
+          <div class="area-name">미술 영역</div>
+        </div>
+        <ul class="area-items">
+          <li><strong>아이클레이 음식놀이</strong> (면·파스타 만들기)</li>
+          <li>클레이 도구 및 미니 접시/토핑 틀 비치</li>
+          <li>세계 국기 이쑤시개 픽 꽂기</li>
+          <li>완성된 클레이 음식 전시 트레이</li>
+        </ul>
+      </div>
+
+      <div class="area-card sci">
+        <div class="area-header">
+          <div class="area-badge">🌾</div>
+          <div class="area-name">탐구 영역</div>
+        </div>
+        <ul class="area-items">
+          <li><strong>세계의 곡식 관찰판</strong> (A3 대형 차트 부착)</li>
+          <li>쌀, 현미, 흑미, 밀가루, 파스타면 돋보기 관찰</li>
+          <li>오감 촉감 탐색 및 무게 비교 저울</li>
+          <li>곡식 라벨 바구니 비치</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4 WEEKS CURRICULUM TIMELINE -->
+    <h2 class="section-title">🗓️ 4주 교육과정 올인원 수업 내비게이터</h2>
+    <div class="timeline">
+
+      <!-- WEEK 1 -->
+      <div class="week-block">
+        <div class="week-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="week-tag tag-w1">1주차</span>
+            <span class="week-book">그림책 『달라서 참 좋아!』 — 친구와 나의 취향 탐색</span>
+          </div>
+          <span style="font-size:0.9rem; color:#78716C;">11월 1주 · 나와 친구들의 음식 취향</span>
+        </div>
+        <div class="week-body">
+          <div class="step-box">
+            <div>
+              <span class="step-num">1단계 : 탐색</span>
+              <div class="step-title">디지털 백과사전 탐색</div>
+              <div class="step-desc">패드로 세계의 다양한 음식을 살펴보고 내가 좋아하는 음식 찾기</div>
+            </div>
+            <div class="step-links">
+              <a href="world-food-encyclopedia.html" target="_blank" class="s-link">📱 백과사전 열기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">2단계 : 생각지도</span>
+              <div class="step-title">우리 반 음식 취향 트리맵</div>
+              <div class="step-desc">밥·곡식, 면·빵, 과일·채소 3가지 갈래로 좋아하는 음식 분류하기</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('트리맵: 우리 반 음식 취향', '../assets/달누리_생각지도_트리맵_우리반음식취향.jpg')" class="s-link">👁️ 트리맵 도안 보기</a>
+              <a href="../assets/달누리_생각지도_트리맵_우리반음식취향.jpg" download class="s-link">📥 고화질 도안 다운로드</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">3단계 : 도감 활동지</span>
+              <div class="step-title">세계음식도감 1 (1~4번)</div>
+              <div class="step-desc">① 달라서 참 좋아 / ② 나는 이런 음식을 좋아해요 / ③ 친구들은 이런 음식을 좋아해요 / ④ 같은 점과 다른 점</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('1주차 A4 인쇄 도안 (1~2쪽)', '../assets/worksheets/a4/A4_활동지_1쪽_1_달라서참좋아_2_나는이런음식을좋아해요.jpg')" class="s-link">👁️ A4 도안 1~2쪽 보기</a>
+              <a href="javascript:void(0)" onclick="openModal('1주차 A4 인쇄 도안 (3~4쪽)', '../assets/worksheets/a4/A4_활동지_2쪽_3_친구들은이런음식을좋아해요_4_같은점과다른점.jpg')" class="s-link">👁️ A4 도안 3~4쪽 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">4단계 : 요리 & 안전</span>
+              <div class="step-title">무지개 또띠아 롤 요리 PPT</div>
+              <div class="step-desc">8단계 교실 TV용 슬라이드 (재료 탐색, 소스 바르기, 말기, 순서도) & 조리도구 안전</div>
+            </div>
+            <div class="step-links">
+              <a href="../assets/달누리반_요리활동_무지개또띠아롤_16x9.pptx" download class="s-link">📥 1주차 요리 PPTX</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 2 -->
+      <div class="week-block">
+        <div class="week-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="week-tag tag-w2">2주차</span>
+            <span class="week-book">그림책 『나야, 쌀!』 — 쌀의 변신과 오감 관찰</span>
+          </div>
+          <span style="font-size:0.9rem; color:#78716C;">11월 2주 · 같은 쌀, 다른 음식</span>
+        </div>
+        <div class="week-body">
+          <div class="step-box">
+            <div>
+              <span class="step-num">1단계 : 탐구 관찰</span>
+              <div class="step-title">쌀 종류 오감 관찰</div>
+              <div class="step-desc">백미, 현미, 흑미, 찹쌀을 돋보기로 관찰하고 A3 곡식 관찰판에 기록하기</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('세계의 곡식 관찰판 A3', '../assets/달누리_A3_세계의곡식관찰판.jpg')" class="s-link">👁️ A3 곡식관찰판 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">2단계 : 생각지도</span>
+              <div class="step-title">같은 쌀 다른 음식 더블버블맵</div>
+              <div class="step-desc">쌀밥과 쌀국수의 공통점과 차이점을 비교·대조하는 생각지도</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('더블 버블맵: 같은 쌀 다른 음식', '../assets/thinking_map_slide_final.jpg')" class="s-link">👁️ 더블버블맵 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">3단계 : 도감 활동지</span>
+              <div class="step-title">세계음식도감 2 (5~8번)</div>
+              <div class="step-desc">⑤ 나야, 쌀! / ⑥ 쌀로 만든 음식 / ⑦ 세계의 쌀 음식 / ⑧ 같은 쌀, 다른 음식</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('2주차 A4 인쇄 도안 (5~6쪽)', '../assets/worksheets/a4/A4_활동지_3쪽_5_나야쌀_6_쌀로만든음식.jpg')" class="s-link">👁️ A4 도안 5~6쪽 보기</a>
+              <a href="javascript:void(0)" onclick="openModal('2주차 A4 인쇄 도안 (7~8쪽)', '../assets/worksheets/a4/A4_활동지_4쪽_7_세계의쌀음식_8_같은쌀다른음식.jpg')" class="s-link">👁️ A4 도안 7~8쪽 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">4단계 : 요리 & 안전</span>
+              <div class="step-title">과일 찹쌀떡 (모찌) 요리 PPT</div>
+              <div class="step-desc">쌀가루로 만드는 달콤한 과일 모찌 8단계 슬라이드 & 곡식 알레르기 예방 안전</div>
+            </div>
+            <div class="step-links">
+              <a href="../assets/달누리반_요리활동_과일모찌_16x9.pptx" download class="s-link">📥 2주차 요리 PPTX</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 3 -->
+      <div class="week-block">
+        <div class="week-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="week-tag tag-w3">3주차</span>
+            <span class="week-book">그림책 『각양각색 세계음식 백과』 — 밀 음식 & 키오스크 놀이</span>
+          </div>
+          <span style="font-size:0.9rem; color:#78716C;">11월 3주 · 클레이 음식 & 가게놀이</span>
+        </div>
+        <div class="week-body">
+          <div class="step-box">
+            <div>
+              <span class="step-num">1단계 : 생각지도 & 미술</span>
+              <div class="step-title">세계의 밀 음식 버블맵 & 클레이</div>
+              <div class="step-desc">이탈리아·한국·인도·베이커리 밀 음식 생각지도 및 아이클레이 면·파스타 만들기</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('버블맵: 세계의 밀 음식', '../assets/달누리_생각지도_버블맵_세계의밀음식.jpg')" class="s-link">👁️ 밀 음식 버블맵 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">2단계 : 역할 놀이</span>
+              <div class="step-title">지구촌 음식가게 키오스크</div>
+              <div class="step-desc">캔바 키오스크 웹앱 & A3 세계 여러 나라 음식 주문표 연계 가게놀이</div>
+            </div>
+            <div class="step-links">
+              <a href="https://dbcldnjs.my.canva.site/cpe4wzn278wt5kr1" target="_blank" class="s-link">📱 키오스크 실행</a>
+              <a href="javascript:void(0)" onclick="openModal('A3 음식 주문표', '../assets/달누리_A3_세계여러나라_음식주문표.jpg')" class="s-link">👁️ A3 주문표 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">3단계 : 도감 활동지</span>
+              <div class="step-title">세계음식도감 3 (9~12번)</div>
+              <div class="step-desc">⑨ 세계에는 어떤 음식이 있을까요? / ⑩ 밀로 만든 음식 / ⑪ 세계의 밀 음식 / ⑫ 우리 반 세계 음식 생각지도</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('3주차 A4 인쇄 도안 (9~10쪽)', '../assets/worksheets/a4/A4_활동지_5쪽_9_세계에는어떤음식이있을까요_10_밀로만든음식.jpg')" class="s-link">👁️ A4 도안 9~10쪽 보기</a>
+              <a href="javascript:void(0)" onclick="openModal('3주차 A4 인쇄 도안 (11~12쪽)', '../assets/worksheets/a4/A4_활동지_6쪽_11_세계의밀음식_12_우리반세계음식생각지도.jpg')" class="s-link">👁️ A4 도안 11~12쪽 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">4단계 : 요리 & 안전</span>
+              <div class="step-title">상큼 달콤 귤 미니와플 요리 PPT</div>
+              <div class="step-desc">밀가루 반죽으로 굽는 귤 미니와플 8단계 슬라이드 & 클레이 삼킴 방지 안전</div>
+            </div>
+            <div class="step-links">
+              <a href="../assets/달누리반_요리활동_귤미니와플_16x9.pptx" download class="s-link">📥 3주차 요리 PPTX</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEEK 4 -->
+      <div class="week-block">
+        <div class="week-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span class="week-tag tag-w4">4주차</span>
+            <span class="week-book">그림책 『단추 수프』 — 나눔과 공동음식 도감</span>
+          </div>
+          <span style="font-size:0.9rem; color:#78716C;">11월 4주 · 함께라서 더 맛있어요</span>
+        </div>
+        <div class="week-body">
+          <div class="step-box">
+            <div>
+              <span class="step-num">1단계 : 그림책 나눔</span>
+              <div class="step-title">단추 수프 재료 모으기</div>
+              <div class="step-desc">서로 다른 재료가 모여 맛있는 수프가 되듯 마음을 나누는 이야기 활동</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('단추 수프 활동지 미리보기', '../assets/worksheets/15x15/13_수프에넣고싶은재료.jpg')" class="s-link">👁️ 수프 재료 도안 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">2단계 : 공동음식 도감</span>
+              <div class="step-title">우리 반 공동 음식 도감 (13~16번)</div>
+              <div class="step-desc">⑬ 수프에 넣고 싶은 재료 / ⑭ 친구와 나누고 싶은 음식 / ⑮ 우리 반 공동 음식 / ⑯ 함께라서 더 맛있어요</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('4주차 A4 인쇄 도안 (13~14쪽)', '../assets/worksheets/a4/A4_활동지_7쪽_13_수프에넣고싶은재료_14_친구와나누고싶은음식.jpg')" class="s-link">👁️ A4 도안 13~14쪽 보기</a>
+              <a href="javascript:void(0)" onclick="openModal('4주차 A4 인쇄 도안 (15~16쪽)', '../assets/worksheets/a4/A4_활동지_8쪽_15_우리반공동음식_16_함께라서더맛있어요.jpg')" class="s-link">👁️ A4 도안 15~16쪽 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">3단계 : 전시회</span>
+              <div class="step-title">『나만의 세계 음식도감』 완성</div>
+              <div class="step-desc">1~4주차 동안 아이들이 만든 16쪽 활동지와 생각지도를 묶어 도감 완성 및 전시</div>
+            </div>
+            <div class="step-links">
+              <a href="javascript:void(0)" onclick="openModal('세계 음식도감 정식 표지', '../assets/달누리반_나만의_세계음식도감_표지.jpg')" class="s-link">👁️ 도감 표지 보기</a>
+            </div>
+          </div>
+
+          <div class="step-box">
+            <div>
+              <span class="step-num">4단계 : 요리 & 안전</span>
+              <div class="step-title">블루베리 핫케이크 요리 PPT</div>
+              <div class="step-desc">모두 함께 나누어 먹는 블루베리 핫케이크 8단계 슬라이드 & 가열 도구 화상 안전</div>
+            </div>
+            <div class="step-links">
+              <a href="../assets/달누리반_요리활동_블루베리핫케이크_16x9.pptx" download class="s-link">📥 4주차 요리 PPTX</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-head">
+        <div class="modal-title" id="modalTitle">미리보기</div>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="modalImg" src="" alt="미리보기">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(title, imgSrc) {
+      document.getElementById('modalTitle').innerText = title;
+      document.getElementById('modalImg').src = imgSrc;
+      document.getElementById('modal').classList.add('open');
+    }
+    function closeModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

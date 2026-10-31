@@ -9,6 +9,7 @@
 
 ## 3. 깃허브 페이지스 달누리반 통합 포털
 - **포털 메인**: https://ksm3669-cmd.github.io/dalnuri/
+- **11월 세계음식 놀이주간 올인원 수업 내비게이터**: https://ksm3669-cmd.github.io/dalnuri/tools/world-food-curriculum-navigator.html
 - **세계 음식 디지털 백과사전 & 작은 책**: https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html
 - **그림책 수업 올인원 자동화 도구**: https://ksm3669-cmd.github.io/dalnuri/tools/book-lesson-generator.html
 - **생각지도 기록도구 (8대 씽킹맵)**: https://ksm3669-cmd.github.io/dalnuri/tools/mindmap.html
