@@ -1296,7 +1296,7 @@ function renderDailyCard() {
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
         ${isToday ? `<span style="background:#285e4d;color:#fff;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:900;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(40,94,77,.25)">🌟 오늘 ${dayName} 수업</span>` : ''}
         <span style="background:#eaf2e7;color:#2c5542;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:800">${d.weekTitle}</span>
-        <span style="background:#f4f7f2;color:#315f4f;border:1px solid #c8d8c3;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700">📖 『${d.book}』 연계</span>
+        <span style="background:#f4f7f2;color:#315f4f;border:1px solid #c8d8c3;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700">📖 ${d.book.includes("『") ? d.book : `『${d.book}』`} 연계</span>
         ${d.event ? `<span style="background:#fceddc;color:#915722;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:800">${d.event}</span>` : ''}
       </div>
       <h3 style="font-size:26px;color:#1d3d30;margin:6px 0 4px;letter-spacing:-0.03em">${d.dateStr} · ${d.theme}</h3>
