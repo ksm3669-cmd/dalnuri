@@ -47,6 +47,9 @@
 .daily-chip{border:1px solid #dfe5d8;background:#fff;border-radius:14px;padding:9px 13px;text-align:left;min-width:138px;cursor:pointer;flex:none;transition:all .15s;box-shadow:0 2px 6px rgba(0,0,0,.03)}
 .daily-chip:hover{border-color:#a4bea8;transform:translateY(-1px)}
 .daily-chip.active{background:#f0f7ef;border-color:#315f4f;box-shadow:0 4px 12px rgba(49,95,79,.12),inset 0 0 0 1px #315f4f}
+.daily-chip.is-today{border:2px solid #315f4f;background:#f3faf1;box-shadow:0 3px 10px rgba(49,95,79,.18)}
+.daily-chip.is-today.active{background:#e7f3e5;border-color:#1e4334;box-shadow:0 5px 14px rgba(30,67,52,.25),inset 0 0 0 1px #1e4334}
+.chip-today-badge{font-size:10px;font-weight:900;color:#fff;background:#315f4f;border-radius:5px;padding:1px 6px;letter-spacing:-.02em}
 .chip-week-badge{font-size:10px;font-weight:800;color:#7d6b53;background:#f5eedf;border-radius:5px;padding:1px 5px}
 .chip-sched-badge{font-size:10px;font-weight:800;color:#c06122;background:#ffeeda;border-radius:5px;padding:1px 5px}
 .chip-cook-badge{font-size:10px;font-weight:800;color:#a24223;background:#fde8e1;border-radius:5px;padding:1px 5px}
@@ -68,6 +71,15 @@
     <div class="section-tools">
       <button type="button" onclick="goTodayLesson()" style="background:#2c4c38;color:#fff;border-color:#2c4c38;font-weight:bold;display:inline-flex;align-items:center;gap:6px">오늘 수업 바로 보기 ☀️</button>
     </div>
+  </div>
+
+  <!-- 오늘 수업 알림 배너 (매일 요일별 자동 표시) -->
+  <div id="todayBanner" style="background:#edf5ec;border:1px solid #c0d8bd;border-radius:14px;padding:12px 18px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="background:#315f4f;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px;letter-spacing:-.02em">☀️ 오늘 요일 수업</span>
+      <strong id="todayBannerText" style="font-size:15px;color:#1a3c2c"></strong>
+    </div>
+    <button type="button" onclick="goTodayLesson()" class="outline-btn" style="padding:6px 14px;font-size:12px;border-color:#315f4f;color:#315f4f;background:#fff;font-weight:bold">오늘 수업 보기 ➔</button>
   </div>
 
   <!-- 주차 필터 탭 -->
@@ -1109,45 +1121,85 @@ function filterResources(cat, btn) {
   });
 }
 
+function getTodayIso() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function resolveDailyKey(iso) {
+  if (dailyLessons[iso]) return iso;
+  const keys = Object.keys(dailyLessons).sort();
+  if (iso < keys[0]) return keys[0];
+  if (iso > keys[keys.length - 1]) return keys[keys.length - 1];
+  return keys.find(k => k >= iso) || keys[0];
+}
+
+const todayIso = getTodayIso();
+let currentDailyKey = resolveDailyKey(todayIso);
+let currentDailyWeekFilter = dailyLessons[currentDailyKey] ? dailyLessons[currentDailyKey].week : 1;
+
+function updateTodayBanner() {
+  const bannerText = document.getElementById('todayBannerText');
+  if (!bannerText) return;
+  const iso = getTodayIso();
+  const activeKey = dailyLessons[iso] ? iso : resolveDailyKey(iso);
+  const d = dailyLessons[activeKey];
+  if (d) {
+    const isExact = (activeKey === iso);
+    bannerText.innerHTML = (isExact ? '📍 ' : '📅 다음 예정: ') + `<b>${d.dateStr}</b> · <span>${d.theme}</span>` + (d.event ? ` <small style="background:#fceddc;color:#915722;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold">${d.event}</small>` : '');
+  }
+}
+
 function goDailyLesson(key) {
   if (!dailyLessons[key]) return;
   currentDailyKey = key;
-  currentDailyWeekFilter = 0;
-  document.querySelectorAll('.daily-filter-btn').forEach((b, idx) => b.classList.toggle('active', idx === 0));
+  const targetWeek = dailyLessons[key].week;
+  if (currentDailyWeekFilter !== 0 && currentDailyWeekFilter !== targetWeek) {
+    currentDailyWeekFilter = targetWeek;
+  }
+  document.querySelectorAll('.daily-filter-btn').forEach((b, idx) => {
+    b.classList.toggle('active', idx === currentDailyWeekFilter);
+  });
   renderDailyChips();
   renderDailyCard();
-  document.getElementById('dailyCard').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const card = document.getElementById('dailyCard');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-
-let currentDailyKey = "2026-11-02";
-let currentDailyWeekFilter = 0;
 
 function renderDailyChips() {
   const container = document.getElementById('dailyChips');
   if (!container) return;
   container.innerHTML = '';
   
+  const todayKey = getTodayIso();
   const keys = Object.keys(dailyLessons);
   keys.forEach(k => {
     const item = dailyLessons[k];
     if (currentDailyWeekFilter !== 0 && item.week !== currentDailyWeekFilter) return;
     
+    const isToday = (k === todayKey);
+    const isActive = (k === currentDailyKey);
+    
     const chip = document.createElement('button');
     chip.type = 'button';
-    chip.className = 'daily-chip' + (k === currentDailyKey ? ' active' : '');
+    chip.className = 'daily-chip' + (isActive ? ' active' : '') + (isToday ? ' is-today' : '');
     const chipSched = getSchedule(k);
     const dateParts = item.dateStr.split(' ');
     const dayLabel = dateParts.length >= 3 ? `${dateParts[1]} ${dateParts[2]}` : item.dateStr;
     const shortTheme = item.theme.split('&')[0].replace('〈', '').replace('〉', '').trim();
     
     chip.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;gap:4px">
         <span class="chip-week-badge">${item.week}주차</span>
+        ${isToday ? `<span class="chip-today-badge">🌟 오늘</span>` : ''}
         ${chipSched.length ? `<span class="chip-sched-badge">⏰ ${chipSched[0].time}</span>` : ''}
         ${item.cooking ? `<span class="chip-cook-badge">🍳 요리</span>` : ''}
         ${item.event ? `<span class="chip-event-badge">🌲 행사</span>` : ''}
       </div>
-      <b class="chip-day-title">${dayLabel}</b>
+      <b class="chip-day-title">${isToday ? '📍 ' : ''}${dayLabel}</b>
       <span class="chip-theme-label" title="${item.theme}">${shortTheme}</span>
     `;
     chip.addEventListener('click', () => {
@@ -1157,17 +1209,31 @@ function renderDailyChips() {
     });
     container.appendChild(chip);
   });
+  
+  setTimeout(() => {
+    const activeChip = container.querySelector('.daily-chip.active');
+    if (activeChip) {
+      activeChip.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+  }, 40);
 }
 
 function filterDailyWeek(w, btn) {
   currentDailyWeekFilter = w;
   document.querySelectorAll('.daily-filter-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+  } else {
+    const btns = document.querySelectorAll('.daily-filter-btn');
+    if (btns[w]) btns[w].classList.add('active');
+  }
   
-  // if currentDailyKey not in filtered week, select first
+  const todayKey = getTodayIso();
   const keys = Object.keys(dailyLessons);
   const matched = keys.filter(k => w === 0 || dailyLessons[k].week === w);
-  if (!matched.includes(currentDailyKey) && matched.length > 0) {
+  if (matched.includes(todayKey)) {
+    currentDailyKey = todayKey;
+  } else if (!matched.includes(currentDailyKey) && matched.length > 0) {
     currentDailyKey = matched[0];
   }
   renderDailyChips();
@@ -1179,6 +1245,11 @@ function renderDailyCard() {
   if (!card) return;
   const d = dailyLessons[currentDailyKey];
   if (!d) return;
+
+  const todayKey = getTodayIso();
+  const isToday = (currentDailyKey === todayKey);
+  const dayMatch = d.dateStr.match(/\((.)\)/);
+  const dayName = dayMatch ? dayMatch[1] + '요일' : '오늘';
 
   let extraBoxes = '';
   if (d.cooking) {
@@ -1223,6 +1294,7 @@ function renderDailyCard() {
   card.innerHTML = schedBanner + `
     <div style="border-bottom:2px solid #e7ece2;padding-bottom:16px;margin-bottom:20px">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+        ${isToday ? `<span style="background:#285e4d;color:#fff;border-radius:20px;padding:5px 14px;font-size:13px;font-weight:900;display:inline-flex;align-items:center;gap:4px;box-shadow:0 2px 6px rgba(40,94,77,.25)">🌟 오늘 ${dayName} 수업</span>` : ''}
         <span style="background:#eaf2e7;color:#2c5542;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:800">${d.weekTitle}</span>
         <span style="background:#f4f7f2;color:#315f4f;border:1px solid #c8d8c3;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:700">📖 『${d.book}』 연계</span>
         ${d.event ? `<span style="background:#fceddc;color:#915722;border-radius:20px;padding:5px 12px;font-size:13px;font-weight:800">${d.event}</span>` : ''}
@@ -1274,27 +1346,33 @@ function renderDailyCard() {
 }
 
 function goTodayLesson() {
-  const today = new Date();
-  const y = today.getFullYear();
-  const m = String(today.getMonth() + 1).padStart(2, '0');
-  const d = String(today.getDate()).padStart(2, '0');
-  const key = `${y}-${m}-${d}`;
-  if (dailyLessons[key]) {
-    currentDailyKey = key;
-    currentDailyWeekFilter = dailyLessons[key].week;
-  } else {
-    currentDailyKey = "2026-11-02"; // default to first day
-    currentDailyWeekFilter = 1;
-  }
+  const todayKey = getTodayIso();
+  const key = resolveDailyKey(todayKey);
+  currentDailyKey = key;
+  currentDailyWeekFilter = dailyLessons[key] ? dailyLessons[key].week : 1;
   document.querySelectorAll('.daily-filter-btn').forEach((b, idx) => {
     b.classList.toggle('active', idx === currentDailyWeekFilter);
   });
   renderDailyChips();
   renderDailyCard();
-  document.getElementById('daily').scrollIntoView({ behavior: 'smooth' });
+  const card = document.getElementById('dailyCard');
+  if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-renderSchedSummary();
-renderDailyChips();
-renderDailyCard();
+function initDaily() {
+  const todayKey = getTodayIso();
+  currentDailyKey = resolveDailyKey(todayKey);
+  currentDailyWeekFilter = dailyLessons[currentDailyKey] ? dailyLessons[currentDailyKey].week : 1;
+  
+  document.querySelectorAll('.daily-filter-btn').forEach((b, idx) => {
+    b.classList.toggle('active', idx === currentDailyWeekFilter);
+  });
+  
+  updateTodayBanner();
+  renderSchedSummary();
+  renderDailyChips();
+  renderDailyCard();
+}
+
+initDaily();
 </script></body></html>
