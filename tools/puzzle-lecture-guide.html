@@ -665,7 +665,7 @@ function renderReport(){
  const t=DATA.reportThemes[reportTheme],st=t.steps[reportStep],H=['목적','실행','방법','내용','결과'];
  document.querySelectorAll('.ch-cell').forEach(c=>{const r=+c.dataset.r,k=+c.dataset.c;c.classList.toggle('row-on',r===reportTheme);c.classList.toggle('current',r===reportTheme&&k===reportStep);c.setAttribute('aria-pressed',String(r===reportTheme&&k===reportStep));});
  document.querySelectorAll('.ch-label').forEach(l=>l.classList.toggle('row-on',+l.dataset.r===reportTheme));
- const p=document.getElementById('report-panel');p.style.setProperty('--c',t.color);
+ const p=document.getElementById('report-panel');if(!p)return;p.style.setProperty('--c',t.color);
  document.getElementById('report-eyebrow').textContent=H[reportStep]+' '+(reportTheme+1)+' · '+t.name;
  document.getElementById('report-headline').textContent=st[0];document.getElementById('report-detail').textContent=st[1];
  document.getElementById('report-progress').textContent=(reportTheme+1)+'번 줄 · '+(reportStep+1)+' / 5';
