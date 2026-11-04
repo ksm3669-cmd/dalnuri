@@ -422,6 +422,15 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
  <div class="panel on" data-panel="0"><div class="activity-head"><span class="activity-no">1</span><div><h2>어느 나라의 음식일까요?</h2><p>국기를 선택하고 백과사전을 보며 음식 이름을 찾아 그림책으로 가져와요.</p></div></div>
  <div class="passport-label"><span>🧳 COUNTRY CHECK-IN</span><b>가고 싶은 나라의 국기를 톡!</b></div>
   <div class="country-search"><input type="search" id="countrySearch" placeholder="🔎 나라 찾기 (예: 이탈리아)" aria-label="나라 검색"><button class="mini" id="countryMore" type="button">다른 나라 더 보기 ＋</button></div>
+ <!-- 달누리반 친구들의 나라 추천 칩 바 -->
+ <div class="our-friends-countries" style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:14px;padding:10px 14px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+   <span style="font-size:13px;font-weight:800;color:#166534">🌟 우리 달누리반 친구들의 나라:</span>
+   <button type="button" class="mini-country-tag" data-country="한국" style="background:#fff;border:1.5px solid #bbf7d0;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer">🇰🇷 한국</button>
+   <button type="button" class="mini-country-tag" data-country="방글라데시" style="background:#22c55e;color:#fff;border:1.5px solid #16a34a;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 2px 6px rgba(34,197,94,0.3)">🇧🇩 방글라데시 (자리프)</button>
+   <button type="button" class="mini-country-tag" data-country="일본" style="background:#fff;border:1.5px solid #bbf7d0;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer">🇯🇵 일본</button>
+   <button type="button" class="mini-country-tag" data-country="중국" style="background:#fff;border:1.5px solid #bbf7d0;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer">🇨🇳 중국</button>
+   <button type="button" class="mini-country-tag" data-country="이탈리아" style="background:#fff;border:1.5px solid #bbf7d0;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer">🇮🇹 이탈리아</button>
+ </div>
  <div id="countryGrid" class="country-grid" aria-label="나라와 국기 선택"></div>
  <div class="country-selected" id="countryDisplay">🌍 아직 나라를 고르지 않았어요</div>
  <input type="hidden" id="country"><div class="field" id="countryOtherWrap" hidden>
@@ -550,9 +559,9 @@ const ENCYCLOPEDIA='https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyc
 const CHILDREN=['이누리','정윤우','박찬영','장지혁','이은우','이미영','이지아','자리프'];
 const COLORS=['#3b4c3f','#c46550','#efab48','#4b86a6','#67834e','#ba7aaf','#695b50'];
 const CHILD_PALETTE=['#e4eee1','#f9e1d9','#f1e4bc','#e1ebee','#f5e2eb','#e4e5f2','#e9ecce','#f4e8dc'];
-const COUNTRY_LIST=[['한국','KR'],['일본','JP'],['중국','CN'],['베트남','VN'],['태국','TH'],['인도','IN'],['인도네시아','ID'],['필리핀','PH'],['네팔','NP'],['몽골','MN'],['튀르키예','TR'],['이탈리아','IT'],['프랑스','FR'],['독일','DE'],['스페인','ES'],['그리스','GR'],['영국','GB'],['미국','US'],['캐나다','CA'],['멕시코','MX'],['브라질','BR'],['아르헨티나','AR'],['이집트','EG'],['모로코','MA'],['나이지리아','NG'],['에티오피아','ET'],['호주','AU'],['뉴질랜드','NZ'],['러시아','RU'],['우크라이나','UA'],['스웨덴','SE'],['포르투갈','PT'],['말레이시아','MY'],['싱가포르','SG'],['파키스탄','PK'],['페루','PE']];
+const COUNTRY_LIST=[['한국','KR'],['방글라데시','BD'],['일본','JP'],['중국','CN'],['베트남','VN'],['태국','TH'],['인도','IN'],['인도네시아','ID'],['필리핀','PH'],['네팔','NP'],['몽골','MN'],['튀르키예','TR'],['이탈리아','IT'],['프랑스','FR'],['독일','DE'],['스페인','ES'],['그리스','GR'],['영국','GB'],['미국','US'],['캐나다','CA'],['멕시코','MX'],['브라질','BR'],['아르헨티나','AR'],['이집트','EG'],['모로코','MA'],['나이지리아','NG'],['에티오피아','ET'],['호주','AU'],['뉴질랜드','NZ'],['러시아','RU'],['우크라이나','UA'],['스웨덴','SE'],['포르투갈','PT'],['말레이시아','MY'],['싱가포르','SG'],['파키스탄','PK'],['페루','PE']];
 const FLAG_MAP=Object.fromEntries(COUNTRY_LIST);let showAllCountries=false;
-const FOOD_EXAMPLES=[['한국','김밥','🍙'],['한국','비빔밥','🍚'],['일본','초밥','🍣'],['일본','라멘','🍜'],['중국','만두','🥟'],['중국','볶음밥','🍚'],['베트남','쌀국수','🍜'],['태국','팟타이','🍜'],['인도','카레','🍛'],['인도네시아','나시고렝','🍚'],['필리핀','아도보','🍲'],['튀르키예','케밥','🥙'],['이탈리아','피자','🍕'],['이탈리아','파스타','🍝'],['프랑스','크루아상','🥐'],['독일','프레첼','🥨'],['스페인','빠에야','🥘'],['그리스','그릭 샐러드','🥗'],['영국','피시 앤 칩스','🍟'],['미국','햄버거','🍔'],['캐나다','푸틴','🍟'],['멕시코','타코','🌮'],['브라질','페이조아다','🍲'],['이집트','코샤리','🍛'],['모로코','쿠스쿠스','🥣'],['호주','미트파이','🥧'],['러시아','보르시','🍲'],['싱가포르','칠리크랩','🦀'],['말레이시아','나시르막','🍚'],['페루','세비체','🐟']];
+const FOOD_EXAMPLES=[['한국','김밥','🍙'],['한국','비빔밥','🍚'],['방글라데시','키추리','🍛'],['방글라데시','루티','🫓'],['방글라데시','달','🍲'],['방글라데시','바카르카니','🥨'],['일본','초밥','🍣'],['일본','라멘','🍜'],['중국','만두','🥟'],['중국','볶음밥','🍚'],['베트남','쌀국수','🍜'],['태국','팟타이','🍜'],['인도','카레','🍛'],['인도네시아','나시고렝','🍚'],['필리핀','아도보','🍲'],['튀르키예','케밥','🥙'],['이탈리아','피자','🍕'],['이탈리아','파스타','🍝'],['프랑스','크루아상','🥐'],['독일','프레첼','🥨'],['스페인','빠에야','🥘'],['그리스','그릭 샐러드','🥗'],['영국','피시 앤 칩스','🍟'],['미국','햄버거','🍔'],['캐나다','푸틴','🍟'],['멕시코','타코','🌮'],['브라질','페이조아다','🍲'],['이집트','코샤리','🍛'],['모로코','쿠스쿠스','🥣'],['호주','미트파이','🥧'],['러시아','보르시','🍲'],['싱가포르','칠리크랩','🦀'],['말레이시아','나시르막','🍚'],['페루','세비체','🐟']];
 function flag(country){const c=FLAG_MAP[country];return c?Array.from(c).map(ch=>String.fromCodePoint(127397+ch.charCodeAt(0))).join(''):'🌍'}
 const THOUGHTS=['먹어 보고 싶어요.','무슨 맛일지 궁금해요.','가족에게 소개하고 싶어요.','친구와 함께 먹고 싶어요.'];
 const $=id=>document.getElementById(id);const q=(sel,root=document)=>root.querySelector(sel);const qa=(sel,root=document)=>Array.from(root.querySelectorAll(sel));
@@ -993,7 +1002,8 @@ function countChild(name){return completedRows().filter(r=>r.child===name).lengt
 function renderHome(){if(!storageReady)return;const grid=$('roster');grid.innerHTML=CHILDREN.map((c,i)=>`<button class="child" data-child="${escapeHTML(c)}"><span class="avatar" style="--c:${CHILD_PALETTE[i]}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]}</span><span><b>${escapeHTML(c)}</b><small>${countChild(c)}권의 그림책</small></span><span class="arr">↗</span></button>`).join('');qa('.child',grid).forEach(el=>el.addEventListener('click',()=>beginChild(el.dataset.child)));const done=completedRows().sort((a,b)=>b.updated-a.updated);$('totalStat').textContent=`완성 ${done.length}권 · 기록 중 ${rows.filter(r=>!r.complete).length}권`;$('recentBooks').innerHTML=done.length?`<div class="storygrid">${done.slice(0,6).map(storyCard).join('')}</div>`:`<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;attachStoryClicks($('recentBooks'))}
 function storyCard(r){return `<article class="story"><div class="story-thumb">${r.art?`<img src="${r.art}" alt="${escapeHTML(r.child)}가 그린 ${escapeHTML(r.food)}">`:`<span class="empty-art">🎨</span>`}</div><div class="story-body"><small>${flag(r.country)} ${escapeHTML(r.child)}의 그림책 · ${escapeHTML(r.country||'나라 탐색')}</small><b>${escapeHTML(r.food||'내가 고른 음식')}</b>${r.familyUpdated?'<span class="story-badge">🏡 가족 답장 도착</span>':''}<button class="mini" data-edit="${escapeHTML(r.id)}">열어 보기 →</button></div></article>`}
 function attachStoryClicks(root){qa('[data-edit]',root).forEach(el=>el.addEventListener('click',()=>openExisting(el.dataset.edit)))}
-function beginChild(name){activeChild=name;const draft=rows.filter(x=>x.child===name&&!x.complete).sort((a,b)=>b.updated-a.updated)[0];if(draft){openExisting(draft.id);return}newPage(name)}
+function beginChild(name){activeChild=name;
+  if(name==='자리프'&&record&&!record.country){record.country='방글라데시';}const draft=rows.filter(x=>x.child===name&&!x.complete).sort((a,b)=>b.updated-a.updated)[0];if(draft){openExisting(draft.id);return}newPage(name)}
 function newPage(name=activeChild){if(record)flushRecord();activeChild=name;record=blank();record.child=name;rows.unshift(record);loadEditor();queueSave();}
 function openExisting(id){if(record)flushRecord();const r=rows.find(r=>r.id===id);if(!r)return;record=r;activeChild=r.child;loadEditor();}
 function clearCanvas(c){c.getContext('2d').clearRect(0,0,c.width,c.height)}
@@ -1002,7 +1012,19 @@ function loadEditor(){showView('editor');$('deletePage').hidden=true;$('editorTi
 function setStep(n){if(view!=='editor')return;step=Math.max(0,Math.min(3,n));qa('.step-btn').forEach(b=>b.classList.toggle('on',Number(b.dataset.step)===step));qa('.panel').forEach(p=>p.classList.toggle('on',Number(p.dataset.panel)===step));$('stepInfo').textContent=(step+1)+' / 4 단계';$('prevStep').disabled=step===0;$('nextStep').textContent=step===3?'✓ 작품 저장':'다음 단계 →';if(step===3)buildPreview();if(step===2)drawGuide();window.scrollTo({top:0,behavior:'smooth'})}
 
 function renderCountries(){const sel=$('country').value,needle=$('countrySearch').value.trim().toLowerCase(),grid=$('countryGrid');grid.innerHTML=COUNTRY_LIST.filter(([name],i)=>(showAllCountries||needle||i<24||name===sel)&&(!needle||name.includes(needle))).map(([name])=>`<button type="button" class="country-choice ${sel===name?'on':''}" data-country="${escapeHTML(name)}" aria-pressed="${sel===name}"><span class="flag" aria-hidden="true">${flag(name)}</span><b>${escapeHTML(name)}</b></button>`).join('')+(needle?'':`<button type="button" class="country-choice other ${sel&&!FLAG_MAP[sel]?'on':''}" data-country="OTHER"><span class="flag">🌏</span><b>다른 나라</b></button>`);if(!grid.children.length)grid.innerHTML='<p class="note">찾는 나라가 없다면 검색어를 지우고 ‘다른 나라’를 선택해 주세요.</p>';
- qa('[data-country]',grid).forEach(btn=>btn.onclick=()=>{if(btn.dataset.country==='OTHER'){$('countryOtherWrap').hidden=false;$('countryOtherInput').value=FLAG_MAP[$('country').value]?'':$('country').value;$('countryOtherInput').focus();$('country').value=$('countryOtherInput').value}else{$('country').value=btn.dataset.country;$('countryOtherWrap').hidden=true;}renderCountries();renderSamples();queueSave()});$('countryOtherWrap').hidden=!!FLAG_MAP[sel]||(!sel&&document.activeElement!==$('countryOtherInput')); // allow custom typing
+ qa('[data-country]',grid).forEach(btn=>btn.onclick=()=>{if(btn.dataset.country==='OTHER'){$('countryOtherWrap').hidden=false;$('countryOtherInput').value=FLAG_MAP[$('country').value]?'':$('country').value;$('countryOtherInput').focus();$('country').value=$('countryOtherInput').value}else{$('country').value=btn.dataset.country;$('countryOtherWrap').hidden=true;}renderCountries();renderSamples();queueSave()});
+ qa('.mini-country-tag').forEach(tag => {
+   const isSel = $('country').value === tag.dataset.country;
+   tag.style.boxShadow = isSel ? '0 0 0 3px #16a34a' : '';
+   tag.onclick = () => {
+     $('country').value = tag.dataset.country;
+     $('countryOtherWrap').hidden = true;
+     renderCountries();
+     renderSamples();
+     queueSave();
+   };
+ });
+ $('countryOtherWrap').hidden=!!FLAG_MAP[sel]||(!sel&&document.activeElement!==$('countryOtherInput')); // allow custom typing
  $('countryMore').textContent=showAllCountries?'나라 접어 보기 −':'다른 나라 더 보기 ＋';$('countryDisplay').innerHTML=sel?`<span class="flag">${flag(sel)}</span> ${escapeHTML(sel)} 선택했어요!`:'🌍 나라를 선택해 주세요';}
 function renderSamples(){const c=$('country').value,items=FOOD_EXAMPLES.filter(([name])=>name===c);$('samples').innerHTML=items.length?items.map(([,food,emoji])=>`<button type="button" class="sample" data-f="${escapeHTML(food)}">${emoji} ${escapeHTML(food)}</button>`).join(''):`<span class="note">백과사전을 살펴보고 발견한 음식 이름을 위 칸에 적어 주세요.</span>`;qa('.sample',$('samples')).forEach(b=>b.onclick=()=>{$('food').value=b.dataset.f;updateModel();queueSave();toast(`${b.dataset.f} 이름을 따라 써 볼까요?`)})}
 function renderFamilyReply(){const e=$('familyReply');if(!record?.familyUpdated){e.classList.remove('on');e.innerHTML='';return}e.classList.add('on');e.innerHTML=`<b>🏡 가족의 답장을 받았어요!</b>${record.familyDiscover?`<p><b>함께 알게 된 점</b> · ${escapeHTML(record.familyDiscover)}</p>`:''}${record.familyTalk?`<p><b>가족의 한마디</b> · ${escapeHTML(record.familyTalk)}</p>`:''}${record.familyPhoto?`<img src="${record.familyPhoto}" alt="가정에서 보내온 사진">`:''}`}
