@@ -583,7 +583,62 @@ let cloudSyncing=false,cloudPushTimer=null;
 function getDeletedIds(){try{return JSON.parse(localStorage.getItem('dalnuri_deleted_book_ids')||'[]')}catch(e){return []}}
 function markDeletedId(id){try{let set=getDeletedIds();if(!set.includes(id)){set.push(id);localStorage.setItem('dalnuri_deleted_book_ids',JSON.stringify(set.slice(-100)))}}catch(e){}}
 function updateCloudIndicator(status,extra=''){const el=$('cloudStatusBadge');if(!el)return;if(status==='syncing'){el.innerHTML='<span style="display:inline-block;animation:spin 1s linear infinite">⏳</span> 구글 동기화 중…';el.className='cloud-badge syncing'}else if(status==='pushing'){el.innerHTML='<span style="display:inline-block;animation:spin 1s linear infinite">☁️</span> 구글 클라우드 저장 중…';el.className='cloud-badge syncing'}else if(status==='success'){const t=extra||new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});el.innerHTML=`☁️ 구글 저장 완료 (${t})`;el.className='cloud-badge ok'}else if(status==='warn'){el.innerHTML='☁️ 저장 대기 (기기 안전 보관)';el.className='cloud-badge warn'}else{el.innerHTML='☁️ 기기 보관 (오프라인)';el.className='cloud-badge'}}
-async function syncFromCloud(silent=false){if(!CLOUD_API||cloudSyncing)return;cloudSyncing=true;updateCloudIndicator('syncing');try{const res=await fetch(CLOUD_API,{method:'GET',cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const cloudBooks=await res.json();if(Array.isArray(cloudBooks)){const deleted=getDeletedIds();let changed=false;for(const cb of cloudBooks){if(!cb||!cb.id||deleted.includes(cb.id))continue;if(cb.child==="이윤우"){cb.child="이은우";cb.updated=Date.now()}const localIdx=rows.findIndex(x=>x.id===cb.id);if(localIdx===-1){rows.push(cb);if(storageMode==='indexeddb')await dbPut(cb);changed=true}else{const localItem=rows[localIdx];if((cb.updated||0)>(localItem.updated||0)){rows[localIdx]=cb;if(storageMode==='indexeddb')await dbPut(cb);changed=true}}}if(storageMode==='local'){localStorage.setItem('dalnuri_worldfood_passport_v2',JSON.stringify(rows))}updateCloudIndicator('success');if(changed){if(view==='home')renderHome();else if(view==='gallery')renderGallery();else if(view==='teacher')renderTeacher();else if(view==='book')renderBookUI();if(!silent)toast('☁️ 다른 기기에서 작성된 최신 그림책을 모두 불러왔어요!')}else if(!silent){toast('☁️ 모든 기기의 그림책이 이미 최신 상태예요.')}}}catch(err){console.warn('Cloud sync error:',err);updateCloudIndicator('warn');if(!silent)toast('구글 클라우드 확인 중이에요. 현재 기기에는 안전하게 보관 중입니다.')}finally{cloudSyncing=false}}
+async function syncFromCloud(silent=false){
+  if(!CLOUD_API || cloudSyncing) return;
+  cloudSyncing = true;
+  updateCloudIndicator('syncing');
+  try {
+    const res = await fetch(CLOUD_API, {method: 'GET', cache: 'no-store'});
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const cloudBooks = await res.json();
+    if (Array.isArray(cloudBooks)) {
+      const deleted = getDeletedIds();
+      let changed = false;
+      for (const cb of cloudBooks) {
+        if (!cb || !cb.id || deleted.includes(cb.id)) continue;
+        if (cb.child === "이윤우") { cb.child = "이은우"; cb.updated = Date.now(); }
+        if (!isGenuineCompleteBook(cb) && (!cb.food || !String(cb.food).trim())) continue;
+
+        const localIdx = rows.findIndex(x => x.id === cb.id || (x.child === cb.child && x.food === cb.food));
+        if (localIdx === -1) {
+          rows.push(cb);
+          if (storageMode === 'indexeddb') await dbPut(cb).catch(()=>{});
+          changed = true;
+        } else {
+          const localItem = rows[localIdx];
+          if (isGenuineCompleteBook(cb) && !isGenuineCompleteBook(localItem)) {
+            rows[localIdx] = cb;
+            if (storageMode === 'indexeddb') await dbPut(cb).catch(()=>{});
+            changed = true;
+          } else if ((cb.updated || 0) > (localItem.updated || 0)) {
+            rows[localIdx] = cb;
+            if (storageMode === 'indexeddb') await dbPut(cb).catch(()=>{});
+            changed = true;
+          }
+        }
+      }
+      if (storageMode === 'local') {
+        try { localStorage.setItem('dalnuri_worldfood_passport_v2', JSON.stringify(rows)); } catch(e){}
+      }
+      updateCloudIndicator('success');
+      if (view === 'home') renderHome();
+      else if (view === 'gallery') renderGallery();
+      else if (view === 'teacher') renderTeacher();
+      else if (view === 'book') renderBookUI();
+
+      const nbc = $('navBookCount');
+      if (nbc) nbc.textContent = completedRows().length;
+
+      if (!silent) toast('☁️ 다른 기기에서 작성된 최신 그림책을 모두 불러왔어요!');
+    }
+  } catch(err) {
+    console.warn('Cloud sync error:', err);
+    updateCloudIndicator('warn');
+    if (!silent) toast('구글 클라우드 확인 중이에요. 현재 기기에는 안전하게 보관 중입니다.');
+  } finally {
+    cloudSyncing = false;
+  }
+}
 function triggerCloudPush(){if(!CLOUD_API)return;clearTimeout(cloudPushTimer);updateCloudIndicator('pushing');cloudPushTimer=setTimeout(async()=>{try{let merged=[...rows];try{const getRes=await fetch(CLOUD_API,{method:'GET',cache:'no-store'});if(getRes.ok){const cloudBooks=await getRes.json();if(Array.isArray(cloudBooks)){const deleted=getDeletedIds();for(const cb of cloudBooks){if(!cb||!cb.id||deleted.includes(cb.id))continue;if(cb.child==="이윤우"){cb.child="이은우";cb.updated=Date.now()}const idx=merged.findIndex(x=>x.id===cb.id);if(idx===-1){merged.push(cb)}else if((cb.updated||0)>(merged[idx].updated||0)){merged[idx]=cb}}}}}catch(ge){console.warn('Pre-merge fetch skipped:',ge)}const deleted=getDeletedIds();merged=merged.filter(x=>x&&x.id&&!deleted.includes(x.id));const postRes=await fetch(CLOUD_API,{method:'POST',body:JSON.stringify(merged)});const data=await postRes.json();if(data&&data.ok){updateCloudIndicator('success')}else{throw new Error('fail')}}catch(e){console.warn('Cloud push error:',e);updateCloudIndicator('warn')}},1000)}
 
 // --- 선미님 달누리반 오늘(11/4) 완성 작품 영구 보존 및 시드 데이터 ---
@@ -756,9 +811,9 @@ function openBookViewer(childFilter, targetId) {
   stopBookNarration();
   currentChildFilter = childFilter;
   
-  let allDone = rows.filter(r => r.complete);
-  if (!allDone.length) {
-    allDone = rows;
+  let allDone = completedRows();
+  if (!allDone.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
+    allDone = SEEDED_BOOKS.filter(isGenuineCompleteBook);
   }
   
   if (childFilter) {
@@ -779,18 +834,21 @@ function openBookViewer(childFilter, targetId) {
 }
 
 function renderBookUI() {
-  let allDone = rows.filter(r => r.complete || r.art);
-  if (!allDone.length) allDone = rows;
+  let allDone = completedRows();
+  if (!allDone.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
+    allDone = SEEDED_BOOKS.filter(isGenuineCompleteBook);
+  }
+
   if (currentChildFilter) {
     bookItems = allDone.filter(r => r.child === currentChildFilter);
     if (!bookItems.length) bookItems = allDone;
   } else {
     bookItems = allDone;
   }
+
   const countSpan = $('navBookCount');
   if (countSpan) {
-    const totalComplete = rows.filter(r => r.complete).length;
-    countSpan.textContent = totalComplete;
+    countSpan.textContent = completedRows().length;
   }
 
   if (!bookItems.length) {
@@ -812,10 +870,10 @@ function renderBookUI() {
   // Render child selector chips
   const chipsContainer = $('bookChildChips');
   if (chipsContainer) {
-    const totalCount = rows.filter(r => r.complete).length;
+    const totalCount = allDone.length;
     let chipHtml = `<button class="book-chip ${!currentChildFilter ? 'active' : ''}" data-child="">📖 전체 (${totalCount}권)</button>`;
     CHILDREN.forEach((c, i) => {
-      const cCount = rows.filter(r => r.complete && r.child === c).length;
+      const cCount = allDone.filter(r => r.child === c).length;
       if (cCount > 0) {
         chipHtml += `<button class="book-chip ${currentChildFilter === c ? 'active' : ''}" data-child="${escapeHTML(c)}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]} ${escapeHTML(c)} (${cCount})</button>`;
       }
@@ -977,33 +1035,108 @@ function setupStorybookGestures() {
   }
 }
 
-async function initStorage(){try{db=await dbOpen();rows=await dbLoad()}catch(e){storageMode='local';try{localStorage.setItem('__dalnuri_test__','ok');localStorage.removeItem('__dalnuri_test__');rows=localRead().map(r=>r.child==="이윤우"?{...r,child:"이은우",updated:Date.now()}:r)}catch(e2){rows=[];storageMode='memory'}}storageReady=true;renderHome();
-  // SEEDED_BOOKS 병합으로 아이들 7명 작품 영구 보존
+async function initStorage(){
+  try {
+    db = await dbOpen();
+    rows = await dbLoad();
+  } catch(e) {
+    storageMode = 'local';
+    try {
+      localStorage.setItem('__dalnuri_test__', 'ok');
+      localStorage.removeItem('__dalnuri_test__');
+      rows = localRead().map(r => r.child === "이윤우" ? {...r, child: "이은우", updated: Date.now()} : r);
+    } catch(e2) {
+      rows = [];
+      storageMode = 'memory';
+    }
+  }
+
+  // 1. 내용 없는 빈 임시초안 정돈
+  rows = rows.filter(r => isGenuineCompleteBook(r) || (r && r.food && String(r.food).trim()));
+
+  // 2. SEEDED_BOOKS (11/4 달누리반 완성 작품 7권) 병합 및 IndexedDB/localStorage 저장
   if (typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
-    SEEDED_BOOKS.forEach(sb => {
+    for (const sb of SEEDED_BOOKS) {
       const idx = rows.findIndex(r => r.id === sb.id || (r.child === sb.child && r.food === sb.food));
       if (idx < 0) {
         rows.push(sb);
+        if (storageMode === 'indexeddb') await dbPut(sb).catch(()=>{});
       } else {
-        if (!rows[idx].complete || !rows[idx].art) {
+        if (!isGenuineCompleteBook(rows[idx])) {
           rows[idx] = Object.assign({}, sb, rows[idx]);
+          if (storageMode === 'indexeddb') await dbPut(rows[idx]).catch(()=>{});
         }
       }
-    });
+    }
+    if (storageMode === 'local') {
+      try { localStorage.setItem('dalnuri_worldfood_passport_v2', JSON.stringify(rows)); } catch(e){}
+    }
   }
+
+  storageReady = true;
+
+  // 3. SEEDED_BOOKS 병합 완료 후 홈 화면 렌더링 (0권 결함 해결)
+  renderHome();
+
   const nbc = $('navBookCount');
-  if (nbc) nbc.textContent = rows.filter(r => r.complete).length;
-try{const params=new URLSearchParams(window.location.search);const pChild=params.get('child');const pView=params.get('view');if(pView==='book'||params.get('mode')==='book'){openBookViewer(pChild||'')}else if(pChild&&CHILDREN.includes(pChild)){beginChild(pChild)}else if(pView==='gallery'||pView==='books'){renderGallery()}else if(pView==='teacher'){enterTeacher()}else if(pView==='explore'){openExplore()}}catch(e){console.warn(e)}syncFromCloud(true);window.addEventListener('visibilitychange',()=>{if(!document.hidden)syncFromCloud(true)});window.addEventListener('focus',()=>{syncFromCloud(true)});setInterval(()=>{if(!document.hidden)syncFromCloud(true)},45000);$('cloudStatusBadge')?.addEventListener('click',()=>syncFromCloud(false))}
+  if (nbc) nbc.textContent = completedRows().length;
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const pChild = params.get('child');
+    const pView = params.get('view');
+    if (pView === 'book' || params.get('mode') === 'book') {
+      openBookViewer(pChild || '');
+    } else if (pChild && CHILDREN.includes(pChild)) {
+      beginChild(pChild);
+    } else if (pView === 'gallery' || pView === 'books') {
+      renderGallery();
+    } else if (pView === 'teacher') {
+      enterTeacher();
+    } else if (pView === 'explore') {
+      openExplore();
+    }
+  } catch(e) { console.warn(e); }
+
+  syncFromCloud(true);
+  window.addEventListener('visibilitychange', () => { if (!document.hidden) syncFromCloud(true); });
+  window.addEventListener('focus', () => { syncFromCloud(true); });
+  setInterval(() => { if (!document.hidden) syncFromCloud(true); }, 45000);
+  $('cloudStatusBadge')?.addEventListener('click', () => syncFromCloud(false));
+}
 async function persist(rec){if(storageMode==='indexeddb')await dbPut(rec);else if(storageMode==='local')localStorage.setItem('dalnuri_worldfood_passport_v2',JSON.stringify(rows));else throw new Error('Persistent storage unavailable');}
 async function removePersist(id){markDeletedId(id);if(storageMode==='indexeddb')await dbDel(id);else if(storageMode==='local')localStorage.setItem('dalnuri_worldfood_passport_v2',JSON.stringify(rows));else throw new Error('Persistent storage unavailable');triggerCloudPush();}
 function showView(v){view=v;['home','editor','gallery','explore','teacher','book'].forEach(k=>$(k+'View').hidden=k!==v); if(v!=='book') stopBookNarration();window.scrollTo({top:0,behavior:'instant'});}
-function completedRows(){return rows.filter(r=>r.complete)}
-function countChild(name){return completedRows().filter(r=>r.child===name).length}
-function renderHome(){if(!storageReady)return;const grid=$('roster');grid.innerHTML=CHILDREN.map((c,i)=>`<button class="child" data-child="${escapeHTML(c)}"><span class="avatar" style="--c:${CHILD_PALETTE[i]}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]}</span><span><b>${escapeHTML(c)}</b><small>${countChild(c)}권의 그림책</small></span><span class="arr">↗</span></button>`).join('');qa('.child',grid).forEach(el=>el.addEventListener('click',()=>beginChild(el.dataset.child)));const done=completedRows().sort((a,b)=>b.updated-a.updated);$('totalStat').textContent=`완성 ${done.length}권 · 기록 중 ${rows.filter(r=>!r.complete).length}권`;$('recentBooks').innerHTML=done.length?`<div class="storygrid">${done.slice(0,6).map(storyCard).join('')}</div>`:`<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;attachStoryClicks($('recentBooks'))}
+function isGenuineCompleteBook(r) {
+  return !!(r && r.complete && r.food && String(r.food).trim() && r.art && String(r.art).length > 20000);
+}
+function completedRows(){
+  return rows.filter(isGenuineCompleteBook);
+}
+function countChild(name){
+  return completedRows().filter(r => r.child === name).length;
+}
+function renderHome(){
+  if(!storageReady) return;
+  const grid=$('roster');
+  grid.innerHTML=CHILDREN.map((c,i)=>`<button class="child" data-child="${escapeHTML(c)}"><span class="avatar" style="--c:${CHILD_PALETTE[i]}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]}</span><span><b>${escapeHTML(c)}</b><small>${countChild(c)}권의 그림책</small></span><span class="arr">↗</span></button>`).join('');
+  qa('.child',grid).forEach(el=>el.addEventListener('click',()=>beginChild(el.dataset.child)));
+  const done=completedRows().sort((a,b)=>(b.updated||0)-(a.updated||0));
+  $('totalStat').textContent=`완성 ${done.length}권`;
+  $('recentBooks').innerHTML=done.length?`<div class="storygrid">${done.slice(0,8).map(storyCard).join('')}</div>`:`<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;
+  attachStoryClicks($('recentBooks'));
+}
 function storyCard(r){return `<article class="story"><div class="story-thumb">${r.art?`<img src="${r.art}" alt="${escapeHTML(r.child)}가 그린 ${escapeHTML(r.food)}">`:`<span class="empty-art">🎨</span>`}</div><div class="story-body"><small>${flag(r.country)} ${escapeHTML(r.child)}의 그림책 · ${escapeHTML(r.country||'나라 탐색')}</small><b>${escapeHTML(r.food||'내가 고른 음식')}</b>${r.familyUpdated?'<span class="story-badge">🏡 가족 답장 도착</span>':''}<button class="mini" data-edit="${escapeHTML(r.id)}">열어 보기 →</button></div></article>`}
 function attachStoryClicks(root){qa('[data-edit]',root).forEach(el=>el.addEventListener('click',()=>openExisting(el.dataset.edit)))}
-function beginChild(name){activeChild=name;
-  if(name==='자리프'&&record&&!record.country){record.country='방글라데시';}const draft=rows.filter(x=>x.child===name&&!x.complete).sort((a,b)=>b.updated-a.updated)[0];if(draft){openExisting(draft.id);return}newPage(name)}
+function beginChild(name){
+  activeChild=name;
+  if(name==='자리프'&&record&&!record.country){record.country='방글라데시';}
+  const doneBook = completedRows().find(x => x.child === name);
+  if(doneBook){ openExisting(doneBook.id); return; }
+  const draft=rows.filter(x=>x.child===name&&!x.complete&&(x.food||(x.art&&x.art.length>20000))).sort((a,b)=>(b.updated||0)-(a.updated||0))[0];
+  if(draft){openExisting(draft.id);return}
+  newPage(name);
+}
 function newPage(name=activeChild){if(record)flushRecord();activeChild=name;record=blank();record.child=name;rows.unshift(record);loadEditor();queueSave();}
 function openExisting(id){if(record)flushRecord();const r=rows.find(r=>r.id===id);if(!r)return;record=r;activeChild=r.child;loadEditor();}
 function clearCanvas(c){c.getContext('2d').clearRect(0,0,c.width,c.height)}
@@ -1038,7 +1171,16 @@ function enqueuePersist(r){const value={...r};saveQueue=saveQueue.catch(()=>{}).
 function queueSave(){if(!record)return;clearTimeout(saveTimer);updateSaveStatus('저장하는 중…');saveTimer=setTimeout(()=>{syncFields();Object.keys(canvases).forEach(k=>{record[k]=canvases[k].toDataURL('image/png')});enqueuePersist({...record})},450)}
 function saveImmediately(){if(!record)return Promise.resolve();clearTimeout(saveTimer);flushRecord();return saveQueue}
 function switchHome(){teacherUnlocked=false;saveImmediately().finally(()=>{record=null;showView('home');renderHome()})}
-function renderGallery(filter=''){showView('gallery');let arr=rows.filter(r=>!filter||r.child===filter).sort((a,b)=>b.updated-a.updated);$('galleryTitle').textContent=filter?filter+'의 음식 그림책 책장':'우리 반 세계 음식 여행책 책장';$('gallerySubtitle').textContent=filter?'완성한 작품은 다시 열어 수정할 수 있어요.':'친구들의 세계 음식 작품을 모아 감상해 보아요.';$('galleryCount').textContent=`완성 ${arr.filter(r=>r.complete).length}권 · 작성 중 ${arr.filter(r=>!r.complete).length}권`;$('galleryContent').innerHTML=arr.length?`<div class="storygrid">${arr.map(r=>storyCard(r)).join('')}</div>`:`<div class="empty-books"><strong>아직 만든 그림책이 없어요</strong>이름을 고르고 첫 번째 음식을 그려 보아요.</div>`;attachStoryClicks($('galleryContent'));$('printClass').onclick=()=>printBooks(arr.filter(r=>r.complete));}
+function renderGallery(filter=''){
+  showView('gallery');
+  let arr = completedRows().filter(r => !filter || r.child === filter).sort((a,b)=>(b.updated||0)-(a.updated||0));
+  $('galleryTitle').textContent=filter?filter+'의 음식 그림책 책장':'우리 반 세계 음식 여행책 책장';
+  $('gallerySubtitle').textContent=filter?'완성한 작품은 다시 열어 수정할 수 있어요.':'친구들의 세계 음식 작품을 모아 감상해 보아요.';
+  $('galleryCount').textContent=`완성 ${arr.length}권`;
+  $('galleryContent').innerHTML=arr.length?`<div class="storygrid">${arr.map(r=>storyCard(r)).join('')}</div>`:`<div class="empty-books"><strong>아직 만든 그림책이 없어요</strong>이름을 고르고 첫 번째 음식을 그려 보아요.</div>`;
+  attachStoryClicks($('galleryContent'));
+  $('printClass').onclick=()=>printBooks(arr);
+}
 function getPaperHTML(r){const noFood=r.food||'내가 고른 음식',noCountry=r.country||'세계 여러 나라';return `<section class="paper"><div class="paper-top"><span>✈ WORLD FOOD PASSPORT</span><span>나의 음식 탐험 기록</span></div><div class="paper-title"><span class="paper-title-flag">${flag(noCountry)}</span>${escapeHTML(noFood)}</div><div class="paper-author">${escapeHTML(r.child)}가 탐험한 ${escapeHTML(noCountry)}의 음식</div><div class="paper-illustration">${r.art?`<img src="${r.art}" alt="음식 그림">`:'<span class="muted">이곳에 내 그림이 들어가요 🎨</span>'}</div><div class="paper-caption">${escapeHTML(noFood)} <span style="font:15px var(--body);color:#8b8a7e">· 내가 고른 세계 음식</span>${r.sourceViewed?`<small style="display:block;color:#668879;font-size:12px">📚 세계 음식 백과사전을 보며 탐색실에서 기록했어요</small>`:``}</div><div class="paper-writing"><div><small>따라 써 보았어요</small>${r.trace?`<img src="${r.trace}" alt="음식 이름 따라 쓴 글씨">`:''}</div><div><small>혼자 써 보았어요</small>${r.free?`<img src="${r.free}" alt="혼자 써 본 글씨">`:''}</div></div><div class="paper-feature"><b>🔎 내가 발견한 음식의 특징</b>${escapeHTML(r.feature||'모양, 색깔, 재료, 맛을 관찰해 보았어요.')}</div><div class="paper-thought">💭 ${escapeHTML(r.thought||'가족에게 소개해 주고 싶어요!')}</div>${r.teacherNote?`<div class="paper-teacher"><b>🌱 선생님과 이어가는 탐구</b>${escapeHTML(r.teacherNote)}</div>`:''}<div class="paper-bottom">햇살과 그림책으로 자라는 대전동산초등학교병설유치원 · 달누리반</div></section>`}
 function buildPreview(){if(!record)return;syncFields();Object.keys(canvases).forEach(k=>{record[k]=canvases[k].toDataURL('image/png')});$('editorPreview').innerHTML=getPaperHTML(record);qa('.sentence').forEach(b=>b.classList.toggle('on',b.dataset.text===$('myThought').value.trim()))}
 function getFamilyPaperHTML(r){return `<section class="paper family-paper"><div class="paper-top"><span>🏡 DALNURI HOME CONNECTION</span><span>우리 가족 세계 음식 이야기</span></div><div class="paper-title">${flag(r.country)} 가족과 이어가는 ${escapeHTML(r.food||'음식')} 이야기</div><div class="paper-author">${escapeHTML(r.child)} 어린이 · ${escapeHTML(r.country||'세계 여러 나라')}</div><div class="paper-feature"><b>🔎 유치원에서 발견한 음식의 특징</b>${escapeHTML(r.feature||'')}</div><div class="paper-illustration" style="flex:.65">${r.familyPhoto?`<img src="${r.familyPhoto}" alt="가족이 보내온 음식 놀이 사진">`:r.art?`<img src="${r.art}" alt="유아가 그린 음식 그림">`:''}</div><div class="paper-feature" style="min-height:12%;margin-top:4%"><b>💡 가족과 새롭게 알게 된 점</b>${escapeHTML(r.familyDiscover||'')}</div><div class="paper-feature" style="min-height:12%;background:#fff0e0"><b>💌 우리 가족이 전하는 한마디</b>${escapeHTML(r.familyTalk||'')}</div><div class="paper-bottom">함께 보고, 이야기하고, 존중하며 자라나는 달누리반</div></section>`}
