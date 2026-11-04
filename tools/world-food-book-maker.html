@@ -358,7 +358,227 @@ function init(){setupToolstrip('drawTools','draw');setupToolstrip('writeTools','
  window.addEventListener('beforeunload',()=>{if(record){syncFields();Object.keys(canvases).forEach(k=>record[k]=canvases[k].toDataURL('image/png'))}});initStorage()}
 async function completeBook(){if(!record?.country.trim()||!record?.food.trim()){toast('나라와 음식 이름을 먼저 골라 주세요.');setStep(0);return}buildPreview();record.complete=true;await saveImmediately();$('editorDesc').textContent='완성한 그림책 · 언제든 수정할 수 있어요';toast(`${activeChild}의 세계 음식 그림책이 완성됐어요! 🎉`);teacherUnlocked=false;renderHome()}
 async function deleteCurrent(){if(!record||!teacherUnlocked){toast('삭제는 교사 관리실에서만 할 수 있어요.');return}if(!confirm(`'${record.food||'작성 중인 음식'}' 작품을 완전히 삭제할까요?\n삭제 후에는 되돌릴 수 없어요.`))return;const id=record.id;clearTimeout(saveTimer);await saveQueue.catch(()=>{});rows=rows.filter(r=>r.id!==id);await removePersist(id);record=null;renderHome();showView('home');toast('선택한 작품을 삭제했어요.')}
+
+// --- 음성 마이크 입력(Speech Recognition) & 음성 읽기(TTS) 시스템 ---
+let bookKoreanVoice = null;
+function loadBookKoreanVoice() {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    const voices = window.speechSynthesis.getVoices();
+    bookKoreanVoice = voices.find(v => v.lang === 'ko-KR' || v.lang === 'ko_KR') ||
+                      voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ko')) ||
+                      null;
+  } catch(e) {}
+}
+if ('speechSynthesis' in window) {
+  loadBookKoreanVoice();
+  if (typeof window.speechSynthesis.onvoiceschanged !== 'undefined') {
+    window.speechSynthesis.onvoiceschanged = loadBookKoreanVoice;
+  }
+}
+
+function speakText(str, btn) {
+  if (!str || !str.trim()) return;
+  if (!('speechSynthesis' in window)) {
+    toast('이 기기/브라우저는 음성 읽기를 지원하지 않아요.');
+    return;
+  }
+  if (window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    if (btn) btn.classList.remove('listening');
+    return;
+  }
+  window.speechSynthesis.cancel();
+  if (window.speechSynthesis.paused) {
+    try { window.speechSynthesis.resume(); } catch(e) {}
+  }
+  const clean = str.replace(/\s+/g, ' ').trim();
+  const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+  let sIdx = 0;
+
+  if (btn) {
+    btn.classList.add('listening');
+  }
+
+  function nextSentence() {
+    if (sIdx >= sentences.length) {
+      if (btn) btn.classList.remove('listening');
+      window._activeBookUtterance = null;
+      return;
+    }
+    const s = sentences[sIdx].trim();
+    if (!s) {
+      sIdx++;
+      nextSentence();
+      return;
+    }
+    try {
+      const u = new SpeechSynthesisUtterance(s);
+      u.lang = 'ko-KR';
+      u.rate = 0.88;
+      u.pitch = 1.05;
+      if (!bookKoreanVoice) loadBookKoreanVoice();
+      if (bookKoreanVoice) u.voice = bookKoreanVoice;
+
+      u.onend = () => {
+        sIdx++;
+        nextSentence();
+      };
+      u.onerror = () => {
+        sIdx++;
+        if (sIdx < sentences.length) nextSentence();
+        else {
+          if (btn) btn.classList.remove('listening');
+          window._activeBookUtterance = null;
+        }
+      };
+      window._activeBookUtterance = u;
+      setTimeout(() => {
+        try { window.speechSynthesis.speak(u); }
+        catch(e) { if (btn) btn.classList.remove('listening'); }
+      }, 30);
+    } catch(e) {
+      if (btn) btn.classList.remove('listening');
+    }
+  }
+  nextSentence();
+}
+
+function setupSpeechInput(btnId, targetId, opts) {
+  opts = opts || {};
+  const btn = document.getElementById(btnId);
+  const target = document.getElementById(targetId);
+  if (!btn || !target) return;
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!SpeechRecognition) {
+    btn.onclick = () => {
+      toast('이 기기(브라우저)는 마이크 입력을 지원하지 않아요. 최신 크롬(Chrome)이나 사파리(Safari) 브라우저를 이용해 주세요.');
+    };
+    return;
+  }
+
+  let recognition = null;
+  let isListening = false;
+  const originalHtml = btn.innerHTML;
+
+  function stop() {
+    if (recognition && isListening) {
+      try { recognition.stop(); } catch(e) {}
+    }
+    isListening = false;
+    btn.classList.remove('listening');
+    btn.innerHTML = originalHtml;
+  }
+
+  btn.onclick = () => {
+    if (isListening) {
+      stop();
+      return;
+    }
+
+    try {
+      recognition = new SpeechRecognition();
+      recognition.lang = 'ko-KR';
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        isListening = true;
+        btn.classList.add('listening');
+        btn.innerHTML = '🔴 듣는 중... 말씀하세요!';
+        toast(opts.prompt || '🎙️ 마이크에 대고 말씀해 보세요!');
+      };
+
+      recognition.onresult = (event) => {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        transcript = transcript.trim();
+        if (opts.clean) {
+          transcript = transcript.replace(/[.?!,]+$/g, '').trim();
+        }
+        if (opts.append && target.value.trim()) {
+          target.value = target.value.trim() + ' ' + transcript;
+        } else {
+          target.value = transcript;
+        }
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+        target.dispatchEvent(new Event('change', { bubbles: true }));
+      };
+
+      recognition.onerror = (event) => {
+        console.warn('SpeechRecognition error:', event.error);
+        if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+          toast('마이크 사용 권한이 꺼져 있어요. 브라우저나 패드 설정에서 마이크를 허용해 주세요.');
+        } else if (event.error === 'no-speech') {
+          toast('목소리가 들리지 않았어요. 마이크를 다시 누르고 말씀해 보세요.');
+        } else {
+          toast('음성 인식을 다시 시도해 보세요.');
+        }
+        stop();
+      };
+
+      recognition.onend = () => {
+        if (isListening) {
+          stop();
+          if (target.value.trim()) {
+            toast('✨ 말한 내용이 쏙 들어갔어요!');
+          }
+        }
+      };
+
+      recognition.start();
+    } catch (err) {
+      console.error('Recognition start error:', err);
+      toast('마이크를 시작할 수 없어요. 다시 시도해 주세요.');
+      stop();
+    }
+  };
+}
+
+function initVoiceFeatures() {
+  setupSpeechInput('foodMicBtn', 'food', { clean: true, prompt: '🎙️ "초밥", "피자"처럼 음식 이름을 말해보세요!' });
+  setupSpeechInput('countryOtherMicBtn', 'countryOtherInput', { clean: true, prompt: '🎙️ 나라 이름을 말해보세요!' });
+  setupSpeechInput('featureMicBtn', 'foodFeature', { clean: false, prompt: '🎙️ "동그랗고 노란색이에요"처럼 음식의 특징을 말해보세요!' });
+  setupSpeechInput('thoughtMicBtn', 'myThought', { clean: false, prompt: '🎙️ "가족과 함께 먹고 싶어요"처럼 생각을 말해보세요!' });
+  setupSpeechInput('exploreFoodMicBtn', 'exploreFood', { clean: true, prompt: '🎙️ 백과사전에서 본 음식 이름을 말해보세요!' });
+  setupSpeechInput('exploreFeatureMicBtn', 'exploreFeature', { clean: false, prompt: '🎙️ 관찰한 특징을 말해보세요!' });
+
+  const spk = $('speakBtn');
+  if (spk) {
+    spk.onclick = (e) => {
+      const str = $('food').value.trim();
+      if (!str) {
+        toast('먼저 음식 이름을 적거나 마이크로 말해 주세요.');
+        return;
+      }
+      speakText(str, e.currentTarget);
+    };
+  }
+
+  const listenBook = $('listenBookBtn');
+  if (listenBook) {
+    listenBook.onclick = (e) => {
+      const food = $('food').value.trim();
+      const feat = $('foodFeature').value.trim();
+      const thought = $('myThought').value.trim();
+      const c = $('country').value.trim();
+      if (!food) {
+        toast('먼저 음식 이름을 정해 주세요.');
+        return;
+      }
+      const fullStory = `${c ? c + '의 ' : ''}${food}. ${feat ? feat + '. ' : ''}${thought ? thought : ''}`;
+      speakText(fullStory, e.currentTarget);
+    };
+  }
+}
+
 init();
+initVoiceFeatures();
 </script>
 </body>
 </html>
