@@ -766,92 +766,44 @@ function speakBookNarration(text, onComplete) {
   nextSentence();
 }
 
-function playCurrentBookAudio() {
-  const r = bookItems[currentBookIndex];
-  if (!r) return;
-  const foodName = r.food || '음식';
-  const countryName = r.country || '세계 여러 나라';
-  const childName = r.child || '꼬마 작가';
-  const featureText = r.feature || r.foodFeature || '';
-  const thoughtText = r.thought || r.myThought || '';
+let activeBookChild = '';
+let currentBookPageIndex = 0;
+const TOTAL_PAGES_PER_BOOK = 5;
 
-  const narration = childName + ' 작가님의 세계 음식 그림책! ' + countryName + '의 ' + foodName + '. ' + (featureText ? featureText + '. ' : '') + (thoughtText ? thoughtText : '');
-
-  if (window.speechSynthesis && window.speechSynthesis.speaking) {
-    stopBookNarration();
-    if (isAutoPlaying) {
-      isAutoPlaying = false;
-      updateAutoPlayBtnUI();
-    }
-    return;
-  }
-
-  speakBookNarration(narration, () => {
-    if (isAutoPlaying) {
-      if (currentBookIndex < bookItems.length - 1) {
-        setTimeout(() => {
-          if (isAutoPlaying) {
-            flipBook(1);
-            setTimeout(playCurrentBookAudio, 400);
-          }
-        }, 1400);
-      } else {
-        isAutoPlaying = false;
-        updateAutoPlayBtnUI();
-        toast('🎉 우리 반 모든 그림책을 다 읽었어요!');
-      }
-    }
-  });
-}
-
-function openBookViewer(childFilter, targetId) {
-  childFilter = childFilter || '';
-  targetId = targetId || '';
+function openBookViewer(childName, targetId) {
   showView('book');
   stopBookNarration();
-  currentChildFilter = childFilter;
   
-  let allDone = completedRows();
-  if (!allDone.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
-    allDone = SEEDED_BOOKS.filter(isGenuineCompleteBook);
+  let allBooks = completedRows();
+  if (!allBooks.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
+    allBooks = SEEDED_BOOKS.filter(isGenuineCompleteBook);
   }
   
-  if (childFilter) {
-    bookItems = allDone.filter(r => r.child === childFilter);
-    if (!bookItems.length) bookItems = allDone;
-  } else {
-    bookItems = allDone;
+  if (childName && allBooks.some(r => r.child === childName)) {
+    activeBookChild = childName;
+  } else if (!activeBookChild || !allBooks.some(r => r.child === activeBookChild)) {
+    const first = allBooks[0];
+    activeBookChild = first ? first.child : CHILDREN[0];
   }
   
-  if (targetId) {
-    const foundIdx = bookItems.findIndex(r => r.id === targetId);
-    currentBookIndex = foundIdx >= 0 ? foundIdx : 0;
-  } else {
-    currentBookIndex = 0;
-  }
-  
+  currentBookPageIndex = 0;
   renderBookUI();
 }
 
 function renderBookUI() {
-  let allDone = completedRows();
-  if (!allDone.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
-    allDone = SEEDED_BOOKS.filter(isGenuineCompleteBook);
-  }
-
-  if (currentChildFilter) {
-    bookItems = allDone.filter(r => r.child === currentChildFilter);
-    if (!bookItems.length) bookItems = allDone;
-  } else {
-    bookItems = allDone;
+  let allBooks = completedRows();
+  if (!allBooks.length && typeof SEEDED_BOOKS !== 'undefined' && Array.isArray(SEEDED_BOOKS)) {
+    allBooks = SEEDED_BOOKS.filter(isGenuineCompleteBook);
   }
 
   const countSpan = $('navBookCount');
   if (countSpan) {
-    countSpan.textContent = completedRows().length;
+    countSpan.textContent = allBooks.length;
   }
 
-  if (!bookItems.length) {
+  const r = allBooks.find(b => b.child === activeBookChild) || allBooks[0];
+
+  if (!r) {
     $('storybookPageContent').innerHTML = `<div style="text-align:center;padding:60px 20px">
       <div style="font-size:48px;margin-bottom:12px">📚</div>
       <h2 style="color:#78350f">아직 완성된 그림책이 없어요</h2>
@@ -864,18 +816,20 @@ function renderBookUI() {
     return;
   }
 
-  if (currentBookIndex < 0) currentBookIndex = 0;
-  if (currentBookIndex >= bookItems.length) currentBookIndex = bookItems.length - 1;
+  activeBookChild = r.child;
 
-  // Render child selector chips
+  if (currentBookPageIndex < 0) currentBookPageIndex = 0;
+  if (currentBookPageIndex >= TOTAL_PAGES_PER_BOOK) currentBookPageIndex = TOTAL_PAGES_PER_BOOK - 1;
+
+  // Render child selector chips at top
   const chipsContainer = $('bookChildChips');
   if (chipsContainer) {
-    const totalCount = allDone.length;
-    let chipHtml = `<button class="book-chip ${!currentChildFilter ? 'active' : ''}" data-child="">📖 전체 (${totalCount}권)</button>`;
+    let chipHtml = '';
     CHILDREN.forEach((c, i) => {
-      const cCount = allDone.filter(r => r.child === c).length;
-      if (cCount > 0) {
-        chipHtml += `<button class="book-chip ${currentChildFilter === c ? 'active' : ''}" data-child="${escapeHTML(c)}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]} ${escapeHTML(c)} (${cCount})</button>`;
+      const b = allBooks.find(x => x.child === c);
+      if (b) {
+        const isActive = c === activeBookChild;
+        chipHtml += `<button class="book-chip ${isActive ? 'active' : ''}" data-child="${escapeHTML(c)}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]} ${escapeHTML(c)}의 그림책</button>`;
       }
     });
     chipsContainer.innerHTML = chipHtml;
@@ -886,83 +840,21 @@ function renderBookUI() {
     });
   }
 
-  $('bookPageBadge').textContent = (currentBookIndex + 1) + ' / ' + bookItems.length + ' 쪽';
-  $('bookPrevArrow').disabled = currentBookIndex <= 0;
-  $('bookNextArrow').disabled = currentBookIndex >= bookItems.length - 1;
+  // Update Page Badge: e.g. "자리프의 그림책 · 1 / 5 쪽"
+  $('bookPageBadge').textContent = `${escapeHTML(r.child)}의 그림책 · ${currentBookPageIndex + 1} / ${TOTAL_PAGES_PER_BOOK} 쪽`;
+  $('bookPrevArrow').disabled = currentBookPageIndex <= 0;
+  $('bookNextArrow').disabled = currentBookPageIndex >= TOTAL_PAGES_PER_BOOK - 1;
 
-  // Render bottom dots
+  // Render 5 Dots for this book's pages
   const dotsContainer = $('bookDots');
   if (dotsContainer) {
-    dotsContainer.innerHTML = bookItems.map((_, i) => 
-      `<div class="book-dot ${i === currentBookIndex ? 'active' : ''}" onclick="goToBookPage(${i})"></div>`
+    dotsContainer.innerHTML = Array.from({length: TOTAL_PAGES_PER_BOOK}).map((_, i) => 
+      `<div class="book-dot ${i === currentBookPageIndex ? 'active' : ''}" onclick="goToBookPage(${i})"></div>`
     ).join('');
   }
 
-  // Render Spread
-  const r = bookItems[currentBookIndex];
-  const foodName = r.food || '음식';
-  const countryName = r.country || '세계 여러 나라';
-  const childName = r.child || '꼬마 작가';
-  const featureText = r.feature || r.foodFeature || '맛있는 음식이에요.';
-  const thoughtText = r.thought || r.myThought || '친구와 함께 나누고 싶어요.';
-  const handwritingImg = r.free || r.trace || '';
-
-  $('storybookPageContent').innerHTML = `
-    <div class="storybook-spread" id="activeSpread">
-      <!-- Left Page: Illustration -->
-      <div class="book-art-panel">
-        <div class="book-art-tag">
-          <span>🎨 꼬마 화가 <b>${escapeHTML(childName)}</b>의 그림</span>
-          <span>${flag(countryName)} ${escapeHTML(countryName)}</span>
-        </div>
-        ${r.art ? `<img src="${r.art}" alt="${escapeHTML(foodName)} 그림" class="book-art-img">` : `<div style="height:360px;display:flex;align-items:center;justify-content:center;background:#fff8e6;border-radius:12px;color:#b45309;font-weight:800;font-size:18px">아이가 직접 그린 그림이 이곳에 담겨요 🎨</div>`}
-      </div>
-
-      <!-- Right Page: Story & Details -->
-      <div class="book-story-panel">
-        <div>
-          <div class="story-meta-pill">
-            <span>${flag(countryName)}</span>
-            <span>${escapeHTML(countryName)}</span>
-            <span>·</span>
-            <span>꼬마 작가 <b>${escapeHTML(childName)}</b></span>
-          </div>
-          <h2 class="story-title">${escapeHTML(foodName)}</h2>
-        </div>
-
-        ${handwritingImg ? `
-        <div class="story-handwriting-box">
-          <small>✍️ ${escapeHTML(childName)} 어린이가 직접 쓴 글씨</small>
-          <img src="${handwritingImg}" alt="${escapeHTML(foodName)} 손글씨" class="story-handwriting-img">
-        </div>` : ''}
-
-        <div class="story-card-box">
-          <div class="story-row">
-            <span class="story-row-ico">👀</span>
-            <div class="story-row-text">
-              <b>어떤 음식인가요?</b>
-              <p>"${escapeHTML(featureText)}"</p>
-            </div>
-          </div>
-          <div class="story-row">
-            <span class="story-row-ico">💭</span>
-            <div class="story-row-text">
-              <b>나의 생각 한마디</b>
-              <p>"${escapeHTML(thoughtText)}"</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="story-bottom-actions">
-          <button class="btn-voice" id="pageAudioBtn" type="button" style="font-size:15px;padding:9px 18px">
-            🔊 이 쪽 이야기 듣기
-          </button>
-          <button class="mini" type="button" onclick="openExisting('${r.id}')">✏️ 이 작품 수정</button>
-          <button class="mini" type="button" onclick="printBooks([bookItems[currentBookIndex]])">🖨️ 인쇄</button>
-        </div>
-      </div>
-    </div>
-  `;
+  // Render the spread content for currentBookPageIndex (0 to 4)
+  $('storybookPageContent').innerHTML = getChildBookPageHTML(r, currentBookPageIndex);
 
   const pageAudioBtn = $('pageAudioBtn');
   if (pageAudioBtn) {
@@ -970,24 +862,280 @@ function renderBookUI() {
   }
 }
 
+function getChildBookPageHTML(r, pageIdx) {
+  const foodName = r.food || '음식';
+  const countryName = r.country || '세계 여러 나라';
+  const childName = r.child || '꼬마 작가';
+  const featureText = r.feature || '모양과 색깔을 관찰했어요.';
+  const thoughtText = r.thought || '친구와 함께 나누고 싶어요.';
+  const handwritingImg = r.free || r.trace || '';
+
+  // Page 0: 표지 (Cover)
+  if (pageIdx === 0) {
+    return `
+      <div class="storybook-spread cover-spread" id="activeSpread">
+        <div class="book-art-panel" style="background:linear-gradient(135deg,#fffdf7,#f5ede2);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px">
+          <div style="font-size:52px;margin-bottom:10px">${flag(countryName)}</div>
+          <div style="border:3px solid #e07a38;border-radius:16px;padding:8px;background:#fff;box-shadow:0 8px 24px rgba(0,0,0,0.08);max-width:88%">
+            ${r.art ? `<img src="${r.art}" alt="${escapeHTML(foodName)}" style="max-height:280px;width:auto;border-radius:10px;display:block">` : ''}
+          </div>
+          <div style="margin-top:14px;font-weight:800;color:#8a4b18;font-size:15px">✦ 달누리 꼬마 탐험가 세계 음식 그림책 ✦</div>
+        </div>
+        <div class="book-story-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px">
+          <div class="story-meta-pill" style="align-self:flex-start">
+            <span>${flag(countryName)}</span>
+            <span>${escapeHTML(countryName)}</span>
+            <span>·</span>
+            <span>달누리반</span>
+          </div>
+          <h1 style="font-size:44px;color:#78350f;margin:12px 0 8px;font-family:'Jua','Malgun Gothic',sans-serif">${escapeHTML(foodName)}</h1>
+          <p style="font-size:18px;color:#92400e;line-height:1.6;margin:0 0 20px">${escapeHTML(countryName)}로 떠난 <b>${escapeHTML(childName)}</b>의 맛있는 음식 여행</p>
+          <div style="background:#fff8ee;border:1.5px solid #fed7aa;border-radius:12px;padding:14px 18px;margin-bottom:24px">
+            <span style="font-size:13px;color:#c2410c;font-weight:700;display:block;margin-bottom:3px">✍️ 지은이</span>
+            <b style="font-size:18px;color:#78350f">꼬마 작가 ${escapeHTML(childName)} (달누리반)</b>
+            <small style="display:block;color:#9a3412;margin-top:3px">지도교사: 김선미 선생님 · 대전동산초등학교병설유치원</small>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <button class="cta" onclick="flipBook(1)" style="font-size:15px;padding:11px 22px;background:#e07a38;color:#fff;border:none;border-radius:12px;font-weight:800;box-shadow:0 4px 14px rgba(224,122,56,0.3)">
+              📖 책장 넘기기 (1장으로) ➔
+            </button>
+            <button class="btn-voice" id="pageAudioBtn" type="button" style="font-size:14px;padding:9px 16px">
+              🔊 표지 이야기 듣기
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Page 1: 1장 · 내가 만난 나라와 음식 (Country, Food & Handwriting)
+  if (pageIdx === 1) {
+    return `
+      <div class="storybook-spread" id="activeSpread">
+        <div class="book-art-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px;background:#fdfcf7">
+          <div class="story-meta-pill" style="align-self:flex-start">
+            <span>제1장</span>
+            <span>·</span>
+            <span>내가 만난 나라와 음식</span>
+          </div>
+          <div style="font-size:68px;margin:16px 0 8px">${flag(countryName)}</div>
+          <h2 style="font-size:30px;color:#2c4c3e;margin:0 0 14px;font-family:'Jua',sans-serif">${escapeHTML(childName)}는 ${escapeHTML(countryName)}로 떠났어요!</h2>
+          <p style="font-size:17px;color:#4a5568;line-height:1.7">
+            세계 여러 나라에는 신기하고 맛있는 음식들이 가득해요.<br>
+            그중에서 ${escapeHTML(childName)}가 마음에 쏙 담은 음식은 바로 <b>“${escapeHTML(foodName)}”</b>이에요!
+          </p>
+        </div>
+        <div class="book-story-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px">
+          <div style="margin-bottom:14px">
+            <span style="color:#2c4c3e;font-size:14px;font-weight:800;text-transform:uppercase">Food & Handwriting</span>
+            <h2 style="font-size:32px;color:#1e3a2f;margin:4px 0 12px;font-family:'Jua',sans-serif">${escapeHTML(foodName)}</h2>
+          </div>
+          ${handwritingImg ? `
+          <div class="story-handwriting-box" style="margin-bottom:20px">
+            <small style="font-weight:800;color:#2c4c3e">✍️ ${escapeHTML(childName)} 어린이가 직접 쓴 글씨</small>
+            <img src="${handwritingImg}" alt="${escapeHTML(foodName)} 손글씨" class="story-handwriting-img">
+          </div>` : ''}
+          <div style="background:#f4f7f4;border-left:4px solid #2c4c3e;padding:12px 16px;border-radius:0 10px 10px 0;margin-bottom:20px">
+            <p style="margin:0;font-size:16px;color:#2d3748;line-height:1.6">
+              글자를 한 자 한 자 바르게 따라 쓰며 ${escapeHTML(countryName)}의 ${escapeHTML(foodName)}를 마음속에 소중히 새겼어요.
+            </p>
+          </div>
+          <div class="story-bottom-actions">
+            <button class="btn-voice" id="pageAudioBtn" type="button" style="font-size:15px;padding:9px 18px">🔊 이 쪽 이야기 듣기</button>
+            <button class="cta" onclick="flipBook(1)" style="font-size:14px;padding:9px 18px;background:#2c4c3e;color:#fff;border:none;border-radius:10px;font-weight:800">다음 장 (그림) ➔</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Page 2: 2장 · 꼬마 화가의 그림 (The Art & Observation)
+  if (pageIdx === 2) {
+    return `
+      <div class="storybook-spread" id="activeSpread">
+        <div class="book-art-panel">
+          <div class="book-art-tag">
+            <span>🎨 꼬마 화가 <b>${escapeHTML(childName)}</b>의 그림</span>
+            <span>${flag(countryName)} ${escapeHTML(countryName)}</span>
+          </div>
+          ${r.art ? `<img src="${r.art}" alt="${escapeHTML(foodName)} 그림" class="book-art-img">` : `<div style="height:360px;display:flex;align-items:center;justify-content:center;background:#fff8e6;border-radius:12px;color:#b45309;font-weight:800;font-size:18px">아이가 직접 그린 그림이 이곳에 담겨요 🎨</div>`}
+        </div>
+        <div class="book-story-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px">
+          <div class="story-meta-pill" style="align-self:flex-start">
+            <span>제2장</span>
+            <span>·</span>
+            <span>눈으로 보고 마음으로 그린 음식</span>
+          </div>
+          <h2 style="font-size:30px;color:#1e3a2f;margin:12px 0 16px;font-family:'Jua',sans-serif">내가 발견한 음식의 특징</h2>
+          <div class="story-card-box" style="margin-bottom:24px">
+            <div class="story-row">
+              <span class="story-row-ico">👀</span>
+              <div class="story-row-text">
+                <b style="font-size:16px">어떤 음식인가요?</b>
+                <p style="font-size:18px;color:#2c4c3e;font-weight:700;margin-top:4px">"${escapeHTML(featureText)}"</p>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:16px;color:#555;line-height:1.6;margin:0 0 20px">
+            백과사전의 사진을 돋보기로 살피고, 모양과 색깔, 들어간 재료를 관찰하며 정성껏 그림을 그렸어요.
+          </p>
+          <div class="story-bottom-actions">
+            <button class="btn-voice" id="pageAudioBtn" type="button" style="font-size:15px;padding:9px 18px">🔊 이 쪽 이야기 듣기</button>
+            <button class="cta" onclick="flipBook(1)" style="font-size:14px;padding:9px 18px;background:#2c4c3e;color:#fff;border:none;border-radius:10px;font-weight:800">다음 장 (생각) ➔</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Page 3: 3장 · 나의 생각과 나눔 (Thought & Sharing)
+  if (pageIdx === 3) {
+    return `
+      <div class="storybook-spread" id="activeSpread">
+        <div class="book-art-panel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#eff6ff,#fbfdff);padding:36px;text-align:center">
+          <div style="font-size:64px;margin-bottom:16px">💭 🤝 💖</div>
+          <h2 style="color:#1e40af;font-size:28px;margin:0 0 16px;font-family:'Jua',sans-serif">친구들과 나누고 싶은 생각</h2>
+          <div style="background:#fff;border:2px dashed #93c5fd;border-radius:16px;padding:20px 24px;box-shadow:0 6px 18px rgba(30,64,175,0.06);max-width:90%">
+            <p style="font-size:22px;color:#1e3a8a;font-weight:800;line-height:1.6;margin:0">
+              "${escapeHTML(thoughtText)}"
+            </p>
+          </div>
+        </div>
+        <div class="book-story-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px">
+          <div class="story-meta-pill" style="align-self:flex-start">
+            <span>제3장</span>
+            <span>·</span>
+            <span>다문화와 나눔의 마음</span>
+          </div>
+          <h2 style="font-size:30px;color:#1e3a2f;margin:12px 0 16px;font-family:'Jua',sans-serif">모두가 소중한 지구촌 친구들</h2>
+          <p style="font-size:17px;color:#374151;line-height:1.7;margin-bottom:20px">
+            맛있는 음식은 사랑하는 친구들과 둘러앉아 함께 먹을 때 가장 즐겁고 행복해요.<br>
+            <b>${escapeHTML(childName)}</b> 어린이의 따뜻한 나눔의 마음이 이 책에 담겼어요.
+          </p>
+          <div class="story-bottom-actions">
+            <button class="btn-voice" id="pageAudioBtn" type="button" style="font-size:15px;padding:9px 18px">🔊 이 쪽 이야기 듣기</button>
+            <button class="cta" onclick="flipBook(1)" style="font-size:14px;padding:9px 18px;background:#2c4c3e;color:#fff;border:none;border-radius:10px;font-weight:800">마지막 장 (가정나눔) ➔</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Page 4: 4장 · 우리 가족 이야기 & 뒷표지 (Home Connection & Back Cover)
+  if (pageIdx === 4) {
+    const allBooks = completedRows();
+    const curIdx = allBooks.findIndex(x => x.child === childName);
+    const nextBook = allBooks.length > 1 ? allBooks[(curIdx + 1) % allBooks.length] : null;
+
+    return `
+      <div class="storybook-spread" id="activeSpread">
+        <div class="book-art-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px;background:#fffdfa">
+          <div class="story-meta-pill" style="align-self:flex-start">
+            <span>🏡 가정연계</span>
+            <span>·</span>
+            <span>우리 가족 세계 음식 이야기</span>
+          </div>
+          <h2 style="font-size:28px;color:#78350f;margin:14px 0 12px;font-family:'Jua',sans-serif">가족과 함께 나눠보세요</h2>
+          <p style="font-size:16px;color:#78350f;line-height:1.6;margin-bottom:16px">
+            오늘 <b>${escapeHTML(childName)}</b> 어린이가 유치원에서 완성한 <b>${escapeHTML(countryName)}</b>의 <b>${escapeHTML(foodName)}</b> 이야기입니다.<br>
+            가정에서 함께 그림책을 보며 오늘 있었던 탐구 활동을 이야기해 보세요!
+          </p>
+          <div style="background:#fef3c7;border-radius:12px;padding:14px;color:#92400e;font-size:15px">
+            💡 <b>가족 질문:</b> “${escapeHTML(childName)}야, 오늘 ${escapeHTML(countryName)}의 ${escapeHTML(foodName)}에서 가장 신기했던 점은 뭐였니?”
+          </div>
+        </div>
+        <div class="book-story-panel" style="display:flex;flex-direction:column;justify-content:center;padding:32px;text-align:center">
+          <div style="font-size:48px;margin-bottom:10px">🌟 📖 ✨</div>
+          <h2 style="font-size:28px;color:#1e3a2f;margin:0 0 8px;font-family:'Jua',sans-serif">${escapeHTML(childName)}의 그림책 여행 끝!</h2>
+          <p style="font-size:15px;color:#666;margin:0 0 24px">햇살과 그림책으로 자라는 대전동산초등학교병설유치원 · 달누리반</p>
+          
+          <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto;width:100%">
+            <button class="cta" onclick="goToBookPage(0)" style="padding:12px;background:#e07a38;color:#fff;border:none;border-radius:10px;font-weight:800">
+              🔄 처음부터 다시 읽기
+            </button>
+            ${nextBook && nextBook.child !== childName ? `
+            <button class="cta" onclick="openBookViewer('${escapeHTML(nextBook.child)}')" style="padding:12px;background:#2c4c3e;color:#fff;border:none;border-radius:10px;font-weight:800">
+              👉 다음 친구 (${escapeHTML(nextBook.child)}) 책 읽기 ➔
+            </button>` : ''}
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:6px">
+              <button class="mini" onclick="openExisting('${r.id}')">✏️ 작품 수정</button>
+              <button class="mini" onclick="printBooks([r])">🖨️ 인쇄하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
 function goToBookPage(idx) {
-  if (idx < 0 || idx >= bookItems.length) return;
+  if (idx < 0 || idx >= TOTAL_PAGES_PER_BOOK) return;
   stopBookNarration();
-  currentBookIndex = idx;
+  currentBookPageIndex = idx;
   renderBookUI();
 }
 
 function flipBook(dir) {
-  const nextIdx = currentBookIndex + dir;
-  if (nextIdx < 0 || nextIdx >= bookItems.length) return;
+  const nextIdx = currentBookPageIndex + dir;
+  if (nextIdx < 0 || nextIdx >= TOTAL_PAGES_PER_BOOK) return;
   stopBookNarration();
-  currentBookIndex = nextIdx;
+  currentBookPageIndex = nextIdx;
   renderBookUI();
   
   const spread = $('activeSpread');
   if (spread) {
     spread.classList.add(dir > 0 ? 'slide-left' : 'slide-right');
   }
+}
+
+function playCurrentBookAudio() {
+  const allBooks = completedRows();
+  const r = allBooks.find(b => b.child === activeBookChild) || allBooks[0];
+  if (!r) return;
+  const foodName = r.food || '음식';
+  const countryName = r.country || '세계 여러 나라';
+  const childName = r.child || '꼬마 작가';
+  const featureText = r.feature || '';
+  const thoughtText = r.thought || '';
+
+  let narration = '';
+  if (currentBookPageIndex === 0) {
+    narration = `달누리반 꼬마 작가 ${childName}의 세계 음식 그림책! ${countryName}의 ${foodName} 이야기입니다. 함께 책장을 넘겨보아요!`;
+  } else if (currentBookPageIndex === 1) {
+    narration = `${childName} 어린이는 ${countryName}로 맛있는 음식 여행을 떠났어요. ${childName}가 고른 음식은 바로 ${foodName}예요! 직접 쓴 글씨를 보아요.`;
+  } else if (currentBookPageIndex === 2) {
+    narration = `꼬마 화가 ${childName} 어린이가 직접 그린 ${foodName} 그림이에요. ${childName} 어린이는 ${featureText}라며 재미있는 특징을 발견했답니다!`;
+  } else if (currentBookPageIndex === 3) {
+    narration = `${childName} 어린이의 생각 한마디! ${thoughtText}. 맛있는 음식을 함께 나누고 싶은 따뜻한 마음이에요.`;
+  } else if (currentBookPageIndex === 4) {
+    narration = `${childName} 어린이의 그림책 여행이 끝났어요. 오늘 유치원에서 배운 이야기를 가족과 함께 다정하게 나누어 보세요!`;
+  }
+
+  if (window.speechSynthesis && window.speechSynthesis.speaking) {
+    stopBookNarration();
+    if (isAutoPlaying) {
+      isAutoPlaying = false;
+      updateAutoPlayBtnUI();
+    }
+    return;
+  }
+
+  speakBookNarration(narration, () => {
+    if (isAutoPlaying) {
+      if (currentBookPageIndex < TOTAL_PAGES_PER_BOOK - 1) {
+        setTimeout(() => {
+          if (isAutoPlaying) {
+            flipBook(1);
+            setTimeout(playCurrentBookAudio, 400);
+          }
+        }, 1400);
+      } else {
+        isAutoPlaying = false;
+        updateAutoPlayBtnUI();
+        toast(`🎉 ${childName} 작가의 그림책을 다 읽었어요!`);
+      }
+    }
+  });
 }
 
 function setupStorybookGestures() {
@@ -1000,7 +1148,8 @@ function setupStorybookGestures() {
     showView('home');
   };
   $('bookPrintBtn').onclick = () => {
-    if (bookItems[currentBookIndex]) printBooks([bookItems[currentBookIndex]]);
+    const curBook = completedRows().find(b => b.child === activeBookChild);
+    if (curBook) printBooks([curBook]);
   };
 
   if ($('navBookBtn')) $('navBookBtn').onclick = () => openBookViewer();
@@ -1120,13 +1269,17 @@ function renderHome(){
   if(!storageReady) return;
   const grid=$('roster');
   grid.innerHTML=CHILDREN.map((c,i)=>`<button class="child" data-child="${escapeHTML(c)}"><span class="avatar" style="--c:${CHILD_PALETTE[i]}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]}</span><span><b>${escapeHTML(c)}</b><small>${countChild(c)}권의 그림책</small></span><span class="arr">↗</span></button>`).join('');
-  qa('.child',grid).forEach(el=>el.addEventListener('click',()=>beginChild(el.dataset.child)));
+  qa('.child',grid).forEach(el=>el.addEventListener('click',()=>{
+    const c = el.dataset.child;
+    if(countChild(c) > 0) openBookViewer(c);
+    else beginChild(c);
+  }));
   const done=completedRows().sort((a,b)=>(b.updated||0)-(a.updated||0));
   $('totalStat').textContent=`완성 ${done.length}권`;
   $('recentBooks').innerHTML=done.length?`<div class="storygrid">${done.slice(0,8).map(storyCard).join('')}</div>`:`<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;
   attachStoryClicks($('recentBooks'));
 }
-function storyCard(r){return `<article class="story"><div class="story-thumb">${r.art?`<img src="${r.art}" alt="${escapeHTML(r.child)}가 그린 ${escapeHTML(r.food)}">`:`<span class="empty-art">🎨</span>`}</div><div class="story-body"><small>${flag(r.country)} ${escapeHTML(r.child)}의 그림책 · ${escapeHTML(r.country||'나라 탐색')}</small><b>${escapeHTML(r.food||'내가 고른 음식')}</b>${r.familyUpdated?'<span class="story-badge">🏡 가족 답장 도착</span>':''}<button class="mini" data-edit="${escapeHTML(r.id)}">열어 보기 →</button></div></article>`}
+function storyCard(r){return `<article class="story"><div class="story-thumb" onclick="openBookViewer('${escapeHTML(r.child)}')">${r.art?`<img src="${r.art}" alt="${escapeHTML(r.child)}가 그린 ${escapeHTML(r.food)}">`:`<span class="empty-art">🎨</span>`}</div><div class="story-body"><small>${flag(r.country)} ${escapeHTML(r.child)}의 그림책 · ${escapeHTML(r.country||'나라 탐색')}</small><b>${escapeHTML(r.food||'내가 고른 음식')}</b>${r.familyUpdated?'<span class="story-badge">🏡 가족 답장 도착</span>':''}<div style="display:flex;gap:6px;margin-top:6px"><button class="mini" onclick="openBookViewer('${escapeHTML(r.child)}')" style="background:#e07a38;color:#fff;border-color:#e07a38;font-weight:800">📖 책 넘겨보기 ➔</button><button class="mini" data-edit="${escapeHTML(r.id)}">✏️ 수정</button></div></div></article>`}
 function attachStoryClicks(root){qa('[data-edit]',root).forEach(el=>el.addEventListener('click',()=>openExisting(el.dataset.edit)))}
 function beginChild(name){
   activeChild=name;
