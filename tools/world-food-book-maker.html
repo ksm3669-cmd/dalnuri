@@ -58,6 +58,41 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
 .cloud-badge.ok{background:#edf7ed;border-color:#bde3be;color:#246927}
 .cloud-badge.warn{background:#fff0eb;border-color:#f5c4b8;color:#a84632}
 
+
+/* 마이크 음성 입력 및 음성 재생 버튼 스타일 */
+.btn-voice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: #fff7ed;
+  border: 1.5px solid #f97316;
+  color: #c2410c;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 6px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(249, 115, 22, 0.15);
+  font-family: inherit;
+  user-select: none;
+}
+.btn-voice:hover {
+  background: #ffedd5;
+  transform: translateY(-1px);
+}
+.btn-voice.listening {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+  animation: pulse-mic 1.2s infinite !important;
+}
+@keyframes pulse-mic {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  70% { transform: scale(1.03); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
 </style>
 </head>
 <body>
@@ -96,17 +131,42 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
   <div class="country-search"><input type="search" id="countrySearch" placeholder="🔎 나라 찾기 (예: 이탈리아)" aria-label="나라 검색"><button class="mini" id="countryMore" type="button">다른 나라 더 보기 ＋</button></div>
  <div id="countryGrid" class="country-grid" aria-label="나라와 국기 선택"></div>
  <div class="country-selected" id="countryDisplay">🌍 아직 나라를 고르지 않았어요</div>
- <input type="hidden" id="country"><div class="field" id="countryOtherWrap" hidden><label for="countryOtherInput">다른 나라 이름 직접 쓰기</label><input id="countryOtherInput" maxlength="28" placeholder="나라 이름을 적어 주세요"></div>
- <div class="field"><label for="food">🍽️ 이 나라의 음식 이름</label><input type="text" id="food" maxlength="22" placeholder="예: 피자" autocomplete="off"></div>
+ <input type="hidden" id="country"><div class="field" id="countryOtherWrap" hidden>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="countryOtherInput" style="margin:0">다른 나라 이름 직접 쓰기</label>
+    <button type="button" class="btn-voice" id="countryOtherMicBtn">🎤 말로 하기</button>
+  </div>
+  <input id="countryOtherInput" maxlength="28" placeholder="나라 이름을 적어 주세요">
+</div>
+ <div class="field">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="food" style="margin:0">🍽️ 이 나라의 음식 이름</label>
+    <button type="button" class="btn-voice" id="foodMicBtn" title="마이크로 말해서 음식 이름 넣기">🎤 말로 쏙! (마이크)</button>
+  </div>
+  <input type="text" id="food" maxlength="22" placeholder="예: 초밥, 피자 (마이크를 누르고 말해보세요!)" autocomplete="off">
+</div>
  <h3 class="sample-title">음식 이름 고르기 <span class="note">(아래는 생각 돕기 예시예요. 백과사전에서 본 다른 음식도 직접 적을 수 있어요.)</span></h3><div class="samples" id="samples"></div>
  <div class="callout"><span>🔎</span><div style="flex:1"><strong>백과사전과 그림책 이어서 만들기</strong><div class="note">내가 고른 나라를 기억한 채 백과사전의 실제 음식 사진을 살펴보고, 선택한 음식과 관찰한 특징을 그림책으로 가져올 수 있어요.</div><div class="actions" style="margin-top:10px"><button class="btn primary" type="button" id="exploreBtn">🌍 백과사전 보면서 기록하기</button><a class="mini" href="https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html" target="_blank" rel="noopener noreferrer">새 창에서 보기 ↗</a></div><p class="smallprint">백과사전의 나라·음식 선택은 자동으로 전달되지 않아요. 원본 화면에서도 나라를 찾아보고, 음식 이름과 특징을 탐색 기록에 적으면 그림책 입력칸으로 옮겨집니다.</p></div></div></div>
  <div class="panel" data-panel="1"><div class="activity-head"><span class="activity-no">2</span><div><h2>내 눈으로 본 음식, 내 손으로 그림</h2><p>손가락이나 터치펜으로 그려 보세요. 지우개와 되돌리기도 할 수 있어요.</p></div></div><p class="draw-instruction" id="drawHint">백과사전 사진을 보면서 음식의 모양과 색을 관찰해 보아요.</p><div class="toolstrip" id="drawTools"></div><div class="canvas-wrap art" id="artBox"><div class="draw-surface"><canvas id="artCanvas" width="900" height="620" aria-label="음식 그림 그리기"></canvas></div></div><p class="note">그림이 실수로 지워져도 '되돌리기'를 누르면 이전 그림으로 돌아갈 수 있어요.</p></div>
  <div class="panel" data-panel="2"><div class="activity-head"><span class="activity-no">3</span><div><h2>음식 이름을 따라 써 보아요</h2><p>연한 글씨를 손으로 따라 쓰고, 아래에는 스스로 써 보아요.</p></div></div><div class="word-model"><div><small>오늘 배운 음식 이름</small><br><b id="wordName">음식을 골라 주세요</b></div><button class="mini" id="speakBtn">🔊 이름 듣기</button></div><div class="toolstrip" id="writeTools"></div><div class="canvas-wrap"><h3>① 글씨를 따라 써요</h3><div class="draw-surface guide-surface"><canvas class="base" id="guideCanvas" width="900" height="220" aria-hidden="true"></canvas><canvas class="ink" id="traceCanvas" width="900" height="220" aria-label="연한 글자 따라 쓰기"></canvas></div></div><div style="height:15px"></div><div class="canvas-wrap"><h3>② 내 힘으로 써요</h3><div class="draw-surface write-surface"><canvas id="freeCanvas" width="900" height="220" aria-label="스스로 음식 이름 쓰기"></canvas></div></div><p class="note">글자 쓰기가 어려우면 글자 하나만 따라 써도 좋아요. 글씨의 크기와 모양은 모두 달라도 괜찮아요.</p></div>
  <div class="panel" data-panel="3"><div class="activity-head"><span class="activity-no">4</span><div><h2>음식의 특징을 발견했어요!</h2><p>자세히 관찰한 점을 말하거나 적어 보아요. 선생님이 받아 적어 주셔도 좋아요.</p></div></div>
- <div class="feature-box"><div class="pencils"><span>⚪ 모양</span><span>🎨 색깔</span><span>🌾 재료</span><span>😋 맛</span></div><div class="feature-prompts" id="featurePrompts"><button data-prompt="모양은 ">모양 적기</button><button data-prompt="색깔은 ">색깔 적기</button><button data-prompt="재료는 ">재료 적기</button><button data-prompt="맛은 ">맛 적기</button><button data-prompt="궁금한 점은 ">궁금한 점</button></div><div class="field"><label for="foodFeature">✏️ 내가 발견한 음식의 특징</label><textarea id="foodFeature" maxlength="160" rows="3" placeholder="예: 동그랗고 노란색이에요. / 쌀로 만들었어요. / 무슨 맛일지 궁금해요."></textarea></div><p class="feature-hint">모양·색깔은 사진을 보고 쓰고, 맛은 먹어 보지 않았다면 '맛일 것 같아요'라고 표현해요.</p></div>
- <div class="field"><label for="myThought">💭 나의 생각 한마디</label><div class="sentence-picks" id="sentences"></div><textarea id="myThought" maxlength="95" rows="2" placeholder="예: 가족에게 소개하고 싶어요. (선생님이 받아 적어 주셔도 돼요)" style="margin-top:12px"></textarea></div>
+ <div class="feature-box"><div class="pencils"><span>⚪ 모양</span><span>🎨 색깔</span><span>🌾 재료</span><span>😋 맛</span></div><div class="feature-prompts" id="featurePrompts"><button data-prompt="모양은 ">모양 적기</button><button data-prompt="색깔은 ">색깔 적기</button><button data-prompt="재료는 ">재료 적기</button><button data-prompt="맛은 ">맛 적기</button><button data-prompt="궁금한 점은 ">궁금한 점</button></div><div class="field">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="foodFeature" style="margin:0">✏️ 내가 발견한 음식의 특징</label>
+    <button type="button" class="btn-voice" id="featureMicBtn">🎤 말로 특징 적기</button>
+  </div>
+  <textarea id="foodFeature" maxlength="160" rows="3" placeholder="예: 동그랗고 노란색이에요. / 쌀로 만들었어요. (마이크를 누르고 말해보세요!)"></textarea>
+</div><p class="feature-hint">모양·색깔은 사진을 보고 쓰고, 맛은 먹어 보지 않았다면 '맛일 것 같아요'라고 표현해요.</p></div>
+ <div class="field">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="myThought" style="margin:0">💭 나의 생각 한마디</label>
+    <button type="button" class="btn-voice" id="thoughtMicBtn">🎤 말로 생각 적기</button>
+  </div>
+  <div class="sentence-picks" id="sentences"></div>
+  <textarea id="myThought" maxlength="95" rows="2" placeholder="예: 가족에게 소개하고 싶어요. (마이크를 누르고 말해보세요!)" style="margin-top:12px"></textarea>
+</div>
  <h3 class="toolbar-title">완성된 그림책 미리보기</h3><div class="page-preview" id="editorPreview"></div>
- <div class="actions" style="justify-content:center"><button class="btn primary" id="completeBtn">✓ 이 그림책 완성하기</button><button class="btn soft" id="downloadPng">🖼️ 그림책 이미지 저장</button><button class="btn" id="printOne">🖨️ A4로 인쇄</button></div>
+ <div class="actions" style="justify-content:center"><button class="btn accent" id="listenBookBtn" type="button" style="background:#e07a38;color:#fff;border-color:#e07a38">🔊 내 그림책 이야기 듣기</button><button class="btn primary" id="completeBtn">✓ 이 그림책 완성하기</button><button class="btn soft" id="downloadPng">🖼️ 그림책 이미지 저장</button><button class="btn" id="printOne">🖨️ A4로 인쇄</button></div>
  <div class="family-card" id="familyHelp"><h3>🏡 가족과 이어가는 세계 음식 이야기</h3><p>내 그림과 글씨를 담은 <b>가정용 편지 HTML 파일</b>을 만들어 부모님께 보내요. 부모님은 집에서 특징을 더 찾아보고, 따뜻한 응원 한마디와 사진(선택)을 남길 수 있어요.</p>
  <div class="family-steps"><div><b>① 교실</b>나의 음식 책 완성</div><div><b>② 가정</b>함께 알아보고 답장</div><div><b>③ 교실</b>답장 파일 불러오기</div></div>
  <div class="family-buttons"><button class="btn accent" id="sendFamily">✉️ 가정용 편지 파일 만들기</button><button class="btn" id="familyPrint">🖨️ 가족에게 보낼 작품 인쇄</button></div>
@@ -123,8 +183,20 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
   <div class="explore-head"><div><button class="mini" id="exploreBack">← 그림책 만들기로 돌아가기</button><h1>🌍 세계 음식 백과사전 탐색실</h1><p>사진으로 살펴보고 내가 발견한 이름과 특징을 그림책에 담아요.</p></div><div class="explore-stamp" id="exploreCountryTag">🌏 나라 탐색</div></div>
   <div class="explore-layout"><div class="card browser-card"><div class="browser-top"><b>📚 원본 세계 음식 백과사전</b><a class="mini" target="_blank" rel="noopener noreferrer" href="https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html">별도 창에서 크게 보기 ↗</a></div><iframe id="encyclopediaFrame" title="세계 음식 디지털 백과사전" loading="lazy" referrerpolicy="no-referrer" allow="autoplay"></iframe><p class="smallprint">화면이 나타나지 않으면 '별도 창에서 크게 보기'를 이용하세요. 백과사전 내부에서 나라를 다시 선택해야 할 수 있으며, 외부 사이트의 선택 기록은 자동으로 읽지 않습니다.</p></div>
   <div class="card explore-notes"><span class="eyebrow">MY FOOD DISCOVERY</span><h2>🔍 내가 발견한 세계 음식</h2><div class="explore-steps"><span>① 국기 확인</span><span>② 사진 살펴보기</span><span>③ 이름 적기</span><span>④ 그림책으로 가져오기</span></div>
-     <div class="field"><label for="exploreFood">내가 고른 음식 이름</label><input id="exploreFood" type="text" maxlength="22" placeholder="백과사전에서 본 이름을 적어요"></div>
-     <div class="field"><label for="exploreFeature">내가 발견한 특징 / 궁금한 점</label><textarea id="exploreFeature" rows="5" maxlength="160" placeholder="예: 길쭉해요. 노란색이에요. 무엇으로 만들었을까요?"></textarea></div>
+     <div class="field">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="exploreFood" style="margin:0">내가 고른 음식 이름</label>
+    <button type="button" class="btn-voice" id="exploreFoodMicBtn">🎤 말로 쏙!</button>
+  </div>
+  <input id="exploreFood" type="text" maxlength="22" placeholder="백과사전에서 본 이름을 적어요">
+</div>
+     <div class="field">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:8px;flex-wrap:wrap">
+    <label for="exploreFeature" style="margin:0">내가 발견한 특징 / 궁금한 점</label>
+    <button type="button" class="btn-voice" id="exploreFeatureMicBtn">🎤 말로 특징 적기</button>
+  </div>
+  <textarea id="exploreFeature" rows="5" maxlength="160" placeholder="예: 길쭉해요. 노란색이에요. 무엇으로 만들었을까요?"></textarea>
+</div>
      <button class="btn primary full-btn" id="exploreApply">✏️ 이 음식으로 내 그림책 만들기</button><p class="note">이름과 특징만 그림책으로 옮겨집니다. 그림은 아이가 직접 그리고 글씨도 따라 써요.</p>
   </div></div>
 </section>
@@ -274,7 +346,7 @@ function init(){setupToolstrip('drawTools','draw');setupToolstrip('writeTools','
  $('sentences').innerHTML=THOUGHTS.map(s=>`<button class="sentence" data-text="${s}">${s}</button>`).join('');qa('.sentence').forEach(b=>b.onclick=()=>{$('myThought').value=b.dataset.text;qa('.sentence').forEach(x=>x.classList.toggle('on',x===b));queueSave();buildPreview()});
  qa('[data-prompt]',$('featurePrompts')).forEach(b=>b.onclick=()=>{const val=$('foodFeature').value;const t=b.dataset.prompt;$('foodFeature').value=val?val.replace(/\s+$/,'')+'\n'+t:t;$('foodFeature').focus();queueSave()});
  ['food','myThought','foodFeature'].forEach(id=>$(id).addEventListener('input',()=>{if(id==='food')updateModel();queueSave();if(step===3)buildPreview()}));
- $('speakBtn').onclick=()=>{const str=$('food').value.trim();if(!str){toast('먼저 음식 이름을 적어 주세요.');return}if(!('speechSynthesis' in window)){toast('이 브라우저는 음성 읽기를 지원하지 않아요.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(str);u.lang='ko-KR';u.rate=.8;speechSynthesis.speak(u)};
+ // speakBtn handled in initVoiceFeatures()
  qa('.step-btn').forEach(b=>b.onclick=()=>{if(step===3)buildPreview();setStep(Number(b.dataset.step))});$('nextStep').onclick=()=>{if(step===0&&!$('country').value.trim()){toast('국기를 눌러 나라를 골라 주세요.');return}if(step===0&&!$('food').value.trim()){toast('음식 이름을 적어 주세요.');$('food').focus();return}if(step===3){completeBook();return}queueSave();setStep(step+1)};$('prevStep').onclick=()=>setStep(step-1);
  $('exploreBtn').onclick=openExplore;$('exploreBack').onclick=()=>showView('editor');$('exploreApply').onclick=applyExplore;
  $('teacherBtn').onclick=()=>teacherUnlocked?enterTeacher():teacherPrompt();$('teacherGallery').onclick=()=>teacherUnlocked?enterTeacher():teacherPrompt();$('teacherBack').onclick=teacherLock;$('teacherLock').onclick=teacherLock;
