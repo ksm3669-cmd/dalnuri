@@ -530,7 +530,6 @@ document.addEventListener('click', e => {
 });
 function renderDetail(){let f=getF(foodId),c=getC(f.country);$('detailNation').textContent=c.flag+' '+c.name+' · '+types[f.base];$('detailTitle').textContent=f.name;$('detailLead').textContent=f.short;$('ingredient').textContent=f.ingredients;$('shape').textContent=f.look;$('eating').textContent=f.how;$('question').textContent=f.question;$('respect').textContent=f.respect;$('detailVisual').innerHTML=imageMark(f);$('photoCaption').textContent=photos[f.id]?'실제 음식 참고 사진입니다. 만드는 사람에 따라 모습이 달라질 수 있어요.':(f.embedded?'첨부 자료에 있는 사실적인 음식 그림입니다. 실제 음식은 모양이 다를 수 있어요.':'음식 특징을 참고한 그림이에요. 온라인 사진이 준비되면 실제 음식 사진으로 바뀔 수 있어요.');let list=shownFoods(countryId);if(list.length<2)list=FOODS.filter(x=>x.country===countryId);const i=list.findIndex(x=>x.id===foodId);$('prevFood').disabled=i<1;$('nextFood').disabled=i===list.length-1;$('related').innerHTML=FOODS.filter(x=>x.country===c.id&&x.id!==f.id).slice(0,4).map(x=>card(x,true)).join('');showCredits(f)}
 function stepFood(dir){stopSay();let list=shownFoods(countryId);if(list.length<2)list=FOODS.filter(x=>x.country===countryId);let i=list.findIndex(f=>f.id===foodId)+dir;if(i>=0&&i<list.length)openFood(list[i].id)}
-let currentSayBtn = null;
 let koreanVoice = null;
 
 function loadKoreanVoices() {
