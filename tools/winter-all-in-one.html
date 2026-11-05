@@ -1097,7 +1097,7 @@
   
 
     /* Unified 9-Tab Navigation */
-    .pad-nav-bar {
+    .pad-nav {
       display: grid;
       grid-template-columns: repeat(9, minmax(0, 1fr));
       gap: 6px;
@@ -1107,26 +1107,15 @@
     }
 
     @media (max-width: 1200px) {
-      .pad-nav-bar {
+      .pad-nav {
         grid-template-columns: repeat(5, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 768px) {
-      .pad-nav-bar {
+      .pad-nav {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
-    }
-
-    .group-divider {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0 2px;
-      font-family: 'Jua', sans-serif;
-      font-size: 0.95rem;
-      color: var(--dark-green);
     }
 
     .pad-tab-btn[data-group="expression"] {
@@ -1999,45 +1988,65 @@ button:disabled {
     </header>
 
     <!-- 7-Pad Navigation -->
+    
     <nav class="pad-nav-container">
       <div class="pad-nav">
         <button class="pad-tab-btn active" data-pad="1" onclick="switchPad(1)">
-          <span class="pad-badge">1번 패드</span>
+          <span class="pad-badge">1번</span>
           <span class="tab-icon">❄️</span>
-          <span class="tab-title">겨울 백과사전</span>
+          <span class="tab-title">겨울 백과</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="2" onclick="switchPad(2)">
-          <span class="pad-badge">2번 패드</span>
+          <span class="pad-badge">2번</span>
           <span class="tab-icon">🎨</span>
-          <span class="tab-title">겨울 미술놀이</span>
+          <span class="tab-title">겨울 미술</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="3" onclick="switchPad(3)">
-          <span class="pad-badge">3번 패드</span>
+          <span class="pad-badge">3번</span>
           <span class="tab-icon">🏪</span>
           <span class="tab-title">간식 키오스크</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="4" onclick="switchPad(4)">
-          <span class="pad-badge">4번 패드</span>
+          <span class="pad-badge">4번</span>
           <span class="tab-icon">🎮</span>
-          <span class="tab-title">겨울 미니게임</span>
+          <span class="tab-title">미니게임</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="5" onclick="switchPad(5)">
-          <span class="pad-badge">5번 패드</span>
+          <span class="pad-badge">5번</span>
           <span class="tab-icon">🏃</span>
-          <span class="tab-title">겨울 신체활동</span>
+          <span class="tab-title">신체활동</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="6" onclick="switchPad(6)">
-          <span class="pad-badge">6번 패드</span>
+          <span class="pad-badge">6번</span>
           <span class="tab-icon">🎵</span>
-          <span class="tab-title">소리·동요 오감</span>
+          <span class="tab-title">소리·동요</span>
         </button>
+
         <button class="pad-tab-btn" data-pad="7" onclick="switchPad(7)">
-          <span class="pad-badge">7번 패드</span>
+          <span class="pad-badge">7번</span>
           <span class="tab-icon">⛺</span>
           <span class="tab-title">모닥불 이야기</span>
         </button>
+
+        <button class="pad-tab-btn" data-pad="8" data-group="expression" onclick="switchPad(8)">
+          <span class="pad-badge" style="background:#e0f2fe; color:#0369a1;">동화</span>
+          <span class="tab-icon">📖</span>
+          <span class="tab-title">움직이는 동화</span>
+        </button>
+
+        <button class="pad-tab-btn" data-pad="9" data-group="expression" onclick="switchPad(9)">
+          <span class="pad-badge" style="background:#e0f2fe; color:#0369a1;">배역</span>
+          <span class="tab-icon">🎭</span>
+          <span class="tab-title">배역 추첨</span>
+        </button>
       </div>
     </nav>
+
 
     <!-- MAIN TAB CONTENTS -->
 
@@ -2722,7 +2731,7 @@ button:disabled {
   <!-- JAVASCRIPT LOGIC -->
   
 
-
+<div id="castGameStage" hidden>
   <div class="cast-canvas-frame" id="castFrame">
     <canvas id="castCanvas" width="1280" height="720"></canvas>
     
