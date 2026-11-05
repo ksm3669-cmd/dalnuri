@@ -785,8 +785,16 @@ let bookItems = [];
 let currentChildFilter = '';
 let isAutoPlaying = false;
 let currentBookNarratorUtterance = null;
+let currentBookAudioPlayer = null;
 
 function stopBookNarration() {
+  if (currentBookAudioPlayer) {
+    try {
+      currentBookAudioPlayer.pause();
+      currentBookAudioPlayer.src = '';
+    } catch(e) {}
+    currentBookAudioPlayer = null;
+  }
   if ('speechSynthesis' in window) {
     try { window.speechSynthesis.cancel(); } catch(e) {}
   }
@@ -831,10 +839,6 @@ function toggleAutoPlay() {
 
 function speakBookNarration(text, onComplete) {
   if (!text || !text.trim()) return;
-  if (!('speechSynthesis' in window)) {
-    toast('이 기기/브라우저는 음성 읽기를 지원하지 않아요.');
-    return;
-  }
   stopBookNarration();
 
   const topBtn = $('bookAudioPlayBtn');
@@ -848,57 +852,106 @@ function speakBookNarration(text, onComplete) {
     pageBtn.innerHTML = '⏹️ 멈추기 (낭독 중...)';
   }
 
-  if (window.speechSynthesis.paused) {
-    try { window.speechSynthesis.resume(); } catch(e) {}
+  // Clean text of emojis & symbols
+  const clean = text
+    .replace(/[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F1E0}-\u{1F1FF}]/gu, '')
+    .replace(/[^\w\sㄱ-ㅎㅏ-ㅣ가-힣.,!?~-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!clean) {
+    stopBookNarration();
+    if (typeof onComplete === 'function') onComplete();
+    return;
   }
 
-  const clean = text.replace(/\s+/g, ' ').trim();
-  const sentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+  const rawSentences = clean.match(/[^.!?]+[.!?]+/g) || [clean];
+  const sentences = [];
+  rawSentences.forEach(s => {
+    s = s.trim();
+    if (!s) return;
+    if (s.length > 65) {
+      const parts = s.split(/,\s*/);
+      parts.forEach(p => { if (p.trim()) sentences.push(p.trim() + '.'); });
+    } else {
+      sentences.push(s);
+    }
+  });
+
+  if (!sentences.length) {
+    stopBookNarration();
+    if (typeof onComplete === 'function') onComplete();
+    return;
+  }
+
   let sIdx = 0;
 
-  function nextSentence() {
+  function playNextNarrationAudio() {
     if (sIdx >= sentences.length) {
       stopBookNarration();
       if (typeof onComplete === 'function') onComplete();
       return;
     }
-    const s = sentences[sIdx].trim();
-    if (!s) {
+
+    const cur = sentences[sIdx].trim();
+    if (!cur) {
       sIdx++;
-      nextSentence();
+      playNextNarrationAudio();
+      return;
+    }
+
+    const ttsUrl = 'https://translate.google.com/translate_tts?ie=UTF-8&tl=ko&client=tw-ob&q=' + encodeURIComponent(cur);
+    const audio = new Audio(ttsUrl);
+    currentBookAudioPlayer = audio;
+
+    audio.onended = () => {
+      sIdx++;
+      playNextNarrationAudio();
+    };
+
+    audio.onerror = () => {
+      playWebSpeechBookFallback(sentences.slice(sIdx).join(' '), onComplete);
+    };
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        console.warn('Audio play error, fallback to Web Speech:', err);
+        playWebSpeechBookFallback(sentences.slice(sIdx).join(' '), onComplete);
+      });
+    }
+  }
+
+  function playWebSpeechBookFallback(fallbackText, doneCb) {
+    if (!('speechSynthesis' in window)) {
+      stopBookNarration();
+      if (typeof doneCb === 'function') doneCb();
       return;
     }
     try {
-      const u = new SpeechSynthesisUtterance(s);
+      if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+      const u = new SpeechSynthesisUtterance(fallbackText);
       u.lang = 'ko-KR';
-      u.rate = 0.88;
-      u.pitch = 1.05;
-      if (!bookKoreanVoice) loadBookKoreanVoice();
-      if (bookKoreanVoice) u.voice = bookKoreanVoice;
-
+      u.rate = 0.9;
+      u.pitch = 1.0;
       u.onend = () => {
-        sIdx++;
-        nextSentence();
+        stopBookNarration();
+        if (typeof doneCb === 'function') doneCb();
       };
-      u.onerror = (err) => {
-        console.warn('Book narration error:', err);
-        sIdx++;
-        if (sIdx < sentences.length) nextSentence();
-        else {
-          stopBookNarration();
-          if (typeof onComplete === 'function') onComplete();
-        }
+      u.onerror = () => {
+        stopBookNarration();
+        if (typeof doneCb === 'function') doneCb();
       };
       window._activeBookNarratorUtterance = u;
       currentBookNarratorUtterance = u;
-      // Synchronous speak inside user gesture ensures audio works on iOS/Android
-      try { window.speechSynthesis.speak(u); }
-      catch(e) { stopBookNarration(); }
-    } catch(e) {
+      window.speechSynthesis.speak(u);
+    } catch(err) {
       stopBookNarration();
+      if (typeof doneCb === 'function') doneCb();
     }
   }
-  nextSentence();
+
+  playNextNarrationAudio();
 }
 
 let activeBookChild = '';
