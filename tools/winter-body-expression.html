@@ -1,0 +1,2252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>달누리 겨울 신체표현 · 동화와 배역 정하기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #315f4f;
+  --dark-green: #224338;
+  --sage: #52796f;
+  --cream: #fbf9f4;
+  --card-bg: #ffffff;
+  --gold: #f4b41a;
+  --ice-blue: #d9ecf5;
+  --sky-blue: #7bbcd5;
+  --border: #e2e8e4;
+  --text: #2c3a33;
+  --muted: #6b7c73;
+  --shadow: 0 10px 30px rgba(35, 60, 48, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  color: var(--text);
+  background: #edf4f8;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  touch-action: manipulation;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Master Top Navigation */
+.master-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1.5px solid #dce8ef;
+  box-shadow: 0 4px 16px rgba(49, 95, 79, 0.06);
+}
+
+.header-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #e4f4fb, #cde9f6);
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  box-shadow: 0 3px 10px rgba(123, 188, 213, 0.3);
+}
+
+.brand-text h1 {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.25rem;
+  color: var(--dark-green);
+  line-height: 1.2;
+}
+
+.brand-text p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 6px;
+  background: #eef5f8;
+  padding: 4px;
+  border-radius: 14px;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-family: 'Jua', sans-serif;
+  font-size: 0.98rem;
+  color: var(--muted);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: var(--green);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-chip {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f0f7fa;
+  border: 1px solid #d4e7f0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* -------------------------------------------------------------
+   MODE 1: INTERACTIVE WINTER MOTION STORY
+   ------------------------------------------------------------- */
+#storyMode {
+  width: 100vw;
+  height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #14222a;
+  position: relative;
+}
+
+.story-frame {
+  position: relative;
+  width: min(100vw, 177.777778vh);
+  height: min(calc(100vh - 65px), 56.25vw);
+  aspect-ratio: 16 / 9;
+  background: #a9cfdd;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+#storyCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.story-nav-bar {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(25, 45, 55, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  z-index: 10;
+}
+
+.scene-step-btn {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-family: 'Jua', sans-serif;
+  font-size: 0.95rem;
+  color: #cbe3ee;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.scene-step-btn.active {
+  background: #ffffff;
+  color: #173847;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.story-caption-card {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92%, 840px);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(10px);
+  padding: 14px 24px;
+  border-radius: 20px;
+  border: 2px solid #e1eff6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  z-index: 10;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.story-caption-card h2 {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  color: #1e4554;
+  margin-bottom: 4px;
+}
+
+.story-caption-card p {
+  font-size: clamp(0.85rem, 1.3vw, 1.05rem);
+  color: #4b6672;
+  font-weight: 700;
+}
+
+.story-click-guide {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: #e76f51;
+  font-weight: 800;
+  background: #ffeedb;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+/* -------------------------------------------------------------
+   MODE 2: PHYSICAL ROLE CASTING & LOTTERY
+   ------------------------------------------------------------- */
+#castMode {
+  min-height: calc(100vh - 65px);
+  padding: 24px 16px 50px;
+  background: radial-gradient(circle at 90% 0%, #e2f2f8, transparent 40%), linear-gradient(135deg, #f4f9fb, #eef5f2);
+}
+
+.cast-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.cast-title-box {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.cast-title-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 20px rgba(49, 95, 79, 0.12);
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+}
+
+.cast-title-text h2 {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--dark-green);
+  line-height: 1.2;
+}
+
+.cast-title-text p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(460px, 1.4fr);
+  gap: 20px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .cast-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-panel {
+  background: #ffffff;
+  border: 1px solid #e3edf2;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.panel-header h3 {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.35rem;
+  color: var(--dark-green);
+}
+
+.badge-count {
+  background: #eaf4f0;
+  color: var(--green);
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-family: 'Jua', sans-serif;
+}
+
+.panel-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+#nameInput {
+  width: 100%;
+  min-height: 380px;
+  resize: vertical;
+  line-height: 1.7;
+  padding: 16px;
+  border: 1.5px solid #dbe6eb;
+  border-radius: 16px;
+  background: #fcfeff;
+  color: var(--text);
+  font-size: 1.05rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+#nameInput:focus {
+  border-color: var(--sky-blue);
+  box-shadow: 0 0 0 4px rgba(123, 188, 213, 0.2);
+}
+
+.roster-quick-btn {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.quick-chip {
+  padding: 6px 12px;
+  background: #f0f7f8;
+  border: 1px solid #d7e8ee;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.quick-chip:hover {
+  background: #e1eff3;
+}
+
+/* Role List in Setup */
+.role-cards-container {
+  display: grid;
+  gap: 14px;
+}
+
+.setup-role-card {
+  padding: 16px 18px;
+  border: 1.5px solid #e6f0f4;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #ffffff, #fafdff);
+  transition: border-color 0.2s;
+}
+
+.setup-role-card:hover {
+  border-color: #badbeb;
+}
+
+.role-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.role-brand-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  background: #f0f8fb;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.role-name-desc h4 {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.25rem;
+  color: var(--dark-green);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.role-name-desc p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.role-count-tag {
+  font-family: 'Jua', sans-serif;
+  font-size: 0.95rem;
+  color: var(--green);
+  background: #eaf4f0;
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+.mode-toggle-group {
+  display: flex;
+  gap: 4px;
+  background: #eef5f8;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 10px;
+}
+
+.mode-toggle-btn {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 0.9rem;
+  font-weight: 750;
+  color: var(--muted);
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.mode-toggle-btn.active {
+  background: #ffffff;
+  color: var(--green);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.role-config-area {
+  margin-top: 8px;
+}
+
+.name-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding: 6px;
+  background: #fbfdfe;
+  border: 1px solid #eaf1f4;
+  border-radius: 12px;
+}
+
+@media (max-width: 600px) {
+  .name-pick-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.name-check-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #e1e9ee;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.name-check-label input {
+  accent-color: var(--green);
+}
+
+.name-check-label:has(input:checked) {
+  background: #e7f5ef;
+  border-color: #8ed0b5;
+  color: var(--green);
+}
+
+.name-check-label:has(input:disabled) {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.lottery-number-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 750;
+  color: var(--text);
+  font-size: 0.95rem;
+  background: #f8fcfe;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5f0f5;
+}
+
+.lottery-number-box input {
+  width: 80px;
+  border: 1.5px solid #cfe0e8;
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-family: 'Jua', sans-serif;
+  color: var(--green);
+  outline: none;
+}
+
+.lottery-number-box input:focus {
+  border-color: var(--green);
+}
+
+.cast-submit-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.summary-text {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.summary-text b {
+  color: var(--green);
+  font-weight: 800;
+}
+
+.start-cast-btn {
+  background: linear-gradient(135deg, var(--green), var(--dark-green));
+  color: #ffffff;
+  font-family: 'Jua', sans-serif;
+  font-size: 1.3rem;
+  padding: 14px 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(49, 95, 79, 0.28);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.start-cast-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(49, 95, 79, 0.35);
+}
+
+#castError {
+  margin-top: 14px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  background: #fdf0ed;
+  border: 1px solid #f8cfc5;
+  color: #c94026;
+  font-size: 0.95rem;
+  font-weight: 750;
+}
+
+/* -------------------------------------------------------------
+   MODE 2: IN-GAME STAGE (Winter Snow Field Canvas)
+   ------------------------------------------------------------- */
+#castGameStage {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  display: grid;
+  place-items: center;
+  background: #17242c;
+}
+
+.cast-canvas-frame {
+  position: relative;
+  width: min(100vw, 177.777778vh);
+  height: min(100vh, 56.25vw);
+  aspect-ratio: 16 / 9;
+  background: #b5d5e5;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+}
+
+#castCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cast-hint-toast {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 22px;
+  background: rgba(23, 48, 59, 0.85);
+  color: #f0f9fd;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(0.95rem, 1.4vw, 1.25rem);
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.5s;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.cast-hint-toast.faded {
+  opacity: 0;
+}
+
+.cast-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 18px);
+  padding: clamp(8px, 1.4vw, 16px);
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  background: linear-gradient(0deg, rgba(14, 30, 39, 0.9) 0%, rgba(14, 30, 39, 0.72) 65%, rgba(14, 30, 39, 0) 100%);
+  z-index: 10;
+}
+
+.cast-role-trigger {
+  position: relative;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  width: clamp(100px, 19vw, 215px);
+  height: clamp(66px, 9.2vw, 105px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 1vw, 12px);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1a3846;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: transform 0.18s, background 0.18s, border-color 0.18s;
+}
+
+.cast-role-trigger:hover:not(:disabled) {
+  transform: translateY(-5px);
+  background: #ffffff;
+  border-color: #ffda79;
+}
+
+.cast-role-trigger.revealed {
+  background: #e4f2f8;
+  border-color: #83c1dc;
+  opacity: 0.95;
+}
+
+.trigger-icon {
+  font-size: clamp(26px, 4vw, 48px);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.trigger-info {
+  text-align: left;
+}
+
+.trigger-info strong {
+  display: block;
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(15px, 2vw, 24px);
+  letter-spacing: -0.02em;
+  color: #173b4b;
+  white-space: nowrap;
+}
+
+.trigger-info small {
+  display: block;
+  font-size: clamp(9px, 1.1vw, 13px);
+  font-weight: 700;
+  color: #557585;
+  white-space: nowrap;
+}
+
+.cast-action-tools {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: clamp(4px, 1.2vw, 14px);
+}
+
+.side-tool-btn {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: clamp(11px, 1.1vw, 14px);
+  font-weight: 800;
+  color: #1f4251;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transition: all 0.15s;
+}
+
+.side-tool-btn:hover {
+  background: #ffffff;
+  transform: translateY(-2px);
+}
+
+/* Results Modal Overlay */
+#castResultModal {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(14, 28, 36, 0.65);
+  backdrop-filter: blur(8px);
+}
+
+.result-card-container {
+  width: min(780px, 94%);
+  max-height: min(650px, 90%);
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 28px;
+  padding: clamp(20px, 3.5vw, 34px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.result-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.result-top-bar h3 {
+  font-family: 'Jua', sans-serif;
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  color: var(--dark-green);
+}
+
+.result-close-btn {
+  background: #eef5f8;
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-family: 'Jua', sans-serif;
+  font-size: 1rem;
+  color: #2b5061;
+}
+
+.result-roles-display {
+  display: grid;
+  gap: 14px;
+}
+
+.result-role-box {
+  background: #f7fafc;
+  border: 1.5px solid #e2edf2;
+  border-radius: 18px;
+  padding: 16px 20px;
+}
+
+.result-role-box h4 {
+  font-family: 'Jua', sans-serif;
+  font-size: 1.25rem;
+  color: #1e4554;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-names-p {
+  font-size: 1.05rem;
+  color: #334c57;
+  font-weight: 700;
+  line-height: 1.7;
+}
+
+/* Sound Effect / Toast Helper */
+#appToast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark-green);
+  color: #ffffff;
+  padding: 12px 26px;
+  border-radius: 999px;
+  font-family: 'Jua', sans-serif;
+  font-size: 1.1rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #ffda79;
+}
+</style>
+</head>
+<body>
+
+<!-- In-App Toast -->
+<div id="appToast">
+  <span id="toastIcon">✨</span>
+  <span id="toastMsg">알림 메시지</span>
+</div>
+
+<!-- Master Header Navigation -->
+<header class="master-header">
+  <div class="header-inner">
+    <div class="app-brand">
+      <div class="brand-icon">❄️</div>
+      <div class="brand-text">
+        <h1>달누리 겨울 신체표현 놀이터</h1>
+        <p>움직이는 겨울 동화 &amp; 배역 추첨 올인원</p>
+      </div>
+    </div>
+
+    <!-- Mode Switcher Tabs -->
+    <nav class="nav-tabs" role="tablist">
+      <button type="button" class="tab-btn active" id="tabStory" onclick="switchMainTab('story')">
+        <span>📖</span> 1. 움직이는 겨울 동화
+      </button>
+      <button type="button" class="tab-btn" id="tabCast" onclick="switchMainTab('cast')">
+        <span>🎭</span> 2. 신체표현 배역 정하기
+      </button>
+    </nav>
+
+    <div class="header-tools">
+      <button type="button" class="tool-chip" onclick="toggleAudioMute()">
+        <span id="soundIcon">🔊</span> <span id="soundText">소리 켬</span>
+      </button>
+      <button type="button" class="tool-chip" onclick="toggleFullscreen()">
+        <span>📺</span> 전체화면
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- =============================================================
+     1. MODE 1: INTERACTIVE WINTER MOTION STORY
+     ============================================================= -->
+<main id="storyMode">
+  <div class="story-frame" id="storyFrame">
+    <!-- Scene Navigation Header -->
+    <div class="story-nav-bar">
+      <button type="button" class="scene-step-btn active" id="sceneBtn1" onclick="jumpStoryScene(1)">
+        ❄️ 1장: 하얀 눈밭
+      </button>
+      <button type="button" class="scene-step-btn" id="sceneBtn2" onclick="jumpStoryScene(2)">
+        ⛄ 2장: 눈사람 등장
+      </button>
+      <button type="button" class="scene-step-btn" id="sceneBtn3" onclick="jumpStoryScene(3)">
+        💨 3장: 쌩쌩 찬바람
+      </button>
+    </div>
+
+    <!-- Story Canvas -->
+    <canvas id="storyCanvas" width="1280" height="720"></canvas>
+
+    <!-- Interactive Subtitle Caption / Advance Card -->
+    <div class="story-caption-card" id="storyCaption" onclick="nextStoryScene()">
+      <h2 id="captionTitle">하늘에서 하얀 눈송이가 펄펄 내려요</h2>
+      <p id="captionDesc">조용한 겨울 숲속 눈밭에 맑은 눈꽃이 사뿐사뿐 춤추며 내려앉아요.</p>
+      <span class="story-click-guide">화면을 터치하면 다음 이야기로 넘어가요 👉</span>
+    </div>
+  </div>
+</main>
+
+<!-- =============================================================
+     2. MODE 2: PHYSICAL ROLE CASTING & LOTTERY
+     ============================================================= -->
+<section id="castMode" hidden>
+  <div class="cast-shell">
+    <div class="cast-title-box">
+      <div class="cast-title-icon">🎭</div>
+      <div class="cast-title-text">
+        <h2>겨울 신체표현 배역 정하기</h2>
+        <p>우리 반 친구들의 이름을 적고, 눈사람·찬바람·눈송이 역할을 <b>직접 선택</b>하거나 <b>무작위 추첨</b>으로 정해보아요!</p>
+      </div>
+    </div>
+
+    <div class="cast-grid">
+      <!-- Left Panel: Roster Input -->
+      <article class="card-panel">
+        <div class="panel-header">
+          <h3>1. 우리 반 친구들</h3>
+          <span class="badge-count" id="rosterCount">0명</span>
+        </div>
+        <p class="panel-desc">한 줄에 한 명씩 이름을 적어주세요. 쉼표(,)로 구분해 적어도 쏙쏙 등록됩니다.</p>
+        <textarea id="nameInput" spellcheck="false" placeholder="자리프&#10;정윤우&#10;이누리&#10;박찬영&#10;강도윤&#10;김하늘&#10;이서준&#10;최민준&#10;..."></textarea>
+        <div class="roster-quick-btn">
+          <button type="button" class="quick-chip" onclick="loadDalnuriDefaultRoster()">🌟 달누리반 명단 채우기</button>
+          <button type="button" class="quick-chip" onclick="clearRoster()">🗑️ 지우기</button>
+        </div>
+      </article>
+
+      <!-- Right Panel: Role Assignment Options -->
+      <article class="card-panel">
+        <div class="panel-header">
+          <h3>2. 역할별 배정 방법</h3>
+          <span class="badge-count" id="rolesAssignedTotal">0명 배정</span>
+        </div>
+        <p class="panel-desc">직접 선택은 이름을 콕 찍고, 추첨은 인원수만 적으면 됩니다. 한 친구에게 역할이 중복되지 않아요.</p>
+
+        <div class="role-cards-container" id="roleSetupList">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+        <div class="cast-submit-bar">
+          <div class="summary-text" id="castSummary">이름을 입력해주세요.</div>
+          <button type="button" class="start-cast-btn" onclick="enterCastField()">
+            <span>❄️</span> 눈밭에서 배역 정하기 →
+          </button>
+        </div>
+
+        <div id="castError" hidden></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Cast In-Game Field Canvas Overlay -->
+<div id="castGameStage" hidden>
+  <div class="cast-canvas-frame" id="castFrame">
+    <canvas id="castCanvas" width="1280" height="720"></canvas>
+    
+    <div class="cast-hint-toast" id="castHint">아래 역할을 눌러 친구들을 눈밭에 불러보세요!</div>
+
+    <!-- Bottom Role Reveal Triggers -->
+    <div class="cast-bottom-bar">
+      <button type="button" class="cast-role-trigger" data-role="snowman" onclick="revealCastRole('snowman')">
+        <span class="trigger-icon">⛄</span>
+        <span class="trigger-info">
+          <strong>눈사람</strong>
+          <small id="badgeSnowman">0명 배정</small>
+        </span>
+      </button>
+
+      <button type="button" class="cast-role-trigger" data-role="wind" onclick="revealCastRole('wind')">
+        <span class="trigger-icon">💨</span>
+        <span class="trigger-info">
+          <strong>찬바람</strong>
+          <small id="badgeWind">0명 배정</small>
+        </span>
+      </button>
+
+      <button type="button" class="cast-role-trigger" data-role="snowflake" onclick="revealCastRole('snowflake')">
+        <span class="trigger-icon">❄️</span>
+        <span class="trigger-info">
+          <strong>눈송이</strong>
+          <small id="badgeSnowflake">0명 배정</small>
+        </span>
+      </button>
+
+      <div class="cast-action-tools">
+        <button type="button" class="side-tool-btn" onclick="openResultsModal()">☰ 결과표</button>
+        <button type="button" class="side-tool-btn" onclick="resetCastReveal()">↺ 다시 시작</button>
+        <button type="button" class="side-tool-btn" onclick="exitCastField()">⚙ 배역 설정</button>
+      </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="castResultModal" hidden role="dialog" aria-modal="true" onclick="if(event.target===this)closeResultsModal()">
+      <div class="result-card-container">
+        <div class="result-top-bar">
+          <h3>❄️ 우리 반 겨울 신체표현 배역 결과표</h3>
+          <button type="button" class="result-close-btn" onclick="closeResultsModal()">닫기 ✕</button>
+        </div>
+        <div class="result-roles-display" id="resultRolesDisplay"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* -------------------------------------------------------------
+   GLOBAL AUDIO SYNTH ENGINE (Web Audio API)
+   - Zero external audio files required
+   - Never fails on mobile/tablet or iOS Safari
+   ------------------------------------------------------------- */
+let audioCtx = null;
+let soundEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
+function playChime(freq = 523.25, duration = 0.35, gainVal = 0.18) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(freq * 1.5, ctx.currentTime + duration * 0.5);
+
+    gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch (e) {}
+}
+
+function playWindWhoosh(duration = 1.0) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = getAudioCtx();
+    if (!ctx) return;
+    const bufferSize = ctx.sampleRate * duration;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * 0.25;
+    }
+
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(350, ctx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(750, ctx.currentTime + duration * 0.4);
+    filter.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + duration);
+    filter.Q.value = 3.0;
+
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(0.01, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.25, ctx.currentTime + duration * 0.3);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+
+    noise.start();
+    noise.stop(ctx.currentTime + duration);
+  } catch (e) {}
+}
+
+function playFanfare() {
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((n, idx) => {
+    setTimeout(() => playChime(n, 0.45, 0.18), idx * 120);
+  });
+}
+
+function toggleAudioMute() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundIcon').innerText = soundEnabled ? '🔊' : '🔈';
+  document.getElementById('soundText').innerText = soundEnabled ? '소리 켬' : '소리 끔';
+  showToast(soundEnabled ? '소리를 켰습니다.' : '소리를 껐습니다.', soundEnabled ? '🔊' : '🔈');
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.().catch(() => {});
+  } else {
+    document.exitFullscreen?.().catch(() => {});
+  }
+}
+
+let toastTimer = null;
+function showToast(msg, icon = '✨') {
+  const t = document.getElementById('appToast');
+  if (!t) return;
+  document.getElementById('toastIcon').innerText = icon;
+  document.getElementById('toastMsg').innerText = msg;
+  t.style.display = 'inline-flex';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.style.display = 'none';
+  }, 2400);
+}
+
+/* -------------------------------------------------------------
+   MASTER TAB SWITCHING
+   ------------------------------------------------------------- */
+let currentMode = 'story'; // 'story' | 'cast'
+
+function switchMainTab(mode) {
+  currentMode = mode;
+  document.getElementById('tabStory').classList.toggle('active', mode === 'story');
+  document.getElementById('tabCast').classList.toggle('active', mode === 'cast');
+
+  document.getElementById('storyMode').hidden = (mode !== 'story');
+  document.getElementById('castMode').hidden = (mode !== 'cast');
+
+  if (mode === 'story') {
+    resizeStoryCanvas();
+  } else {
+    renderRoleSetupCards();
+    updateCastSummary();
+  }
+}
+
+/* =============================================================
+   1. MODE 1: INTERACTIVE WINTER MOTION STORY ENGINE
+   ============================================================= */
+const sCanvas = document.getElementById('storyCanvas');
+const sCtx = sCanvas.getContext('2d');
+const W = 1280, H = 720;
+let storyScene = 1; // 1: Falling Snow & Meadow, 2: Snowmen appear, 3: Cold wind blows
+let storySceneStart = performance.now();
+
+const storyCaptions = {
+  1: {
+    title: "1장: 하늘에서 하얀 눈송이가 펄펄 내려요 ❄️",
+    desc: "고요한 겨울 숲속 눈밭에 맑은 눈꽃이 사뿐사뿐 춤추며 소복소복 쌓여요.",
+    guide: "화면을 터치하면 다음 이야기로 넘어가요 👉"
+  },
+  2: {
+    title: "2장: 데굴데굴 눈을 굴려 눈사람 완성! ⛄",
+    desc: "친구들이 정성껏 눈을 굴려 빨간 모자와 목도리를 두른 멋진 눈사람을 만들었어요!",
+    guide: "눈사람을 터치하면 찬바람이 불어와요 👉"
+  },
+  3: {
+    title: "3장: 쌩쌩 찬바람도 끄떡없어요! 💨",
+    desc: "쌩쌩~ 겨울바람이 불어와도 따뜻한 목도리를 여미고 친구들과 신나게 춤을 춰요!",
+    guide: "화면을 터치하면 처음부터 다시 감상해요 ↺"
+  }
+};
+
+// Snowflakes simulation for story mode
+const storyFlakes = [];
+for (let i = 0; i < 90; i++) {
+  storyFlakes.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    r: 2 + Math.random() * 4.5,
+    speed: 0.8 + Math.random() * 1.8,
+    sway: Math.random() * Math.PI * 2,
+    swaySpeed: 0.02 + Math.random() * 0.03,
+    alpha: 0.4 + Math.random() * 0.55
+  });
+}
+
+// 8 Snowmen spots on the field
+const snowmenSpots = [
+  { x: 210, y: 520, scale: 0.95, phase: 0.2 },
+  { x: 380, y: 460, scale: 0.82, phase: 1.1 },
+  { x: 540, y: 530, scale: 1.05, phase: 2.3 },
+  { x: 710, y: 470, scale: 0.88, phase: 0.7 },
+  { x: 880, y: 540, scale: 1.02, phase: 1.8 },
+  { x: 1060, y: 490, scale: 0.85, phase: 2.9 },
+  { x: 300, y: 610, scale: 1.15, phase: 3.4 },
+  { x: 790, y: 620, scale: 1.18, phase: 0.9 }
+];
+
+function jumpStoryScene(sc) {
+  storyScene = sc;
+  storySceneStart = performance.now();
+  updateStoryCaptions();
+
+  document.querySelectorAll('.scene-step-btn').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx + 1 === sc);
+  });
+
+  if (sc === 1) playChime(587.33, 0.4);
+  else if (sc === 2) playFanfare();
+  else if (sc === 3) playWindWhoosh(1.4);
+}
+
+function nextStoryScene() {
+  if (storyScene === 1) jumpStoryScene(2);
+  else if (storyScene === 2) jumpStoryScene(3);
+  else jumpStoryScene(1);
+}
+
+function updateStoryCaptions() {
+  const c = storyCaptions[storyScene];
+  document.getElementById('captionTitle').innerText = c.title;
+  document.getElementById('captionDesc').innerText = c.desc;
+  document.querySelector('.story-click-guide').innerText = c.guide;
+}
+
+function resizeStoryCanvas() {
+  const r = sCanvas.getBoundingClientRect();
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  sCanvas.width = Math.max(1, Math.round(r.width * d));
+  sCanvas.height = Math.max(1, Math.round(r.height * d));
+  sCtx.setTransform(sCanvas.width / W, 0, 0, sCanvas.height / H, 0, 0);
+  sCtx.imageSmoothingEnabled = true;
+  sCtx.imageSmoothingQuality = 'high';
+}
+window.addEventListener('resize', resizeStoryCanvas);
+
+/* Watercolor Pine Tree Painter */
+function drawWinterPine(ctx, x, y, h, sway) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(sway);
+
+  // Trunk
+  ctx.fillStyle = '#4a3b32';
+  ctx.beginPath();
+  ctx.roundRect(-h * 0.05, 0, h * 0.1, h * 0.45, 4);
+  ctx.fill();
+
+  // Tiered Pine Foliage
+  const tiers = 4;
+  for (let i = 0; i < tiers; i++) {
+    const ty = -h * 0.22 * i;
+    const tw = h * (0.42 - i * 0.08);
+    const th = h * 0.35;
+
+    // Green Foliage
+    ctx.fillStyle = i % 2 === 0 ? '#335c49' : '#284839';
+    ctx.beginPath();
+    ctx.moveTo(0, ty - th);
+    ctx.lineTo(tw, ty);
+    ctx.quadraticCurveTo(0, ty + th * 0.2, -tw, ty);
+    ctx.closePath();
+    ctx.fill();
+
+    // Snow Topping on Branches
+    ctx.fillStyle = 'rgba(242, 248, 252, 0.95)';
+    ctx.beginPath();
+    ctx.moveTo(0, ty - th);
+    ctx.lineTo(tw * 0.85, ty - th * 0.2);
+    ctx.quadraticCurveTo(0, ty - th * 0.05, -tw * 0.85, ty - th * 0.2);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+/* Watercolor Snowman Painter */
+function drawCuteSnowman(ctx, x, y, scale, time, wobblePhase, isWindy) {
+  ctx.save();
+  ctx.translate(x, y);
+
+  const bob = Math.sin(time * 2 + wobblePhase) * 3;
+  const sway = isWindy ? Math.sin(time * 8 + wobblePhase) * 0.12 : Math.sin(time * 1.5 + wobblePhase) * 0.04;
+  ctx.rotate(sway);
+  ctx.scale(scale, scale);
+
+  // Bottom Shadow
+  ctx.fillStyle = 'rgba(120, 160, 185, 0.25)';
+  ctx.beginPath();
+  ctx.ellipse(0, 5, 45, 14, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Body (Bottom Snowball)
+  const gradBody = ctx.createRadialGradient(-10, -35, 10, 0, -35, 42);
+  gradBody.addColorStop(0, '#ffffff');
+  gradBody.addColorStop(0.75, '#f0f7fb');
+  gradBody.addColorStop(1, '#cde2ed');
+  ctx.fillStyle = gradBody;
+  ctx.beginPath();
+  ctx.arc(0, -35, 40, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Buttons on belly
+  ctx.fillStyle = '#2c3e50';
+  for (let b = 0; b < 3; b++) {
+    ctx.beginPath();
+    ctx.arc(0, -48 + b * 13, 3.2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Branch Twig Arms
+  ctx.strokeStyle = '#5a4638';
+  ctx.lineWidth = 3.5;
+  ctx.lineCap = 'round';
+  // Left arm
+  ctx.beginPath();
+  ctx.moveTo(-32, -45);
+  ctx.lineTo(-58, -62 + bob);
+  ctx.lineTo(-68, -68 + bob);
+  ctx.stroke();
+  // Right arm
+  ctx.beginPath();
+  ctx.moveTo(32, -45);
+  ctx.lineTo(58, -60 - bob);
+  ctx.lineTo(70, -56 - bob);
+  ctx.stroke();
+
+  // Head (Top Snowball)
+  const headY = -92;
+  const gradHead = ctx.createRadialGradient(-8, headY - 8, 8, 0, headY, 28);
+  gradHead.addColorStop(0, '#ffffff');
+  gradHead.addColorStop(0.75, '#f2f8fc');
+  gradHead.addColorStop(1, '#d0e5f0');
+  ctx.fillStyle = gradHead;
+  ctx.beginPath();
+  ctx.arc(0, headY, 28, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Eyes
+  ctx.fillStyle = '#1c2833';
+  ctx.beginPath();
+  ctx.arc(-9, headY - 4, 3.5, 0, Math.PI * 2);
+  ctx.arc(9, headY - 4, 3.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Cheek Blushes
+  ctx.fillStyle = 'rgba(255, 120, 120, 0.4)';
+  ctx.beginPath();
+  ctx.arc(-16, headY + 4, 5.5, 0, Math.PI * 2);
+  ctx.arc(16, headY + 4, 5.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Carrot Nose
+  ctx.fillStyle = '#e67e22';
+  ctx.beginPath();
+  ctx.moveTo(0, headY);
+  ctx.lineTo(16, headY + 2);
+  ctx.lineTo(0, headY + 5);
+  ctx.closePath();
+  ctx.fill();
+
+  // Smile
+  ctx.strokeStyle = '#2c3e50';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(0, headY + 4, 8, 0.2, Math.PI - 0.2);
+  ctx.stroke();
+
+  // Red/Green Warm Scarf
+  ctx.fillStyle = wobblePhase > 1.5 ? '#e74c3c' : '#27ae60';
+  ctx.beginPath();
+  ctx.roundRect(-22, headY + 20, 44, 11, 5);
+  ctx.fill();
+  // Scarf flutter tail
+  ctx.beginPath();
+  const tailSwing = isWindy ? Math.sin(time * 12) * 16 : 0;
+  ctx.moveTo(8, headY + 28);
+  ctx.lineTo(18 + tailSwing, headY + 54);
+  ctx.lineTo(7 + tailSwing, headY + 54);
+  ctx.lineTo(0, headY + 28);
+  ctx.fill();
+
+  // Cozy Knit Hat with Pompom
+  ctx.fillStyle = wobblePhase > 1.5 ? '#2980b9' : '#e67e22';
+  ctx.beginPath();
+  ctx.roundRect(-24, headY - 26, 48, 8, 4);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(0, headY - 26, 18, Math.PI, Math.PI * 2);
+  ctx.fill();
+  // Pompom
+  ctx.fillStyle = '#ffffff';
+  ctx.beginPath();
+  ctx.arc(0, headY - 45, 6.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* Cold Winter Wind Gust Particle Animation */
+function drawWindGusts(ctx, time) {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(215, 240, 255, 0.85)';
+  ctx.lineWidth = 4;
+  ctx.lineCap = 'round';
+
+  for (let i = 0; i < 6; i++) {
+    const speed = 700 + i * 140;
+    const wx = ((time * speed + i * 280) % (W + 400)) - 200;
+    const wy = 180 + i * 85 + Math.sin(time * 6 + i) * 35;
+    const len = 140 + i * 35;
+
+    ctx.beginPath();
+    ctx.moveTo(wx, wy);
+    ctx.quadraticCurveTo(wx + len * 0.5, wy - 30, wx + len, wy + 10);
+    ctx.stroke();
+
+    // Spiral wind curls
+    ctx.beginPath();
+    ctx.arc(wx + len + 8, wy + 4, 10, 0, Math.PI * 1.5);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+/* Master Loop for Story Mode */
+function loopStory(now) {
+  requestAnimationFrame(loopStory);
+  if (currentMode !== 'story') return;
+
+  const time = now * 0.001;
+  const sceneAge = (now - storySceneStart) * 0.001;
+
+  sCtx.clearRect(0, 0, W, H);
+
+  // 1. Winter Sky Gradient
+  const skyGrad = sCtx.createLinearGradient(0, 0, 0, H);
+  skyGrad.addColorStop(0, '#8eb8cf');
+  skyGrad.addColorStop(0.45, '#c0dce8');
+  skyGrad.addColorStop(1, '#eaf4f8');
+  sCtx.fillStyle = skyGrad;
+  sCtx.fillRect(0, 0, W, H);
+
+  // Soft Winter Sun
+  const sunGrad = sCtx.createRadialGradient(W * 0.78, 120, 20, W * 0.78, 120, 220);
+  sunGrad.addColorStop(0, 'rgba(255, 252, 230, 0.6)');
+  sunGrad.addColorStop(1, 'rgba(255, 252, 230, 0)');
+  sCtx.fillStyle = sunGrad;
+  sCtx.fillRect(0, 0, W, H * 0.5);
+
+  // Distant Snowy Hills
+  sCtx.fillStyle = '#a9cddb';
+  sCtx.beginPath();
+  sCtx.moveTo(0, 360);
+  sCtx.bezierCurveTo(340, 310, 680, 420, W, 340);
+  sCtx.lineTo(W, H);
+  sCtx.lineTo(0, H);
+  sCtx.fill();
+
+  // Background Pine Trees
+  const pines = [
+    { x: 120, y: 380, h: 140, p: 0.2 },
+    { x: 260, y: 370, h: 120, p: 1.1 },
+    { x: 450, y: 395, h: 155, p: 2.3 },
+    { x: 670, y: 385, h: 130, p: 0.8 },
+    { x: 920, y: 375, h: 150, p: 1.7 },
+    { x: 1140, y: 390, h: 135, p: 2.9 }
+  ];
+  pines.forEach(p => {
+    const treeSway = storyScene === 3 ? Math.sin(time * 5 + p.p) * 0.05 : Math.sin(time * 1.2 + p.p) * 0.02;
+    drawWinterPine(sCtx, p.x, p.y, p.h, treeSway);
+  });
+
+  // Rolling Foreground Snowy Hills
+  const hillGrad = sCtx.createLinearGradient(0, 420, 0, H);
+  hillGrad.addColorStop(0, '#ffffff');
+  hillGrad.addColorStop(0.6, '#eef6fa');
+  hillGrad.addColorStop(1, '#d5e7f0');
+  sCtx.fillStyle = hillGrad;
+  sCtx.beginPath();
+  sCtx.moveTo(0, 430);
+  sCtx.bezierCurveTo(320, 480, 840, 390, W, 440);
+  sCtx.lineTo(W, H);
+  sCtx.lineTo(0, H);
+  sCtx.fill();
+
+  // 2. Render Scene Elements
+  if (storyScene >= 2) {
+    // Snowmen appear!
+    const popProgress = Math.min(1, sceneAge / 0.8);
+    snowmenSpots.forEach((s, idx) => {
+      const delay = idx * 0.12;
+      const spotProgress = Math.max(0, Math.min(1, (sceneAge - delay) / 0.6));
+      if (spotProgress > 0) {
+        const easePop = spotProgress * spotProgress * (3 - 2 * spotProgress);
+        const curScale = s.scale * easePop;
+        drawCuteSnowman(sCtx, s.x, s.y + (1 - easePop) * 60, curScale, time, s.phase, storyScene === 3);
+      }
+    });
+  }
+
+  if (storyScene === 3) {
+    // 3. Cold Wind whooshing!
+    drawWindGusts(sCtx, time);
+  }
+
+  // 4. Falling Snowflakes (All scenes)
+  sCtx.fillStyle = '#ffffff';
+  storyFlakes.forEach(f => {
+    f.y += f.speed;
+    f.x += Math.sin(time * f.swaySpeed * 10 + f.sway) * (storyScene === 3 ? 3.5 : 1.2);
+    if (f.y > H + 10) {
+      f.y = -10;
+      f.x = Math.random() * W;
+    }
+    sCtx.save();
+    sCtx.globalAlpha = f.alpha;
+    sCtx.beginPath();
+    sCtx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+    sCtx.fill();
+    sCtx.restore();
+  });
+}
+requestAnimationFrame(loopStory);
+
+/* Keyboard and Pointer Shortcuts for Story Mode */
+document.getElementById('storyCanvas').addEventListener('pointerdown', nextStoryScene);
+document.addEventListener('keydown', e => {
+  if (currentMode !== 'story') return;
+  if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) {
+    e.preventDefault();
+    nextStoryScene();
+  } else if (e.key === 'Home') {
+    jumpStoryScene(1);
+  } else if (e.key === 'f' || e.key === 'F') {
+    toggleFullscreen();
+  }
+});
+
+
+/* =============================================================
+   2. MODE 2: PHYSICAL ROLE CASTING & LOTTERY ENGINE
+   ============================================================= */
+const castCanvas = document.getElementById('castCanvas');
+const cCtx = castCanvas.getContext('2d');
+
+const castRoles = ['snowman', 'wind', 'snowflake'];
+const roleInfo = {
+  snowman: { name: '눈사람', icon: '⛄', desc: '동글동글 우뚝 선 눈사람', color: '#27ae60' },
+  wind: { name: '찬바람', icon: '💨', desc: '쌩쌩 휘익 달리는 겨울바람', color: '#2980b9' },
+  snowflake: { name: '눈송이', icon: '❄️', desc: '사뿐사뿐 춤추는 하얀 눈꽃', color: '#8e44ad' }
+};
+
+const castModels = {
+  snowman: { mode: 'lottery', count: 5, picked: [] },
+  wind: { mode: 'lottery', count: 4, picked: [] },
+  snowflake: { mode: 'lottery', count: 5, picked: [] }
+};
+
+let rosterNames = [];
+let assignedRoles = {};
+let assignedSet = new Set();
+let revealedSprites = [];
+let castSlots = [];
+let castPlaying = false;
+let castStartedAt = 0;
+
+// Dalnuri Kindergarten Class Default Roster
+const DALNURI_DEFAULT_NAMES = [
+  '자리프', '정윤우', '이누리', '박찬영', '강도윤',
+  '김하늘', '이서준', '박다은', '최민준', '윤서아',
+  '한예준', '송지우', '임하린', '조은우'
+];
+
+function loadDalnuriDefaultRoster() {
+  document.getElementById('nameInput').value = DALNURI_DEFAULT_NAMES.join('\n');
+  updateRoster();
+  showToast('달누리반 14명 명단이 입력되었습니다!', '🌟');
+}
+
+function clearRoster() {
+  document.getElementById('nameInput').value = '';
+  updateRoster();
+}
+
+function parseClassRoster(raw) {
+  const list = raw.split(/[\n,，、;；]+/).map(s => s.trim()).filter(Boolean);
+  const seen = new Map();
+  return list.map(name => {
+    const c = (seen.get(name) || 0) + 1;
+    seen.set(name, c);
+    return {
+      id: `${name}|${c}`,
+      name: name,
+      label: c > 1 ? `${name} (${c})` : name
+    };
+  });
+}
+
+function updateRoster() {
+  rosterNames = parseClassRoster(document.getElementById('nameInput').value);
+  document.getElementById('rosterCount').innerText = `${rosterNames.length}명`;
+
+  // Filter direct picks if names were removed
+  castRoles.forEach(r => {
+    castModels[r].picked = castModels[r].picked.filter(id => rosterNames.some(p => p.id === id));
+  });
+
+  renderRoleSetupCards();
+  updateCastSummary();
+  saveCastStorage();
+}
+
+document.getElementById('nameInput').addEventListener('input', updateRoster);
+
+function countForRole(r) {
+  const m = castModels[r];
+  return m.mode === 'direct' ? m.picked.length : m.count;
+}
+
+function getDirectTaken(exceptRole) {
+  return new Set(
+    castRoles
+      .filter(r => r !== exceptRole && castModels[r].mode === 'direct')
+      .flatMap(r => castModels[r].picked)
+  );
+}
+
+function setRoleMode(role, mode) {
+  castModels[role].mode = mode;
+  if (mode === 'direct') {
+    const taken = getDirectTaken(role);
+    castModels[role].picked = castModels[role].picked.filter(id => !taken.has(id));
+  }
+  renderRoleSetupCards();
+  updateCastSummary();
+  saveCastStorage();
+}
+
+function renderRoleSetupCards() {
+  const container = document.getElementById('roleSetupList');
+  if (!container) return;
+  container.innerHTML = '';
+
+  castRoles.forEach(r => {
+    const m = castModels[r];
+    const info = roleInfo[r];
+    const card = document.createElement('div');
+    card.className = 'setup-role-card';
+
+    // Header
+    const top = document.createElement('div');
+    top.className = 'role-card-top';
+
+    const brand = document.createElement('div');
+    brand.className = 'role-brand-box';
+    brand.innerHTML = `
+      <div class="role-avatar">${info.icon}</div>
+      <div class="role-name-desc">
+        <h4>${info.name} <span style="font-size:0.85rem; font-weight:normal; color:#888;">역할</span></h4>
+        <p>${info.desc}</p>
+      </div>
+    `;
+
+    const countTag = document.createElement('span');
+    countTag.className = 'role-count-tag';
+    countTag.id = `tag-${r}`;
+    countTag.innerText = `${countForRole(r)}명`;
+
+    top.appendChild(brand);
+    top.appendChild(countTag);
+    card.appendChild(top);
+
+    // Mode Toggle Buttons
+    const toggles = document.createElement('div');
+    toggles.className = 'mode-toggle-group';
+    toggles.innerHTML = `
+      <button type="button" class="mode-toggle-btn ${m.mode === 'lottery' ? 'active' : ''}" onclick="setRoleMode('${r}', 'lottery')">🎲 무작위 추첨</button>
+      <button type="button" class="mode-toggle-btn ${m.mode === 'direct' ? 'active' : ''}" onclick="setRoleMode('${r}', 'direct')">👆 직접 선택</button>
+    `;
+    card.appendChild(toggles);
+
+    // Options Area
+    const configArea = document.createElement('div');
+    configArea.className = 'role-config-area';
+
+    if (m.mode === 'direct') {
+      const grid = document.createElement('div');
+      grid.className = 'name-pick-grid';
+      const taken = getDirectTaken(r);
+
+      rosterNames.forEach(p => {
+        const lbl = document.createElement('label');
+        lbl.className = 'name-check-label';
+        const isChecked = m.picked.includes(p.id);
+        const isDisabled = taken.has(p.id);
+
+        lbl.innerHTML = `
+          <input type="checkbox" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''} />
+          <span>${p.label}</span>
+        `;
+
+        lbl.querySelector('input').addEventListener('change', e => {
+          if (e.target.checked) {
+            m.picked.push(p.id);
+          } else {
+            m.picked = m.picked.filter(id => id !== p.id);
+          }
+          countTag.innerText = `${countForRole(r)}명`;
+          updateCastSummary();
+          saveCastStorage();
+        });
+
+        grid.appendChild(lbl);
+      });
+
+      configArea.appendChild(grid);
+    } else {
+      const numBox = document.createElement('div');
+      numBox.className = 'lottery-number-box';
+      numBox.innerHTML = `
+        <span>추첨할 친구 인원:</span>
+        <input type="number" min="0" max="99" value="${m.count}" />
+        <span>명</span>
+      `;
+      const input = numBox.querySelector('input');
+      input.addEventListener('input', () => {
+        m.count = input.value === '' ? 0 : Math.max(0, parseInt(input.value) || 0);
+        countTag.innerText = `${m.count}명`;
+        updateCastSummary();
+        saveCastStorage();
+      });
+      configArea.appendChild(numBox);
+    }
+
+    card.appendChild(configArea);
+    container.appendChild(card);
+  });
+}
+
+function updateCastSummary() {
+  const sum = castRoles.reduce((acc, r) => acc + countForRole(r), 0);
+  const remaining = Math.max(0, rosterNames.length - sum);
+  document.getElementById('rolesAssignedTotal').innerText = `${sum}명 배정`;
+  document.getElementById('castSummary').innerHTML = `
+    등록된 친구 <b>${rosterNames.length}명</b> 중 배정 예정 <b>${sum}명</b> (미배정 ${remaining}명)
+  `;
+}
+
+function validateCastSetup() {
+  if (rosterNames.length === 0) {
+    return '우리 반 친구들의 이름을 1명 이상 입력해주세요.';
+  }
+  const total = castRoles.reduce((acc, r) => acc + countForRole(r), 0);
+  if (total === 0) {
+    return '최소 1명 이상의 역할을 배정해주세요.';
+  }
+  if (total > rosterNames.length) {
+    return `배정 인원(${total}명)이 전체 등록된 친구(${rosterNames.length}명)보다 많습니다. 인원을 줄여주세요.`;
+  }
+  return '';
+}
+
+function saveCastStorage() {
+  try {
+    const data = {
+      raw: document.getElementById('nameInput').value,
+      models: castModels
+    };
+    localStorage.setItem('dalnuri_winter_cast_v2', JSON.stringify(data));
+  } catch (e) {}
+}
+
+function loadCastStorage() {
+  try {
+    const raw = localStorage.getItem('dalnuri_winter_cast_v2');
+    if (raw) {
+      const data = JSON.parse(raw);
+      if (data && data.raw) {
+        document.getElementById('nameInput').value = data.raw;
+        if (data.models) {
+          castRoles.forEach(r => {
+            if (data.models[r]) {
+              castModels[r].mode = data.models[r].mode || 'lottery';
+              castModels[r].count = data.models[r].count ?? 4;
+              castModels[r].picked = data.models[r].picked || [];
+            }
+          });
+        }
+      }
+    } else {
+      // Default initial roster
+      loadDalnuriDefaultRoster();
+    }
+  } catch (e) {
+    loadDalnuriDefaultRoster();
+  }
+}
+
+/* Cryptographically unbiased array shuffle */
+function secureShuffle(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function makeFieldSlots(total) {
+  const count = Math.max(total, 1);
+  const cols = count <= 6 ? 4 : count <= 12 ? 6 : count <= 20 ? 7 : 8;
+  const rows = Math.ceil(count / cols);
+  const slots = [];
+  const marginX = 100;
+  const cellW = (W - marginX * 2) / cols;
+  const topY = rows <= 2 ? 360 : 260;
+  const bottomY = 560;
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const yFrac = rows === 1 ? 0.5 : r / (rows - 1);
+      const x = marginX + cellW * (c + 0.5) + (r % 2 ? cellW * 0.15 : 0) + (Math.random() - 0.5) * cellW * 0.15;
+      const y = topY + yFrac * (bottomY - topY) + (Math.random() - 0.5) * 16;
+      slots.push({ x: Math.max(70, Math.min(W - 70, x)), y: Math.max(220, Math.min(590, y)) });
+    }
+  }
+  return secureShuffle(slots).slice(0, count);
+}
+
+function enterCastField() {
+  const err = validateCastSetup();
+  const errDiv = document.getElementById('castError');
+  if (err) {
+    errDiv.innerText = err;
+    errDiv.hidden = false;
+    return;
+  }
+  errDiv.hidden = true;
+  saveCastStorage();
+
+  // Reset Field State
+  assignedRoles = { snowman: null, wind: null, snowflake: null };
+  assignedSet.clear();
+  revealedSprites = [];
+
+  const totalAssigned = castRoles.reduce((acc, r) => acc + countForRole(r), 0);
+  castSlots = makeFieldSlots(totalAssigned);
+
+  // Update button badges
+  castRoles.forEach(r => {
+    const btn = document.querySelector(`.cast-role-trigger[data-role="${r}"]`);
+    btn.classList.remove('revealed');
+    btn.disabled = countForRole(r) === 0;
+    const badge = document.getElementById(`badge${r.charAt(0).toUpperCase() + r.slice(1)}`);
+    badge.innerText = `${countForRole(r)}명 · ${castModels[r].mode === 'direct' ? '직접' : '추첨'}`;
+  });
+
+  const toast = document.getElementById('castHint');
+  toast.innerText = '아래 역할을 눌러 친구들을 눈밭에 불러보세요!';
+  toast.classList.remove('faded');
+
+  document.getElementById('castGameStage').hidden = false;
+  castPlaying = true;
+  resizeCastCanvas();
+  castStartedAt = performance.now();
+  playChime(659.25, 0.4);
+}
+
+function exitCastField() {
+  document.getElementById('castResultModal').hidden = true;
+  document.getElementById('castGameStage').hidden = true;
+  castPlaying = false;
+  renderRoleSetupCards();
+  updateCastSummary();
+}
+
+function resetCastReveal() {
+  document.getElementById('castResultModal').hidden = true;
+  enterCastField();
+  showToast('역할 공개를 처음부터 다시 시작합니다.', '↺');
+}
+
+function revealCastRole(role) {
+  if (!castPlaying || assignedRoles[role] !== null) return;
+
+  const m = castModels[role];
+  let chosen = [];
+
+  if (m.mode === 'direct') {
+    chosen = m.picked.map(id => rosterNames.find(p => p.id === id)).filter(Boolean);
+  } else {
+    const directTaken = getDirectTaken(null);
+    const pool = rosterNames.filter(p => !assignedSet.has(p.id) && !directTaken.has(p.id));
+    chosen = secureShuffle(pool).slice(0, m.count);
+  }
+
+  chosen.forEach(p => assignedSet.add(p.id));
+  assignedRoles[role] = chosen;
+
+  const startIndex = revealedSprites.length;
+  chosen.forEach((p, idx) => {
+    const slot = castSlots[startIndex + idx] || { x: 200 + idx * 80, y: 480 };
+    revealedSprites.push({
+      name: p.label,
+      role: role,
+      x: slot.x,
+      y: slot.y,
+      size: castSlots.length > 20 ? 80 : 105,
+      born: performance.now() + idx * 260,
+      phase: Math.random() * Math.PI * 2
+    });
+  });
+
+  // Highlight button
+  const btn = document.querySelector(`.cast-role-trigger[data-role="${role}"]`);
+  btn.classList.add('revealed');
+  btn.disabled = true;
+
+  // Sound and Toast
+  if (role === 'wind') playWindWhoosh(1.2);
+  else playChime(783.99, 0.45);
+
+  const toast = document.getElementById('castHint');
+  toast.innerText = `✨ ${roleInfo[role].name} 친구 ${chosen.length}명 등장!`;
+  toast.classList.remove('faded');
+  setTimeout(() => {
+    if (castPlaying) toast.classList.add('faded');
+  }, 3200);
+
+  // Check if all revealed -> Fanfare
+  const allDone = castRoles.every(r => assignedRoles[r] !== null || countForRole(r) === 0);
+  if (allDone) {
+    setTimeout(playFanfare, 1200);
+  }
+}
+
+function resizeCastCanvas() {
+  const r = castCanvas.getBoundingClientRect();
+  const d = Math.min(window.devicePixelRatio || 1, 2);
+  castCanvas.width = Math.max(1, Math.round(r.width * d));
+  castCanvas.height = Math.max(1, Math.round(r.height * d));
+  cCtx.setTransform(castCanvas.width / W, 0, 0, castCanvas.height / H, 0, 0);
+  cCtx.imageSmoothingEnabled = true;
+  cCtx.imageSmoothingQuality = 'high';
+}
+window.addEventListener('resize', resizeCastCanvas);
+
+/* Results Modal Operations */
+function openResultsModal() {
+  const root = document.getElementById('resultRolesDisplay');
+  root.innerHTML = '';
+
+  castRoles.forEach(r => {
+    const box = document.createElement('div');
+    box.className = 'result-role-box';
+    const info = roleInfo[r];
+    const assigned = assignedRoles[r];
+
+    let namesStr = '';
+    if (assigned === null) {
+      namesStr = '아직 눈밭에 공개하지 않았어요.';
+    } else if (assigned.length === 0) {
+      namesStr = '배정된 친구가 없어요.';
+    } else {
+      namesStr = assigned.map(p => p.label).join(' · ');
+    }
+
+    box.innerHTML = `
+      <h4><span>${info.icon}</span> ${info.name} 역할 (${assigned ? assigned.length : countForRole(r)}명)</h4>
+      <p class="result-names-p">${namesStr}</p>
+    `;
+    root.appendChild(box);
+  });
+
+  document.getElementById('castResultModal').hidden = false;
+  playChime(659.25, 0.3);
+}
+
+function closeResultsModal() {
+  document.getElementById('castResultModal').hidden = true;
+}
+
+/* -------------------------------------------------------------
+   CAST FIELD DRAWING & SPRITE ENGINE
+   ------------------------------------------------------------- */
+let castLabelQueue = [];
+
+function drawCharacterSprite(ctx, s, now) {
+  const age = (now - s.born) * 0.001;
+  if (age < 0) return;
+
+  const easeP = Math.min(1, age / 0.8);
+  const p = easeP * easeP * (3 - 2 * easeP);
+  const scale = 0.5 + 0.5 * p;
+
+  ctx.save();
+
+  if (s.role === 'snowman') {
+    // Rises from snow
+    const curY = s.y + (1 - p) * 140;
+    drawCuteSnowman(ctx, s.x, curY, (s.size / 105) * scale, now * 0.001, s.phase, false);
+    if (p > 0.65) {
+      castLabelQueue.push({ text: s.name, x: s.x, y: curY - s.size * 0.95, role: 'snowman' });
+    }
+  } else if (s.role === 'wind') {
+    // Swooshes in from side
+    const dir = s.phase > Math.PI ? 1 : -1;
+    const startX = dir > 0 ? -120 : W + 120;
+    const curX = startX * (1 - p) + s.x * p;
+    const curY = s.y - Math.sin(p * Math.PI) * 50;
+
+    ctx.translate(curX, curY);
+    ctx.scale(scale, scale);
+
+    // Cute Swirling Wind Cloud Character
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = 'rgba(120, 200, 240, 0.5)';
+    ctx.shadowBlur = 18;
+    ctx.beginPath();
+    ctx.arc(0, -25, 24, 0, Math.PI * 2);
+    ctx.arc(-18, -15, 18, 0, Math.PI * 2);
+    ctx.arc(18, -15, 18, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Wind Eyes & Blowing mouth
+    ctx.fillStyle = '#1e3d59';
+    ctx.beginPath();
+    ctx.arc(-8, -26, 3, 0, Math.PI * 2);
+    ctx.arc(8, -26, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Whistling mouth
+    ctx.fillStyle = '#e76f51';
+    ctx.beginPath();
+    ctx.arc(0, -16, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Swirling breeze ribbons
+    ctx.strokeStyle = 'rgba(175, 225, 255, 0.85)';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(22, -18);
+    ctx.quadraticCurveTo(55, -28, 48, -4);
+    ctx.stroke();
+
+    ctx.restore();
+
+    if (p > 0.65) {
+      castLabelQueue.push({ text: s.name, x: curX, y: curY - 55, role: 'wind' });
+    }
+    return;
+  } else if (s.role === 'snowflake') {
+    // Floats down gently
+    const curY = (s.y - 180) * (1 - p) + s.y * p;
+    const sway = Math.sin(now * 0.003 + s.phase) * 15;
+    const curX = s.x + sway;
+
+    ctx.translate(curX, curY);
+    ctx.scale(scale, scale);
+
+    // Beautiful Glowing Snowflake Icon & Halo
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    ctx.shadowColor = 'rgba(160, 215, 255, 0.6)';
+    ctx.shadowBlur = 20;
+
+    // Hexagonal crystal snowflake
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    for (let a = 0; a < 6; a++) {
+      ctx.save();
+      ctx.rotate((a * Math.PI) / 3);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(0, -32);
+      ctx.moveTo(0, -18);
+      ctx.lineTo(-9, -26);
+      ctx.moveTo(0, -18);
+      ctx.lineTo(9, -26);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // Cute smiling center face
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(0, 0, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = '#1c3144';
+    ctx.beginPath();
+    ctx.arc(-4, -2, 2.5, 0, Math.PI * 2);
+    ctx.arc(4, -2, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = '#e76f51';
+    ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    ctx.arc(0, 2, 4, 0.2, Math.PI - 0.2);
+    ctx.stroke();
+
+    ctx.restore();
+
+    if (p > 0.65) {
+      castLabelQueue.push({ text: s.name, x: curX, y: curY - 48, role: 'snowflake' });
+    }
+    return;
+  }
+
+  ctx.restore();
+}
+
+/* Collision-tested Name Labels */
+function drawAllCastLabels() {
+  const occupied = [];
+  const sorted = [...castLabelQueue].sort((a, b) => a.y - b.y);
+
+  sorted.forEach(item => {
+    cCtx.font = '800 21px "Jua", "Noto Sans KR", sans-serif';
+    const tw = cCtx.measureText(item.text).width;
+    const w = Math.min(240, tw + 28);
+    const h = 36;
+
+    let bx = item.x, by = item.y;
+    // Check boundaries
+    bx = Math.max(w / 2 + 10, Math.min(W - w / 2 - 10, bx));
+    by = Math.max(h / 2 + 10, Math.min(H - h / 2 - 10, by));
+
+    cCtx.save();
+    cCtx.shadowColor = 'rgba(15, 35, 45, 0.25)';
+    cCtx.shadowBlur = 10;
+    cCtx.shadowOffsetY = 3;
+
+    // Pill Background
+    cCtx.fillStyle = '#ffffff';
+    cCtx.beginPath();
+    cCtx.roundRect(bx - w / 2, by - h / 2, w, h, 14);
+    cCtx.fill();
+
+    // Color Left Badge
+    cCtx.shadowColor = 'transparent';
+    cCtx.fillStyle = roleInfo[item.role].color;
+    cCtx.beginPath();
+    cCtx.roundRect(bx - w / 2, by - h / 2, 6, h, [14, 0, 0, 14]);
+    cCtx.fill();
+
+    // Label Text
+    cCtx.fillStyle = '#173644';
+    cCtx.textAlign = 'center';
+    cCtx.textBaseline = 'middle';
+    cCtx.fillText(item.text, bx + 2, by + 1, w - 16);
+    cCtx.restore();
+  });
+
+  castLabelQueue = [];
+}
+
+/* Cast Field Animation Loop */
+function loopCast(now) {
+  requestAnimationFrame(loopCast);
+  if (!castPlaying) return;
+
+  const time = now * 0.001;
+  cCtx.clearRect(0, 0, W, H);
+
+  // Background
+  const grad = cCtx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#9cc5d9');
+  grad.addColorStop(0.5, '#cce3ee');
+  grad.addColorStop(1, '#e8f3f8');
+  cCtx.fillStyle = grad;
+  cCtx.fillRect(0, 0, W, H);
+
+  // Hills & Pine Trees
+  cCtx.fillStyle = '#b7d9e7';
+  cCtx.beginPath();
+  cCtx.moveTo(0, 380);
+  cCtx.bezierCurveTo(360, 330, 720, 430, W, 360);
+  cCtx.lineTo(W, H);
+  cCtx.lineTo(0, H);
+  cCtx.fill();
+
+  [140, 320, 560, 780, 1020, 1180].forEach((tx, idx) => {
+    drawWinterPine(cCtx, tx, 380 + (idx % 2) * 15, 130 + (idx % 3) * 15, Math.sin(time + idx) * 0.02);
+  });
+
+  cCtx.fillStyle = '#ffffff';
+  cCtx.beginPath();
+  cCtx.moveTo(0, 440);
+  cCtx.bezierCurveTo(320, 490, 840, 410, W, 450);
+  cCtx.lineTo(W, H);
+  cCtx.lineTo(0, H);
+  cCtx.fill();
+
+  // Sprites
+  castLabelQueue = [];
+  revealedSprites.forEach(s => drawCharacterSprite(cCtx, s, now));
+  drawAllCastLabels();
+}
+requestAnimationFrame(loopCast);
+
+/* -------------------------------------------------------------
+   INITIALIZATION
+   ------------------------------------------------------------- */
+window.addEventListener('DOMContentLoaded', () => {
+  loadCastStorage();
+  updateRoster();
+
+  // URL Parameter support (?mode=cast or ?mode=story)
+  const params = new URLSearchParams(window.location.search);
+  const reqMode = params.get('mode');
+  if (reqMode === 'cast') {
+    switchMainTab('cast');
+  } else {
+    switchMainTab('story');
+  }
+});
+</script>
+</body>
+</html>
