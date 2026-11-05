@@ -386,6 +386,121 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
   color: #6b7280;
   margin-top: 10px;
 }
+
+/* Roster Multi-Book and Action Buttons */
+.child-card-wrap {
+  display: flex;
+  flex-direction: column;
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.child-card-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+}
+.child-card-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.child-card-top .avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--c, #e4eee1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+.child-card-meta {
+  flex: 1;
+  text-align: left;
+}
+.child-card-meta b {
+  display: block;
+  font-size: 18px;
+  color: var(--green);
+  font-family: 'Jua', sans-serif;
+}
+.child-card-meta small {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 600;
+}
+.child-card-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+.child-card-actions button {
+  flex: 1;
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: all 0.15s;
+}
+.btn-read-book {
+  background: #fff8f3;
+  color: #c2410c;
+  border: 1.5px solid #fed7aa;
+}
+.btn-read-book:hover {
+  background: #ea580c;
+  color: #fff;
+  border-color: #ea580c;
+}
+.btn-new-book {
+  background: #2c4c3e;
+  color: #fff;
+  border: 1.5px solid #2c4c3e;
+  box-shadow: 0 2px 6px rgba(44,76,62,0.2);
+}
+.btn-new-book:hover {
+  background: #1b352a;
+}
+.speaking-pulse {
+  animation: speakingPulseAnim 1.2s infinite ease-in-out !important;
+  background: #e07a38 !important;
+  color: #ffffff !important;
+  border-color: #e07a38 !important;
+}
+@keyframes speakingPulseAnim {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(224,122,56,0.6); }
+  50% { transform: scale(1.04); box-shadow: 0 0 0 10px rgba(224,122,56,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(224,122,56,0); }
+}
+.quick-food-chip {
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+  border-radius: 999px;
+  padding: 6px 13px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s;
+}
+.quick-food-chip:hover, .quick-food-chip:active {
+  background: #f1f5f9;
+  border-color: #475569;
+  transform: scale(1.03);
+}
+
 </style>
 </head>
 <body>
@@ -447,6 +562,27 @@ body{background-color:#fff9ef;background-image:radial-gradient(ellipse 370px 310
   </div>
   <input type="text" id="food" maxlength="22" placeholder="예: 초밥, 피자 (마이크를 누르고 말해보세요!)" autocomplete="off">
 </div>
+<div class="quick-food-container" style="margin-top:8px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+    <span style="font-size:13px;font-weight:800;color:#334155">💡 터치 한 번으로 쏙! 인기 세계 음식</span>
+    <span style="font-size:11px;color:#64748b">누르면 음식 이름이 바로 입력돼요</span>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px" id="quickFoodList">
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('초밥','일본','🍣')">🍣 초밥 (일본)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('피자','이탈리아','🍕')">🍕 피자 (이탈리아)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('만두','중국','🥟')">🥟 만두 (중국)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('키추리','방글라데시','🍛')">🍛 키추리 (방글라데시)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('루티','방글라데시','🫓')">🫓 루티 (방글라데시)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('달','방글라데시','🍲')">🍲 달 (방글라데시)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('비빔밥','한국','🍚')">🍚 비빔밥 (한국)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('김밥','한국','🍙')">🍙 김밥 (한국)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('라멘','일본','🍜')">🍜 라멘 (일본)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('케밥','튀르키예','🥙')">🥙 케밥 (튀르키예)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('타코','멕시코','🌮')">🌮 타코 (멕시코)</button>
+    <button type="button" class="quick-food-chip" onclick="quickSelectFood('크루아상','프랑스','🥐')">🥐 크루아상 (프랑스)</button>
+  </div>
+</div>
+
  <h3 class="sample-title">음식 이름 고르기 <span class="note">(아래는 생각 돕기 예시예요. 백과사전에서 본 다른 음식도 직접 적을 수 있어요.)</span></h3><div class="samples" id="samples"></div>
  <div class="callout"><span>🔎</span><div style="flex:1"><strong>백과사전과 그림책 이어서 만들기</strong><div class="note">내가 고른 나라를 기억한 채 백과사전의 실제 음식 사진을 살펴보고, 선택한 음식과 관찰한 특징을 그림책으로 가져올 수 있어요.</div><div class="actions" style="margin-top:10px"><button class="btn primary" type="button" id="exploreBtn">🌍 백과사전 보면서 기록하기</button><a class="mini" href="https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html" target="_blank" rel="noopener noreferrer">새 창에서 보기 ↗</a></div><p class="smallprint">백과사전의 나라·음식 선택은 자동으로 전달되지 않아요. 원본 화면에서도 나라를 찾아보고, 음식 이름과 특징을 탐색 기록에 적으면 그림책 입력칸으로 옮겨집니다.</p></div></div></div>
  <div class="panel" data-panel="1"><div class="activity-head"><span class="activity-no">2</span><div><h2>내 눈으로 본 음식, 내 손으로 그림</h2><p>손가락이나 터치펜으로 그려 보세요. 지우개와 되돌리기도 할 수 있어요.</p></div></div><p class="draw-instruction" id="drawHint">백과사전 사진을 보면서 음식의 모양과 색을 관찰해 보아요.</p><div class="toolstrip" id="drawTools"></div><div class="canvas-wrap art" id="artBox"><div class="draw-surface"><canvas id="artCanvas" width="900" height="620" aria-label="음식 그림 그리기"></canvas></div></div><p class="note">그림이 실수로 지워져도 '되돌리기'를 누르면 이전 그림으로 돌아갈 수 있어요.</p></div>
@@ -755,10 +891,9 @@ function speakBookNarration(text, onComplete) {
       };
       window._activeBookNarratorUtterance = u;
       currentBookNarratorUtterance = u;
-      setTimeout(() => {
-        try { window.speechSynthesis.speak(u); }
-        catch(e) { stopBookNarration(); }
-      }, 35);
+      // Synchronous speak inside user gesture ensures audio works on iOS/Android
+      try { window.speechSynthesis.speak(u); }
+      catch(e) { stopBookNarration(); }
     } catch(e) {
       stopBookNarration();
     }
@@ -1050,6 +1185,9 @@ function getChildBookPageHTML(r, pageIdx) {
           <p style="font-size:15px;color:#666;margin:0 0 24px">햇살과 그림책으로 자라는 대전동산초등학교병설유치원 · 달누리반</p>
           
           <div style="display:flex;flex-direction:column;gap:10px;max-width:320px;margin:0 auto;width:100%">
+            <button class="cta" onclick="stopBookNarration();startNewBook('${escapeHTML(childName)}')" style="padding:12px;background:#2c4c3e;color:#fff;border:none;border-radius:10px;font-weight:800;box-shadow:0 4px 12px rgba(44,76,62,0.25)">
+              ✨ 내 새 그림책 또 만들기 +
+            </button>
             <button class="cta" onclick="goToBookPage(0)" style="padding:12px;background:#e07a38;color:#fff;border:none;border-radius:10px;font-weight:800">
               🔄 처음부터 다시 읽기
             </button>
@@ -1111,7 +1249,7 @@ function playCurrentBookAudio() {
     narration = `${childName} 어린이의 그림책 여행이 끝났어요. 오늘 유치원에서 배운 이야기를 가족과 함께 다정하게 나누어 보세요!`;
   }
 
-  if (window.speechSynthesis && window.speechSynthesis.speaking) {
+  if (currentBookNarratorUtterance) {
     stopBookNarration();
     if (isAutoPlaying) {
       isAutoPlaying = false;
@@ -1119,6 +1257,8 @@ function playCurrentBookAudio() {
     }
     return;
   }
+
+  unlockAudioSession();
 
   speakBookNarration(narration, () => {
     if (isAutoPlaying) {
@@ -1143,6 +1283,12 @@ function setupStorybookGestures() {
   $('bookNextArrow').onclick = () => flipBook(1);
   $('bookAudioPlayBtn').onclick = () => playCurrentBookAudio();
   $('bookAutoPlayBtn').onclick = () => toggleAutoPlay();
+  if ($('bookNewBtn')) {
+    $('bookNewBtn').onclick = () => {
+      stopBookNarration();
+      startNewBook(activeBookChild || '이누리');
+    };
+  }
   $('bookBackBtn').onclick = () => {
     stopBookNarration();
     showView('home');
@@ -1265,18 +1411,58 @@ function completedRows(){
 function countChild(name){
   return completedRows().filter(r => r.child === name).length;
 }
+function startNewBook(name) {
+  if (record) flushRecord();
+  activeChild = name;
+  record = blank();
+  record.child = name;
+  if (name === '자리프') {
+    record.country = '방글라데시';
+  }
+  rows.unshift(record);
+  loadEditor();
+  queueSave();
+  toast(`✨ ${name} 어린이의 새로운 그림책을 만들어요! ✈️`);
+}
+
 function renderHome(){
   if(!storageReady) return;
   const grid=$('roster');
-  grid.innerHTML=CHILDREN.map((c,i)=>`<button class="child" data-child="${escapeHTML(c)}"><span class="avatar" style="--c:${CHILD_PALETTE[i]}">${['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i]}</span><span><b>${escapeHTML(c)}</b><small>${countChild(c)}권의 그림책</small></span><span class="arr">↗</span></button>`).join('');
-  qa('.child',grid).forEach(el=>el.addEventListener('click',()=>{
-    const c = el.dataset.child;
-    if(countChild(c) > 0) openBookViewer(c);
-    else beginChild(c);
-  }));
-  const done=completedRows().sort((a,b)=>(b.updated||0)-(a.updated||0));
-  $('totalStat').textContent=`완성 ${done.length}권`;
-  $('recentBooks').innerHTML=done.length?`<div class="storygrid">${done.slice(0,8).map(storyCard).join('')}</div>`:`<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;
+  grid.innerHTML = CHILDREN.map((c, i) => {
+    const cnt = countChild(c);
+    const emoji = ['🌻','🐻','🍊','🌿','⭐','🌷','🪁','🌈'][i];
+    return `
+      <div class="child-card-wrap">
+        <div class="child-card-top">
+          <span class="avatar" style="--c:${CHILD_PALETTE[i]}">${emoji}</span>
+          <div class="child-card-meta">
+            <b>${escapeHTML(c)}</b>
+            <small>${cnt > 0 ? `📖 완성 작품 ${cnt}권` : '아직 첫 작품 전'}</small>
+          </div>
+        </div>
+        <div class="child-card-actions">
+          ${cnt > 0 ? `
+            <button type="button" class="btn-read-book" onclick="openBookViewer('${escapeHTML(c)}')">
+              📖 책 읽기 (${cnt}권)
+            </button>
+            <button type="button" class="btn-new-book" onclick="startNewBook('${escapeHTML(c)}')">
+              ✨ 새 책 추가
+            </button>
+          ` : `
+            <button type="button" class="btn-new-book" style="width:100%" onclick="startNewBook('${escapeHTML(c)}')">
+              ✨ 첫 그림책 만들기 ➔
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  const done = completedRows().sort((a,b)=>(b.updated||0)-(a.updated||0));
+  $('totalStat').textContent = `완성 ${done.length}권`;
+  $('recentBooks').innerHTML = done.length ?
+    `<div class="storygrid">${done.map(storyCard).join('')}</div>` :
+    `<div class="empty-books"><strong>아직 여행 기록이 없어요! ✈️</strong>탐험가 이름을 누르고 첫 번째 나라로 떠나 볼까요?</div>`;
   attachStoryClicks($('recentBooks'));
 }
 function storyCard(r){return `<article class="story"><div class="story-thumb" onclick="openBookViewer('${escapeHTML(r.child)}')">${r.art?`<img src="${r.art}" alt="${escapeHTML(r.child)}가 그린 ${escapeHTML(r.food)}">`:`<span class="empty-art">🎨</span>`}</div><div class="story-body"><small>${flag(r.country)} ${escapeHTML(r.child)}의 그림책 · ${escapeHTML(r.country||'나라 탐색')}</small><b>${escapeHTML(r.food||'내가 고른 음식')}</b>${r.familyUpdated?'<span class="story-badge">🏡 가족 답장 도착</span>':''}<div style="display:flex;gap:6px;margin-top:6px"><button class="mini" onclick="openBookViewer('${escapeHTML(r.child)}')" style="background:#e07a38;color:#fff;border-color:#e07a38;font-weight:800">📖 책 넘겨보기 ➔</button><button class="mini" data-edit="${escapeHTML(r.id)}">✏️ 수정</button></div></div></article>`}
@@ -1296,6 +1482,19 @@ function clearCanvas(c){c.getContext('2d').clearRect(0,0,c.width,c.height)}
 function setCanvasImage(c,src){clearCanvas(c);if(!src)return;let im=new Image();im.onload=()=>{if(record&&record[Object.keys(canvases).find(k=>canvases[k]===c)]!==undefined){let ctx=c.getContext('2d');ctx.drawImage(im,0,0,c.width,c.height)}};im.src=src}
 function loadEditor(){showView('editor');$('deletePage').hidden=true;$('editorTitle').textContent=activeChild+'의 세계 음식 여행책';$('editorDesc').textContent=record.complete?'완성한 그림책 · 언제든 수정할 수 있어요':'한 장씩 만들어 나만의 음식 책을 완성해요';$('countrySearch').value='';showAllCountries=false;$('country').value=record.country||'';$('countryOtherInput').value=FLAG_MAP[record.country]?'':record.country||'';$('food').value=record.food||'';$('foodFeature').value=record.feature||'';$('myThought').value=record.thought||'';renderCountries();renderSamples();renderFamilyReply();Object.keys(canvases).forEach(k=>{undoStacks[k]=[];strokes[k]=false;clearCanvas(canvases[k]);const src=record[k]||'';if(src){let ref=record.id,im=new Image();im.onload=()=>{if(record?.id===ref)canvases[k].getContext('2d').drawImage(im,0,0,canvases[k].width,canvases[k].height);updateInkIndicator()};im.src=src}});updateModel();updateInkIndicator();setStep(0);updateSaveStatus()}
 function setStep(n){if(view!=='editor')return;step=Math.max(0,Math.min(3,n));qa('.step-btn').forEach(b=>b.classList.toggle('on',Number(b.dataset.step)===step));qa('.panel').forEach(p=>p.classList.toggle('on',Number(p.dataset.panel)===step));$('stepInfo').textContent=(step+1)+' / 4 단계';$('prevStep').disabled=step===0;$('nextStep').textContent=step===3?'✓ 작품 저장':'다음 단계 →';if(step===3)buildPreview();if(step===2)drawGuide();window.scrollTo({top:0,behavior:'smooth'})}
+
+
+function quickSelectFood(foodName, countryName, emoji) {
+  if (countryName) {
+    $('country').value = countryName;
+    renderCountries();
+  }
+  $('food').value = foodName;
+  updateModel();
+  renderSamples();
+  queueSave();
+  toast(`✨ '${foodName}'(이)가 입력되었어요! 다음 단계로 넘어가 볼까요?`);
+}
 
 function renderCountries(){const sel=$('country').value,needle=$('countrySearch').value.trim().toLowerCase(),grid=$('countryGrid');grid.innerHTML=COUNTRY_LIST.filter(([name],i)=>(showAllCountries||needle||i<24||name===sel)&&(!needle||name.includes(needle))).map(([name])=>`<button type="button" class="country-choice ${sel===name?'on':''}" data-country="${escapeHTML(name)}" aria-pressed="${sel===name}"><span class="flag" aria-hidden="true">${flag(name)}</span><b>${escapeHTML(name)}</b></button>`).join('')+(needle?'':`<button type="button" class="country-choice other ${sel&&!FLAG_MAP[sel]?'on':''}" data-country="OTHER"><span class="flag">🌏</span><b>다른 나라</b></button>`);if(!grid.children.length)grid.innerHTML='<p class="note">찾는 나라가 없다면 검색어를 지우고 ‘다른 나라’를 선택해 주세요.</p>';
  qa('[data-country]',grid).forEach(btn=>btn.onclick=()=>{if(btn.dataset.country==='OTHER'){$('countryOtherWrap').hidden=false;$('countryOtherInput').value=FLAG_MAP[$('country').value]?'':$('country').value;$('countryOtherInput').focus();$('country').value=$('countryOtherInput').value}else{$('country').value=btn.dataset.country;$('countryOtherWrap').hidden=true;}renderCountries();renderSamples();queueSave()});
@@ -1434,6 +1633,21 @@ if ('speechSynthesis' in window) {
   }
 }
 
+// iOS Safari / Android WebView Speech Synthesis Unlocker
+function unlockAudioSession() {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+    // Dummy zero-length speech to unlock audio session on user gesture
+    const dummy = new SpeechSynthesisUtterance(' ');
+    dummy.volume = 0.01;
+    dummy.rate = 10;
+    window.speechSynthesis.speak(dummy);
+  } catch(e) {}
+}
+
 function speakText(str, btn) {
   if (!str || !str.trim()) return;
   if (!('speechSynthesis' in window)) {
@@ -1490,10 +1704,9 @@ function speakText(str, btn) {
         }
       };
       window._activeBookUtterance = u;
-      setTimeout(() => {
-        try { window.speechSynthesis.speak(u); }
-        catch(e) { if (btn) btn.classList.remove('listening'); }
-      }, 30);
+      // Synchronous speak inside user gesture ensures audio works on iOS/Android
+      try { window.speechSynthesis.speak(u); }
+      catch(e) { if (btn) btn.classList.remove('listening'); }
     } catch(e) {
       if (btn) btn.classList.remove('listening');
     }

@@ -653,14 +653,13 @@ function say(text, btn) {
 
       window._activeUtterance = u; // Keep reference to prevent GC in iOS Safari
 
-      setTimeout(() => {
-        try {
-          window.speechSynthesis.speak(u);
-        } catch(err) {
-          console.error('speak error:', err);
-          stopSay();
-        }
-      }, 30);
+      // Synchronous speak inside user gesture ensures audio works on iOS/Android
+      try {
+        window.speechSynthesis.speak(u);
+      } catch(err) {
+        console.error('speak error:', err);
+        stopSay();
+      }
     } catch(err) {
       console.error('Utterance creation error:', err);
       stopSay();
