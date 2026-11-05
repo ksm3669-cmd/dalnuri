@@ -552,13 +552,21 @@ if ('speechSynthesis' in window) {
 
 function stopSay() {
   if ('speechSynthesis' in window) {
-    try { window.speechSynthesis.cancel(); } catch(e) {}
+    try {
+      if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+        window.speechSynthesis.cancel();
+      }
+    } catch(e) {}
   }
   if (currentSayBtn) {
     resetBtnUI(currentSayBtn);
     currentSayBtn = null;
   }
   window._activeUtterance = null;
+  if (window._speechInterval) {
+    clearInterval(window._speechInterval);
+    window._speechInterval = null;
+  }
 }
 
 function resetBtnUI(btn) {
@@ -595,78 +603,79 @@ function say(text, btn) {
   }
 
   // Toggle: If currently speaking and the same button was pressed, stop it.
-  if (window.speechSynthesis.speaking && currentSayBtn === btn) {
+  if ((window.speechSynthesis.speaking || currentSayBtn === btn) && currentSayBtn) {
     stopSay();
     return;
   }
 
-  // Stop previous speech if any
-  stopSay();
+  // Only cancel if already speaking, don't trigger cancel on fresh start
+  if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+    try { window.speechSynthesis.cancel(); } catch(e) {}
+  }
 
   currentSayBtn = btn;
   setSpeakingBtnUI(btn);
 
-  if (window.speechSynthesis.paused) {
-    try { window.speechSynthesis.resume(); } catch(e) {}
-  }
+  try {
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+  } catch(e) {}
 
-  // Clean and split text into natural sentences so long text never hangs on mobile
+  // Clean full text for a single coherent utterance that mobile Safari won't cut off
   const cleanText = text.replace(/\s+/g, ' ').trim();
-  const sentences = cleanText.match(/[^.!?]+[.!?]+/g) || [cleanText];
-  let sIndex = 0;
-
-  function speakNext() {
-    if (sIndex >= sentences.length) {
-      stopSay();
-      return;
-    }
-    const currentSentence = sentences[sIndex].trim();
-    if (!currentSentence) {
-      sIndex++;
-      speakNext();
-      return;
-    }
-
-    try {
-      const u = new SpeechSynthesisUtterance(currentSentence);
-      u.lang = 'ko-KR';
-      u.rate = 0.88;
-      u.pitch = 1.05;
-
-      if (!koreanVoice) loadKoreanVoices();
-      if (koreanVoice) u.voice = koreanVoice;
-
-      u.onend = () => {
-        sIndex++;
-        speakNext();
-      };
-
-      u.onerror = (e) => {
-        console.warn('Utterance error:', e);
-        sIndex++;
-        if (sIndex < sentences.length) {
-          speakNext();
-        } else {
-          stopSay();
-        }
-      };
-
-      window._activeUtterance = u; // Keep reference to prevent GC in iOS Safari
-
-      // Synchronous speak inside user gesture ensures audio works on iOS/Android
-      try {
-        window.speechSynthesis.speak(u);
-      } catch(err) {
-        console.error('speak error:', err);
-        stopSay();
-      }
-    } catch(err) {
-      console.error('Utterance creation error:', err);
-      stopSay();
-    }
+  if (!cleanText) {
+    stopSay();
+    return;
   }
 
-  speakNext();
+  try {
+    const u = new SpeechSynthesisUtterance(cleanText);
+    u.lang = 'ko-KR';
+    u.rate = 0.9;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+
+    if (!koreanVoice) loadKoreanVoices();
+    if (koreanVoice) u.voice = koreanVoice;
+
+    u.onstart = () => {
+      setSpeakingBtnUI(btn);
+    };
+
+    u.onend = () => {
+      stopSay();
+    };
+
+    u.onerror = (e) => {
+      console.warn('Utterance error:', e);
+      if (e.error !== 'canceled' && e.error !== 'interrupted') {
+        alert('음성 재생 중 문제가 발생했어요. 기기의 무음 모드(벨소리)와 볼륨을 확인해 주세요. (' + (e.error || '오류') + ')');
+      }
+      stopSay();
+    };
+
+    window._activeUtterance = u; // Keep reference to prevent GC in iOS Safari
+
+    // Chrome 15-second speech freeze workaround
+    if (window._speechInterval) clearInterval(window._speechInterval);
+    window._speechInterval = setInterval(() => {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.pause();
+        window.speechSynthesis.resume();
+      } else {
+        clearInterval(window._speechInterval);
+        window._speechInterval = null;
+      }
+    }, 10000);
+
+    // Synchronous speak inside user gesture ensures audio works on iOS/Android
+    window.speechSynthesis.speak(u);
+  } catch(err) {
+    console.error('Speech synthesis error:', err);
+    alert('음성 기능을 실행할 수 없어요. 브라우저 설정을 확인해 주세요.');
+    stopSay();
+  }
 }
 function showCredits(f){let el=$('imageCredit');const src=photos[f.id];if(!src){el.innerHTML=f.embedded?'그림 자료: 사용자가 제공한 수업용 예시 파일':'음식 형태를 바탕으로 만든 참고 삽화';return}const source='https://en.wikipedia.org/wiki/'+encodeURIComponent(f.wiki.replace(/ /g,'_'));const file=credits[f.id]?.filename;const link=file?'https://commons.wikimedia.org/wiki/File:'+encodeURIComponent(file.replace(/ /g,'_')):source;const info=credits[f.id];el.innerHTML=`사진: <a href="${link}" target="_blank" rel="noopener noreferrer">위키미디어 원본·라이선스 보기</a>${info?.artist?' · '+clean(info.artist):''}${info?.license?' · '+clean(info.license):''}`;if(file&&!info?.loaded)loadCredit(f.id,file)}
 async function loadCredit(id,filename){try{let u=new URL('https://commons.wikimedia.org/w/api.php');u.search=new URLSearchParams({action:'query',format:'json',origin:'*',prop:'imageinfo',iiprop:'extmetadata',titles:'File:'+filename});let d=await(await fetch(u,{mode:'cors'})).json();let pg=Object.values(d.query.pages)[0];let m=pg.imageinfo?.[0]?.extmetadata||{};const strip=v=>v?String(v).replace(/<[^>]*>/g,'').replace(/&amp;/g,'&').slice(0,60):'';credits[id]={filename,artist:strip(m.Artist?.value),license:strip(m.LicenseShortName?.value),loaded:true};if(currentPage==='detail'&&foodId===id)showCredits(getF(id))}catch(e){}}
