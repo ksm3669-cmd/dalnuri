@@ -3952,13 +3952,31 @@ button:disabled {
     }
   
 
-/* ================= BODY EXPRESSION SCRIPT ================= */
+
+/* ============================================================
+   BODY EXPRESSION & MOTION STORY MODULE (IIFE Scoped)
+   ============================================================ */
+(() => {
 
 /* -------------------------------------------------------------
    GLOBAL AUDIO SYNTH ENGINE (Web Audio API)
    - Zero external audio files required
    - Never fails on mobile/tablet or iOS Safari
    ------------------------------------------------------------- */
+let audioCtx = null;
+let soundEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+}
+
 function playChime(freq = 523.25, duration = 0.35, gainVal = 0.18) {
   if (!soundEnabled) return;
   try {
@@ -4023,21 +4041,50 @@ function playFanfare() {
   });
 }
 
+function toggleAudioMute() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundIcon').innerText = soundEnabled ? '🔊' : '🔈';
+  document.getElementById('soundText').innerText = soundEnabled ? '소리 켬' : '소리 끔';
+  showToast(soundEnabled ? '소리를 켰습니다.' : '소리를 껐습니다.', soundEnabled ? '🔊' : '🔈');
+}
 
-
-);
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen?.().catch(() => {});
   } else {
     document.exitFullscreen?.().catch(() => {});
   }
 }
 
-, 2400);
+let toastTimer = null;
+function showToast(msg, icon = '✨') {
+  const t = document.getElementById('appToast');
+  if (!t) return;
+  document.getElementById('toastIcon').innerText = icon;
+  document.getElementById('toastMsg').innerText = msg;
+  t.style.display = 'inline-flex';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.style.display = 'none';
+  }, 2400);
 }
 
 /* -------------------------------------------------------------
    MASTER TAB SWITCHING
    ------------------------------------------------------------- */
- else {
+let currentMode = 'story'; // 'story' | 'cast'
+
+function switchMainTab(mode) {
+  currentMode = mode;
+  document.getElementById('tabStory').classList.toggle('active', mode === 'story');
+  document.getElementById('tabCast').classList.toggle('active', mode === 'cast');
+
+  document.getElementById('storyMode').hidden = (mode !== 'story');
+  document.getElementById('castMode').hidden = (mode !== 'cast');
+
+  if (mode === 'story') {
+    resizeStoryCanvas();
+  } else {
     renderRoleSetupCards();
     updateCastSummary();
   }
@@ -4046,8 +4093,8 @@ function playFanfare() {
 /* =============================================================
    1. MODE 1: INTERACTIVE WINTER MOTION STORY ENGINE
    ============================================================= */
-let sCanvas = document.getElementById('storyCanvas');
-let sCtx = sCanvas ? sCanvas.getContext('2d') : null;
+const sCanvas = document.getElementById('storyCanvas');
+const sCtx = sCanvas.getContext('2d');
 const W = 1280, H = 720;
 let storyScene = 1; // 1: Falling Snow & Meadow, 2: Snowmen appear, 3: Cold wind blows
 let storySceneStart = performance.now();
@@ -4442,8 +4489,8 @@ document.addEventListener('keydown', e => {
 /* =============================================================
    2. MODE 2: PHYSICAL ROLE CASTING & LOTTERY ENGINE
    ============================================================= */
-let castCanvas = document.getElementById('castCanvas');
-let cCtx = castCanvas ? castCanvas.getContext('2d') : null;
+const castCanvas = document.getElementById('castCanvas');
+const cCtx = castCanvas.getContext('2d');
 
 const castRoles = ['snowman', 'wind', 'snowflake'];
 const roleInfo = {
@@ -5121,45 +5168,51 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+  // Export functions to global window object
+  window.jumpStoryScene = jumpStoryScene;
+  window.nextStoryScene = nextStoryScene;
+  window.loadDalnuriDefaultRoster = loadDalnuriDefaultRoster;
+  window.clearRoster = clearRoster;
+  window.setRoleMode = setRoleMode;
+  window.enterCastField = enterCastField;
+  window.exitCastField = exitCastField;
+  window.resetCastReveal = resetCastReveal;
+  window.revealCastRole = revealCastRole;
+  window.openResultsModal = openResultsModal;
+  window.closeResultsModal = closeResultsModal;
+  window.resizeStoryCanvas = resizeStoryCanvas;
+  window.renderRoleSetupCards = renderRoleSetupCards;
+  window.updateCastSummary = updateCastSummary;
+  window.loadCastStorage = loadCastStorage;
+  window.updateRoster = updateRoster;
+})();
+
+
 
     // Enhanced switchPad supporting 1..9
     const originalSwitchPad = switchPad;
     switchPad = function(padNum) {
       try {
         originalSwitchPad(padNum);
-        if (padNum === 8) {
-          setTimeout(initStoryModeInAllInOne, 60);
-        } else if (padNum === 9) {
-          setTimeout(initCastModeInAllInOne, 60);
+        if (padNum === 8 && typeof window.resizeStoryCanvas === 'function') {
+          setTimeout(window.resizeStoryCanvas, 60);
+        } else if (padNum === 9 && typeof window.renderRoleSetupCards === 'function') {
+          setTimeout(() => {
+            window.renderRoleSetupCards();
+            window.updateCastSummary();
+          }, 60);
         }
       } catch(e) {
         console.error('switchPad error:', e);
       }
     };
 
-    function initStoryModeInAllInOne() {
-      sCanvas = document.getElementById('storyCanvas');
-      if (sCanvas) {
-        sCtx = sCanvas.getContext('2d');
-        resizeStoryCanvas();
-      }
-    }
-
-    function initCastModeInAllInOne() {
-      castCanvas = document.getElementById('castCanvas');
-      if (castCanvas) {
-        cCtx = castCanvas.getContext('2d');
-      }
-      renderRoleSetupCards();
-      updateCastSummary();
-    }
-
 
 // DOMContentLoaded enhancement
 window.addEventListener('DOMContentLoaded', () => {
   try {
-    loadCastStorage();
-    updateRoster();
+    if (typeof window.loadCastStorage === 'function') window.loadCastStorage();
+    if (typeof window.updateRoster === 'function') window.updateRoster();
   } catch(e) {}
 
   const params = new URLSearchParams(window.location.search);
