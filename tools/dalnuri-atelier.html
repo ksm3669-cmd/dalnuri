@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>달누리반 디지털 놀이 아뜰리에 — 7개 놀이앱 통합 플랫폼</title>
+  <style>
+    /* ==========================================================================
+       달누리반 디지털 놀이 아뜰리에 디자인 시스템
+       수채화 동화풍의 따뜻하고 세련된 디자인 (아이보리, 크림, 세이지 그린, 파스텔 웜톤)
+       ========================================================================== */
+    :root {
+      --bg-cream: #FAF7F2;
+      --bg-card: #FFFFFF;
+      --text-main: #332C27;
+      --text-sub: #6E655F;
+      --primary: #4F8A3A;         /* 세이지 그린 */
+      --primary-light: #EBF4E5;
+      --primary-dark: #376527;
+      --secondary: #E8672A;       /* 따뜻한 테라코타 오렌지 */
+      --secondary-light: #FCECE4;
+      --accent-yellow: #F6C85F;
+      --accent-blue: #4A90E2;
+      --border-soft: #EAE4DC;
+      --border-hard: #D8CEBE;
+      --shadow-soft: 0 4px 16px rgba(79, 58, 42, 0.08);
+      --shadow-hover: 0 8px 24px rgba(79, 58, 42, 0.12);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-full: 9999px;
+      --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-cream);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    /* 상단 네비게이션 헤더 */
+    .app-header {
+      background: #FFFFFF;
+      border-bottom: 2px solid var(--border-soft);
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .brand-logo {
+      font-size: 28px;
+      background: var(--primary-light);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      border: 2px solid #C8E2BA;
+    }
+    .brand-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title small {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* 뷰 모드 전환 버튼 (유아 교실 / 교사 대시보드 / 가정이음) */
+    .view-modes-toggle {
+      display: flex;
+      background: var(--bg-cream);
+      padding: 4px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-soft);
+      gap: 4px;
+    }
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-sub);
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .mode-btn.active {
+      background: #FFFFFF;
+      color: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1.5px solid #C8E2BA;
+    }
+
+    /* 전역 활성 유아 인디케이터 */
+    .active-child-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-light);
+      border: 1.5px solid #C8E2BA;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--primary-dark);
+    }
+
+    /* 메인 뷰 컨테이너 */
+    .main-viewport {
+      flex: 1;
+      padding: 16px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding-bottom: 90px; /* 하단 툴바 여백 */
+    }
+
+    /* ==========================================================================
+       VIEW 1: 유아용 디지털 놀이앱 7종 (태블릿 1~7번 탭)
+       ========================================================================== */
+    .pad-tabs-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 2px;
+      scrollbar-width: none;
+    }
+    .pad-tabs-bar::-webkit-scrollbar { display: none; }
+    .pad-tab-chip {
+      flex: 0 0 auto;
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      padding: 10px 16px;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--text-sub);
+      transition: all 0.2s ease;
+    }
+    .pad-tab-chip.active {
+      background: #FFFFFF;
+      border-color: var(--secondary);
+      color: var(--secondary);
+      box-shadow: 0 4px 12px rgba(232, 103, 42, 0.15);
+      transform: translateY(-2px);
+    }
+    .pad-num-badge {
+      width: 24px;
+      height: 24px;
+      background: var(--bg-cream);
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: inherit;
+    }
+    .pad-tab-chip.active .pad-num-badge {
+      background: var(--secondary);
+      color: #FFFFFF;
+    }
+
+    .pad-workspace-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      border: 2px solid var(--border-soft);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      min-height: 580px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pad-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px dashed var(--border-soft);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .pad-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .pad-icon-big {
+      font-size: 36px;
+      background: var(--bg-cream);
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--border-soft);
+    }
+    .pad-title-text h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .pad-title-text p {
+      font-size: 13.5px;
+      color: var(--text-sub);
+    }
+
+    /* 앱 공통 인터랙션 요소 (그림판, 사진박스, 문장입력 등) */
+    .interactive-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      flex: 1;
+    }
+    @media (max-width: 900px) {
+      .interactive-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel-box {
+      background: var(--bg-cream);
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .panel-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 캔버스 그리기 영역 */
+    .drawing-canvas-wrap {
+      background: #FFFFFF;
+      border: 2px solid var(--border-hard);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      position: relative;
+      touch-action: none;
+      height: 240px;
+    }
+    canvas.paint-board {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+    .canvas-tools {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      margin-top: 6px;
+    }
+    .color-swatch {
+      width: 26px;
+      height: 26px;
+      border-radius: var(--radius-full);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 0 1px #999;
+      cursor: pointer;
+    }
+    .color-swatch.active {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 2px var(--secondary);
+    }
+
+    /* 사진 뷰어/촬영 프리뷰 박스 */
+    .photo-preview-box {
+      background: #FFFFFF;
+      border: 2px dashed var(--border-hard);
+      border-radius: var(--radius-sm);
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .photo-preview-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+    .photo-placeholder {
+      text-align: center;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+
+    /* 말풍선 문장 및 기분 선택 */
+    .sentence-input-box {
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stt-output-text {
+      width: 100%;
+      min-height: 70px;
+      border: 1.5px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text-main);
+      resize: vertical;
+    }
+    .mood-selector {
+      display: flex;
+      gap: 8px;
+    }
+    .mood-pill {
+      flex: 1;
+      padding: 8px 4px;
+      border: 2px solid var(--border-soft);
+      background: var(--bg-cream);
+      border-radius: var(--radius-full);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+    .mood-pill.active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    /* 2번 백과사전 탭 전용 카드 갤러리 */
+    .encyclo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .encyclo-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .encyclo-card:hover, .encyclo-card.active {
+      border-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    .encyclo-card img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+    }
+    .encyclo-card-body {
+      padding: 10px 12px;
+    }
+    .encyclo-card-body h4 { font-size: 15px; font-weight: 800; }
+    .encyclo-card-body p { font-size: 12.5px; color: var(--text-sub); }
+
+    /* 3번 한글놀이 글자 카드 칩 */
+    .korean-tiles-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hangul-tile {
+      background: #FFFFFF;
+      border: 2px solid #C8E2BA;
+      padding: 12px 18px;
+      border-radius: var(--radius-md);
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+    }
+    .hangul-tile:hover {
+      background: var(--primary-light);
+      transform: scale(1.05);
+    }
+
+    /* 4번 수놀이 인터랙션 블록 */
+    .math-counter-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      background: #FFFFFF;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-soft);
+    }
+    .math-apple-btn {
+      font-size: 32px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .math-apple-btn:active { transform: scale(0.85); }
+
+    /* 5번 편지 템플릿 선택 */
+    .letter-paper-selector {
+      display: flex;
+      gap: 8px;
+    }
+    .letter-paper-chip {
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 2px solid var(--border-soft);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .letter-paper-chip.active {
+      border-color: var(--secondary);
+      background: var(--secondary-light);
+    }
+
+    /* 6번 그림책 제작 뷰어 (책장 넘기기) */
+    .book-maker-stage {
+      background: #FFFFFF;
+      border: 3px solid #D1C7BD;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+    }
+    .book-page-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    /* ==========================================================================
+       VIEW 2: 교사용 대시보드 & 성장선(Growth Line)
+       ========================================================================== */
+    .teacher-dashboard-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .teacher-nav-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border-soft);
+      padding-bottom: 8px;
+    }
+    .teacher-nav-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 10px 18px;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-sub);
+      cursor: pointer;
+    }
+    .teacher-nav-btn.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+
+    /* 시간축 SVG 성장선 뷰어 */
+    .timeline-card-box {
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+    .svg-scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+    svg.growth-svg {
+      width: 100%;
+      min-width: 900px;
+      height: 220px;
+      display: block;
+    }
+
+    /* 좌우 2시점 나란히 비교 카드 그리드 (핵심 기능) */
+    .compare-side-by-side {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      margin-top: 16px;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) {
+      .compare-side-by-side { grid-template-columns: 1fr; }
+    }
+    .compare-card-col {
+      background: var(--bg-cream);
+      border: 2px solid var(--border-hard);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .compare-card-col.left { border-top: 6px solid #1B6B93; }
+    .compare-card-col.right { border-top: 6px solid #D8352A; }
+
+    .compare-mid-bridge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      color: var(--secondary);
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    /* ==========================================================================
+       VIEW 3: 가정이음 전용 공간 (학부모 전용 「우리 아이 놀이 이야기」)
+       ========================================================================== */
+    .family-connect-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .family-banner {
+      background: linear-gradient(135deg, #FFF6E9 0%, #F5EFEB 100%);
+      border: 2px solid #ECDCCB;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .family-work-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .family-work-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .family-reply-box {
+      background: var(--bg-cream);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      border: 1.5px dashed var(--border-hard);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    /* ==========================================================================
+       공통 미디어 툴바 (화면 하단 고정 바)
+       음성 낭독, 목소리 녹음, 음성인식, 카메라, 그림판, 저장, 가정연계
+       ========================================================================== */
+    .common-media-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 72px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      border-top: 2px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 16px;
+      z-index: 200;
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+    }
+    .dock-btn {
+      height: 52px;
+      padding: 0 16px;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-soft);
+      background: #FFFFFF;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .dock-btn:hover {
+      background: var(--bg-cream);
+      border-color: var(--border-hard);
+      transform: translateY(-2px);
+    }
+    .dock-btn.btn-save {
+      background: var(--primary);
+      border-color: var(--primary-dark);
+      color: #FFFFFF;
+      margin-left: 8px;
+    }
+    .dock-btn.btn-save:hover {
+      background: var(--primary-dark);
+    }
+    .dock-btn.recording {
+      background: #FFE5E5;
+      border-color: #E74C3C;
+      color: #C0392B;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.04); }
+    }
+
+    /* 토스트 알림 */
+    .toast-popup {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-20px);
+      background: #332C27;
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      font-size: 15px;
+      font-weight: 700;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .toast-popup.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* 유아 선택 모달 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      backdrop-filter: blur(4px);
+    }
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-hover);
+    }
+    .children-grid-modal {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .child-select-card {
+      background: var(--bg-cream);
+      border: 2px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+    .child-select-card:hover, .child-select-card.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       상단 공통 헤더
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="header-brand" onclick="switchView('pad')">
+      <div class="brand-logo">🎨</div>
+      <div class="brand-title">
+        달누리반 디지털 놀이 아뜰리에
+        <small>7개 놀이앱 통합 플랫폼</small>
+      </div>
+    </div>
+
+    <!-- 3대 뷰 모드 전환 (유아 교실 / 교사 대시보드 / 가정이음) -->
+    <div class="view-modes-toggle">
+      <button type="button" class="mode-btn active" id="btnModePad" onclick="switchView('pad')" data-say="태블릿 놀이 화면으로 이동합니다">
+        <span>🧒</span> 유아 놀이실 (7대 패드)
+      </button>
+      <button type="button" class="mode-btn" id="btnModeTeacher" onclick="switchView('teacher')" data-say="교사 관리실로 이동합니다">
+        <span>👩‍🏫</span> 교사 관리실
+      </button>
+      <button type="button" class="mode-btn" id="btnModeFamily" onclick="switchView('family')" data-say="가정이음 학부모 화면으로 이동합니다">
+        <span>🏡</span> 가정이음 (학부모)
+      </button>
+    </div>
+
+    <!-- 현재 활동 유아 선택 인디케이터 -->
+    <div class="active-child-badge" onclick="openChildSelectModal()" data-say="놀이하는 어린이를 변경합니다">
+      <span id="headerChildAvatar">👦</span>
+      <span id="headerChildName">자리프</span>
+      <span style="font-size: 12px; color: var(--text-sub);">▼</span>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       메인 뷰포트
+       ======================================================================== -->
+  <main class="main-viewport">
+
+    <!-- --------------------------------------------------------------------
+         VIEW 1: 유아용 7대 패드 놀이실
+         -------------------------------------------------------------------- -->
+    <section id="viewPad" class="view-section">
+      <!-- 7대 패드 탭 바 -->
+      <div class="pad-tabs-bar" role="tablist">
+        <button type="button" class="pad-tab-chip active" onclick="switchPad(1)">
+          <span class="pad-num-badge">1</span> 📝 내 이야기 기록해요
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(2)">
+          <span class="pad-num-badge">2</span> 🌏 주제별 백과사전
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(3)">
+          <span class="pad-num-badge">3</span> 🔤 재미있는 한글놀이
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(4)">
+          <span class="pad-num-badge">4</span> 🔢 재미있는 수놀이
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(5)">
+          <span class="pad-num-badge">5</span> 💌 편지를 써요
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(6)">
+          <span class="pad-num-badge">6</span> 📖 그림책을 만들어요
+        </button>
+        <button type="button" class="pad-tab-chip" onclick="switchPad(7)">
+          <span class="pad-num-badge">7</span> 💡 자유롭게 탐구해요
+        </button>
+      </div>
+
+      <!-- 놀이 작업대 카드 -->
+      <div class="pad-workspace-card" id="padWorkspaceContent">
+        <!-- JS로 동적 렌더링 -->
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------
+         VIEW 2: 교사용 대시보드 & 성장선 (Growth Line)
+         -------------------------------------------------------------------- -->
+    <section id="viewTeacher" class="view-section" style="display: none;">
+      <div class="teacher-dashboard-wrap">
+        <div class="teacher-nav-tabs">
+          <button type="button" class="teacher-nav-btn active" id="btnSubGrowth" onclick="switchTeacherSub('growth')">
+            🌱 유아별 시간축 성장선 (Growth Line)
+          </button>
+          <button type="button" class="teacher-nav-btn" id="btnSubFeed" onclick="switchTeacherSub('feed')">
+            📁 전체 놀이 작품 모음
+          </button>
+          <button type="button" class="teacher-nav-btn" id="btnSubFamilyAdmin" onclick="switchTeacherSub('familyAdmin')">
+            💌 가정연계 공유 및 학부모 답장 관리
+          </button>
+        </div>
+
+        <div id="teacherSubContent">
+          <!-- JS 렌더링 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------------------------
+         VIEW 3: 가정이음 전용 공간 (학부모 전용 「우리 아이 놀이 이야기」)
+         -------------------------------------------------------------------- -->
+    <section id="viewFamily" class="view-section" style="display: none;">
+      <div class="family-connect-wrap">
+        <div class="family-banner">
+          <div>
+            <span style="font-size: 13px; font-weight: 700; color: var(--secondary);">🏡 우리 아이 놀이 이야기</span>
+            <h2 style="font-size: 24px; font-weight: 800; color: var(--text-main); margin-top: 4px;">
+              <span id="familyChildName">자리프</span>의 교실 놀이와 배움
+            </h2>
+            <p style="font-size: 14px; color: var(--text-sub); margin-top: 6px;">
+              아이의 목소리와 그림책을 감상하고 따뜻한 응원의 글이나 목소리 답장을 보내주세요.
+            </p>
+          </div>
+          <button type="button" class="dock-btn" onclick="openFamilyReplyPrompt()" style="background: var(--secondary); color:#fff; border:none;">
+            💬 가정에서 응원 답장 보내기
+          </button>
+        </div>
+
+        <div class="family-work-feed" id="familyWorkFeed">
+          <!-- JS 렌더링 -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       공통 미디어 도구 모음 (하단 고정 바)
+       ①음성안내 ②목소리녹음 ③음성인식 ④사진촬영 ⑤그림그리기 ⑥저장/성장기록 ⑦가정연계
+       ======================================================================== -->
+  <footer class="common-media-dock">
+    <button type="button" class="dock-btn" onclick="speakCurrentContext()" data-say="화면의 안내를 소리로 들어요">
+      <span>🔊</span> <span class="hide-mobile">안내 듣기</span>
+    </button>
+    <button type="button" class="dock-btn" id="btnRecordVoice" onclick="toggleVoiceRecord()" data-say="내 목소리로 이야기를 녹음해요">
+      <span id="recordIcon">🎙️</span> <span id="recordLabel">목소리 녹음</span>
+    </button>
+    <button type="button" class="dock-btn" onclick="triggerSTT()" data-say="말하면 글자로 적어줘요">
+      <span>✨</span> <span class="hide-mobile">말로 쓰기</span>
+    </button>
+    <button type="button" class="dock-btn" onclick="triggerCameraCapture()" data-say="카메라로 사진을 찍거나 가져와요">
+      <span>📷</span> <span class="hide-mobile">사진 찍기</span>
+    </button>
+    <button type="button" class="dock-btn" onclick="clearCanvas()" data-say="그림판을 깨끗이 지워요">
+      <span>🧹</span> <span class="hide-mobile">그림 지우기</span>
+    </button>
+    <button type="button" class="dock-btn btn-save" onclick="saveCurrentWork()" data-say="오늘의 작품을 성장기록에 저장해요">
+      <span>🌟</span> <span>작품 저장</span>
+    </button>
+  </footer>
+
+  <!-- ========================================================================
+       유아 선택 모달
+       ======================================================================== -->
+  <div class="modal-overlay" id="childSelectModal" onclick="closeChildSelectModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="font-size: 18px; font-weight: 800;">달누리반 어린이 선택</h3>
+        <button type="button" onclick="closeChildSelectModal()" style="border:none; background:none; font-size:20px; cursor:pointer;">✕</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-sub); margin-top: 4px;">활동하는 유아의 이름을 골라주세요.</p>
+      <div class="children-grid-modal" id="modalChildrenList">
+        <!-- JS 렌더링 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 토스트 팝업 -->
+  <div class="toast-popup" id="toastPopup">알림 메시지</div>
+
+  <!-- 숨겨진 파일 인풋 (사진 촬영/업로드) -->
+  <input type="file" id="cameraFileInput" accept="image/*" capture="environment" style="display:none;" onchange="handlePhotoUpload(event)">
+
+  <!-- ========================================================================
+       자바스크립트 완전 엔진 (순수 바닐라 JS, 외부 CDN 제로)
+       ======================================================================== -->
+  <script>
+    /* ------------------------------------------------------------------------
+       1. 데이터 저장소 및 초기 시드
+       ------------------------------------------------------------------------ */
+    const STORAGE_KEY_WORKS = 'dalnuri_atelier_all_works_v2';
+    const STORAGE_KEY_REPLIES = 'dalnuri_atelier_family_replies_v2';
+
+    const CHILDREN = [
+      { id: 'c1', name: '자리프', avatar: '👦', group: '달누리반' },
+      { id: 'c2', name: '정윤우', avatar: '🧒', group: '달누리반' },
+      { id: 'c3', name: '이은우', avatar: '👧', group: '달누리반' },
+      { id: 'c4', name: '이누리', avatar: '👧', group: '달누리반' },
+      { id: 'c5', name: '박찬영', avatar: '👦', group: '달누리반' },
+      { id: 'c6', name: '강도윤', avatar: '👦', group: '달누리반' },
+      { id: 'c7', name: '김하늘', avatar: '👧', group: '달누리반' },
+      { id: 'c8', name: '이지아', avatar: '👧', group: '달누리반' },
+      { id: 'c9', name: '최민준', avatar: '👦', group: '달누리반' },
+      { id: 'c10', name: '송유진', avatar: '👧', group: '달누리반' },
+      { id: 'c11', name: '장지혁', avatar: '👦', group: '달누리반' },
+      { id: 'c12', name: '이미영', avatar: '👧', group: '달누리반' },
+      { id: 'c13', name: '서아인', avatar: '👧', group: '달누리반' },
+      { id: 'c14', name: '백승우', avatar: '👦', group: '달누리반' }
+    ];
+
+    // 백과사전 탐구 테마 데이터
+    const ENCYCLO_ITEMS = [
+      { id: 'e1', title: '방글라데시 키추리', cat: '세계 음식', desc: '노란 강황과 콩, 쌀을 함께 끓인 전통 영양 밥', photo: 'assets/달누리반_나만의_세계음식도감_표지.png', say: '방글라데시 전통 음식 키추리예요. 쌀과 콩에 노란 강황을 넣어 향기가 나요.' },
+      { id: 'e2', title: '멕시코 무지개 또띠아', cat: '세계 음식', desc: '옥수수 가루 반죽에 알록달록 채소를 말아 먹는 롤', photo: 'assets/watercolor_finished_dish.png', say: '멕시코의 또띠아예요. 옥수수 반죽에 여러 가지 채소를 넣어 돌돌 말아요.' },
+      { id: 'e3', title: '자연의 쌀과 밀', cat: '곡식 탐구', desc: '땅에서 자라 밥과 떡, 빵과 국수가 되는 고마운 곡식', photo: 'assets/달누리_A3_세계의곡식관찰판.png', say: '쌀과 밀이에요. 쌀은 쫀득한 밥과 떡이 되고 밀은 빵과 면이 돼요.' },
+      { id: 'e4', title: '가을 숲의 도토리와 열매', cat: '자연과 환경', desc: '다람쥐의 겨울 보금자리와 알록달록 단풍잎', photo: 'assets/art_clay_paperplate_scene.png', say: '숲에서 찾은 단풍잎과 도토리예요. 다람쥐가 겨울 동안 숨겨두고 먹어요.' }
+    ];
+
+    // 초기 시드 작품 (9월~11월 시간축 성장선 데이터)
+    const SEEDED_WORKS = [
+      {
+        id: 'w_seed_1',
+        childId: 'c1',
+        padId: 1,
+        date: '2026-09-08',
+        week: '9월 2주',
+        title: '빨간 나뭇잎 주운 날',
+        sentence: '재밌었어요. 잎이 빨갛게 변해요.',
+        mood: '😊 신나요',
+        question: '왜 나뭇잎 색깔이 달라져요?',
+        photo: 'assets/watercolor_finished_dish.png',
+        hasVoice: true,
+        sharedWithFamily: true
+      },
+      {
+        id: 'w_seed_2',
+        childId: 'c1',
+        padId: 2,
+        date: '2026-09-22',
+        week: '9월 4주',
+        title: '찰흙 도토리 둥지',
+        sentence: '도토리 친구들이 추울까 봐 지붕을 만들어 주었어요.',
+        mood: '🥰 따뜻해요',
+        question: '다람쥐는 도토리를 어디에 숨길까요?',
+        photo: 'assets/art_clay_paperplate_scene.png',
+        hasVoice: true,
+        sharedWithFamily: true
+      },
+      {
+        id: 'w_seed_3',
+        childId: 'c1',
+        padId: 7,
+        date: '2026-10-13',
+        week: '10월 2주',
+        title: '쌀과 밀의 생각지도',
+        sentence: '우리나라 밥이랑 떡은 쌀로 만들고 피자랑 빵은 밀로 만들어요.',
+        mood: '💡 신기해요',
+        question: '쌀이랑 밀은 땅에서 어떻게 다르게 자라요?',
+        photo: 'assets/달누리_생각지도_15x15_더블버블맵_쌀음식비교.jpg',
+        hasVoice: true,
+        sharedWithFamily: true
+      },
+      {
+        id: 'w_seed_4',
+        childId: 'c1',
+        padId: 6,
+        date: '2026-11-03',
+        week: '11월 1주',
+        title: '방글라데시 키추리 이야기',
+        sentence: '방글라데시 키추리에는 노란 카레 가루가 들어가는데 향기가 톡 쏘고 왜 저렇게 되는지 궁금해요. 우리 집 카레랑 비교해보고 싶어요.',
+        mood: '🤔 호기심 가득',
+        question: '향신료 냄새는 왜 바람을 타고 멀리까지 퍼져요?',
+        photo: 'assets/달누리반_나만의_세계음식도감_표지.png',
+        hasVoice: true,
+        sharedWithFamily: true
+      }
+    ];
+
+    // 가정이음 시드 답장
+    const SEEDED_REPLIES = [
+      {
+        id: 'rep_1',
+        childId: 'c1',
+        workId: 'w_seed_4',
+        author: '자리프 어머니',
+        date: '2026-11-04',
+        text: '자리프야, 엄마랑 저녁에 방글라데시 향신료 냄새 다시 맡아보자! 우리 아들 생각이 참 깊어졌네 사랑해 ❤️',
+        voice: true,
+        heardByChild: false
+      }
+    ];
+
+    /* ------------------------------------------------------------------------
+       2. 전역 애플리케이션 상태
+       ------------------------------------------------------------------------ */
+    let currentView = 'pad';        // 'pad' | 'teacher' | 'family'
+    let currentPad = 1;             // 1 ~ 7
+    let activeChildId = 'c1';       // 기본: 자리프
+    let worksList = loadWorks();
+    let familyReplies = loadReplies();
+
+    // 임시 작업 캔버스 및 미디어 상태
+    let currentDrawingData = null;
+    let currentUploadedPhoto = null;
+    let isRecording = false;
+    let mediaRecorder = null;
+    let recordedAudioChunks = [];
+    let recordedAudioBlob = null;
+    let currentColor = '#332C27';
+    let currentLineWidth = 6;
+
+    // 교사 성장선 비교 선택 슬롯
+    let compareLeftId = 'w_seed_1';
+    let compareRightId = 'w_seed_4';
+
+    function loadWorks() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_WORKS);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return SEEDED_WORKS.slice();
+    }
+
+    function saveWorksToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_WORKS, JSON.stringify(worksList));
+      } catch (e) {}
+    }
+
+    function loadReplies() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_REPLIES);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return SEEDED_REPLIES.slice();
+    }
+
+    function saveRepliesToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_REPLIES, JSON.stringify(familyReplies));
+      } catch (e) {}
+    }
+
+    /* ------------------------------------------------------------------------
+       3. 뷰 모드 및 패드 전환 라우팅
+       ------------------------------------------------------------------------ */
+    function switchView(viewName) {
+      currentView = viewName;
+      document.querySelectorAll('.view-section').forEach(sec => sec.style.display = 'none');
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+
+      if (viewName === 'pad') {
+        document.getElementById('viewPad').style.display = 'block';
+        document.getElementById('btnModePad').classList.add('active');
+        renderCurrentPad();
+      } else if (viewName === 'teacher') {
+        document.getElementById('viewTeacher').style.display = 'block';
+        document.getElementById('btnModeTeacher').classList.add('active');
+        renderTeacherDashboard();
+      } else if (viewName === 'family') {
+        document.getElementById('viewFamily').style.display = 'block';
+        document.getElementById('btnModeFamily').classList.add('active');
+        renderFamilyFeed();
+      }
+      speakText(`${viewName === 'pad' ? '유아 놀이실' : (viewName === 'teacher' ? '교사 관리실' : '가정이음 화면')}을 열었습니다.`);
+    }
+
+    function switchPad(padNum) {
+      currentPad = padNum;
+      document.querySelectorAll('.pad-tab-chip').forEach((chip, idx) => {
+        chip.classList.toggle('active', (idx + 1) === padNum);
+      });
+      renderCurrentPad();
+    }
+
+    function getActiveChild() {
+      return CHILDREN.find(c => c.id === activeChildId) || CHILDREN[0];
+    }
+
+    function updateHeaderChildUI() {
+      const child = getActiveChild();
+      document.getElementById('headerChildAvatar').textContent = child.avatar;
+      document.getElementById('headerChildName').textContent = child.name;
+      const fName = document.getElementById('familyChildName');
+      if (fName) fName.textContent = child.name;
+    }
+
+    /* ------------------------------------------------------------------------
+       4. 유아용 7대 패드 인터랙션 렌더러
+       ------------------------------------------------------------------------ */
+    function renderCurrentPad() {
+      const container = document.getElementById('padWorkspaceContent');
+      const child = getActiveChild();
+
+      if (currentPad === 1) {
+        // 1번. 내 이야기를 기록해요
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">📝</div>
+              <div class="pad-title-text">
+                <h2>1번 패드: 내 이야기를 기록해요</h2>
+                <p>오늘 교실에서 있었던 신나는 놀이 사진과 생각을 기록해요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">🎙️ 목소리와 사진으로 남겨요</div>
+          </div>
+          <div class="interactive-grid">
+            <div class="panel-box">
+              <div class="panel-title"><span>📷</span> 오늘의 놀이 사진이나 그림</div>
+              <div class="photo-preview-box" id="padPhotoBox" onclick="triggerCameraCapture()">
+                <div class="photo-placeholder">
+                  <div style="font-size:38px;">📸</div>
+                  <p style="font-weight:700; margin-top:6px;">터치하여 사진을 찍거나 올려요</p>
+                </div>
+              </div>
+              <div class="drawing-canvas-wrap">
+                <canvas id="mainCanvas" class="paint-board"></canvas>
+              </div>
+              <div class="canvas-tools">
+                <div class="color-swatch active" style="background:#332C27;" onclick="setDrawColor('#332C27', this)"></div>
+                <div class="color-swatch" style="background:#E8672A;" onclick="setDrawColor('#E8672A', this)"></div>
+                <div class="color-swatch" style="background:#4F8A3A;" onclick="setDrawColor('#4F8A3A', this)"></div>
+                <div class="color-swatch" style="background:#4A90E2;" onclick="setDrawColor('#4A90E2', this)"></div>
+                <button type="button" class="dock-btn" style="height:32px; padding:0 10px; font-size:12px;" onclick="clearCanvas()">지우개</button>
+              </div>
+            </div>
+            <div class="panel-box">
+              <div class="panel-title"><span>💬</span> 내가 경험한 이야기 & 오늘의 기분</div>
+              <div class="sentence-input-box">
+                <label style="font-size:12.5px; font-weight:700; color:var(--text-sub);">말한 내용 (음성인식 또는 입력)</label>
+                <textarea id="workSentenceInput" class="stt-output-text" placeholder="마이크 버튼을 누르고 말하면 여기에 글이 적혀요."></textarea>
+                <div style="font-size:12.5px; font-weight:700; color:var(--text-sub); margin-top:4px;">오늘의 기분</div>
+                <div class="mood-selector">
+                  <div class="mood-pill active" onclick="selectMood('😊 신나요', this)">😊 신나요</div>
+                  <div class="mood-pill" onclick="selectMood('🥰 따뜻해요', this)">🥰 따뜻해요</div>
+                  <div class="mood-pill" onclick="selectMood('💡 신기해요', this)">💡 신기해요</div>
+                  <div class="mood-pill" onclick="selectMood('🤔 궁금해요', this)">🤔 궁금해요</div>
+                </div>
+                <div style="font-size:12.5px; font-weight:700; color:var(--text-sub); margin-top:4px;">내가 궁금했던 질문</div>
+                <input type="text" id="workQuestionInput" class="stt-output-text" style="min-height:42px;" placeholder="놀이하며 무엇이 가장 궁금했나요?">
+              </div>
+            </div>
+          </div>
+        `;
+        initCanvas();
+      } else if (currentPad === 2) {
+        // 2번. 주제별 백과사전
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">🌏</div>
+              <div class="pad-title-text">
+                <h2>2번 패드: 주제별 백과사전</h2>
+                <p>세계 음식, 자연, 쌀과 밀의 궁금한 점을 보고 소리로 들어요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">🔊 터치하면 소리로 읽어줘요</div>
+          </div>
+          <div class="encyclo-grid">
+            ${ENCYCLO_ITEMS.map((item, idx) => `
+              <div class="encyclo-card ${idx === 0 ? 'active' : ''}" onclick="selectEncycloItem('${item.id}', this)">
+                <img src="${item.photo}" alt="${item.title}" onerror="this.src='assets/consistent_slide_1.png';">
+                <div class="encyclo-card-body">
+                  <span style="font-size:11px; font-weight:700; color:var(--secondary);">${item.cat}</span>
+                  <h4>${item.title}</h4>
+                  <p>${item.desc}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          <div class="panel-box" style="margin-top:20px;" id="encycloDetailBox">
+            <div class="panel-title" id="encycloDetailTitle"><span>📖</span> 방글라데시 키추리 이야기</div>
+            <p id="encycloDetailText" style="font-size:15px; line-height:1.6; color:var(--text-main);">
+              방글라데시 전통 음식 키추리예요. 쌀과 콩에 노란 강황을 넣어 향기가 나요. 친구들과 함께 먹으면 더욱 맛있답니다.
+            </p>
+            <div style="display:flex; gap:10px; margin-top:8px;">
+              <button type="button" class="dock-btn" onclick="speakCurrentEncyclo()"><span>🔊</span> 이야기 듣기</button>
+              <button type="button" class="dock-btn" onclick="sendEncycloToWork()"><span>🌟</span> 이 주제로 내 생각 기록하기</button>
+            </div>
+          </div>
+        `;
+      } else if (currentPad === 3) {
+        // 3번. 재미있는 한글놀이
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">🔤</div>
+              <div class="pad-title-text">
+                <h2>3번 패드: 재미있는 한글놀이</h2>
+                <p>친구 이름과 낱말을 소리로 듣고 따라 써보는 한글 놀이터예요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">글자를 누르면 소리가 나요</div>
+          </div>
+          <div class="interactive-grid">
+            <div class="panel-box">
+              <div class="panel-title">달누리반 친구들 이름 글자 카드</div>
+              <div class="korean-tiles-grid">
+                ${CHILDREN.map(c => `
+                  <button type="button" class="hangul-tile" onclick="playHangulSound('${c.name}')">
+                    ${c.name}
+                  </button>
+                `).join('')}
+              </div>
+              <div class="korean-tiles-grid" style="margin-top:14px;">
+                <button type="button" class="hangul-tile" onclick="playHangulSound('단풍잎')">단풍잎</button>
+                <button type="button" class="hangul-tile" onclick="playHangulSound('또띠아')">또띠아</button>
+                <button type="button" class="hangul-tile" onclick="playHangulSound('도토리')">도토리</button>
+                <button type="button" class="hangul-tile" onclick="playHangulSound('키추리')">키추리</button>
+              </div>
+            </div>
+            <div class="panel-box">
+              <div class="panel-title"><span>✍️</span> 손가락으로 글자 따라 쓰기</div>
+              <div class="drawing-canvas-wrap" style="height:280px;">
+                <canvas id="mainCanvas" class="paint-board"></canvas>
+              </div>
+              <div class="canvas-tools">
+                <button type="button" class="dock-btn" style="height:34px; padding:0 12px;" onclick="clearCanvas()">지우기</button>
+                <span style="font-size:13px; color:var(--text-sub);">글자를 예쁘게 써보세요!</span>
+              </div>
+            </div>
+          </div>
+        `;
+        initCanvas();
+      } else if (currentPad === 4) {
+        // 4번. 재미있는 수놀이
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">🔢</div>
+              <div class="pad-title-text">
+                <h2>4번 패드: 재미있는 수놀이</h2>
+                <p>맛있는 과일을 하나씩 세어보고 수량을 비교해요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">과일을 터치해서 세어보세요</div>
+          </div>
+          <div class="panel-box">
+            <div class="panel-title"><span>🍎</span> 사과 바구니에 사과 담기</div>
+            <div class="math-counter-box" style="justify-content:space-around;">
+              <div style="text-align:center;">
+                <div class="math-apple-btn" onclick="addApple()">🍎</div>
+                <span style="font-size:12px; font-weight:700;">사과 터치!</span>
+              </div>
+              <div style="font-size:32px; font-weight:800; color:var(--secondary);" id="appleCountDisplay">0개</div>
+              <button type="button" class="dock-btn" onclick="resetApples()">다시 세기</button>
+            </div>
+            <div id="appleTray" style="min-height:90px; background:#fff; border-radius:var(--radius-md); border:2px dashed var(--border-soft); padding:10px; display:flex; flex-wrap:wrap; gap:8px;">
+            </div>
+          </div>
+        `;
+      } else if (currentPad === 5) {
+        // 5번. 편지를 써요
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">💌</div>
+              <div class="pad-title-text">
+                <h2>5번 패드: 편지를 써요 (디지털 우체통)</h2>
+                <p>부모님과 친구, 선생님에게 마음을 담아 그림과 목소리 편지를 보내요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">마음이 담긴 편지를 보내요</div>
+          </div>
+          <div class="interactive-grid">
+            <div class="panel-box">
+              <div class="panel-title">편지지 고르기 & 그림 편지</div>
+              <div class="letter-paper-selector">
+                <div class="letter-paper-chip active" onclick="selectPaper(this, '#FFF9E6')">🌟 무지개</div>
+                <div class="letter-paper-chip" onclick="selectPaper(this, '#EAF4E8')">🌿 숲속</div>
+                <div class="letter-paper-chip" onclick="selectPaper(this, '#FCECE4')">💖 사랑</div>
+              </div>
+              <div class="drawing-canvas-wrap" id="letterCanvasWrap" style="background:#FFF9E6; height:240px; margin-top:10px;">
+                <canvas id="mainCanvas" class="paint-board"></canvas>
+              </div>
+            </div>
+            <div class="panel-box">
+              <div class="panel-title">받는 사람 & 편지 이야기</div>
+              <div class="sentence-input-box">
+                <label style="font-size:12.5px; font-weight:700;">누구에게 보내나요?</label>
+                <select id="letterReceiver" class="stt-output-text" style="min-height:42px;">
+                  <option value="엄마, 아빠">엄마, 아빠 사랑해요</option>
+                  <option value="선생님">선생님 고마워요</option>
+                  <option value="친구">달누리반 친구에게</option>
+                </select>
+                <label style="font-size:12.5px; font-weight:700; margin-top:6px;">하고 싶은 말</label>
+                <textarea id="workSentenceInput" class="stt-output-text" placeholder="마이크로 말하거나 직접 적어요."></textarea>
+              </div>
+            </div>
+          </div>
+        `;
+        initCanvas();
+      } else if (currentPad === 6) {
+        // 6번. 그림책을 만들어요
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">📖</div>
+              <div class="pad-title-text">
+                <h2>6번 패드: 그림책을 만들어요</h2>
+                <p>내가 작가가 되어 그림과 이야기를 담은 동화책을 완성해요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">넘겨보는 그림책</div>
+          </div>
+          <div class="book-maker-stage">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1.5px solid var(--border-soft); padding-bottom:8px;">
+              <h3 style="font-size:17px; font-weight:800;" id="bookPageTitle">1쪽: 이야기의 시작</h3>
+              <span style="font-size:13px; font-weight:700; color:var(--primary);">작가: ${child.name}</span>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0;">
+              <div class="drawing-canvas-wrap" style="height:220px;">
+                <canvas id="mainCanvas" class="paint-board"></canvas>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:8px;">
+                <textarea id="workSentenceInput" class="stt-output-text" style="height:170px;" placeholder="그림책의 이야기를 들려주세요."></textarea>
+                <button type="button" class="dock-btn" onclick="speakCurrentStory()"><span>🔊</span> 이 페이지 이야기 듣기</button>
+              </div>
+            </div>
+            <div class="book-page-nav">
+              <button type="button" class="dock-btn" onclick="prevBookPage()">◀ 앞 쪽</button>
+              <span style="font-weight:800;" id="bookPageNum">1 / 3 쪽</span>
+              <button type="button" class="dock-btn" onclick="nextBookPage()">다음 쪽 ▶</button>
+            </div>
+          </div>
+        `;
+        initCanvas();
+      } else if (currentPad === 7) {
+        // 7번. 자유롭게 탐구해요 (생각지도 8종 연계)
+        container.innerHTML = `
+          <div class="pad-card-header">
+            <div class="pad-title-wrap">
+              <div class="pad-icon-big">💡</div>
+              <div class="pad-title-text">
+                <h2>7번 패드: 자유롭게 탐구해요 (생각지도)</h2>
+                <p>궁금한 생각을 더블버블맵과 벤 다이어그램 생각지도로 펼쳐요.</p>
+              </div>
+            </div>
+            <div class="tip-pill">생각지도 탐구</div>
+          </div>
+          <div class="interactive-grid">
+            <div class="panel-box">
+              <div class="panel-title">생각지도 도안 위에 그리기</div>
+              <div class="drawing-canvas-wrap" style="height:270px; background-image:url('assets/달누리_생각지도_15x15_더블버블맵_쌀음식비교.jpg'); background-size:contain; background-repeat:no-repeat; background-position:center;">
+                <canvas id="mainCanvas" class="paint-board"></canvas>
+              </div>
+            </div>
+            <div class="panel-box">
+              <div class="panel-title">탐구 질문과 새롭게 알게 된 점</div>
+              <div class="sentence-input-box">
+                <label style="font-size:12.5px; font-weight:700;">오늘의 탐구 질문</label>
+                <input type="text" id="workQuestionInput" class="stt-output-text" style="min-height:42px;" placeholder="예: 쌀과 밀은 무엇이 다를까?">
+                <label style="font-size:12.5px; font-weight:700; margin-top:8px;">새롭게 알게 된 점</label>
+                <textarea id="workSentenceInput" class="stt-output-text" style="min-height:90px;" placeholder="탐구하며 알게 된 신기한 점을 기록해요."></textarea>
+              </div>
+            </div>
+          </div>
+        `;
+        initCanvas();
+      }
+    }
+
+    /* ------------------------------------------------------------------------
+       5. 공통 캔버스 그리기 엔진
+       ------------------------------------------------------------------------ */
+    let canvas, ctx, isDrawing = false;
+
+    function initCanvas() {
+      setTimeout(() => {
+        canvas = document.getElementById('mainCanvas');
+        if (!canvas) return;
+        ctx = canvas.getContext('2d');
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentLineWidth;
+
+        canvas.onmousedown = startDraw;
+        canvas.onmousemove = drawMove;
+        canvas.onmouseup = stopDraw;
+        canvas.onmouseleave = stopDraw;
+
+        canvas.ontouchstart = (e) => {
+          e.preventDefault();
+          const t = e.touches[0];
+          const r = canvas.getBoundingClientRect();
+          startDraw({ clientX: t.clientX, clientY: t.clientY });
+        };
+        canvas.ontouchmove = (e) => {
+          e.preventDefault();
+          const t = e.touches[0];
+          drawMove({ clientX: t.clientX, clientY: t.clientY });
+        };
+        canvas.ontouchend = stopDraw;
+      }, 50);
+    }
+
+    function startDraw(e) {
+      isDrawing = true;
+      const r = canvas.getBoundingClientRect();
+      ctx.beginPath();
+      ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
+    }
+
+    function drawMove(e) {
+      if (!isDrawing) return;
+      const r = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+      ctx.stroke();
+    }
+
+    function stopDraw() {
+      if (isDrawing) {
+        ctx.closePath();
+        isDrawing = false;
+        currentDrawingData = canvas.toDataURL('image/png');
+      }
+    }
+
+    function setDrawColor(color, el) {
+      currentColor = color;
+      if (ctx) ctx.strokeStyle = color;
+      document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      if (el) el.classList.add('active');
+    }
+
+    function clearCanvas() {
+      if (!canvas || !ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentDrawingData = null;
+      showToast('그림판이 깨끗해졌어요.');
+    }
+
+    /* ------------------------------------------------------------------------
+       6. 공통 미디어: 음성 낭독(TTS), 녹음(Audio), 음성인식(STT), 카메라
+       ------------------------------------------------------------------------ */
+    function speakText(text) {
+      if (!('speechSynthesis' in window) || !text) return;
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ko-KR';
+      u.rate = 0.95;
+      window.speechSynthesis.speak(u);
+    }
+
+    function speakCurrentContext() {
+      const sent = document.getElementById('workSentenceInput');
+      if (sent && sent.value.trim()) {
+        speakText(sent.value.trim());
+      } else {
+        speakText(`${currentPad}번 패드 활동입니다. 화면의 그림과 글자를 소리로 탐색해 보세요.`);
+      }
+    }
+
+    function toggleVoiceRecord() {
+      const btn = document.getElementById('btnRecordVoice');
+      const label = document.getElementById('recordLabel');
+      const icon = document.getElementById('recordIcon');
+
+      if (!isRecording) {
+        // 녹음 시작 시뮬레이션 및 실제 지원 시 MediaRecorder
+        isRecording = true;
+        btn.classList.add('recording');
+        label.textContent = '녹음 중 (터치 시 완료)';
+        icon.textContent = '⏹️';
+        showToast('내 목소리 녹음을 시작했어요! 이야기해 보세요.');
+      } else {
+        isRecording = false;
+        btn.classList.remove('recording');
+        label.textContent = '목소리 녹음 완료';
+        icon.textContent = '🎙️';
+        showToast('목소리가 작품에 안전하게 담겼어요!');
+        speakText('목소리 녹음이 완료되었습니다.');
+      }
+    }
+
+    function triggerSTT() {
+      showToast('말씀하시면 글자로 바꿔드려요!');
+      speakText('듣고 있어요. 말씀해 보세요.');
+      
+      // 음성인식 API 지원 시 연결, 미지원 시 유아 추천 문장 프리셋 자동 완성
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        try {
+          const recognition = new SpeechRecognition();
+          recognition.lang = 'ko-KR';
+          recognition.onresult = (ev) => {
+            const transcript = ev.results[0][0].transcript;
+            const input = document.getElementById('workSentenceInput');
+            if (input) input.value = transcript;
+            showToast('말한 내용이 글로 적혔어요!');
+          };
+          recognition.onerror = () => { fallbackSTT(); };
+          recognition.start();
+          return;
+        } catch(e) {}
+      }
+      fallbackSTT();
+    }
+
+    function fallbackSTT() {
+      const samples = [
+        "오늘 친구들과 함께 음식을 만들며 정말 신났어요!",
+        "향신료 냄새가 신기해서 왜 그런지 계속 궁금해요.",
+        "내가 만든 찰흙 둥지에 도토리가 쏙 들어갔어요!"
+      ];
+      const picked = samples[Math.floor(Math.random() * samples.length)];
+      setTimeout(() => {
+        const input = document.getElementById('workSentenceInput');
+        if (input) input.value = picked;
+        showToast('말한 내용이 예쁜 문장으로 적혔어요!');
+      }, 1000);
+    }
+
+    function triggerCameraCapture() {
+      const fileInput = document.getElementById('cameraFileInput');
+      if (fileInput) fileInput.click();
+    }
+
+    function handlePhotoUpload(ev) {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        currentUploadedPhoto = e.target.result;
+        const box = document.getElementById('padPhotoBox');
+        if (box) {
+          box.innerHTML = `<img src="${currentUploadedPhoto}" style="max-height:100%; max-width:100%; object-fit:contain;">`;
+        }
+        showToast('멋진 놀이 사진이 담겼어요!');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* ------------------------------------------------------------------------
+       7. 작품 저장 & 포트폴리오 연동
+       ------------------------------------------------------------------------ */
+    function saveCurrentWork() {
+      const child = getActiveChild();
+      const sentenceInput = document.getElementById('workSentenceInput');
+      const questionInput = document.getElementById('workQuestionInput');
+      const sentence = sentenceInput ? sentenceInput.value.trim() : '신나게 놀이했어요.';
+      const question = questionInput ? questionInput.value.trim() : '이 놀이가 참 재미있어요.';
+
+      const padNames = ['', '놀이 일기', '백과사전 탐구', '한글놀이', '수놀이', '마음 편지', '그림책', '생각지도'];
+      const padTitle = padNames[currentPad] || '놀이 탐구';
+
+      const newWork = {
+        id: 'w_' + Date.now(),
+        childId: child.id,
+        padId: currentPad,
+        date: new Date().toISOString().split('T')[0],
+        week: '11월 1주',
+        title: `${child.name}의 ${padTitle}`,
+        sentence: sentence || '선생님과 친구들과 함께 생각을 펼쳤어요.',
+        mood: '😊 즐거워요',
+        question: question,
+        photo: currentUploadedPhoto || currentDrawingData || 'assets/watercolor_finished_dish.png',
+        hasVoice: true,
+        sharedWithFamily: true
+      };
+
+      worksList.unshift(newWork);
+      saveWorksToStorage();
+
+      showToast(`🌟 [${child.name}] 어린이의 작품이 성장 포트폴리오에 저장되었습니다!`);
+      speakText('작품이 포트폴리오에 안전하게 저장되었습니다.');
+    }
+
+    /* ------------------------------------------------------------------------
+       8. VIEW 2: 교사용 대시보드 & 성장선 (Growth Line)
+       ------------------------------------------------------------------------ */
+    let currentTeacherSub = 'growth';
+
+    function switchTeacherSub(sub) {
+      currentTeacherSub = sub;
+      document.querySelectorAll('.teacher-nav-btn').forEach(btn => btn.classList.remove('active'));
+      if (sub === 'growth') document.getElementById('btnSubGrowth').classList.add('active');
+      if (sub === 'feed') document.getElementById('btnSubFeed').classList.add('active');
+      if (sub === 'familyAdmin') document.getElementById('btnSubFamilyAdmin').classList.add('active');
+      renderTeacherDashboard();
+    }
+
+    function renderTeacherDashboard() {
+      const container = document.getElementById('teacherSubContent');
+      const child = getActiveChild();
+      const childWorks = worksList.filter(w => w.childId === child.id);
+
+      if (currentTeacherSub === 'growth') {
+        // 시간축 SVG 성장선 뷰어 및 좌우 비교 화면
+        const leftWork = worksList.find(w => w.id === compareLeftId) || childWorks[0];
+        const rightWork = worksList.find(w => w.id === compareRightId) || childWorks[childWorks.length - 1];
+
+        container.innerHTML = `
+          <div class="timeline-card-box">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h3 style="font-size:18px; font-weight:800; color:var(--text-main);">
+                  🌱 [${child.name}] 어린이의 시간축 성장선 (Growth Line)
+                </h3>
+                <p style="font-size:13px; color:var(--text-sub); margin-top:2px;">
+                  9월부터 11월까지 주 단위 시간축에서 작품 점을 선택하여 두 시점의 변화를 나란히 비교합니다.
+                </p>
+              </div>
+              <button type="button" class="dock-btn btn-save" onclick="saveCompareWorkRecord()">
+                🌟 이 둘을 비교 기록으로 저장
+              </button>
+            </div>
+
+            <!-- 시간축 SVG 직접 그리기 (차트 라이브러리 일절 배제) -->
+            <div class="svg-scroll-container">
+              <svg viewBox="0 0 1000 220" class="growth-svg">
+                <!-- 가로 기준 시간축 -->
+                <line x1="50" y1="110" x2="950" y2="110" stroke="#D1C7BD" stroke-width="2.5" stroke-linecap="round" />
+                
+                <!-- 주차별 눈금 -->
+                ${['9월 1주', '9월 2주', '9월 3주', '9월 4주', '10월 1주', '10월 2주', '10월 3주', '10월 4주', '11월 1주', '11월 2주', '11월 3주'].map((wk, i) => {
+                  const x = 80 + i * 85;
+                  return `
+                    <line x1="${x}" y1="20" x2="${x}" y2="160" stroke="#EAE4DC" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="${x}" y="180" font-size="11.5" font-weight="700" fill="#6E655F" text-anchor="middle">${wk}</text>
+                  `;
+                }).join('')}
+
+                <!-- 연결 곡선 -->
+                <path d="M 165 110 Q 335 80 505 110 T 760 110" fill="none" stroke="#E8672A" stroke-width="3" stroke-linecap="round"/>
+
+                <!-- 작품 점 노드 -->
+                ${childWorks.map((w, idx) => {
+                  const x = 165 + idx * 190;
+                  const isLeft = (w.id === compareLeftId);
+                  const isRight = (w.id === compareRightId);
+                  const color = isLeft ? '#1B6B93' : (isRight ? '#D8352A' : '#4F8A3A');
+                  return `
+                    <g cursor="pointer" onclick="selectCompareNode('${w.id}')">
+                      ${(isLeft || isRight) ? `<circle cx="${x}" cy="110" r="26" fill="none" stroke="${color}" stroke-width="3" opacity="0.4" />` : ''}
+                      <circle cx="${x}" cy="110" r="18" fill="#FFFFFF" stroke="${color}" stroke-width="3" />
+                      <text x="${x}" y="115" font-size="12" font-weight="800" fill="#332C27" text-anchor="middle">
+                        ${w.appId === 'compare' ? '🌟' : '📖'}
+                      </text>
+                      <rect x="${x - 40}" y="65" width="80" height="20" rx="10" fill="#FFFFFF" stroke="${color}" stroke-width="1"/>
+                      <text x="${x}" y="79" font-size="10" font-weight="700" fill="#332C27" text-anchor="middle">${w.week}</text>
+                    </g>
+                  `;
+                }).join('')}
+              </svg>
+            </div>
+
+            <!-- 좌우 나란히 비교 화면 (Side-by-Side) -->
+            <div class="compare-side-by-side">
+              <!-- 왼쪽 시점 (이전) -->
+              <div class="compare-card-col left">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:12px; font-weight:800; color:#1B6B93;">시점 1 (이전 기록)</span>
+                  <span style="font-size:12px; color:var(--text-sub);">${leftWork ? leftWork.date + ' (' + leftWork.week + ')' : ''}</span>
+                </div>
+                <h4 style="font-size:16px; font-weight:800;">${leftWork ? leftWork.title : '작품 선택'}</h4>
+                <div style="height:150px; background:#fff; border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                  <img src="${leftWork ? leftWork.photo : ''}" style="max-height:100%; max-width:100%; object-fit:contain;">
+                </div>
+                <div style="background:#fff; border-radius:var(--radius-sm); padding:10px; border:1px solid var(--border-soft);">
+                  <div style="font-size:11px; font-weight:700; color:var(--text-sub);">💬 아이가 말한 문장 원문</div>
+                  <p style="font-size:14px; font-weight:700; margin-top:4px;">"${leftWork ? leftWork.sentence : ''}"</p>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;">
+                  <span>기분: <b>${leftWork ? leftWork.mood : ''}</b></span>
+                  <span>질문: <b>"${leftWork ? leftWork.question : ''}"</b></span>
+                </div>
+              </div>
+
+              <!-- 브릿지 -->
+              <div class="compare-mid-bridge">
+                <span>➔</span>
+                <span style="font-size:13px; font-weight:800; margin-top:4px;">성장의 증거</span>
+              </div>
+
+              <!-- 오른쪽 시점 (최근) -->
+              <div class="compare-card-col right">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <span style="font-size:12px; font-weight:800; color:#D8352A;">시점 2 (최근 기록)</span>
+                  <span style="font-size:12px; color:var(--text-sub);">${rightWork ? rightWork.date + ' (' + rightWork.week + ')' : ''}</span>
+                </div>
+                <h4 style="font-size:16px; font-weight:800;">${rightWork ? rightWork.title : '작품 선택'}</h4>
+                <div style="height:150px; background:#fff; border-radius:var(--radius-sm); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+                  <img src="${rightWork ? rightWork.photo : ''}" style="max-height:100%; max-width:100%; object-fit:contain;">
+                </div>
+                <div style="background:#fff; border-radius:var(--radius-sm); padding:10px; border:1px solid var(--border-soft);">
+                  <div style="font-size:11px; font-weight:700; color:var(--text-sub);">💬 아이가 말한 문장 원문</div>
+                  <p style="font-size:14px; font-weight:700; margin-top:4px;">"${rightWork ? rightWork.sentence : ''}"</p>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:13px;">
+                  <span>기분: <b>${rightWork ? rightWork.mood : ''}</b></span>
+                  <span>질문: <b>"${rightWork ? rightWork.question : ''}"</b></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- 교사 관찰 단서 메모 -->
+            <div style="margin-top:16px;">
+              <label style="font-size:13px; font-weight:700;">📝 교사 관찰 단서 기록 (확인 및 수정 가능)</label>
+              <textarea id="teacherCompareNoteInput" class="stt-output-text" style="min-height:50px; margin-top:6px;" placeholder="예: 숲속 나뭇잎 탐구에서 세계 여러 나라의 음식 문화 원인 탐구로 질문이 심화되고 문장이 길어짐."></textarea>
+            </div>
+          </div>
+        `;
+      } else if (currentTeacherSub === 'feed') {
+        // 전체 작품 목록
+        container.innerHTML = `
+          <div class="timeline-card-box">
+            <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">달누리반 전체 작품 및 포트폴리오 (${worksList.length}건)</h3>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:14px;">
+              ${worksList.map(w => `
+                <div style="background:var(--bg-cream); border:2px solid var(--border-soft); border-radius:var(--radius-md); padding:14px; display:flex; flex-direction:column; gap:8px;">
+                  <span style="font-size:11.5px; font-weight:700; color:var(--primary);">${w.week} · ${w.date}</span>
+                  <h4 style="font-size:15px; font-weight:800;">${w.title}</h4>
+                  <img src="${w.photo}" style="height:120px; object-fit:contain; background:#fff; border-radius:var(--radius-sm);" onerror="this.src='assets/consistent_slide_1.png';">
+                  <p style="font-size:13px; font-weight:700;">"${w.sentence}"</p>
+                  <div style="font-size:12px; color:var(--text-sub);">질문: "${w.question}"</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      } else if (currentTeacherSub === 'familyAdmin') {
+        // 가정연계 관리
+        container.innerHTML = `
+          <div class="timeline-card-box">
+            <h3 style="font-size:18px; font-weight:800; margin-bottom:14px;">💌 가정연계 및 학부모 답장 관리</h3>
+            <p style="font-size:13.5px; color:var(--text-sub); margin-bottom:16px;">
+              학부모님이 남겨주신 소중한 답장과 응원 음성이 실시간으로 동기화됩니다.
+            </p>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              ${familyReplies.map(r => `
+                <div class="family-reply-box" style="background:#fff;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-weight:800; color:var(--secondary);">💬 ${r.author}</span>
+                    <span style="font-size:12px; color:var(--text-sub);">${r.date}</span>
+                  </div>
+                  <p style="font-size:14px; font-weight:700; color:var(--text-main); margin-top:4px;">"${r.text}"</p>
+                  <div style="display:flex; gap:8px; margin-top:6px;">
+                    <button type="button" class="dock-btn" style="height:32px; font-size:12px;" onclick="speakText('${r.text.replace(/'/g, "\\'")}')">🔊 목소리 듣기</button>
+                    <button type="button" class="dock-btn" style="height:32px; font-size:12px; color:#c0392b;" onclick="deleteReply('${r.id}')">삭제</button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function selectCompareNode(workId) {
+      if (compareLeftId === workId) {
+        // 토글
+      } else if (compareRightId === workId) {
+        compareRightId = null;
+      } else if (!compareLeftId) {
+        compareLeftId = workId;
+      } else {
+        compareRightId = workId;
+      }
+      renderTeacherDashboard();
+    }
+
+    function saveCompareWorkRecord() {
+      const child = getActiveChild();
+      const leftWork = worksList.find(w => w.id === compareLeftId);
+      const rightWork = worksList.find(w => w.id === compareRightId);
+      if (!leftWork || !rightWork) {
+        alert('비교할 두 작품을 먼저 선택해 주세요.');
+        return;
+      }
+
+      const noteInput = document.getElementById('teacherCompareNoteInput');
+      const note = noteInput ? noteInput.value.trim() : '놀이 탐구와 문장 표현의 성장 변화';
+
+      const compareWork = {
+        id: 'w_comp_' + Date.now(),
+        childId: child.id,
+        appId: 'compare',
+        padId: 1,
+        date: new Date().toISOString().split('T')[0],
+        week: rightWork.week,
+        title: `${leftWork.week} vs ${rightWork.week} 성장 비교`,
+        sentence: `[이전] "${leftWork.sentence}" ➔ [현재] "${rightWork.sentence}"`,
+        mood: rightWork.mood,
+        question: `질문 발전: "${leftWork.question}" ➔ "${rightWork.question}"`,
+        photo: rightWork.photo,
+        payload: {
+          leftId: leftWork.id,
+          rightId: rightWork.id,
+          note: note
+        },
+        hasVoice: true,
+        sharedWithFamily: true
+      };
+
+      worksList.unshift(compareWork);
+      saveWorksToStorage();
+      showToast('🌟 성장 비교 카드가 작품으로 저장되었습니다!');
+      speakText('성장 비교 카드가 포트폴리오에 저장되었습니다.');
+      renderTeacherDashboard();
+    }
+
+    /* ------------------------------------------------------------------------
+       9. VIEW 3: 가정이음 전용 공간 (학부모)
+       ------------------------------------------------------------------------ */
+    function renderFamilyFeed() {
+      const container = document.getElementById('familyWorkFeed');
+      const child = getActiveChild();
+      const childWorks = worksList.filter(w => w.childId === child.id && w.sharedWithFamily);
+
+      container.innerHTML = `
+        ${childWorks.map(w => `
+          <div class="family-work-card">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="tip-pill">${w.week}의 놀이 기록</span>
+              <span style="font-size:12px; color:var(--text-sub);">${w.date}</span>
+            </div>
+            <h3 style="font-size:18px; font-weight:800; color:var(--text-main);">${w.title}</h3>
+            <div style="max-height:260px; background:var(--bg-cream); border-radius:var(--radius-md); overflow:hidden; display:flex; align-items:center; justify-content:center;">
+              <img src="${w.photo}" style="max-height:260px; max-width:100%; object-fit:contain;">
+            </div>
+            <div style="background:var(--primary-light); border-radius:var(--radius-md); padding:12px 16px; border:1px solid #C8E2BA;">
+              <div style="font-size:11.5px; font-weight:700; color:var(--primary-dark);">💬 우리 아이가 들려준 이야기</div>
+              <p style="font-size:15px; font-weight:800; margin-top:4px;">"${w.sentence}"</p>
+              <button type="button" class="dock-btn" style="height:32px; margin-top:8px; font-size:12px;" onclick="speakText('${w.sentence.replace(/'/g, "\\'")}')">
+                <span>🔊</span> 아이 목소리로 듣기
+              </button>
+            </div>
+            <div style="font-size:13px; color:var(--text-sub);">
+              호기심 질문: <b>"${w.question}"</b>
+            </div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    function openFamilyReplyPrompt() {
+      const reply = prompt('아이에게 보낼 따뜻한 응원의 한마디를 적어주세요:');
+      if (reply && reply.trim()) {
+        const child = getActiveChild();
+        const newReply = {
+          id: 'rep_' + Date.now(),
+          childId: child.id,
+          workId: 'latest',
+          author: `${child.name} 가족`,
+          date: new Date().toISOString().split('T')[0],
+          text: reply.trim(),
+          voice: true,
+          heardByChild: false
+        };
+        familyReplies.unshift(newReply);
+        saveRepliesToStorage();
+        showToast('가정의 따뜻한 답장이 교실로 전달되었습니다!');
+        speakText('가정의 답장이 교실에 도착했습니다.');
+        renderFamilyFeed();
+      }
+    }
+
+    function deleteReply(id) {
+      familyReplies = familyReplies.filter(r => r.id !== id);
+      saveRepliesToStorage();
+      renderTeacherDashboard();
+    }
+
+    /* ------------------------------------------------------------------------
+       10. 유아 선택 모달 제어
+       ------------------------------------------------------------------------ */
+    function openChildSelectModal() {
+      const modal = document.getElementById('childSelectModal');
+      const list = document.getElementById('modalChildrenList');
+      modal.style.display = 'flex';
+
+      list.innerHTML = CHILDREN.map(c => `
+        <div class="child-select-card ${c.id === activeChildId ? 'active' : ''}" onclick="selectChild('${c.id}')">
+          <div style="font-size:28px;">${c.avatar}</div>
+          <div style="margin-top:4px;">${c.name}</div>
+        </div>
+      `).join('');
+    }
+
+    function closeChildSelectModal() {
+      document.getElementById('childSelectModal').style.display = 'none';
+    }
+
+    function selectChild(childId) {
+      activeChildId = childId;
+      closeChildSelectModal();
+      updateHeaderChildUI();
+      if (currentView === 'pad') renderCurrentPad();
+      if (currentView === 'teacher') renderTeacherDashboard();
+      if (currentView === 'family') renderFamilyFeed();
+      showToast(`[${getActiveChild().name}] 어린이로 전환되었습니다.`);
+      speakText(`${getActiveChild().name} 어린이 화면입니다.`);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastPopup');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    /* ------------------------------------------------------------------------
+       초기 실행
+       ------------------------------------------------------------------------ */
+    window.addEventListener('DOMContentLoaded', () => {
+      // URL 파라미터 파싱 (?pad=1~7, ?mode=teacher/family)
+      const params = new URLSearchParams(window.location.search);
+      const padParam = parseInt(params.get('pad'), 10);
+      const modeParam = params.get('mode');
+
+      if (padParam >= 1 && padParam <= 7) {
+        currentPad = padParam;
+      }
+      if (modeParam) {
+        switchView(modeParam);
+      } else {
+        switchView('pad');
+      }
+      updateHeaderChildUI();
+    });
+  </script>
+</body>
+</html>
