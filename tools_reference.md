@@ -9,6 +9,7 @@
 
 ## 3. 깃허브 페이지스 달누리반 통합 포털
 - **포털 메인**: https://ksm3669-cmd.github.io/dalnuri/
+- **달누리반 온·오프 그림책 놀이 배움터 (2,911권 소장도서 & 5대 놀이 연계)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-picturebook-studio.html
 - **달누리반 디지털 놀이터 & 가정이음 대시보드 (통합 대시보드 & 4대 놀이)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-learning-studio.html
 - **달누리반 디지털 놀이 아뜰리에 (7개 놀이앱 통합 플랫폼)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-atelier.html
 - **11월 세계음식 놀이주간 올인원 수업 내비게이터**: https://ksm3669-cmd.github.io/dalnuri/tools/world-food-curriculum-navigator.html
