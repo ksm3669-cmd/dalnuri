@@ -781,7 +781,7 @@ function render(){
     '</div><button class="exitc" id="exitC">✕ 작게 보기 (Esc)</button></section>'}
   if(s.type==='live') h='<section class="scene live center"><span class="onair">LIVE STAGE · PART '+s.p+'</span><div class="cls">'+esc(s.cls)+'</div><div class="title"><span class="foil">'+esc(s.title)+'</span></div>'+musHtml(s)+'<p class="sub">'+esc(s.msg)+'</p><div class="rule"></div><p class="clap">따뜻한 박수로 아이들을 맞아 주세요</p>'+musBar(s)+'</section>';
   if(s.type==='gallery') h='<section class="scene center"><div class="kicker">Part 2 · Our Kindergarten</div><div class="title" style="font-size:clamp(28px,3.6vw,60px)">아이들이 지내는 하루의 공간</div><div class="wall">'+A.g.map(function(src,i){return '<figure class="pol"><img src="'+src+'" alt="'+GAL[i][0]+'"><figcaption>'+GAL[i][0]+'</figcaption></figure>'}).join('')+'</div></section>';
-  if(s.type==='pdf'){var pu=urls.pdf;
+  if(s.type==='pdf'){var pu=urls.pdf || 'dongsan-admission.html';
     h='<section class="scene"><div class="kicker">Part 2 · Admission</div><div class="title" style="font-size:clamp(26px,3.2vw,54px)">2027학년도 입학설명회</div><div class="pdfbox">'+
     (pu?'<iframe src="'+pu+'#toolbar=0&navpanes=0&view=FitH" title="입학설명회"></iframe>':'<div class="vph"><div><b>입학설명회 자료를 불러오세요</b><small>PPT는 <b style="display:inline;font-size:inherit;font-family:inherit;color:#ffd36d">PDF로 내보내서</b> 넣으면 가장 안정적이에요</small><br><label class="pick">PDF 불러오기<input type="file" accept="application/pdf" hidden data-media="pdf"></label></div></div>')+'</div></section>'}
   if(s.type==='exp') h='<section class="scene center"><div class="kicker">Part 4 · Family Festival</div><div class="title" id="tmTitle">이제 가족과 함께<br><span class="foil">마음껏 즐겨요</span></div><div class="exp">'+
