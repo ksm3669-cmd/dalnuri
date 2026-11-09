@@ -10,6 +10,7 @@
 ## 3. 깃허브 페이지스 달누리반 통합 포털
 - **포털 메인**: https://ksm3669-cmd.github.io/dalnuri/
 - **달누리반 전체 놀이 선택 앱 (선미님 원본 전체놀이선택앱 직통 링크)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-all-play-selector.html
+- **놀이달력에서 올인원 앱까지 (유치원 교사용 실천 전자책)**: https://ksm3669-cmd.github.io/dalnuri/ebook/
 - **달누리반 역할놀이 키오스크 (단독 전용 앱 · 세계음식 & 겨울간식)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-kiosk.html
 - **달누리반 세계 음식 디지털 백과사전 (단독 전용 앱 · 11월 놀이주간)**: https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html
 - **달누리반 겨울 백과사전 (단독 전용 앱 · 겨울 주제 24종 카드 & 퀴즈)**: https://ksm3669-cmd.github.io/dalnuri/tools/winter-encyclopedia.html
