@@ -174,6 +174,20 @@ const SHIM='<scr'+'ipt>(function(){if(window.parent===window)return;'
  +'var oa=window.alert;window.alert=function(m){try{parent.postMessage({dalnuri:"say",text:String(m)},"*")}catch(x){try{oa(m)}catch(y){}}};'
  +'})();<\/scr'+'ipt>';
 function withShim(h){return h.replace(/<\/body>/i,SHIM+'</body>')}
+function openMorningDirect(){
+  open_(0);
+  var attempts = 0;
+  var checkT = setInterval(function(){
+    attempts++;
+    try {
+      if (frame.contentWindow && typeof frame.contentWindow.openMorning === 'function') {
+        clearInterval(checkT);
+        frame.contentWindow.openMorning();
+      }
+    } catch(e){}
+    if (attempts > 50) clearInterval(checkT);
+  }, 100);
+}
 function open_(i){
   cur=i;
   frame.srcdoc=withShim(getApp(i));
@@ -353,6 +367,16 @@ function drawDash(){
   document.getElementById('dWd').textContent=WD[now.getDay()]+'요일';
   document.getElementById('dClk').textContent=p2(now.getHours())+':'+p2(now.getMinutes());
   var h='';
+  /* 0. 아침모임 바로가기 카드 */
+  h+='<div class="dc wide" style="background:linear-gradient(135deg,#FF6B6B 0%,#FFA07A 50%,#4ECDC4 100%);color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(255,107,107,0.25);padding:16px 18px;">'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px">'+
+      '<h4 style="color:#fff;margin:0;font-size:18px;">🌅 아침모임 슬라이드</h4>'+
+      '<span style="background:rgba(255,255,255,0.3);color:#fff;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700">16장면 넘김 화면</span>'+
+    '</div>'+
+    '<div style="font-size:14px;color:#FFF5F5;margin-bottom:12px;line-height:1.5;">아이들과 함께 넘기며 보는 <strong>오늘 날짜 캘린더 · 오늘의 활동 · 후~ 호흡 숨쉬기 · 🚦 마음신호등</strong> 전체 화면입니다.</div>'+
+    '<button class="go" style="background:#fff;color:#2B2A4C;font-weight:900;font-size:14.5px;padding:9px 18px;border-radius:12px;border:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;" onclick="openMorningDirect()">▶ 아침모임 지금 시작하기</button>'+
+  '</div>';
+
   /* 1. 지금 */
   var day=lsGet('dalnuri-day-v2',null), nowMin=now.getHours()*60+now.getMinutes();
   var cur=null,late=0;
@@ -442,7 +466,16 @@ function startDash(){drawDash();fetchAir();setInterval(function(){if(cur<0)drawD
 if(document.readyState==='complete'||document.readyState==='interactive')setTimeout(startDash,0);
 else addEventListener('DOMContentLoaded',startDash);
 
-try{const l=localStorage.getItem('dalnuri-hub-last');if(l!==null&&NAMES[+l])open_(+l)}catch(e){}
+try{
+  var p=new URLSearchParams(window.location.search);
+  if(p.get('morning')==='1'||p.get('am')==='1'||window.location.hash==='#morning'){
+    setTimeout(openMorningDirect, 120);
+  } else if(p.get('app')!==null&&NAMES[+p.get('app')]){
+    open_(+p.get('app'));
+  } else {
+    const l=localStorage.getItem('dalnuri-hub-last');if(l!==null&&NAMES[+l])open_(+l);
+  }
+}catch(e){}
 </script>
 <script type="text/plain" id="app0"><!DOCTYPE html>
 <html lang="ko">
@@ -906,6 +939,7 @@ const MAPS={
  circle:{n:'써클맵',u:'떠오르는 것 모으기'},
  bubble:{n:'버블맵',u:'느낌·특징 말로 붙이기'},
  dbubble:{n:'더블버블맵',u:'둘을 견주어 보기'},
+ 'double-bubble':{n:'더블버블맵',u:'둘을 견주어 보기'},
  tree:{n:'트리맵',u:'비슷한 것끼리 묶기'},
  flow:{n:'플로우맵',u:'차례대로 늘어놓기'},
  mflow:{n:'멀티플로우맵',u:'왜 그랬을까, 그래서 어떻게 됐을까'},
@@ -1014,23 +1048,23 @@ const EXTRA={
  sig:{r:'칼로 롤을 자르고 싶을 때',y:'빵칼이라도 조심해야 한다고 생각해요',g:'“선생님, 같이 잘라주세요” 하고 안전하게 도움을 요청해요'},
  env:['요리영역: 앞치마, 조리모, 위생장갑, 안전 도마와 빵칼','역할영역: 무지개 롤 서빙 식당놀이'],
  free:['종이접시에 요리 예쁘게 담기','친구에게 냠냠 배달하기']},
-'2026-11-09':{intro:'그림책 『나야, 쌀!』을 읽고 백미·현미·흑미·찹쌀의 다양한 모습을 돋보기로 관찰합니다. 가정이음 쌀 꾸러미를 나눕니다.',map:'double-bubble',mq:'백미, 현미, 흑미는 색깔과 모양이 어떻게 다를까요?',
+'2026-11-09':{intro:'그림책 『나야, 쌀!』을 읽고 백미·현미·흑미·찹쌀의 다양한 모습을 돋보기로 관찰합니다. 가정이음 쌀 꾸러미를 나눕니다.',map:'dbubble',mq:'백미, 현미, 흑미는 색깔과 모양이 어떻게 다를까요?',
  sig:{r:'쌀알을 바닥에 쏟았을 때',y:'밟으면 미끄러질 수 있다고 생각해요',g:'“같이 주워요!” 하고 친구와 함께 정리해요'},
  env:['탐구영역: 백미, 현미, 흑미, 찹쌀 밀폐 관찰 용기와 돋보기','가정이음: 세계의 쌀 요리 꾸러미 배부대'],
  free:['돋보기 쌀알 관찰 연구소','쌀알 손바닥 비비기']},
-'2026-11-10':{intro:'쌀 관찰 연구소에서 쌀을 만져보고, 투명 통에 쌀을 담아 쌀 소리통(마라카스)을 만들어 연주합니다.',map:'double-bubble',mq:'쌀 종류마다 통에 넣고 흔들었을 때 어떤 소리가 날까요?',
+'2026-11-10':{intro:'쌀 관찰 연구소에서 쌀을 만져보고, 투명 통에 쌀을 담아 쌀 소리통(마라카스)을 만들어 연주합니다.',map:'dbubble',mq:'쌀 종류마다 통에 넣고 흔들었을 때 어떤 소리가 날까요?',
  sig:{r:'소리통을 너무 크게 흔들고 싶을 때',y:'친구가 깜짝 놀랄 수 있다고 생각해요',g:'“음악에 맞춰 살살 흔들어요” 하고 소리를 조절해요'},
  env:['음률영역: 쌀 소리통, 다양한 크기의 투명 용기와 곡식','탐구영역: 쌀알 크기 비교 자와 저울'],
  free:['쌀 마라카스 연주 놀이','쌀 소리 맞히기 퀴즈']},
-'2026-11-11':{intro:'생각지도 〈같은 쌀, 다른 음식 (더블 버블맵)〉을 작성하며 밥 요리와 떡 요리의 같은 점과 다른 점을 비교합니다.',map:'double-bubble',mq:'같은 쌀로 만들었지만 밥과 떡은 무엇이 같고 다를까요?',
+'2026-11-11':{intro:'생각지도 〈같은 쌀, 다른 음식 (더블 버블맵)〉을 작성하며 밥 요리와 떡 요리의 같은 점과 다른 점을 비교합니다.',map:'dbubble',mq:'같은 쌀로 만들었지만 밥과 떡은 무엇이 같고 다를까요?',
  sig:{r:'친구와 생각이 달라서 다투고 싶을 때',y:'서로 다른 의견을 모으면 더 풍성해진다고 생각해요',g:'“네 생각도 참 멋지다!” 하고 칭찬해요'},
  env:['언어영역: 15×15cm 더블 버블맵 양식과 음식 사진 스티커','전시영역: 세계의 쌀 음식 사진 카드'],
  free:['더블 버블맵 완성하기','세계 쌀 지도 스티커 붙이기']},
-'2026-11-12':{intro:'라이스페이퍼를 물에 넣어 투명하고 말랑말랑해지는 변화를 관찰하고, 내일 과일 찹쌀떡 재료를 탐색합니다.',map:'double-bubble',mq:'딱딱한 라이스페이퍼가 물을 만나면 어떻게 변할까요?',
+'2026-11-12':{intro:'라이스페이퍼를 물에 넣어 투명하고 말랑말랑해지는 변화를 관찰하고, 내일 과일 찹쌀떡 재료를 탐색합니다.',map:'dbubble',mq:'딱딱한 라이스페이퍼가 물을 만나면 어떻게 변할까요?',
  sig:{r:'물을 엎질렀을 때',y:'미끄러워 넘어질 수 있다고 생각해요',g:'“걸레로 닦아요” 하고 바로 정리해요'},
  env:['탐구영역: 미온수 볼, 라이스페이퍼, 식용 색소','미술영역: 투명 쌈 만들기 조형 놀이'],
  free:['말랑말랑 라이스페이퍼 만지기','물감 라이스페이퍼 그림']},
-'2026-11-13':{intro:'달콤한 과일과 팥앙금을 쫀득한 찹쌀떡 반죽으로 감싸는 『과일 찹쌀떡』을 만들고 우주 오감놀이를 즐깁니다.',map:'double-bubble',mq:'동글동글 과일 찹쌀떡 속에 어떤 과일이 숨어 있을까요?',
+'2026-11-13':{intro:'달콤한 과일과 팥앙금을 쫀득한 찹쌀떡 반죽으로 감싸는 『과일 찹쌀떡』을 만들고 우주 오감놀이를 즐깁니다.',map:'dbubble',mq:'동글동글 과일 찹쌀떡 속에 어떤 과일이 숨어 있을까요?',
  sig:{r:'떡이 입에 가득 찼을 때',y:'천천히 꼭꼭 씹어야 안전하다고 생각해요',g:'“천천히 꼭꼭 씹어 먹어요” 하고 실천해요'},
  env:['요리영역: 찹쌀떡 반죽, 딸기/바나나/귤 과일 토막, 팥앙금','오감놀이: 우주 행성 조명과 어둠 상자'],
  free:['과일 찹쌀떡 빚기','우주 행성 탐험 동극']},
@@ -1650,10 +1684,12 @@ function render(){
 
   h+='<section class="sec talk g" data-g="b"><h3><span class="dot"></span>이야기 나누기</h3><div class="lead">'+esc(D.talk.open)+'</div><ol>'+D.talk.qs.map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol><div class="end">'+esc(D.talk.close)+'</div></section>';
 
-  const curMap=S.map||(X?X.map:'circle');
+  const rawMap = S.map || (X ? X.map : 'circle');
+  const curMap = (MAPS[rawMap] ? rawMap : (rawMap === 'double-bubble' ? 'dbubble' : 'circle'));
+  const mapInfo = MAPS[curMap] || MAPS.circle;
   h+='<section class="sec g" data-g="c"><h3><span class="dot"></span>씽킹맵</h3><div class="mapsel">'+
-    Object.keys(MAPS).map(m=>'<button class="mapb'+(m===curMap?' on':'')+'" data-map="'+m+'">'+MAPS[m].n+'</button>').join('')+'</div>'+
-    '<div class="mapinfo"><b>'+MAPS[curMap].n+'</b> — '+MAPS[curMap].u+
+    Object.keys(MAPS).filter(m=>m!=='double-bubble').map(m=>'<button class="mapb'+(m===curMap?' on':'')+'" data-map="'+m+'">'+MAPS[m].n+'</button>').join('')+'</div>'+
+    '<div class="mapinfo"><b>'+mapInfo.n+'</b> — '+mapInfo.u+
       ((DP&&DP.maps[curMap])?'<br>발문: '+esc(DP.maps[curMap].q):(X&&curMap===X.map?'<br>발문: '+esc(X.mq):''))+'</div>'+
     ((DP&&DP.maps[curMap])?'<p class="grp" style="margin-top:10px">아이들에게서 나올 수 있는 말</p><div class="chips2">'+DP.maps[curMap].ex.map(e=>'<span class="ex">'+esc(e)+'</span>').join('')+'</div>':'')+
     '<div class="row">'+resBtn('mind','생각지도 앱 열기')+'</div></section>';

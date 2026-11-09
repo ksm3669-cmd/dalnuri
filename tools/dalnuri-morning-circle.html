@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>달누리반 아침모임 & 마음신호등</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;500;700;900&family=Jua&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6EF;
+  --panel: #FFFFFF;
+  --ink: #2E2B3D;
+  --sub: #7A758D;
+  --line: #E8E2D5;
+  --primary: #315F4F;
+  --primary-light: #E8F2ED;
+  --accent: #E4665C;
+  --display: 'Gaegu', 'Jua', cursive, sans-serif;
+  --body: 'Noto Sans KR', sans-serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0; width: 100%; height: 100%;
+  background: var(--bg); color: var(--ink);
+  font-family: var(--body); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+
+/* Header */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: env(safe-area-inset-top, 10px) 16px 10px;
+  background: var(--panel); border-bottom: 1.5px solid var(--line);
+  z-index: 10;
+}
+.h-title {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--display); font-size: 20px; font-weight: 700; color: var(--primary);
+}
+.amdots {
+  display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;
+}
+.amdots i {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--line); display: block; transition: all 0.2s ease;
+}
+.amdots i.on { background: var(--primary); }
+.amdots i.cur { background: var(--accent); transform: scale(1.5); }
+
+.h-btns { display: flex; gap: 6px; }
+.btn-sm {
+  border: 1.5px solid var(--line); background: var(--panel);
+  border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 700;
+  color: var(--ink); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.btn-sm:hover { background: var(--primary-light); border-color: var(--primary); }
+
+/* Main Stage */
+main {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px; text-align: center; overflow-y: auto;
+  position: relative;
+}
+
+.amicon {
+  font-size: clamp(72px, 20vw, 130px); line-height: 1; margin-bottom: 12px;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.amicon:empty { display: none; }
+@keyframes popIn {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.calsvg {
+  width: clamp(100px, 26vw, 150px); height: auto; display: block; margin: 0 auto;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08));
+}
+
+.amq {
+  font-family: var(--display); font-weight: 700;
+  font-size: clamp(26px, 7vw, 44px); line-height: 1.25;
+  word-break: keep-all; margin: 0 0 10px; color: var(--ink);
+}
+.amn {
+  font-size: clamp(16px, 4vw, 22px); color: var(--sub);
+  line-height: 1.5; word-break: keep-all; max-width: 600px; margin: 0 auto 12px;
+}
+
+.amextra {
+  width: 100%; max-width: 520px; margin: 6px auto 0;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.amextra[hidden] { display: none !important; }
+
+/* Date Box */
+.datebox {
+  background: var(--panel); border: 2px solid var(--primary-light);
+  border-radius: 20px; padding: 12px 24px; box-shadow: 0 6px 16px rgba(49,95,79,0.08);
+}
+.amyear { font-size: 16px; color: var(--sub); }
+.amdate { font-family: var(--display); font-size: 34px; font-weight: 700; color: var(--primary); }
+.amwd { font-size: 18px; font-weight: 700; color: var(--accent); }
+
+/* Weather Box */
+.airbox {
+  background: var(--panel); border: 2px solid var(--line);
+  border-radius: 20px; padding: 14px 20px; width: 100%;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+}
+.airrow { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+.airw { display: flex; align-items: center; gap: 8px; }
+.awi { font-size: 32px; }
+.awt { font-size: 28px; font-weight: 700; }
+.awn { font-size: 15px; color: var(--sub); }
+.airg {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 15px;
+}
+.airmsg { margin-top: 8px; font-size: 15px; font-weight: 500; color: var(--ink); }
+
+/* Plan Box */
+.planbox {
+  background: var(--panel); border: 2px solid #E2E8F0; border-radius: 20px;
+  padding: 16px 20px; width: 100%; box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+  text-align: left;
+}
+.plantitle { font-family: var(--display); font-size: 22px; font-weight: 700; color: #1E293B; margin-bottom: 6px; }
+.planbody { font-size: 15px; color: #475569; line-height: 1.5; }
+.planbadge {
+  display: inline-block; background: #FEF3C7; color: #92400E;
+  padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; margin-bottom: 8px;
+}
+
+/* Breathing Box */
+.brbox {
+  display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 10px;
+}
+.brbox[hidden] { display: none !important; }
+.brcircle {
+  width: clamp(120px, 32vw, 180px); height: clamp(120px, 32vw, 180px);
+  border-radius: 50%; background: radial-gradient(circle, #FFA07A 0%, #E4665C 100%);
+  color: #fff; font-family: var(--display); font-size: clamp(32px, 9vw, 52px);
+  font-weight: 700; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 25px rgba(228,102,92,0.35);
+  transition: transform 3s ease-in-out;
+}
+.brlab { font-size: 18px; font-weight: 700; color: var(--ink); }
+.brcnt { font-size: 15px; font-weight: 700; color: var(--sub); }
+.btn-breath {
+  background: var(--accent); color: #fff; border: 0; border-radius: 14px;
+  padding: 10px 24px; font-size: 17px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 4px 14px rgba(228,102,92,0.3); transition: transform 0.1s;
+}
+.btn-breath:active { transform: scale(0.96); }
+
+/* Bottom Toolbar */
+footer {
+  padding: 12px 16px env(safe-area-inset-bottom, 16px);
+  background: var(--panel); border-top: 1.5px solid var(--line);
+  display: flex; gap: 12px; justify-content: center; align-items: center;
+}
+.btn-nav {
+  flex: 1; max-width: 160px; height: 50px;
+  border-radius: 16px; font-size: 17px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; transition: all 0.15s ease; border: 0;
+}
+.btn-prev {
+  background: var(--panel); border: 2px solid var(--line); color: var(--ink);
+}
+.btn-prev:disabled { opacity: 0.35; cursor: not-allowed; }
+.btn-speak {
+  background: #FFF8E7; border: 2px solid #F4C95D; color: #8A6510;
+  max-width: 130px;
+}
+.btn-next {
+  background: var(--primary); color: #fff;
+  box-shadow: 0 4px 14px rgba(49,95,79,0.25);
+}
+.btn-next:active { transform: scale(0.96); }
+
+.applink-btn {
+  background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+  color: #fff; border: 0; border-radius: 16px; padding: 12px 24px;
+  font-size: 17px; font-weight: 700; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+  box-shadow: 0 4px 14px rgba(74,144,226,0.3); margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-title">🌙 달누리반 아침모임</div>
+  <div class="amdots" id="amDots"></div>
+  <div class="h-btns">
+    <a class="btn-sm" href="dalnuri-original-hub.html">🏛️ 허브</a>
+    <button class="btn-sm" id="fullBtn">⛶ 전체</button>
+  </div>
+</header>
+
+<main id="stage">
+  <div class="amicon" id="amIcon"></div>
+  <h1 class="amq" id="amQ"></h1>
+  <p class="amn" id="amN"></p>
+  <div class="amextra" id="amExtra" hidden></div>
+  <div class="brbox" id="brBox" hidden>
+    <div class="brcircle" id="brCircle">후~</div>
+    <div class="brlab" id="brLabel">버튼을 누르면 시작해요</div>
+    <div class="brcnt" id="brCount">0 / 5</div>
+    <button class="btn-breath" id="brGo" type="button">숨 쉬기 시작</button>
+  </div>
+</main>
+
+<footer>
+  <button class="btn-nav btn-prev" id="amPrev" type="button">← 이전</button>
+  <button class="btn-nav btn-speak" id="amSay" type="button">🔊 읽어주기</button>
+  <button class="btn-nav btn-next" id="amNext" type="button">다음 →</button>
+</footer>
+
+<script>
+const MORNING_STEPS = [
+  ['🙋', '선생님이랑 인사할까요?', '"선생님, 안녕하세요!" 다 같이 인사해요'],
+  ['', '오늘은 며칠일까요?', '다 같이 날짜를 말해 볼까요?', 'date'],
+  ['📋', '오늘은 무엇을 하고 놀까요?', '그림책 『나야, 쌀!』 & 세계의 다양한 쌀 관찰', 'plan'],
+  ['🌤️', '오늘 날씨와 공기는 어떨까요?', '바깥놀이를 할 수 있을까요?', 'air'],
+  ['📱', '오늘의 활동을 함께 볼까요?', '화면으로 오늘 할 일을 보아요', 'link'],
+  ['🎒', '가방을 꺼냈나요?', '가방은 내 자리에 걸어요'],
+  ['🥄', '수저통을 꺼냈나요?', '바구니에 쏙 넣어요'],
+  ['💧', '물병을 꺼냈나요?', '물병 자리에 쏙 넣어요'],
+  ['📒', '수첩에 날짜 스티커를 붙였나요?', '오늘 날짜 자리에 예쁘게 붙여요'],
+  ['✏️', '언어전달 쓰고 도장을 찍었나요?', '선생님과 이야기 나눠요'],
+  ['🚶', '오늘 질서를 지킬 준비가 됐나요?', '복도에서는 또박또박 걸어요'],
+  ['🤝', '친구와 사이좋게 지낼 준비가 됐나요?', '손 대신 따뜻한 말로 이야기해요'],
+  ['🔴', '빨간불 — 화가 나면 멈춰요', '다 같이 숨을 다섯 번 쉬어 볼까요?', 'breath'],
+  ['🟡', '노란불 — 내 생각을 말해요', '"나는 ○○해서 속상했어" 함께 말해 볼까요?'],
+  ['🟢', '초록불 — 방법을 찾아요', '좋은 방법을 찾고 신나게 몸을 움직여요!'],
+  ['🎉', '오늘도 즐겁게 놀아요!', '달누리반 친구들 모두 사랑해요!']
+];
+
+const WD = ['일', '월', '화', '수', '목', '금', '토'];
+let curIndex = 0;
+let breathToken = 0;
+
+function calSvg(m, d) {
+  return '<svg class="calsvg" viewBox="0 0 120 120" role="img" aria-label="' + m + '월 ' + d + '일 달력">' +
+    '<rect x="10" y="20" width="100" height="92" rx="12" fill="#fff" stroke="#C9BFAE" stroke-width="3"/>' +
+    '<path d="M10 32a12 12 0 0 1 12-12h76a12 12 0 0 1 12 12v12H10z" fill="#D9502F"/>' +
+    '<rect x="30" y="8" width="9" height="22" rx="4.5" fill="#8B7F72"/>' +
+    '<rect x="81" y="8" width="9" height="22" rx="4.5" fill="#8B7F72"/>' +
+    '<text x="60" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#fff" font-family="Gaegu, sans-serif">' + m + '월</text>' +
+    '<text x="60" y="92" text-anchor="middle" font-size="46" font-weight="700" fill="#2E2B3D" font-family="Gaegu, sans-serif">' + d + '</text></svg>';
+}
+
+let weatherData = null;
+function fetchWeather() {
+  const q = 'latitude=36.4213&longitude=127.4147&timezone=Asia%2FSeoul';
+  Promise.all([
+    fetch('https://api.open-meteo.com/v1/forecast?' + q + '&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=1').then(r => r.json()),
+    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?' + q + '&current=pm10,pm2_5').then(r => r.json())
+  ]).then(([meteo, air]) => {
+    const cur = meteo.current || {};
+    const a = air.current || {};
+    const pm10 = Math.round(a.pm10 || 15);
+    const pm25 = Math.round(a.pm2_5 || 8);
+    const lv = (pm10 <= 30 && pm25 <= 15) ? 'good' : (pm10 <= 80 ? 'moderate' : 'bad');
+    weatherData = {
+      temp: Math.round(cur.temperature_2m || 10),
+      pm10: pm10,
+      pm25: pm25,
+      lv: lv
+    };
+    if (MORNING_STEPS[curIndex][3] === 'air') drawStep();
+  }).catch(() => {
+    weatherData = { temp: 10, pm10: 16, pm25: 8, lv: 'good' };
+  });
+}
+fetchWeather();
+
+function drawStep() {
+  breathToken++;
+  const st = MORNING_STEPS[curIndex];
+  
+  // Dots
+  document.getElementById('amDots').innerHTML = MORNING_STEPS.map((_, i) => 
+    '<i class="' + (i < curIndex ? 'on' : (i === curIndex ? 'cur' : '')) + '"></i>'
+  ).join('');
+
+  document.getElementById('amIcon').textContent = st[0] || '';
+  document.getElementById('amQ').textContent = st[1] || '';
+  document.getElementById('amN').textContent = st[2] || '';
+
+  const kind = st[3] || '';
+  const ex = document.getElementById('amExtra');
+  ex.hidden = true;
+  ex.innerHTML = '';
+
+  const now = new Date();
+  if (kind === 'date') {
+    ex.hidden = false;
+    document.getElementById('amIcon').innerHTML = calSvg(now.getMonth() + 1, now.getDate());
+    ex.innerHTML = '<div class="datebox">' +
+      '<div class="amyear">' + now.getFullYear() + '년</div>' +
+      '<div class="amdate">' + (now.getMonth() + 1) + '월 ' + now.getDate() + '일</div>' +
+      '<div class="amwd">' + WD[now.getDay()] + '요일</div>' +
+    '</div>';
+  } else if (kind === 'plan') {
+    ex.hidden = false;
+    ex.innerHTML = '<div class="planbox">' +
+      '<div class="planbadge">오늘의 11월 놀이주간 수업</div>' +
+      '<div class="plantitle">그림책 『나야, 쌀!』 & 세계의 다양한 쌀 관찰</div>' +
+      '<div class="planbody">백미·현미·흑미·찹쌀의 다양한 모습을 돋보기로 관찰하고, 가정이음 쌀 요리 꾸러미를 나눕니다.</div>' +
+    '</div>';
+  } else if (kind === 'air') {
+    ex.hidden = false;
+    const w = weatherData || { temp: 10, pm10: 16, pm25: 8, lv: 'good' };
+    const isGood = (w.lv === 'good');
+    ex.innerHTML = '<div class="airbox">' +
+      '<div class="airrow">' +
+        '<div class="airw"><span class="awi">🌤️</span><span class="awt">' + w.temp + '°C</span><span class="awn">대체로 맑음</span></div>' +
+        '<div class="airg" style="background:' + (isGood ? '#DFF0ED' : '#E1ECFA') + ';color:' + (isGood ? '#2E7D74' : '#3977D1') + '">' +
+          '<span>' + (isGood ? '😊' : '🙂') + '</span><span>' + (isGood ? '좋음' : '보통') + '</span>' +
+          '<span style="font-size:13px;font-weight:400;margin-left:4px">미세 ' + w.pm10 + ' · 초미세 ' + w.pm25 + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="airmsg">' + (isGood ? '바깥놀이 하기에 아주 좋아요! 🏃‍♂️' : '바깥놀이 괜찮아요!') + '</div>' +
+    '</div>';
+  } else if (kind === 'link') {
+    ex.hidden = false;
+    ex.innerHTML = '<a class="applink-btn" href="https://dbcldnjs.my.canva.site/c712f802dpcrqvx3" target="_blank" rel="noopener noreferrer">' +
+      '<span>📱</span><span>오늘의 활동 (캔바) 바로 열기 ↗</span>' +
+    '</a>';
+  }
+
+  // Breath
+  const isBr = (kind === 'breath');
+  const brBox = document.getElementById('brBox');
+  brBox.hidden = !isBr;
+  if (isBr) {
+    document.getElementById('brCircle').style.transform = 'scale(1)';
+    document.getElementById('brCircle').textContent = '후~';
+    document.getElementById('brLabel').textContent = '버튼을 누르면 시작해요';
+    document.getElementById('brCount').textContent = '0 / 5';
+  }
+
+  document.getElementById('amPrev').disabled = (curIndex === 0);
+  document.getElementById('amNext').textContent = (curIndex >= MORNING_STEPS.length - 1) ? '마침 🎉' : '다음 →';
+}
+
+function moveStep(d) {
+  if (d > 0 && curIndex >= MORNING_STEPS.length - 1) {
+    alert('오늘도 달누리반 친구들과 즐거운 하루 보내세요! 🎉');
+    return;
+  }
+  curIndex = Math.max(0, Math.min(MORNING_STEPS.length - 1, curIndex + d));
+  drawStep();
+}
+
+function startBreathing() {
+  const token = ++breathToken;
+  let count = 0;
+  const circle = document.getElementById('brCircle');
+  const label = document.getElementById('brLabel');
+  const countEl = document.getElementById('brCount');
+
+  function cycle() {
+    if (token !== breathToken) return;
+    if (count >= 5) {
+      label.textContent = '참 잘했어요! 마음이 차분해졌나요? ✨';
+      circle.style.transform = 'scale(1)';
+      circle.textContent = '완료!';
+      return;
+    }
+    count++;
+    countEl.textContent = count + ' / 5';
+    label.textContent = '숨을 깊게 들이쉬어요… (하나, 둘, 셋)';
+    circle.style.transform = 'scale(1.4)';
+    circle.textContent = '흡~';
+
+    setTimeout(() => {
+      if (token !== breathToken) return;
+      label.textContent = '입으로 천천히 후~ 내쉬어요…';
+      circle.style.transform = 'scale(1)';
+      circle.textContent = '후~';
+      setTimeout(cycle, 3000);
+    }, 3000);
+  }
+  cycle();
+}
+
+function speakCurrent() {
+  try {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const st = MORNING_STEPS[curIndex];
+    const text = (st[1] || '') + ' ' + (st[2] || '');
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ko-KR';
+    utter.rate = 0.95;
+    synth.speak(utter);
+  } catch (e) {}
+}
+
+// Touch swipe support
+let touchStartX = 0;
+document.addEventListener('touchstart', e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+document.addEventListener('touchend', e => {
+  const touchEndX = e.changedTouches[0].screenX;
+  const diff = touchEndX - touchStartX;
+  if (diff < -50) moveStep(1); // Swipe left -> Next
+  else if (diff > 50) moveStep(-1); // Swipe right -> Prev
+}, { passive: true });
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'Space') moveStep(1);
+  else if (e.key === 'ArrowLeft') moveStep(-1);
+});
+
+document.getElementById('amPrev').onclick = () => moveStep(-1);
+document.getElementById('amNext').onclick = () => moveStep(1);
+document.getElementById('amSay').onclick = speakCurrent;
+document.getElementById('brGo').onclick = startBreathing;
+
+document.getElementById('fullBtn').onclick = () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+};
+
+drawStep();
+</script>
+</body>
+</html>
