@@ -1879,7 +1879,7 @@ body.pad-one-activity .dnl-mobile-nav{display:none!important}
 @media print{.dnl-station-banner,#dnlStationDialog,#dnlBookPickDialog{display:none!important}}
 
 </style>
-</head>
+<style>#dnlStationDialog[hidden]{display:none !important} body:not(.pad-one-activity) #dnlStationBanner{display:none !important}</style></head>
 <body data-dalnuri-station="" data-pad-name="">
 
 <div id="app-layout">
@@ -4311,7 +4311,7 @@ const MONTHLY_CURRICULUM = [{"m": "3월", "topic": "유치원과 친구", "sub":
       assigned=saved.activity;padName=typeof saved.name==='string'?saved.name:'';
       pin=/^\d{4}$/.test(saved.pin||'')?saved.pin:'';
       reflect();
-    }else{openDialog();}
+    }else{ if(typeof window.switchTab==="function"){ window.switchTab("dashboard"); } }
   }
 })();
 /* PAD_SINGLE_APP_END */

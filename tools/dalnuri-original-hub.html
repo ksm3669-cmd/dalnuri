@@ -98,7 +98,19 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
   <h1 id="title">달누리반 플랫폼</h1>
   <button class="hb" id="newtab">새 창</button>
 </header>
-<nav class="tabs" id="tabs"><button data-app="0"><span class="ti">📖</span>매일 수업</button><button data-app="1"><span class="ti">⏰</span>오늘 하루</button><button data-app="2"><span class="ti">🧠</span>생각지도</button><button data-app="3"><span class="ti">👂</span>귀 쫑긋 퀴즈</button><button data-app="4"><span class="ti">📋</span>약속 카드</button><button data-app="5"><span class="ti">🧊</span>소장도서×가베</button><button data-app="6"><span class="ti">🎈</span>브레인팝</button><button data-app="7"><span class="ti">🎂</span>생일 룰렛</button><button data-app="8"><span class="ti">🤝</span>짝꿍 뽑기</button><button data-app="9"><span class="ti">👪</span>우리 가족 하루</button><button data-app="10"><span class="ti">🧭</span>탐험대</button><button data-app="11"><span class="ti">⚙️</span>수업 자동화</button><button data-app="12"><span class="ti">🍂</span>가을탐구 전시</button><button data-app="13" style="background:#FFF7ED;color:#C2410C;font-weight:700;"><span class="ti">🏪</span>키오스크</button><button data-app="14" style="background:#F0F9FF;color:#0369A1;font-weight:700;"><span class="ti">🌍</span>세계음식백과</button><button data-app="15" style="background:#F0F9FF;color:#0369A1;font-weight:700;"><span class="ti">❄️</span>겨울백과</button><button data-app="16" style="background:#F0FDF4;color:#15803D;font-weight:700;"><span class="ti">🌅</span>아침모임</button><button data-app="17" style="background:#FEF2F2;color:#B91C1C;font-weight:700;"><span class="ti">📚</span>그림책놀이터</button></nav>
+<nav class="tabs" id="tabs">
+  <button data-app="16" style="background:#F0FDF4; border-color:#86EFAC; color:#15803D; font-weight:800;"><span class="ti">🌅</span>아침모임</button>
+  <button data-app="0"><span class="ti">📖</span>매일 수업</button>
+  <button data-app="1"><span class="ti">⏰</span>오늘 하루</button>
+  <button data-app="13" style="background:#FFF7ED; border-color:#FDBA74; color:#C2410C; font-weight:800;"><span class="ti">🏪</span>키오스크</button>
+  <button data-app="14" style="background:#F0F9FF; border-color:#7DD3FC; color:#0369A1; font-weight:800;"><span class="ti">🌍</span>세계음식백과</button>
+  <button data-app="15" style="background:#F0F9FF; border-color:#7DD3FC; color:#0369A1; font-weight:800;"><span class="ti">❄️</span>겨울백과</button>
+  <button data-app="17" style="background:#FEF2F2; border-color:#FECACA; color:#B91C1C; font-weight:800;"><span class="ti">📚</span>그림책 놀이터 (2,911권)</button>
+  <button data-app="4"><span class="ti">📋</span>약속 카드</button>
+  <button data-app="6"><span class="ti">🎈</span>브레인팝</button>
+  <button data-app="8"><span class="ti">🤝</span>짝꿍·생일</button>
+  <button data-app="9"><span class="ti">👪</span>우리 가족</button>
+</nav>
 <div id="hint" style="display:none"></div>
 <main>
   <div class="home" id="homeView">
@@ -106,59 +118,100 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
 <div class="in">
 <div class="dhead"><b id="dDate"></b><span id="dWd"></span><span class="clk" id="dClk"></span></div>
 <div class="dash" id="dash"></div>
-<div class="sec" style="margin-top:14px; background:linear-gradient(135deg, #FFF7ED 0%, #F0F9FF 50%, #F0FDF4 100%); border:2px solid #BAE6FD; border-radius:18px; padding:16px 14px 18px;">
-  <h3 style="display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:16px; color:#0C4A6E;">
-    <span>✨</span>
-    <span>교실 패드 영역 · 키오스크 & 백과사전 올인원</span>
-    <span style="font-size:11px; background:#0284C7; color:#fff; padding:3px 9px; border-radius:999px; font-weight:800;">올인원 통합</span>
+<!-- 1. 패드 자율놀이 & 백과사전 -->
+<div class="sec" style="margin-top:16px; background:linear-gradient(135deg, #FFF7ED 0%, #F0F9FF 50%, #F0FDF4 100%); border:2px solid #BAE6FD; border-radius:22px; padding:20px 18px 22px;">
+  <h3 style="display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:1.15rem; color:#0C4A6E;">
+    <span>🌟</span>
+    <span>교실 패드 영역 & 백과사전 (무설정 전체 공개)</span>
+    <span style="font-size:11px; background:#0284C7; color:#fff; padding:3px 10px; border-radius:999px; font-weight:800;">바로 열기</span>
   </h3>
   <div class="tiles">
-    <button class="tile" data-app="13" style="border:2px solid #FB923C; background:#FFFFFF; box-shadow:0 4px 12px rgba(251,146,60,0.15);">
+    <button class="tile" data-app="13" style="border:2px solid #FB923C; background:#FFFFFF; box-shadow:0 4px 14px rgba(251,146,60,0.14);">
       <span class="ic">🏪</span>
       <b style="color:#C2410C;">역할놀이 키오스크</b>
-      <span class="d">세계 음식점 & 겨울 간식점 주문·결제</span>
+      <span class="d">세계 음식점 12종 & 겨울 간식점 8종 주문·코인 결제</span>
     </button>
-    <button class="tile" data-app="14" style="border:2px solid #38BDF8; background:#FFFFFF; box-shadow:0 4px 12px rgba(56,189,248,0.15);">
+    <button class="tile" data-app="14" style="border:2px solid #38BDF8; background:#FFFFFF; box-shadow:0 4px 14px rgba(56,189,248,0.14);">
       <span class="ic">🌍</span>
       <b style="color:#0369A1;">세계 음식 백과사전</b>
-      <span class="d">14개국 74종 음식 탐구 · 지도 · 미니북</span>
+      <span class="d">14개국 74종 음식 탐구 · 세계 지도 · 8쪽 미니북</span>
     </button>
-    <button class="tile" data-app="15" style="border:2px solid #38BDF8; background:#FFFFFF; box-shadow:0 4px 12px rgba(56,189,248,0.15);">
+    <button class="tile" data-app="15" style="border:2px solid #38BDF8; background:#FFFFFF; box-shadow:0 4px 14px rgba(56,189,248,0.14);">
       <span class="ic">❄️</span>
       <b style="color:#0369A1;">겨울 백과사전</b>
-      <span class="d">동식물 겨울나기 · 간식 · 퀴즈 24종</span>
+      <span class="d">동식물 겨울나기 · 간식 · 퀴즈 24종 카드 & 음성</span>
     </button>
-    <button class="tile" data-app="16" style="border:2px solid #4ADE80; background:#FFFFFF; box-shadow:0 4px 12px rgba(74,222,128,0.15);">
-      <span class="ic">🌅</span>
-      <b style="color:#15803D;">아침모임 16장면</b>
-      <span class="d">오늘 날짜 · 날씨 · 후~ 호흡 · 신호등</span>
-    </button>
-    <button class="tile" data-app="17" style="border:2px solid #F87171; background:#FFFFFF; box-shadow:0 4px 12px rgba(248,113,113,0.15);">
+    <button class="tile" data-app="17" style="border:2px solid #F87171; background:#FFFFFF; box-shadow:0 4px 14px rgba(248,113,113,0.14); grid-column:span 2;">
       <span class="ic">📚</span>
-      <b style="color:#B91C1C;">그림책 놀이터 (2,911권)</b>
-      <span class="d">도서 서재 + 4대 놀이 전체 연계</span>
+      <b style="color:#B91C1C;">그림책 놀이터 (2,911권 전체 서재 & 7대 놀이)</b>
+      <span class="d">교사설정 없이 바로 열림! 2,911권 서재 · 한글수놀이 · 영어놀이 · 작은책방 · 생각지도 · 편지공방</span>
     </button>
   </div>
 </div>
-<div class="sec"><h3>수업 · 활동</h3><div class="tiles"><button class="tile" data-app="11"><span class="ic">⚙️</span><b>수업 자동화</b><span class="d">생활주제·SDG로 하루 짜기</span></button><button class="tile" data-app="12"><span class="ic">🍂</span><b>가을탐구 전시</b><span class="d">탐구의 길·전시판·아이별 그림책</span></button>
-<button class="tile" data-app="0"><span class="ic">📖</span><b>매일 수업</b><span class="d">날짜별 그림책·이야기나누기</span></button>
-<button class="tile" data-app="2"><span class="ic">🧠</span><b>생각지도</b><span class="d">아이들 말 씽킹맵에 기록</span></button>
-<button class="tile" data-app="3"><span class="ic">👂</span><b>귀 쫑긋 퀴즈</b><span class="d">친구 이야기 듣기 확인</span></button>
-<button class="tile" data-app="5"><span class="ic">🧊</span><b>소장도서×가베</b><span class="d">2,911권 주제별 + 가베</span></button>
-</div></div>
-<div class="sec"><h3>교실 운영</h3><div class="tiles">
-<button class="tile" data-app="1"><span class="ic">⏰</span><b>오늘 하루</b><span class="d">할 일·알람·소지품·관찰</span></button>
-<button class="tile" data-app="4"><span class="ic">📋</span><b>약속 카드</b><span class="d">약속 3가지·갈등 중재</span></button>
-<button class="tile" data-app="6"><span class="ic">🎈</span><b>브레인팝</b><span class="d">한글 낱말 플래시카드</span></button>
-</div></div>
-<div class="sec"><h3>놀이 · 뽑기</h3><div class="tiles">
-<button class="tile" data-app="8"><span class="ic">🤝</span><b>짝꿍 뽑기</b><span class="d">룰렛·카드·사다리</span></button>
-<button class="tile" data-app="7"><span class="ic">🎂</span><b>생일 룰렛</b><span class="d">생일 친구에게 마음선물</span></button>
-</div></div>
-<div class="sec"><h3>우리 가족</h3><div class="tiles">
-<button class="tile" data-app="9"><span class="ic">👪</span><b>우리 가족 하루</b><span class="d">오늘·7일·다가오는 날</span></button>
-<button class="tile" data-app="10"><span class="ic">🧭</span><b>탐험대</b><span class="d">도윤·나윤 아침 미션</span></button>
-</div></div>
+
+<!-- 2. 교실 일과 & 수업 운영 -->
+<div class="sec">
+  <h3>🌅 교실 일과 & 수업 운영</h3>
+  <div class="tiles">
+    <button class="tile" data-app="16" style="border:2px solid #4ADE80; background:#F0FDF4;">
+      <span class="ic">🌅</span>
+      <b style="color:#15803D;">아침모임 16장면</b>
+      <span class="d">오늘 날짜 · 날씨 · 후~ 호흡 · 마음신호등 풀스크린</span>
+    </button>
+    <button class="tile" data-app="0">
+      <span class="ic">📖</span>
+      <b>매일 수업 (11월 달력)</b>
+      <span class="d">날짜별 그림책 · 이야기나누기 · 요리활동</span>
+    </button>
+    <button class="tile" data-app="1">
+      <span class="ic">⏰</span>
+      <b>오늘 하루</b>
+      <span class="d">할 일 · 알람 · 소지품 정리 · 관찰</span>
+    </button>
+    <button class="tile" data-app="4">
+      <span class="ic">📋</span>
+      <b>약속 카드</b>
+      <span class="d">약속 3가지 · 교실 갈등 중재</span>
+    </button>
+  </div>
+</div>
+
+<!-- 3. 놀이 · 뽑기 · 우리 가족 -->
+<div class="sec">
+  <h3>🎈 놀이 · 뽑기 · 우리 가족</h3>
+  <div class="tiles">
+    <button class="tile" data-app="6">
+      <span class="ic">🎈</span>
+      <b>브레인팝</b>
+      <span class="d">한글 낱말 플래시카드</span>
+    </button>
+    <button class="tile" data-app="3">
+      <span class="ic">👂</span>
+      <b>귀 쫑긋 퀴즈</b>
+      <span class="d">친구 이야기 듣기 확인 퀴즈</span>
+    </button>
+    <button class="tile" data-app="8">
+      <span class="ic">🤝</span>
+      <b>짝꿍 뽑기</b>
+      <span class="d">자리 바꾸기 · 룰렛 · 사다리</span>
+    </button>
+    <button class="tile" data-app="7">
+      <span class="ic">🎂</span>
+      <b>생일 룰렛</b>
+      <span class="d">생일 친구에게 마음선물 뽑기</span>
+    </button>
+    <button class="tile" data-app="9">
+      <span class="ic">👪</span>
+      <b>우리 가족 하루</b>
+      <span class="d">오늘 · 7일 · 다가오는 가족 일정</span>
+    </button>
+    <button class="tile" data-app="10">
+      <span class="ic">🧭</span>
+      <b>탐험대</b>
+      <span class="d">도윤 · 나윤 아침 미션</span>
+    </button>
+  </div>
+</div>
 <div class="sec"><h3>모아 둔 앱 · 링크</h3><p style="margin:-4px 0 9px;font-size:12.5px;color:var(--sub)">인터넷이 연결돼 있어야 열려요. 새 창으로 열립니다.</p></div>
 <div class="sec"><h3>체조 · 노래 · 독서</h3><div class="tiles">
 <a class="tile ext" href="https://www.youtube.com/watch?v=l5s6h3gwNBY" target="_blank" rel="noopener"><span class="ic">🤸</span><b>쑥쑥 키 크기 체조</b><span class="d">핑크퐁</span></a>
@@ -17120,7 +17173,7 @@ body.pad-one-activity .dnl-mobile-nav{display:none!important}
 @media print{.dnl-station-banner,#dnlStationDialog,#dnlBookPickDialog{display:none!important}}
 
 <\/style>
-<\/head>
+<style>#dnlStationDialog[hidden]{display:none !important} body:not(.pad-one-activity) #dnlStationBanner{display:none !important}<\/style><\/head>
 <body data-dalnuri-station="" data-pad-name="">
 
 <div id="app-layout">
@@ -19552,7 +19605,7 @@ const MONTHLY_CURRICULUM = [{"m": "3월", "topic": "유치원과 친구", "sub":
       assigned=saved.activity;padName=typeof saved.name==='string'?saved.name:'';
       pin=/^\d{4}$/.test(saved.pin||'')?saved.pin:'';
       reflect();
-    }else{openDialog();}
+    }else{ if(typeof window.switchTab==="function"){ window.switchTab("dashboard"); } }
   }
 })();
 /* PAD_SINGLE_APP_END */
