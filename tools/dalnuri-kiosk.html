@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>달누리반 역할놀이 키오스크 (단독 앱)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cream: #FFFDF9;
+      --card-bg: #FFFFFF;
+      --primary: #FF7A00;
+      --primary-hover: #E66A00;
+      --primary-light: #FFF4E8;
+      --secondary: #2B8A3E;
+      --secondary-light: #EBFBEE;
+      --text-main: #2D241E;
+      --text-sub: #6E5D53;
+      --border-color: #EFE4D8;
+      --shadow-sm: 0 4px 12px rgba(92, 59, 34, 0.06);
+      --shadow-md: 0 8px 24px rgba(92, 59, 34, 0.12);
+      --shadow-lg: 0 14px 36px rgba(92, 59, 34, 0.18);
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 26px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Jua', 'Pretendard', sans-serif;
+      background: #FDF8F2;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Top Kiosk Navigation */
+    header.kiosk-header {
+      background: #FFFFFF;
+      border-bottom: 2px solid var(--border-color);
+      padding: 10px 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      font-size: 2.2rem;
+      background: var(--primary-light);
+      border: 2px solid #FFD8A8;
+      border-radius: 16px;
+      width: 52px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-title h1 {
+      font-size: 1.45rem;
+      color: #3b2314;
+      line-height: 1.1;
+    }
+
+    .brand-title p {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    /* Store Switcher */
+    .store-switch-group {
+      display: flex;
+      background: #F3EAE0;
+      padding: 4px;
+      border-radius: 999px;
+      gap: 4px;
+    }
+
+    .store-tab-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 18px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.05rem;
+      border-radius: 999px;
+      cursor: pointer;
+      color: var(--text-sub);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .store-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--primary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      font-weight: bold;
+    }
+
+    /* Utility Tools (Sound, Fullscreen, Lock) */
+    .kiosk-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.92rem;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+      background: #FAF3EB;
+      border-color: #D8C3B0;
+    }
+
+    .tool-btn.active {
+      background: #EBFBEE;
+      border-color: #A3E635;
+      color: #2B8A3E;
+    }
+
+    /* Main Container */
+    main.kiosk-main {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 390px;
+      gap: 20px;
+    }
+
+    @media (max-width: 980px) {
+      main.kiosk-main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Menu Area */
+    .menu-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Category Filter Bar */
+    .category-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .category-bar::-webkit-scrollbar { display: none; }
+
+    .cat-btn {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .cat-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(255, 122, 0, 0.25);
+    }
+
+    /* Menu Grid */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    @media (max-width: 480px) {
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+    }
+
+    .menu-card {
+      background: #FFFFFF;
+      border: 3px solid #F5EAE0;
+      border-radius: var(--radius-md);
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s, border-color 0.15s;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-5px);
+      border-color: #FFB366;
+      box-shadow: var(--shadow-md);
+    }
+
+    .menu-card:active {
+      transform: scale(0.96);
+    }
+
+    .menu-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #F3EAE0;
+      color: var(--text-sub);
+    }
+
+    .menu-icon {
+      font-size: 3.8rem;
+      line-height: 1;
+      margin: 12px 0 8px;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.06));
+    }
+
+    .menu-name {
+      font-size: 1.25rem;
+      color: #2D241E;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .menu-desc {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.8rem;
+      color: #8C7A6B;
+      margin-bottom: 8px;
+    }
+
+    .menu-price-tag {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 1rem;
+      font-weight: 800;
+      color: #E65100;
+      margin-bottom: 10px;
+    }
+
+    .btn-add {
+      width: 100%;
+      background: var(--primary-light);
+      border: 2px solid #FFD8A8;
+      border-radius: 999px;
+      color: var(--primary);
+      font-family: 'Jua', sans-serif;
+      font-size: 1rem;
+      padding: 7px 0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .menu-card:hover .btn-add {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #FFFFFF;
+    }
+
+    /* Right Cart & Checkout Panel */
+    .cart-panel {
+      background: #FFFFFF;
+      border: 3px solid #F2E3D5;
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-md);
+      height: calc(100vh - 100px);
+      position: sticky;
+      top: 84px;
+    }
+
+    @media (max-width: 980px) {
+      .cart-panel {
+        height: auto;
+        position: static;
+      }
+    }
+
+    .cart-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px dashed #E5D5C5;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .cart-header h2 {
+      font-size: 1.35rem;
+      color: #3b2314;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-clear-cart {
+      background: none;
+      border: none;
+      color: #99877A;
+      font-family: 'Jua', sans-serif;
+      font-size: 0.92rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+    }
+    .btn-clear-cart:hover {
+      background: #FEE2E2;
+      color: #DC2626;
+    }
+
+    .cart-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-right: 4px;
+    }
+
+    .cart-empty-msg {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 180px;
+      color: #A39184;
+      text-align: center;
+      gap: 8px;
+    }
+
+    .cart-empty-msg .empty-icon {
+      font-size: 3rem;
+      opacity: 0.7;
+    }
+
+    .cart-item {
+      background: #FFFDFB;
+      border: 2px solid #F5EAE0;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cart-item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .cart-item-icon {
+      font-size: 1.8rem;
+    }
+
+    .cart-item-title {
+      font-size: 1.05rem;
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+
+    .cart-item-sub {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.8rem;
+      color: #8C7A6B;
+    }
+
+    .cart-qty-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid #D1C1B2;
+      background: #FFFFFF;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .qty-btn:active {
+      background: #EFE4D8;
+    }
+
+    .qty-num {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Cart Total Area */
+    .cart-summary {
+      background: #FFF8F0;
+      border: 2px solid #FFE4CC;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin: 14px 0 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .summary-label {
+      font-size: 1.05rem;
+      color: #6E5D53;
+    }
+
+    .summary-amount {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #E65100;
+    }
+
+    .summary-coins {
+      font-size: 0.95rem;
+      color: #D97706;
+      text-align: right;
+    }
+
+    /* Checkout Buttons */
+    .checkout-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn-pay {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 18px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-pay:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    }
+    .btn-pay:active {
+      transform: scale(0.97);
+    }
+
+    .btn-coin-pay {
+      background: linear-gradient(135deg, #FBBF24 0%, #D97706 100%);
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .btn-card-pay {
+      background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+      color: #FFFFFF;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    /* Receipt Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(45, 36, 30, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .receipt-box {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(20px) scale(0.95);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+
+    .modal-overlay.open .receipt-box {
+      transform: translateY(0) scale(1);
+    }
+
+    .receipt-decor-top {
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .order-badge {
+      display: inline-block;
+      background: var(--primary-light);
+      border: 2px solid #FFD8A8;
+      color: var(--primary);
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+    }
+
+    .order-number {
+      font-size: 2.8rem;
+      color: #2D241E;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .receipt-date {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.85rem;
+      color: #8C7A6B;
+    }
+
+    .receipt-paper {
+      background: #FAF7F2;
+      border: 2px dashed #DCCEC1;
+      border-radius: 14px;
+      padding: 14px;
+      margin: 14px 0;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .receipt-item-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.95rem;
+      padding: 4px 0;
+      border-bottom: 1px dotted #E5D8CC;
+    }
+    .receipt-item-row:last-child { border-bottom: none; }
+
+    .receipt-total-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-top: 8px;
+      margin-top: 6px;
+      border-top: 2px solid #D1C2B4;
+    }
+
+    .receipt-total-label {
+      font-size: 1.1rem;
+      color: #3b2314;
+    }
+
+    .receipt-total-val {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #E65100;
+    }
+
+    .receipt-cheer-msg {
+      background: #EBFBEE;
+      border: 2px solid #B2F2BB;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      color: #2B8A3E;
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+    }
+
+    .receipt-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-receipt {
+      flex: 1;
+      padding: 12px;
+      border-radius: 14px;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-print {
+      background: #F3EAE0;
+      color: var(--text-main);
+    }
+    .btn-print:hover { background: #E5D5C5; }
+
+    .btn-close-receipt {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+    .btn-close-receipt:hover { background: var(--primary-hover); }
+
+    /* Toast Notification */
+    .kiosk-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: rgba(45, 36, 30, 0.92);
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 999px;
+      font-size: 1.05rem;
+      z-index: 200;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .kiosk-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Print Styles */
+    @media print {
+      body * { visibility: hidden; }
+      .receipt-box, .receipt-box * { visibility: visible; }
+      .receipt-box {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        border: none;
+      }
+      .receipt-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Bar -->
+  <header class="kiosk-header">
+    <div class="brand-box">
+      <div class="brand-icon" id="headerIcon">🏪</div>
+      <div class="brand-title">
+        <h1 id="kioskStoreTitle">달누리 세계 음식점</h1>
+        <p id="kioskStoreSub">유아 역할놀이 키오스크 · 음식을 고르고 주문해요</p>
+      </div>
+    </div>
+
+    <!-- Store Switcher (Can be locked via Teacher Lock) -->
+    <div class="store-switch-group" id="storeSwitchGroup">
+      <button class="store-tab-btn active" id="tabWorld" onclick="switchStore('world')">
+        <span>🍲</span> 세계 음식점
+      </button>
+      <button class="store-tab-btn" id="tabWinter" onclick="switchStore('winter')">
+        <span>🍠</span> 겨울 간식점
+      </button>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="kiosk-tools">
+      <button class="tool-btn active" id="btnSound" onclick="toggleSound()">
+        <span id="soundIcon">🔊</span> <span id="soundText">소리 켜짐</span>
+      </button>
+      <button class="tool-btn" id="btnLock" onclick="toggleTeacherLock()">
+        <span id="lockIcon">🔓</span> <span id="lockText">화면 고정</span>
+      </button>
+      <button class="tool-btn" onclick="toggleFullscreen()">
+        <span>⛶</span> <span>전체화면</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Kiosk Stage -->
+  <main class="kiosk-main">
+    <!-- Left Menu Stage -->
+    <section class="menu-panel">
+      <!-- Category Filter Pills -->
+      <div class="category-bar" id="categoryBar">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Menu Items Grid -->
+      <div class="menu-grid" id="menuGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- Right Cart & Payment Stage -->
+    <aside class="cart-panel">
+      <div class="cart-header">
+        <h2><span>🧾</span> <span>우리 반 주문서</span></h2>
+        <button class="btn-clear-cart" onclick="clearCart()">비우기 🗑️</button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div class="cart-list" id="cartList">
+        <div class="cart-empty-msg" id="emptyCartMsg">
+          <div class="empty-icon">🍽️</div>
+          <div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!</div>
+          <div style="font-size:0.85rem; font-family:'Pretendard', sans-serif;">터치하면 주문서에 차곡차곡 담겨요</div>
+        </div>
+      </div>
+
+      <!-- Summary Box -->
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span class="summary-label">합계 금액</span>
+          <span class="summary-amount" id="sumPrice">0원</span>
+        </div>
+        <div class="summary-coins">필요한 냠냠코인: <b id="sumCoins" style="font-size:1.1rem; color:#E65100;">0</b>개</div>
+      </div>
+
+      <!-- Payment Actions -->
+      <div class="checkout-actions">
+        <button class="btn-pay btn-coin-pay" onclick="handleCheckout('coin')">
+          <span>🪙</span> <span>냠냠코인으로 결제하기</span>
+        </button>
+        <button class="btn-pay btn-card-pay" onclick="handleCheckout('card')">
+          <span>💳</span> <span>카드로 결제하기 (삑!)</span>
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Receipt & Kitchen Order Modal -->
+  <div class="modal-overlay" id="receiptModal">
+    <div class="receipt-box">
+      <div class="receipt-decor-top">
+        <div class="order-badge">주문이 완료되었습니다! ✨</div>
+        <div class="order-number" id="receiptOrderNum">🌟 101번</div>
+        <div class="receipt-date" id="receiptDate">2026. 11. 09.</div>
+      </div>
+
+      <div class="receipt-paper" id="receiptPaperList">
+        <!-- Rendered items -->
+      </div>
+
+      <div class="receipt-total-bar">
+        <span class="receipt-total-label">결제 금액</span>
+        <span class="receipt-total-val" id="receiptTotalVal">0원</span>
+      </div>
+      <div style="font-family:'Pretendard', sans-serif; font-size:0.88rem; color:#8C7A6B; text-align:right; margin-bottom:12px;" id="receiptMethodText">
+        결제 방식: 냠냠코인
+      </div>
+
+      <div class="receipt-cheer-msg">
+        👨‍🍳 주방에서 맛있게 요리하고 있어요!<br>
+        번호가 불리면 음식을 받아가세요! 💖
+      </div>
+
+      <div class="receipt-actions">
+        <button class="btn-receipt btn-print" onclick="window.print()">
+          <span>🖨️</span> <span>인쇄 / 저장</span>
+        </button>
+        <button class="btn-receipt btn-close-receipt" onclick="closeReceipt()">
+          <span>✨</span> <span>새 주문 받기</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="kiosk-toast" id="kioskToast">
+    <span id="toastIcon">✨</span> <span id="toastMsg">알림 메시지</span>
+  </div>
+
+  <script>
+    /* ============================================================
+       DATA: STORES & MENUS
+       ============================================================ */
+    const STORES = {
+      world: {
+        id: 'world',
+        title: '달누리 세계 음식점',
+        sub: '11월 놀이주간 · 같은 재료, 다른 요리! 세계 여러 나라 음식',
+        icon: '🍲',
+        categories: [
+          { id: 'all', name: '전체 메뉴' },
+          { id: 'rice', name: '🍚 쌀 요리' },
+          { id: 'wheat', name: '🥖 밀·면 요리' },
+          { id: 'world', name: '🌮 세계 별미' }
+        ],
+        items: [
+          { id: 'w1', cat: 'rice', name: '한국 비빔밥', icon: '🍲', price: 2000, coins: 2, country: '한국', desc: '알록달록 나물과 쌀밥' },
+          { id: 'w2', cat: 'rice', name: '꼬마 김밥', icon: '🍙', price: 1000, coins: 1, country: '한국', desc: '고소한 참기름 쌀밥 김밥' },
+          { id: 'w3', cat: 'rice', name: '달콤 떡볶이', icon: '🥘', price: 1000, coins: 1, country: '한국', desc: '쫀득쫀득 쌀떡 떡볶이' },
+          { id: 'w4', cat: 'rice', name: '베트남 쌀국수', icon: '🍜', price: 2000, coins: 2, country: '베트남', desc: '쌀로 만든 따끈따끈 국수' },
+          { id: 'w5', cat: 'rice', name: '모둠 초밥', icon: '🍣', price: 2000, coins: 2, country: '일본', desc: '단촛물 쌀밥과 신선한 토핑' },
+          { id: 'w6', cat: 'rice', name: '스페인 파에야', icon: '🥘', price: 2000, coins: 2, country: '스페인', desc: '해산물과 노란 쌀밥 요리' },
+          { id: 'w7', cat: 'wheat', name: '토마토 스파게티', icon: '🍝', price: 2000, coins: 2, country: '이탈리아', desc: '돌돌 말아먹는 밀 파스타' },
+          { id: 'w8', cat: 'wheat', name: '치즈 조각피자', icon: '🍕', price: 2000, coins: 2, country: '이탈리아', desc: '쭉쭉 늘어나는 고소한 피자' },
+          { id: 'w9', cat: 'wheat', name: '바삭 타코', icon: '🌮', price: 1500, coins: 1, country: '멕시코', desc: '옥수수·밀 또띠아에 고기 듬뿍' },
+          { id: 'w10', cat: 'wheat', name: '무지개 또띠아 롤', icon: '🌯', price: 1500, coins: 1, country: '멕시코', desc: '달누리반 금요 요리활동' },
+          { id: 'w11', cat: 'world', name: '인도 카레와 난', icon: '🍛', price: 2000, coins: 2, country: '인도', desc: '화덕에 구운 난과 향긋 카레' },
+          { id: 'w12', cat: 'world', name: '과일 찹쌀떡', icon: '🍡', price: 1000, coins: 1, country: '디저트', desc: '딸기가 쏙 들어간 달콤 찹쌀떡' }
+        ]
+      },
+      winter: {
+        id: 'winter',
+        title: '달누리 겨울 간식가게',
+        sub: '따끈따끈 겨울철 대표 간식 · 붕어빵과 어묵 골라요',
+        icon: '🍠',
+        categories: [
+          { id: 'all', name: '전체 간식' },
+          { id: 'bungeo', name: '🐟 붕어빵' },
+          { id: 'warm', name: '🔥 구이·찜' },
+          { id: 'soup', name: '☕ 따뜻한 간식' }
+        ],
+        items: [
+          { id: 's1', cat: 'bungeo', name: '팥 붕어빵', icon: '🐟', price: 1000, coins: 1, country: '달누리', desc: '달콤한 팥이 꽉 찬 붕어빵' },
+          { id: 's2', cat: 'bungeo', name: '슈크림 붕어빵', icon: '🧀', price: 1000, coins: 1, country: '달누리', desc: '부드러운 슈크림 붕어빵' },
+          { id: 's3', cat: 'warm', name: '꿀 군고구마', icon: '🍠', price: 2000, coins: 2, country: '달누리', desc: '노릇노릇 달콤한 군고구마' },
+          { id: 's4', cat: 'warm', name: '따끈 군밤', icon: '🌰', price: 1500, coins: 1, country: '달누리', desc: '통통하게 구운 달콤 밤' },
+          { id: 's5', cat: 'warm', name: '호호 호빵', icon: '🥟', price: 1500, coins: 1, country: '달누리', desc: '모락모락 김이 나는 호빵' },
+          { id: 's6', cat: 'soup', name: '꼬치 어묵', icon: '🍢', price: 1000, coins: 1, country: '달누리', desc: '뜨끈한 국물과 쫄깃 어묵' },
+          { id: 's7', cat: 'soup', name: '노릇 가래떡 구이', icon: '🍡', price: 1000, coins: 1, country: '달누리', desc: '조청 찍어 먹는 쌀 가래떡' },
+          { id: 's8', cat: 'soup', name: '달콤 핫초코', icon: '☕', price: 1500, coins: 1, country: '달누리', desc: '마시멜로 동동 핫초코' }
+        ]
+      }
+    };
+
+    /* ============================================================
+       APP STATE
+       ============================================================ */
+    let currentStore = 'world';
+    let currentCategory = 'all';
+    let cart = [];
+    let isSoundOn = true;
+    let isTeacherLocked = false;
+    let orderCounter = 101;
+
+    /* ============================================================
+       WEB AUDIO SYNTHESIZER
+       ============================================================ */
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, type, duration, delay = 0) {
+      if (!isSoundOn) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay);
+        osc.stop(ctx.currentTime + delay + duration);
+      } catch(e) {}
+    }
+
+    function playTapSound() {
+      playTone(440, 'sine', 0.08);
+    }
+
+    function playCoinSound() {
+      playTone(987.77, 'sine', 0.12, 0); // B5
+      playTone(1318.51, 'sine', 0.20, 0.08); // E6
+    }
+
+    function playCardBeep() {
+      playTone(1760, 'square', 0.15); // A6
+    }
+
+    function playSuccessChime() {
+      playTone(523.25, 'triangle', 0.2, 0);    // C5
+      playTone(659.25, 'triangle', 0.2, 0.12); // E5
+      playTone(783.99, 'triangle', 0.2, 0.24); // G5
+      playTone(1046.50, 'sine', 0.45, 0.36);   // C6
+    }
+
+    /* ============================================================
+       TEXT TO SPEECH (TTS)
+       ============================================================ */
+    function speak(text) {
+      if (!isSoundOn || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'ko-KR';
+        u.rate = 1.05;
+        u.pitch = 1.15;
+        window.speechSynthesis.speak(u);
+      } catch(e) {}
+    }
+
+    /* ============================================================
+       STORE SWITCHING & RENDERING
+       ============================================================ */
+    function switchStore(storeId) {
+      if (isTeacherLocked) {
+        showToast('화면 고정 모드입니다. 선생님 잠금을 먼저 풀어주세요.', '🔒');
+        return;
+      }
+      currentStore = storeId;
+      currentCategory = 'all';
+      cart = [];
+
+      document.getElementById('tabWorld').classList.toggle('active', storeId === 'world');
+      document.getElementById('tabWinter').classList.toggle('active', storeId === 'winter');
+
+      const store = STORES[storeId];
+      document.getElementById('headerIcon').textContent = store.icon;
+      document.getElementById('kioskStoreTitle').textContent = store.title;
+      document.getElementById('kioskStoreSub').textContent = store.sub;
+
+      renderCategories();
+      renderMenu();
+      renderCart();
+
+      playTapSound();
+      speak(`${store.title}에 오신 것을 환영합니다! 맛있는 음식을 골라주세요.`);
+    }
+
+    function renderCategories() {
+      const store = STORES[currentStore];
+      const bar = document.getElementById('categoryBar');
+      bar.innerHTML = '';
+
+      store.categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'cat-btn' + (cat.id === currentCategory ? ' active' : '');
+        btn.textContent = cat.name;
+        btn.onclick = () => {
+          currentCategory = cat.id;
+          renderCategories();
+          renderMenu();
+          playTapSound();
+        };
+        bar.appendChild(btn);
+      });
+    }
+
+    function renderMenu() {
+      const store = STORES[currentStore];
+      const grid = document.getElementById('menuGrid');
+      grid.innerHTML = '';
+
+      const items = store.items.filter(item => currentCategory === 'all' || item.cat === currentCategory);
+
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.onclick = () => addToCart(item);
+
+        card.innerHTML = `
+          <div class="menu-badge">${item.country}</div>
+          <div class="menu-icon">${item.icon}</div>
+          <div class="menu-name">${item.name}</div>
+          <div class="menu-desc">${item.desc}</div>
+          <div class="menu-price-tag">${item.price.toLocaleString()}원 (🪙 ${item.coins}개)</div>
+          <button class="btn-add">주문서에 담기 +</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    /* ============================================================
+       CART OPERATIONS
+       ============================================================ */
+    function addToCart(item) {
+      playCoinSound();
+      const existing = cart.find(c => c.id === item.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...item, qty: 1 });
+      }
+      renderCart();
+      showToast(`${item.name}을(를) 주문서에 담았어요!`, item.icon);
+      speak(`${item.name} 1개를 담았어요.`);
+    }
+
+    function changeQty(id, delta) {
+      playTapSound();
+      const item = cart.find(c => c.id === id);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(c => c.id !== id);
+      }
+      renderCart();
+    }
+
+    function clearCart() {
+      if (cart.length === 0) return;
+      playTapSound();
+      cart = [];
+      renderCart();
+      showToast('주문서를 비웠습니다.', '🗑️');
+    }
+
+    function renderCart() {
+      const list = document.getElementById('cartList');
+      const emptyMsg = document.getElementById('emptyCartMsg');
+
+      if (cart.length === 0) {
+        list.innerHTML = '';
+        list.appendChild(emptyMsg);
+        document.getElementById('sumPrice').textContent = '0원';
+        document.getElementById('sumCoins').textContent = '0';
+        return;
+      }
+
+      list.innerHTML = '';
+      let totalPrice = 0;
+      let totalCoins = 0;
+
+      cart.forEach(item => {
+        totalPrice += item.price * item.qty;
+        totalCoins += item.coins * item.qty;
+
+        const row = document.createElement('div');
+        row.className = 'cart-item';
+        row.innerHTML = `
+          <div class="cart-item-info">
+            <span class="cart-item-icon">${item.icon}</span>
+            <div>
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-sub">${(item.price * item.qty).toLocaleString()}원 (코인 ${item.coins * item.qty}개)</div>
+            </div>
+          </div>
+          <div class="cart-qty-ctrl">
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="빼기">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="더하기">+</button>
+          </div>
+        `;
+        list.appendChild(row);
+      });
+
+      document.getElementById('sumPrice').textContent = totalPrice.toLocaleString() + '원';
+      document.getElementById('sumCoins').textContent = totalCoins;
+    }
+
+    /* ============================================================
+       CHECKOUT & RECEIPT
+       ============================================================ */
+    function handleCheckout(method) {
+      if (cart.length === 0) {
+        showToast('먼저 드실 음식을 메뉴에서 골라주세요!', '🛍️');
+        speak('주문서가 비어있어요. 음식을 먼저 골라주세요.');
+        return;
+      }
+
+      if (method === 'coin') {
+        playCoinSound();
+      } else {
+        playCardBeep();
+      }
+
+      setTimeout(() => {
+        playSuccessChime();
+        showReceipt(method);
+      }, 400);
+    }
+
+    function showReceipt(method) {
+      const orderNum = orderCounter++;
+      document.getElementById('receiptOrderNum').textContent = `🌟 ${orderNum}번`;
+
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 ${now.getHours()}시 ${String(now.getMinutes()).padStart(2, '0')}분`;
+      document.getElementById('receiptDate').textContent = dateStr;
+
+      let totalPrice = 0;
+      let totalCoins = 0;
+      let summaryText = '';
+
+      const paperList = document.getElementById('receiptPaperList');
+      paperList.innerHTML = '';
+
+      cart.forEach((item, idx) => {
+        totalPrice += item.price * item.qty;
+        totalCoins += item.coins * item.qty;
+        if (idx === 0) summaryText = `${item.name} ${item.qty}개`;
+
+        const row = document.createElement('div');
+        row.className = 'receipt-item-row';
+        row.innerHTML = `
+          <span>${item.icon} ${item.name} × ${item.qty}</span>
+          <span style="font-weight:bold;">${(item.price * item.qty).toLocaleString()}원</span>
+        `;
+        paperList.appendChild(row);
+      });
+
+      if (cart.length > 1) {
+        summaryText += ` 외 ${cart.length - 1}건`;
+      }
+
+      document.getElementById('receiptTotalVal').textContent = `${totalPrice.toLocaleString()}원 (🪙 코인 ${totalCoins}개)`;
+      document.getElementById('receiptMethodText').textContent = `결제 수단: ${method === 'coin' ? '🪙 냠냠코인 결제 완료' : '💳 카드 결제 완료'}`;
+
+      document.getElementById('receiptModal').classList.add('open');
+
+      speak(`딩동! 주문번호 ${orderNum}번, ${summaryText} 주문이 완료되었습니다. 주방에서 맛있게 요리해 드릴게요!`);
+    }
+
+    function closeReceipt() {
+      playTapSound();
+      document.getElementById('receiptModal').classList.remove('open');
+      cart = [];
+      renderCart();
+    }
+
+    /* ============================================================
+       TOOL UTILITIES (Sound, Lock, Fullscreen, Toast)
+       ============================================================ */
+    function toggleSound() {
+      isSoundOn = !isSoundOn;
+      const btn = document.getElementById('btnSound');
+      btn.classList.toggle('active', isSoundOn);
+      document.getElementById('soundIcon').textContent = isSoundOn ? '🔊' : '🔇';
+      document.getElementById('soundText').textContent = isSoundOn ? '소리 켜짐' : '소리 꺼짐';
+      showToast(isSoundOn ? '소리가 켜졌습니다.' : '소리가 꺼졌습니다.', isSoundOn ? '🔊' : '🔇');
+      if (isSoundOn) playTapSound();
+    }
+
+    function toggleTeacherLock() {
+      isTeacherLocked = !isTeacherLocked;
+      const btn = document.getElementById('btnLock');
+      btn.classList.toggle('active', isTeacherLocked);
+      document.getElementById('lockIcon').textContent = isTeacherLocked ? '🔒' : '🔓';
+      document.getElementById('lockText').textContent = isTeacherLocked ? '고정됨' : '화면 고정';
+
+      const switcher = document.getElementById('storeSwitchGroup');
+      if (isTeacherLocked) {
+        switcher.style.opacity = '0.4';
+        switcher.style.pointerEvents = 'none';
+        showToast('화면이 고정되었습니다. (가게 전환 잠금)', '🔒');
+      } else {
+        switcher.style.opacity = '1';
+        switcher.style.pointerEvents = 'auto';
+        showToast('화면 고정이 해제되었습니다.', '🔓');
+      }
+      playTapSound();
+    }
+
+    function toggleFullscreen() {
+      playTapSound();
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    let toastTimer = null;
+    function showToast(msg, icon = '✨') {
+      const toast = document.getElementById('kioskToast');
+      document.getElementById('toastMsg').textContent = msg;
+      document.getElementById('toastIcon').textContent = icon;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    /* ============================================================
+       URL PARAMS INIT
+       ============================================================ */
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const storeParam = urlParams.get('store') || urlParams.get('mode');
+      const lockParam = urlParams.get('lock');
+
+      if (storeParam === 'winter') {
+        currentStore = 'winter';
+        document.getElementById('tabWorld').classList.remove('active');
+        document.getElementById('tabWinter').classList.add('active');
+        const store = STORES.winter;
+        document.getElementById('headerIcon').textContent = store.icon;
+        document.getElementById('kioskStoreTitle').textContent = store.title;
+        document.getElementById('kioskStoreSub').textContent = store.sub;
+      } else {
+        currentStore = 'world';
+      }
+
+      renderCategories();
+      renderMenu();
+      renderCart();
+
+      if (lockParam === '1' || lockParam === 'true') {
+        toggleTeacherLock();
+      }
+    });
+  </script>
+</body>
+</html>
