@@ -2540,10 +2540,16 @@ const DEF_APPS=[
 ];
 const PREP=[['물병','💧'],['알림장','✉️'],['겉옷','🧥'],['여벌옷','👕'],['도시락','🍱'],['운동화','👟'],['원복','🎽'],['모자','🧢'],['우산','☂️'],['작품','🎨']];
 const BAG=[['물병','💧'],['수첩','📒'],['수저통','🥄'],['겉옷','🧥'],['작품','🎨'],['실내화','👟']];
-const SEED_TODO=[{t:'교장선생님 서명 — 차량 돌봄',done:false},{t:'초대장 나가기',done:false},{t:'업체에 놀이 사진 받기',done:false},{t:'동산이 대본 쓰기',done:false},{t:'퀴즈 대본 쓰기',done:false},{t:'행사 계획안 올리기',done:false},{t:'아이들과 영상 다시 찍기',done:false},{t:'전학공 안내',done:false},{t:'보드게임 통신문',done:false},{t:'행사 입구 큐알 만들기',done:false},{t:'도시락 안내',done:false},{t:'고구마 사기',done:false},{t:'패드 강화유리 커버 사기',done:false},{t:'협의회비 올리기',done:false},{t:'통학차량 규정',done:false},{t:'유치원평가',done:false},{t:'보드게임 수요조사',done:false},{t:'그림책 공간 사진',done:false},{t:'그림책',done:false},{t:'패드 스탠드',done:false},{t:'파스타',done:false},{t:'커피 영수증',done:false},{t:'11월 돌봄 수업 안내',done:false},{t:'보드게임 확인',done:false},{t:'차량',done:false}];
+const SEED_TODO=[
+  {t:'[10:00] 단이 수업 챙기기',done:false},
+  {t:'밀가루 음식(만두) 색종이 접기 & 강력 이젤 팻말 꽂기',done:false},
+  {t:'방과후 특색유치원 하이클래스 학부모 설문 확인 및 통계',done:false},
+  {t:'방과후 특색유치원 계획서 원감선생님 보고',done:false},
+  {t:'목요일 유치원 평가 사전 준비',done:false},
+  {t:'대덕국민체육센터 전화 문의 (042-716-3000)',done:false},{t:'교장선생님 서명 — 차량 돌봄',done:false},{t:'초대장 나가기',done:false},{t:'업체에 놀이 사진 받기',done:false},{t:'동산이 대본 쓰기',done:false},{t:'퀴즈 대본 쓰기',done:false},{t:'행사 계획안 올리기',done:false},{t:'아이들과 영상 다시 찍기',done:false},{t:'전학공 안내',done:false},{t:'보드게임 통신문',done:false},{t:'행사 입구 큐알 만들기',done:false},{t:'도시락 안내',done:false},{t:'고구마 사기',done:false},{t:'패드 강화유리 커버 사기',done:false},{t:'협의회비 올리기',done:false},{t:'통학차량 규정',done:false},{t:'유치원평가',done:false},{t:'보드게임 수요조사',done:false},{t:'그림책 공간 사진',done:false},{t:'그림책',done:false},{t:'패드 스탠드',done:false},{t:'파스타',done:false},{t:'커피 영수증',done:false},{t:'11월 돌봄 수업 안내',done:false},{t:'보드게임 확인',done:false},{t:'차량',done:false}];
 const DEF={sched:DEF_SCHED,kids:[],rest:4,apps:DEF_APPS,jar:{goal:30,count:0,log:[],reward:'',done:0},morning:MORNING_DEF,todo:SEED_TODO.slice(),log:{}};
 let S=DEF;try{const r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)S=Object.assign({},DEF,r)}catch(e){}
-if(S.seedv!==4){S.todo=(S.todo||[]).concat(SEED_TODO.filter(x=>!(S.todo||[]).some(y=>y.t===x.t)).map(x=>({t:x.t,done:false})));S.seedv=4;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+if(S.seedv!==5){S.todo=(S.todo||[]).concat(SEED_TODO.filter(x=>!(S.todo||[]).some(y=>y.t===x.t)).map(x=>({t:x.t,done:false})));S.seedv=5;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 const WD=['일','월','화','수','목','금','토'];
