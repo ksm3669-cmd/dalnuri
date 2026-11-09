@@ -17226,7 +17226,8 @@ body.pad-one-activity .dnl-mobile-nav{display:none!important}
   <\/div>
 <\/section>
 <div class="dnl-station-dialog" id="dnlStationDialog" role="dialog" aria-modal="true" aria-label="패드 놀이 지정" hidden>
-  <div class="dnl-station-dialog-card">
+  <div class="dnl-station-dialog-card" style="position:relative;">
+    <button type="button" class="dnl-station-close" onclick="document.getElementById('dnlStationDialog').hidden=true; document.body.classList.remove('pad-unconfigured');" style="position:absolute; right:16px; top:16px; background:#E2E8F0; border:none; padding:8px 16px; border-radius:999px; font-weight:bold; cursor:pointer; font-size:13px; color:#1E293B;">✕ 전체 둘러보기 (닫기)<\/button>
     <h2>🎨 이 패드의 놀이를 골라요<\/h2>
     <p>같은 통합 앱을 사용하되 <strong>이 태블릿에는 한 가지 놀이만 보이게<\/strong> 설정합니다. 교사가 나중에 변경할 수도 있어요.<\/p>
     <div class="dnl-station-picks" id="dnlStationChoices"><\/div>
