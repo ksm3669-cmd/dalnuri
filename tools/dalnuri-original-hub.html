@@ -141,6 +141,11 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
       <b style="color:#0369A1;">겨울 백과사전</b>
       <span class="d">동식물 겨울나기 · 간식 · 퀴즈 24종 카드 & 음성</span>
     </button>
+    <a href="dalnuri-letter.html" target="_blank" class="tile" style="border:2px solid #F472B6; background:#FFFFFF; box-shadow:0 4px 14px rgba(244,114,182,0.14); text-decoration:none;">
+      <span class="ic">💌</span>
+      <b style="color:#BE185D;">수채화 편지공방</b>
+      <span class="d">12가지 계절 편지지 · 손가락 따라쓰기 · 음성인식 · 인쇄</span>
+    </a>
     <button class="tile" data-app="17" style="border:2px solid #F87171; background:#FFFFFF; box-shadow:0 4px 14px rgba(248,113,113,0.14); grid-column:span 2;">
       <span class="ic">📚</span>
       <b style="color:#B91C1C;">그림책 놀이터 (2,911권 전체 서재 & 7대 놀이)</b>
@@ -17173,7 +17178,48 @@ body.pad-one-activity .dnl-mobile-nav{display:none!important}
 @media print{.dnl-station-banner,#dnlStationDialog,#dnlBookPickDialog{display:none!important}}
 
 <\/style>
-<style>#dnlStationDialog[hidden]{display:none !important} body:not(.pad-one-activity) #dnlStationBanner{display:none !important}<\/style><\/head>
+<style>#dnlStationDialog[hidden]{display:none !important} body:not(.pad-one-activity) #dnlStationBanner{display:none !important}<\/style>
+<style>
+.paper-chip-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  background: #FFF;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.paper-chip-btn.active {
+  border-color: #C2410C !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(194,65,12,0.2) !important;
+}
+.letter-paper-box {
+  transition: background 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.letter-paper-watermark {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0.35;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: opacity 0.3s ease;
+}
+<\/style>
+<\/head>
 <body data-dalnuri-station="" data-pad-name="">
 
 <div id="app-layout">
@@ -18082,7 +18128,19 @@ body.pad-one-activity .dnl-mobile-nav{display:none!important}
       <\/div>
 
       <label class="letter-recipient-wrap" for="letterRecipientInput">💌 편지 받을 사람 <input id="letterRecipientInput" type="text" placeholder="주인공, 친구, 가족 등 직접 입력" maxlength="48"><\/label>
-      <div class="letter-paper-box">
+      
+      <div class="letter-paper-selector" style="margin:14px 0 16px;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; flex-wrap:wrap; gap:8px;">
+          <span style="font-weight:800; font-size:14px; color:#7A3320;">🎨 마음에 드는 수채화 편지지 고르기 (12종)<\/span>
+          <a href="dalnuri-letter.html" target="_blank" style="font-size:12px; color:#C2410C; font-weight:800; text-decoration:none; background:#FFF7ED; padding:5px 12px; border-radius:999px; border:1px solid #FDBA74; box-shadow:0 2px 6px rgba(251,146,60,0.15);">✍️ 손가락 따라쓰기 편지공방 열기 ↗<\/a>
+        <\/div>
+        <div id="paperChoiceList" style="display:flex; gap:8px; overflow-x:auto; padding:4px 2px 10px;">
+          <!-- dynamically rendered or static buttons -->
+        <\/div>
+      <\/div>
+
+      <div class="letter-paper-box" id="letterPaperBox">
+        <div class="letter-paper-watermark" id="letterWatermark"><\/div>
         <div class="letter-to-line" id="letterToLine">사랑하는 『동생이 생겼어요』 속 주인공에게,<\/div>
         <textarea class="letter-body-area" id="letterBodyText" placeholder="마이크를 누르고 주인공에게 하고 싶은 말을 편하게 해보세요. 마법처럼 글씨로 쏙쏙 적혀요!"><\/textarea>
         <div class="letter-from-line" id="letterFromLine">2026년 11월, 달누리반 꼬마 친구가<\/div>
@@ -19609,6 +19667,65 @@ const MONTHLY_CURRICULUM = [{"m": "3월", "topic": "유치원과 친구", "sub":
   }
 })();
 /* PAD_SINGLE_APP_END */
+<\/script>
+
+<script>
+(function(){
+  const PAPERS = [
+    {id:'flower',season:'봄',bg:'#FFF9F4',line:'#DF9FB1',e:'🌷',name:'꽃잎 편지지'},
+    {id:'tulip',season:'봄',bg:'#FFFBF4',line:'#E0A8B3',e:'🌷',name:'튤립 정원'},
+    {id:'rainbow',season:'여름',bg:'#F6FAFF',line:'#99BCE0',e:'🌈',name:'무지개 하늘'},
+    {id:'sea',season:'여름',bg:'#F5FBFF',line:'#96BED9',e:'🐚',name:'바다와 조개'},
+    {id:'autumn',season:'가을',bg:'#FFF9EF',line:'#E5AF75',e:'🍁',name:'가을 단풍'},
+    {id:'acorn',season:'가을',bg:'#FCF8F0',line:'#C19A81',e:'🌰',name:'도토리 편지'},
+    {id:'snowman',season:'겨울',bg:'#F7FBFF',line:'#9DC5E3',e:'⛄',name:'겨울 눈사람'},
+    {id:'village',season:'겨울',bg:'#F6FAFF',line:'#A6BBD8',e:'🏠',name:'첫눈 내리는 마을'},
+    {id:'mittens',season:'겨울',bg:'#FFFAFC',line:'#CEA1BD',e:'🧤',name:'포근한 털장갑'},
+    {id:'winterforest',season:'겨울',bg:'#F7FAFF',line:'#A5BBD7',e:'❄️',name:'하얀 눈꽃 숲'},
+    {id:'birthday',season:'특별한 날',bg:'#FFF9F4',line:'#E5A6B8',e:'🎂',name:'생일 축하'},
+    {id:'love',season:'특별한 날',bg:'#FFF8F9',line:'#E4A0B2',e:'💌',name:'사랑 편지'}
+  ];
+
+  window.selectStationery = function(idx){
+    const p = PAPERS[idx];
+    if(!p) return;
+    const box = document.getElementById('letterPaperBox');
+    if(box){
+      box.style.background = p.bg;
+      box.style.borderColor = p.line;
+      box.style.borderWidth = '3px';
+      box.style.borderStyle = 'solid';
+    }
+    const btns = document.querySelectorAll('.paper-chip-btn');
+    btns.forEach((b, i) => {
+      b.classList.toggle('active', i === idx);
+    });
+  };
+
+  function initStationery(){
+    const list = document.getElementById('paperChoiceList');
+    if(!list) return;
+    list.replaceChildren();
+    PAPERS.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'paper-chip-btn' + (i === 0 ? ' active' : '');
+      btn.style.background = p.bg;
+      btn.style.borderColor = p.line;
+      btn.style.color = '#4A2810';
+      btn.innerHTML = `<span>${p.e}<\/span> <span>${p.name}<\/span>`;
+      btn.onclick = () => window.selectStationery(i);
+      list.appendChild(btn);
+    });
+    window.selectStationery(0);
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initStationery);
+  } else {
+    initStationery();
+  }
+})();
 <\/script>
 <\/body><\/html></script>
 </body>
