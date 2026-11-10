@@ -1175,8 +1175,8 @@ function switchView(mode) {
   currentView = mode;
   document.getElementById('btnGridMode').classList.toggle('active', mode === 'grid');
   document.getElementById('btnFocusMode').classList.toggle('active', mode === 'focus');
-  document.getElementById('pagesGrid').hidden = (mode === 'focus');
-  document.getElementById('focusContainer').hidden = (mode === 'grid');
+  document.getElementById('pagesGrid').style.display = (mode === 'grid' ? 'grid' : 'none');
+  document.getElementById('focusContainer').style.display = (mode === 'focus' ? 'flex' : 'none');
   if(mode === 'focus') updateFocusView();
 }
 
