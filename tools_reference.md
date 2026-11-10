@@ -12,6 +12,7 @@
 - **달누리반 전체 놀이 선택 앱 (선미님 원본 전체놀이선택앱 직통 링크)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-all-play-selector.html
 - **놀이달력에서 올인원 앱까지 (유치원 교사용 실천 전자책)**: https://ksm3669-cmd.github.io/dalnuri/ebook/
 - **달누리반 역할놀이 키오스크 (단독 전용 앱 · 세계음식 & 겨울간식)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-kiosk.html
+- **달누리반 8쪽 접는 작은책 공방 (단독 전용 앱 · 8쪽 미니북 & 인쇄)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-minibook.html
 - **달누리반 세계 음식 디지털 백과사전 (단독 전용 앱 · 11월 놀이주간)**: https://ksm3669-cmd.github.io/dalnuri/tools/world-food-encyclopedia.html
 - **달누리반 겨울 백과사전 (단독 전용 앱 · 겨울 주제 24종 카드 & 퀴즈)**: https://ksm3669-cmd.github.io/dalnuri/tools/winter-encyclopedia.html
 - **달누리반 아침모임 & 마음신호등 (날짜·캘린더·후~호흡·오늘의활동 16장면 슬라이드)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-morning-circle.html
