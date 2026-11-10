@@ -102,6 +102,7 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
   <button data-app="16" style="background:#F0FDF4; border-color:#86EFAC; color:#15803D; font-weight:800;"><span class="ti">🌅</span>아침모임</button>
   <button data-app="0"><span class="ti">📖</span>매일 수업</button>
   <button data-app="1"><span class="ti">⏰</span>오늘 하루</button>
+  <button onclick="location.href='dalnuri-metaphor-hub.html'" style="background:#FFF8E7; border-color:#FCD34D; color:#92400E; font-weight:800;"><span class="ti">🌸</span>연령별 놀이터</button>
   <button data-app="13" style="background:#FFF7ED; border-color:#FDBA74; color:#C2410C; font-weight:800;"><span class="ti">🏪</span>키오스크</button>
   <button data-app="14" style="background:#F0F9FF; border-color:#7DD3FC; color:#0369A1; font-weight:800;"><span class="ti">🌍</span>세계음식백과</button>
   <button data-app="15" style="background:#F0F9FF; border-color:#7DD3FC; color:#0369A1; font-weight:800;"><span class="ti">❄️</span>겨울백과</button>
@@ -119,6 +120,132 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
 <div class="in">
 <div class="dhead"><b id="dDate"></b><span id="dWd"></span><span class="clk" id="dClk"></span></div>
 <div class="dash" id="dash"></div>
+<!-- 0. 🌟 연령별 발달 놀이터 (3세 밥그릇 · 4세 하트 · 5세 돋보기) -->
+<div class="sec" style="margin-top:16px; background:linear-gradient(135deg, #FFFDF8 0%, #FFF5F7 50%, #F0F7FF 100%); border:2px solid #E2E8F0; border-radius:24px; padding:22px 20px 24px; box-shadow:0 8px 25px rgba(0,0,0,0.05);">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+    <h3 style="display:flex; align-items:center; gap:8px; font-size:1.18rem; color:#1E293B; margin:0;">
+      <span>🌸</span>
+      <span>연령별 발달 놀이터 · 세 개의 상징 그릇</span>
+      <span style="font-size:11px; background:#4F46E5; color:#fff; padding:3px 10px; border-radius:999px; font-weight:800;">NEW 디자인</span>
+    </h3>
+    <a href="dalnuri-metaphor-hub.html" style="font-size:12px; font-weight:700; color:#4338CA; text-decoration:none; background:#EEF2FF; padding:5px 12px; border-radius:999px; display:inline-flex; align-items:center; gap:4px; border:1px solid #C7D2FE;">
+      <span>🖥️</span> 3단 전용 풀스크린 뷰어 열기 ↗
+    </a>
+  </div>
+  <p style="font-size:13px; color:#64748B; margin-bottom:16px; line-height:1.5;">
+    앱을 단순 나열하지 않고, <strong>3세 밥그릇(인성)</strong>, <strong>4세 하트(사회성)</strong>, <strong>5세 돋보기(탐구)</strong> 메타포 안에 쏙 담았습니다. 아래 탭을 눌러 각 연령의 상징 그릇을 확인해 보세요.
+  </p>
+
+  <!-- 3대 상징 전환 탭 -->
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:18px;">
+    <button type="button" onclick="showHubMetaphor(3)" id="hubTab3" style="padding:12px 8px; border-radius:14px; border:2px solid #8D6E63; background:#FFF8E7; cursor:pointer; text-align:center; transition:all 0.2s; box-shadow:0 4px 12px rgba(141,110,99,0.15);">
+      <div style="font-size:24px; margin-bottom:2px;">🍚</div>
+      <div style="font-size:13px; font-weight:800; color:#5D4037;">만 3세 밥그릇</div>
+      <div style="font-size:11px; color:#8D6E63; font-weight:600;">인성 & 기본생활</div>
+    </button>
+    <button type="button" onclick="showHubMetaphor(4)" id="hubTab4" style="padding:12px 8px; border-radius:14px; border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer; text-align:center; transition:all 0.2s;">
+      <div style="font-size:24px; margin-bottom:2px;">💖</div>
+      <div style="font-size:13px; font-weight:800; color:#475569;">만 4세 하트</div>
+      <div style="font-size:11px; color:#94A3B8; font-weight:600;">사회성 & 마음나눔</div>
+    </button>
+    <button type="button" onclick="showHubMetaphor(5)" id="hubTab5" style="padding:12px 8px; border-radius:14px; border:1px solid #E2E8F0; background:#FFFFFF; cursor:pointer; text-align:center; transition:all 0.2s;">
+      <div style="font-size:24px; margin-bottom:2px;">🔎</div>
+      <div style="font-size:13px; font-weight:800; color:#475569;">만 5세 돋보기</div>
+      <div style="font-size:11px; color:#94A3B8; font-weight:600;">탐구 & 문해·수놀이</div>
+    </button>
+  </div>
+
+  <!-- 3세 밥그릇 콘텐츠 -->
+  <div id="hubMetaphor3" style="background:#FFFDF8; border:2px solid #D7CCC8; border-radius:18px; padding:18px 16px; margin-bottom:12px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:13px; font-weight:800; color:#5D4037;">
+      <span>🍚</span>
+      <span>따뜻한 밥그릇 안에 담긴 인성·기본생활 놀이 (누르면 바로 실행)</span>
+    </div>
+    <div class="tiles" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
+      <button class="tile" data-app="16" style="border:1.5px solid #D7CCC8; background:#FFFFFF;">
+        <span class="ic">☀️</span>
+        <b style="color:#5D4037;">방긋 아침모임 & '후~' 호흡</b>
+        <span class="d">소지품 정리 · 3초 심호흡 루틴</span>
+      </button>
+      <button class="tile" data-app="14" style="border:1.5px solid #D7CCC8; background:#FFFFFF;">
+        <span class="ic">🥣</span>
+        <b style="color:#5D4037;">냠냠 식생활 요리백과</b>
+        <span class="d">채소와 과일 골고루 먹기 인성</span>
+      </button>
+      <button class="tile" data-app="4" style="border:1.5px solid #D7CCC8; background:#FFFFFF;">
+        <span class="ic">🤙</span>
+        <b style="color:#5D4037;">달누리 세 가지 약속</b>
+        <span class="d">차례 지키기 · 고운 말 쓰기 약속</span>
+      </button>
+      <button class="tile" data-app="17" style="border:1.5px solid #D7CCC8; background:#FFFFFF;">
+        <span class="ic">🎵</span>
+        <b style="color:#5D4037;">도란도란 소리·말놀이</b>
+        <span class="d">동물 소리 흉내 & 기초 영어 챈트</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 4세 하트 콘텐츠 -->
+  <div id="hubMetaphor4" style="display:none; background:#FFF5F7; border:2px solid #F8BBD0; border-radius:18px; padding:18px 16px; margin-bottom:12px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:13px; font-weight:800; color:#880E4F;">
+      <span>💖</span>
+      <span>두근두근 하트 안에 담긴 사회성·마음나눔 놀이 (누르면 바로 실행)</span>
+    </div>
+    <div class="tiles" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
+      <button class="tile" data-app="18" style="border:1.5px solid #F8BBD0; background:#FFFFFF;">
+        <span class="ic">💌</span>
+        <b style="color:#880E4F;">수채화 편지공방</b>
+        <span class="d">12종 계절 편지지 · 친구에게 마음 전하기</span>
+      </button>
+      <button class="tile" data-app="16" style="border:1.5px solid #F8BBD0; background:#FFFFFF;">
+        <span class="ic">🚦</span>
+        <b style="color:#880E4F;">알록달록 마음신호등</b>
+        <span class="d">내 감정 선택 · 친구 마음 배려하기</span>
+      </button>
+      <button class="tile" data-app="13" style="border:1.5px solid #F8BBD0; background:#FFFFFF;">
+        <span class="ic">🏪</span>
+        <b style="color:#880E4F;">역할놀이 키오스크</b>
+        <span class="d">가게놀이 주문 & 코인 결제 상호작용</span>
+      </button>
+      <button class="tile" data-app="7" style="border:1.5px solid #F8BBD0; background:#FFFFFF;">
+        <span class="ic">🎂</span>
+        <b style="color:#880E4F;">생일 룰렛 & 짝꿍 뽑기</b>
+        <span class="d">친구 축하 선물 & 공정한 짝꿍 선정</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 5세 돋보기 콘텐츠 -->
+  <div id="hubMetaphor5" style="display:none; background:#F0F7FF; border:2px solid #BBDEFB; border-radius:18px; padding:18px 16px; margin-bottom:12px;">
+    <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px; font-size:13px; font-weight:800; color:#0D47A1;">
+      <span>🔎</span>
+      <span>호기심 돋보기 안에 담긴 탐구·문해·수놀이 (누르면 바로 실행)</span>
+    </div>
+    <div class="tiles" style="grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
+      <button class="tile" data-app="17" style="border:1.5px solid #BBDEFB; background:#FFFFFF;">
+        <span class="ic">📖</span>
+        <b style="color:#0D47A1;">그림책 놀이터 (2,911권)</b>
+        <span class="d">도서 배움터 · 4쪽 미니북 자동 연계</span>
+      </button>
+      <button class="tile" onclick="location.href='dalnuri-minibook.html'" style="border:1.5px solid #BBDEFB; background:#FFFFFF;">
+        <span class="ic">✏️</span>
+        <b style="color:#0D47A1;">8쪽 작은책 만들기</b>
+        <span class="d">음성인식 STT · 자유 도화지 창작</span>
+      </button>
+      <button class="tile" data-app="14" style="border:1.5px solid #BBDEFB; background:#FFFFFF;">
+        <span class="ic">🌍</span>
+        <b style="color:#0D47A1;">세계음식 & 겨울 백과</b>
+        <span class="d">74종 음식 탐구 & 생태 퀴즈</span>
+      </button>
+      <button class="tile" data-app="2" style="border:1.5px solid #BBDEFB; background:#FFFFFF;">
+        <span class="ic">🧠</span>
+        <b style="color:#0D47A1;">8대 씽킹맵 생각지도</b>
+        <span class="d">버블맵 · 트리맵 · 플로우맵 생각정리</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- 1. 패드 자율놀이 & 백과사전 -->
 <div class="sec" style="margin-top:16px; background:linear-gradient(135deg, #FFF7ED 0%, #F0F9FF 50%, #F0FDF4 100%); border:2px solid #BAE6FD; border-radius:22px; padding:20px 18px 22px;">
   <h3 style="display:flex; align-items:center; gap:8px; margin-bottom:14px; font-size:1.15rem; color:#0C4A6E;">
@@ -20363,7 +20490,41 @@ function viewDone(){
 }
 
 render();
-<\/script><script>window.addEventListener('message',function(e){if(e.data==='dalnuri-pause'){try{window.speechSynthesis&&window.speechSynthesis.cancel()}catch(err){};try{window.recognition&&window.recognition.abort()}catch(err){}}});<\/script><\/body><\/html></script>
+<\/script><script>window.addEventListener('message',function(e){if(e.data==='dalnuri-pause'){try{window.speechSynthesis&&window.speechSynthesis.cancel()}catch(err){};try{window.recognition&&window.recognition.abort()}catch(err){}}});<\/script><\/body><\/html>
+function showHubMetaphor(age) {
+  [3, 4, 5].forEach(function(a) {
+    var c = document.getElementById('hubMetaphor' + a);
+    var t = document.getElementById('hubTab' + a);
+    if (!c || !t) return;
+    if (a === age) {
+      c.style.display = 'block';
+      if (a === 3) {
+        t.style.border = '2px solid #8D6E63';
+        t.style.background = '#FFF8E7';
+        t.style.boxShadow = '0 4px 12px rgba(141,110,99,0.15)';
+        t.querySelector('div:nth-child(2)').style.color = '#5D4037';
+      } else if (a === 4) {
+        t.style.border = '2px solid #D81B60';
+        t.style.background = '#FFF0F5';
+        t.style.boxShadow = '0 4px 12px rgba(216,27,96,0.15)';
+        t.querySelector('div:nth-child(2)').style.color = '#880E4F';
+      } else if (a === 5) {
+        t.style.border = '2px solid #1976D2';
+        t.style.background = '#F0F7FF';
+        t.style.boxShadow = '0 4px 12px rgba(25,118,210,0.15)';
+        t.querySelector('div:nth-child(2)').style.color = '#0D47A1';
+      }
+    } else {
+      c.style.display = 'none';
+      t.style.border = '1px solid #E2E8F0';
+      t.style.background = '#FFFFFF';
+      t.style.boxShadow = 'none';
+      t.querySelector('div:nth-child(2)').style.color = '#475569';
+    }
+  });
+}
+
+</script>
 </body>
 </html,
   "수채화 편지공방">
