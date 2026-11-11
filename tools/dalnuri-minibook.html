@@ -1592,8 +1592,7 @@ const ZINE_ORDER = [5, 4, 3, 2, 6, 7, 8, 1];
 function wrapText(g, s, x, y, maxW, lineH, maxLines) {
   const lines = []; let buf = '';
   for(const chr of Array.from(s || '')) {
-    if(chr === '
-') { lines.push(buf); buf = ''; continue; }
+    if(chr === '\n') { lines.push(buf); buf = ''; continue; }
     if(g.measureText(buf + chr).width > maxW && buf) { lines.push(buf); buf = chr; } else buf += chr;
   }
   lines.push(buf);
@@ -1803,24 +1802,24 @@ function pdfBlobFromCanvas(canvas) {
   const chunks = []; let cursor = 0; const offsets = [0];
   const enc = new TextEncoder();
   const push = x => { const buf = (typeof x === 'string') ? enc.encode(x) : x; chunks.push(buf); cursor += buf.length; };
-  const obj = (n, body) => { offsets[n] = cursor; push(`${n} 0 obj\n`); push(body); push('\nendobj\n'); };
-  const pageW = 841.89, pageH = 595.28; // A4 Landscape points
+  const obj = (n, body) => { offsets[n] = cursor; push(n + " 0 obj\n"); push(body); push("\nendobj\n"); };
+  const pageW = 841.89, pageH = 595.28;
 
-  push('%PDF-1.4\n');
-  obj(1, '<< /Type /Catalog /Pages 2 0 R >>');
-  obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>');
-  obj(3, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /XObject << /Im1 4 0 R >> >> /Contents 5 0 R >>`);
+  push("%PDF-1.4\n");
+  obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+  obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+  obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im1 4 0 R >> >> /Contents 5 0 R >>");
   offsets[4] = cursor;
-  push('4 0 obj\n');
-  push(`<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${bytes.length} >>\nstream\n`);
+  push("4 0 obj\n");
+  push("<< /Type /XObject /Subtype /Image /Width " + canvas.width + " /Height " + canvas.height + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + bytes.length + " >>\nstream\n");
   push(bytes);
-  push('\nendstream\nendobj\n');
-  const c = `q\n${pageW} 0 0 ${pageH} 0 0 cm\n/Im1 Do\nQ\n`;
-  obj(5, `<< /Length ${enc.encode(c).length} >>\nstream\n${c}endstream`);
+  push("\nendstream\nendobj\n");
+  const cm = "q\n" + pageW + " 0 0 " + pageH + " 0 0 cm\n/Im1 Do\nQ\n";
+  obj(5, "<< /Length " + enc.encode(cm).length + " >>\nstream\n" + cm + "endstream");
   const xref = cursor;
-  push('xref\n0 6\n0000000000 65535 f \n');
-  for(let i = 1; i <= 5; i++) push(String(offsets[i]).padStart(10, '0') + ' 00000 n \n');
-  push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  push("xref\n0 6\n0000000000 65535 f \n");
+  for(let i = 1; i <= 5; i++) push(String(offsets[i]).padStart(10, '0') + " 00000 n \n");
+  push("trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF");
   return new Blob(chunks, {type: 'application/pdf'});
 }
 
