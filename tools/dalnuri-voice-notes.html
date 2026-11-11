@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>달누리 교실 음성 수첩 (유아 관찰 & 오늘 할 일)</title>
+<style>
+:root {
+  --primary: #4A6B53;
+  --primary-light: #6B8F74;
+  --primary-dark: #324D3A;
+  --accent: #D97757;
+  --accent-soft: #F9EBE6;
+  --bg: #F7F5EE;
+  --card-bg: #FFFFFF;
+  --text: #2C3E30;
+  --text-muted: #6E7E72;
+  --border: #E2DDD2;
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 18px rgba(74, 107, 83, 0.08);
+  --shadow-lg: 0 8px 28px rgba(74, 107, 83, 0.14);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background: linear-gradient(135deg, #4A6B53 0%, #3B5A43 100%);
+  color: #fff;
+  padding: 1.2rem 1rem 1.4rem;
+  box-shadow: 0 4px 20px rgba(50, 77, 58, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.title-group h1 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.title-group p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+.header-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.badge-portal {
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.3);
+  font-weight: 600;
+  transition: all 0.2s;
+}
+.badge-portal:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* Nav Tabs */
+.nav-tabs {
+  max-width: 900px;
+  margin: 0.8rem auto 0;
+  padding: 0 1rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+.tab-btn {
+  flex: 1;
+  min-width: 140px;
+  background: #EAE5D8;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 -3px 10px rgba(0,0,0,0.04);
+}
+.tab-btn .badge-count {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* Main Container */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem 3rem;
+}
+.tab-panel {
+  display: none;
+  background: #fff;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  padding: 1.4rem;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  border-top: none;
+}
+.tab-panel.active { display: block; }
+
+/* Sections */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin: 0 0 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-title .hint {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+/* Voice Input Hero Box */
+.voice-hero {
+  background: linear-gradient(135deg, #F3F8F4 0%, #E7EFE9 100%);
+  border: 2px dashed #92B29A;
+  border-radius: var(--radius-lg);
+  padding: 1.3rem;
+  text-align: center;
+  margin-bottom: 1.4rem;
+  position: relative;
+}
+.mic-btn {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #4A6B53, #3B5A43);
+  color: #fff;
+  border: none;
+  font-size: 2.2rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(74, 107, 83, 0.35);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin: 0.4rem 0;
+  position: relative;
+}
+.mic-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 12px 28px rgba(74, 107, 83, 0.45);
+}
+.mic-btn.listening {
+  background: linear-gradient(145deg, #D97757, #C25633);
+  box-shadow: 0 0 0 10px rgba(217, 119, 87, 0.25), 0 10px 30px rgba(217, 119, 87, 0.4);
+  animation: pulse-ring 1.3s infinite ease-out;
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(217, 119, 87, 0.4), 0 8px 24px rgba(217, 119, 87, 0.3); }
+  70% { box-shadow: 0 0 0 22px rgba(217, 119, 87, 0), 0 12px 30px rgba(217, 119, 87, 0.3); }
+  100% { box-shadow: 0 0 0 0 rgba(217, 119, 87, 0), 0 8px 24px rgba(217, 119, 87, 0.3); }
+}
+.mic-status {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-top: 0.4rem;
+}
+.mic-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+/* Child Chips */
+.child-chips-wrap {
+  margin-bottom: 1.2rem;
+}
+.child-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+}
+.child-chip {
+  background: #F1ECE1;
+  border: 1px solid #DDD6C7;
+  padding: 0.45rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.child-chip:hover {
+  background: #E5DFC2;
+}
+.child-chip.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary-dark);
+  box-shadow: 0 3px 8px rgba(74, 107, 83, 0.25);
+}
+.add-child-btn {
+  background: #fff;
+  border: 1px dashed var(--primary);
+  color: var(--primary);
+  padding: 0.45rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Nuri Domain Tags */
+.domain-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 1rem;
+}
+.domain-chip {
+  background: #FAF7F2;
+  border: 1px solid #E6E0D4;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.domain-chip.active {
+  background: #E8F2EC;
+  border-color: #8EBA9A;
+  color: #2D5A38;
+  font-weight: 700;
+}
+
+/* Transcript Box */
+.transcript-box {
+  width: 100%;
+  min-height: 90px;
+  background: #fff;
+  border: 1.5px solid #CBD8CF;
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text);
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+  line-height: 1.6;
+}
+.transcript-box:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(74, 107, 83, 0.12);
+}
+
+/* Action Bar */
+.action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+.btn {
+  padding: 0.65rem 1.2rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(74, 107, 83, 0.25);
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+.btn-secondary {
+  background: #EAE5D8;
+  color: var(--text);
+}
+.btn-secondary:hover {
+  background: #DFD9C9;
+}
+.btn-outline {
+  background: #fff;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn-outline:hover {
+  background: #FAF7F2;
+}
+.btn-danger-outline {
+  background: #fff;
+  border: 1px solid #ECC4B8;
+  color: #C25633;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+/* Observation Cards List */
+.obs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  margin-top: 1rem;
+}
+.obs-card {
+  background: #FCFBF7;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--primary);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  transition: transform 0.15s;
+}
+.obs-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+.obs-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.obs-child-tag {
+  background: #E8F2EC;
+  color: #2D5A38;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+}
+.obs-domain-tag {
+  background: #FAF0E6;
+  color: #A0522D;
+  font-weight: 600;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+}
+.obs-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.obs-card-body {
+  font-size: 0.94rem;
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  margin-bottom: 0.5rem;
+}
+.obs-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  border-top: 1px dashed #EDE8DD;
+  padding-top: 0.5rem;
+}
+
+/* Filter Bar */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  background: #FAF7F2;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+}
+.filter-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+.filter-select {
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+}
+
+/* To-Do List Styling */
+.todo-hero {
+  background: linear-gradient(135deg, #FBF8EE 0%, #F4ECD8 100%);
+  border: 2px dashed #CBBF9F;
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  margin-bottom: 1.4rem;
+}
+.todo-input-wrap {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.todo-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid #CBD8CF;
+  font-size: 0.95rem;
+  outline: none;
+}
+.todo-input:focus {
+  border-color: var(--primary);
+}
+.todo-mic-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.todo-mic-btn.listening {
+  background: var(--accent);
+  animation: pulse-ring 1.3s infinite ease-out;
+}
+.todo-quick-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+.todo-quick-tag {
+  background: rgba(255,255,255,0.8);
+  border: 1px solid #D5CEBE;
+  padding: 0.25rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+}
+.todo-quick-tag:hover {
+  background: #fff;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.todo-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #FCFBF7;
+  border: 1px solid var(--border);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  transition: all 0.15s;
+}
+.todo-item:hover {
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.todo-item.done {
+  opacity: 0.6;
+  background: #F4F1E8;
+}
+.todo-left {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex: 1;
+}
+.todo-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid #8FA395;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.8rem;
+  background: #fff;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.todo-item.done .todo-check {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+.todo-text {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  word-break: break-all;
+}
+.todo-item.done .todo-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+.todo-tag {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 6px;
+  background: #EBE5D6;
+  color: #6B6250;
+  font-weight: 700;
+  margin-left: 0.4rem;
+}
+
+/* Report View */
+.report-box {
+  background: #FCFBF7;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  margin-top: 0.8rem;
+}
+.report-table th, .report-table td {
+  border: 1px solid var(--border);
+  padding: 0.65rem 0.8rem;
+  text-align: left;
+}
+.report-table th {
+  background: #F1ECE1;
+  color: var(--primary-dark);
+  font-weight: 700;
+}
+.report-table tr:nth-child(even) td {
+  background: #FAF7F0;
+}
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(35, 52, 40, 0.94);
+  color: #fff;
+  padding: 0.8rem 1.4rem;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 90vw;
+  text-align: center;
+}
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Print CSS */
+@media print {
+  header, .nav-tabs, .voice-hero, .todo-hero, .action-bar, .filter-bar, .no-print {
+    display: none !important;
+  }
+  body, main, .tab-panel {
+    background: #fff !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .obs-card {
+    border: 1px solid #ccc !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    box-shadow: none !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="title-group">
+      <h1>🎙️ 달누리 교실 음성 수첩</h1>
+      <p>유아별 관찰 일지와 선미님 오늘 할 일을 말하는 대로 쏙 정리해요</p>
+    </div>
+    <div class="header-badges">
+      <a href="dalnuri-master-all-in-one.html" class="badge-portal">🌸 올인원 마스터 허브 ↗</a>
+      <a href="../index.html" class="badge-portal">🏠 포털 메인 ↗</a>
+    </div>
+  </div>
+</header>
+
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="switchTab('obs')">
+    <span>🌱 아이 관찰 기록</span>
+    <span class="badge-count" id="obsCountBadge">0</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('todo')">
+    <span>✅ 오늘 할 일 (투두)</span>
+    <span class="badge-count" id="todoCountBadge">0</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('report')">
+    <span>📋 관찰일지 보고서·인쇄</span>
+  </button>
+</div>
+
+<main>
+  <!-- TAB 1: CHILD OBSERVATION -->
+  <div id="panel-obs" class="tab-panel active">
+    <div class="voice-hero">
+      <div style="font-size:0.88rem; color:var(--text-muted); font-weight:600;">말씀하시면 글씨로 바로 적혀요</div>
+      <button id="obsMicBtn" class="mic-btn" onclick="toggleObsRecord()" title="마이크 누르고 말씀하세요">
+        🎙️
+      </button>
+      <div class="mic-status" id="obsMicStatus">마이크를 콕 누르고 말해보세요</div>
+      <div class="mic-sub" id="obsMicSub">"민우가 오늘 친구한테 블록을 양보했어요" 처럼 말씀하세요</div>
+    </div>
+
+    <!-- Step 1: Child Selection -->
+    <div class="child-chips-wrap">
+      <div class="section-title">
+        <span>1. 관찰 대상 유아 선택 <span class="hint">(누르면 바로 선택돼요)</span></span>
+        <button class="add-child-btn" onclick="addNewChild()">+ 유아 추가</button>
+      </div>
+      <div class="child-chips" id="childChipsList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Step 2: Nuri Domain Selection -->
+    <div style="margin-bottom:1rem;">
+      <div class="section-title">
+        <span>2. 누리과정 5개 영역 <span class="hint">(음성 내용에 맞게 자동 추천돼요)</span></span>
+      </div>
+      <div class="domain-chips" id="domainChipsList">
+        <div class="domain-chip" data-domain="신체운동·건강" onclick="selectDomain(this, '신체운동·건강')">🌱 신체운동·건강</div>
+        <div class="domain-chip" data-domain="의사소통" onclick="selectDomain(this, '의사소통')">💬 의사소통</div>
+        <div class="domain-chip" data-domain="사회관계" onclick="selectDomain(this, '사회관계')">💖 사회관계</div>
+        <div class="domain-chip" data-domain="예술경험" onclick="selectDomain(this, '예술경험')">🎨 예술경험</div>
+        <div class="domain-chip" data-domain="자연탐구" onclick="selectDomain(this, '자연탐구')">🔍 자연탐구</div>
+        <div class="domain-chip active" data-domain="자유놀이·일상" onclick="selectDomain(this, '자유놀이·일상')">✨ 자유놀이·일상</div>
+      </div>
+    </div>
+
+    <!-- Step 3: Observation Content Box -->
+    <div style="margin-bottom:1rem;">
+      <div class="section-title">
+        <span>3. 관찰 내용 확인 및 편집</span>
+      </div>
+      <textarea id="obsText" class="transcript-box" placeholder="마이크를 누르고 말씀하시거나, 여기에 직접 입력하셔도 돼요.&#10;예: 오늘 쌓기놀이 영역에서 탑이 무너지자 속상해하지 않고 친구에게 '다시 같이 쌓아보자'며 손을 내밀어 튼튼한 성을 완성함."></textarea>
+      
+      <div class="action-bar">
+        <button class="btn btn-outline" onclick="clearObsInput()">다시 적기</button>
+        <button class="btn btn-primary" onclick="saveObservation()">💾 관찰 기록 저장하기</button>
+      </div>
+    </div>
+
+    <hr style="border:none; border-top:1px solid var(--border); margin:1.8rem 0 1.2rem;">
+
+    <!-- Filter & List -->
+    <div class="section-title">
+      <span>📚 누적된 달누리 관찰 기록</span>
+      <button class="btn btn-outline btn-sm no-print" onclick="exportObsCSV()" style="font-size:0.8rem; padding:0.35rem 0.7rem;">📥 엑셀(CSV) 저장</button>
+    </div>
+
+    <div class="filter-bar no-print">
+      <span class="filter-label">유아 필터:</span>
+      <select id="filterChild" class="filter-select" onchange="renderObsList()">
+        <option value="ALL">전체 보기</option>
+      </select>
+
+      <span class="filter-label" style="margin-left:0.5rem;">영역 필터:</span>
+      <select id="filterDomain" class="filter-select" onchange="renderObsList()">
+        <option value="ALL">전체 영역</option>
+        <option value="신체운동·건강">🌱 신체운동·건강</option>
+        <option value="의사소통">💬 의사소통</option>
+        <option value="사회관계">💖 사회관계</option>
+        <option value="예술경험">🎨 예술경험</option>
+        <option value="자연탐구">🔍 자연탐구</option>
+        <option value="자유놀이·일상">✨ 자유놀이·일상</option>
+      </select>
+    </div>
+
+    <div class="obs-list" id="obsListContainer">
+      <!-- Cards rendered via JS -->
+    </div>
+  </div>
+
+  <!-- TAB 2: TO-DO LIST -->
+  <div id="panel-todo" class="tab-panel">
+    <div class="todo-hero">
+      <div class="section-title" style="margin-bottom:0.6rem;">
+        <span>선미님 오늘 할 일 음성 등록</span>
+        <span class="hint">마이크 콕 누르고 "오후 2시 원감님 보고" 말해보세요</span>
+      </div>
+      <div class="todo-input-wrap">
+        <input type="text" id="todoInput" class="todo-input" placeholder="할 일을 입력하거나 마이크를 눌러 말씀하세요..." onkeydown="if(event.key==='Enter') addTodo();">
+        <button id="todoMicBtn" class="todo-mic-btn" onclick="toggleTodoRecord()" title="음성으로 할 일 말하기">🎙️</button>
+        <button class="btn btn-primary" onclick="addTodo()" style="flex-shrink:0;">추가</button>
+      </div>
+      <div class="todo-quick-tags">
+        <span style="font-size:0.78rem; font-weight:700; color:#777; align-self:center;">추천 태그:</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('🔥 오늘 꼭')">🔥 오늘 꼭</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('📋 유치원 평가')">📋 유치원 평가</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('🏫 원감님 보고')">🏫 원감님 보고</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('🎨 수업 준비')">🎨 수업 준비</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('💌 가정이음·상담')">💌 가정이음·상담</span>
+        <span class="todo-quick-tag" onclick="insertTodoTag('☎️ 문의·통화')">☎️ 문의·통화</span>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span>오늘의 체크리스트</span>
+      <button class="btn btn-danger-outline" onclick="clearDoneTodos()">완료된 항목 삭제</button>
+    </div>
+
+    <div class="todo-list" id="todoListContainer">
+      <!-- Rendered via JS -->
+    </div>
+  </div>
+
+  <!-- TAB 3: REPORT & PRINT -->
+  <div id="panel-report" class="tab-panel">
+    <div class="section-title">
+      <span>📋 유아 관찰기록 종합 보고서</span>
+      <div class="action-bar no-print" style="margin:0;">
+        <button class="btn btn-outline" onclick="copyFullReportText()">📋 전체 텍스트 복사</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ A4 관찰일지 인쇄</button>
+      </div>
+    </div>
+
+    <p style="font-size:0.88rem; color:var(--text-muted); margin-top:0;">
+      누적된 음성 관찰 기록이 유치원 관찰기록부 양식으로 자동 정돈되어 있어요. 필요한 유아만 필터링하거나 인쇄하여 학부모 상담 및 생활기록부 기초자료로 바로 쓰실 수 있습니다.
+    </p>
+
+    <div class="filter-bar no-print">
+      <span class="filter-label">출력 대상 유아:</span>
+      <select id="reportFilterChild" class="filter-select" onchange="renderReportTable()">
+        <option value="ALL">달누리반 전체 원아</option>
+      </select>
+    </div>
+
+    <div class="report-box" id="reportContentArea">
+      <!-- Report table rendered via JS -->
+    </div>
+
+    <div class="voice-hero no-print" style="margin-top:1.5rem; text-align:left; background:#FAF7EE; border-color:#D8CFAF;">
+      <h3 style="margin:0 0 0.4rem; font-size:1rem; color:var(--primary-dark);">🤖 비서 마카롱에게 관찰 & 할 일 전달하기</h3>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin:0 0 0.8rem;">
+        앱에 적어둔 관찰 일지나 투두를 복사해서 마카롱과의 대화창에 툭 붙여넣어 주시면, 마카롱이 매일 아침 브리핑과 알람 시간에 맞춰 잊지 않으시도록 똑똑하게 챙겨드려요!
+      </p>
+      <button class="btn btn-secondary" onclick="copySummaryForMacaron()">💬 마카롱 전달용 요약본 복사하기</button>
+    </div>
+  </div>
+</main>
+
+<div id="toast">✓ 메시지</div>
+
+<script>
+// --- AUDIO CHIME (Web Audio API) ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playChime(type) {
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  const now = audioCtx.currentTime;
+
+  if (type === 'start') {
+    osc.frequency.setValueAtTime(440, now);
+    osc.frequency.exponentialRampToValueAtTime(880, now + 0.15);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  } else if (type === 'success') {
+    osc.frequency.setValueAtTime(523.25, now); // C5
+    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.35);
+    osc.start(now);
+    osc.stop(now + 0.35);
+  } else if (type === 'check') {
+    osc.frequency.setValueAtTime(659.25, now);
+    osc.frequency.exponentialRampToValueAtTime(987.77, now + 0.15);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }
+}
+
+// --- STATE MANAGEMENT ---
+const STORAGE_KEY_OBS = 'dalnuri_voice_obs_records_v1';
+const STORAGE_KEY_TODO = 'dalnuri_voice_todo_records_v1';
+const STORAGE_KEY_CHILDREN = 'dalnuri_children_roster_v1';
+
+const DEFAULT_CHILDREN = [
+  '민우', '서연', '도윤', '지호', '하은', '준우', '예린', '시우', '수아', '유준', '다은', '태민', '채원', '단이'
+];
+
+let children = JSON.parse(localStorage.getItem(STORAGE_KEY_CHILDREN) || 'null') || DEFAULT_CHILDREN;
+let observations = JSON.parse(localStorage.getItem(STORAGE_KEY_OBS) || 'null') || [];
+let todos = JSON.parse(localStorage.getItem(STORAGE_KEY_TODO) || 'null') || [
+  { id: 't1', text: '11월 12일 유치원 평가 대비 교실 환경 및 평가 서류 최종 점검', tag: '📋 유치원 평가', done: false, date: '2026-11-12' },
+  { id: 't2', text: '대덕국민체육센터(042-716-3000) 전화 문의 또는 비서 대리 통화 확인', tag: '☎️ 문의·통화', done: false, date: '2026-11-12' },
+  { id: 't3', text: '방과후 특색유치원 하이클래스 학부모 설문 통계 확인 및 원감 보고', tag: '🏫 원감님 보고', done: false, date: '2026-11-12' },
+  { id: 't4', text: '11월 13일(금) 과일 모찌 요리 PPT 및 쌀 생각지도 활동지 준비', tag: '🎨 수업 준비', done: false, date: '2026-11-12' }
+];
+
+let selectedChild = children[0] || '민우';
+let selectedDomain = '자유놀이·일상';
+
+// --- TOAST NOTIFICATIONS ---
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// --- TAB SWITCHING ---
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+
+  if (tab === 'obs') {
+    document.querySelectorAll('.tab-btn')[0].classList.add('active');
+    document.getElementById('panel-obs').classList.add('active');
+  } else if (tab === 'todo') {
+    document.querySelectorAll('.tab-btn')[1].classList.add('active');
+    document.getElementById('panel-todo').classList.add('active');
+  } else if (tab === 'report') {
+    document.querySelectorAll('.tab-btn')[2].classList.add('active');
+    document.getElementById('panel-report').classList.add('active');
+    renderReportTable();
+  }
+}
+
+// --- RENDER CHILDREN CHIPS ---
+function renderChildrenChips() {
+  const container = document.getElementById('childChipsList');
+  container.innerHTML = '';
+
+  children.forEach(name => {
+    const chip = document.createElement('div');
+    chip.className = 'child-chip' + (selectedChild === name ? ' active' : '');
+    chip.innerText = name;
+    chip.onclick = () => {
+      selectedChild = name;
+      renderChildrenChips();
+      playChime('start');
+    };
+    container.appendChild(chip);
+  });
+
+  // Also update filter select
+  const sel = document.getElementById('filterChild');
+  const rSel = document.getElementById('reportFilterChild');
+  sel.innerHTML = '<option value="ALL">달누리반 전체 보기</option>';
+  rSel.innerHTML = '<option value="ALL">달누리반 전체 원아</option>';
+  children.forEach(c => {
+    sel.innerHTML += `<option value="${c}">${c}</option>`;
+    rSel.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+}
+
+function addNewChild() {
+  const name = prompt('추가할 유아의 이름을 입력하세요:');
+  if (name && name.trim()) {
+    const clean = name.trim();
+    if (!children.includes(clean)) {
+      children.push(clean);
+      localStorage.setItem(STORAGE_KEY_CHILDREN, JSON.stringify(children));
+      selectedChild = clean;
+      renderChildrenChips();
+      showToast(`✓ 유아 "${clean}" 등록 완료!`);
+    }
+  }
+}
+
+function selectDomain(el, domain) {
+  document.querySelectorAll('.domain-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedDomain = domain;
+  playChime('start');
+}
+
+// Auto-detect domain based on keywords in transcript
+function autoDetectDomain(text) {
+  if (/달리기|신체|뜀뛰기|미끄럼|신발|손씻기|체조|줄넘기|안전|밥|숟가락|정리|양치/.test(text)) return '신체운동·건강';
+  if (/말|단어|동화|그림책|이야기|설명|글자|편지|읽|듣|말했|표현|소리/.test(text)) return '의사소통';
+  if (/친구|양보|함께|같이|도와|나누|차례|규칙|약속|싸우|화해|마음|웃|위로/.test(text)) return '사회관계';
+  if (/그림|색칠|만들|노래|춤|음악|악기|블록|찰흙|클레이|만들기|극장|역할/.test(text)) return '예술경험';
+  if (/왜|궁금|관찰|돋보기|수|숫자|모양|비교|도토리|낙엽|곤충|나무|날씨|실험|비행기/.test(text)) return '자연탐구';
+  return '자유놀이·일상';
+}
+
+// --- SPEECH RECOGNITION (STT) ---
+let obsRec = null;
+let isObsRecording = false;
+
+function toggleObsRecord() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    showToast('이 브라우저는 음성 인식을 지원하지 않습니다. 텍스트로 직접 입력해 주세요.');
+    return;
+  }
+
+  const btn = document.getElementById('obsMicBtn');
+  const status = document.getElementById('obsMicStatus');
+  const txt = document.getElementById('obsText');
+
+  if (isObsRecording) {
+    obsRec && obsRec.stop();
+    return;
+  }
+
+  obsRec = new SpeechRec();
+  obsRec.lang = 'ko-KR';
+  obsRec.continuous = false;
+  obsRec.interimResults = false;
+
+  obsRec.onstart = () => {
+    isObsRecording = true;
+    btn.classList.add('listening');
+    status.innerText = '🎙️ 듣고 있어요! 말씀하세요...';
+    playChime('start');
+  };
+
+  obsRec.onresult = (e) => {
+    const transcript = e.results[0][0].transcript.trim();
+    if (txt.value.trim()) {
+      txt.value += ' ' + transcript;
+    } else {
+      txt.value = transcript;
+    }
+
+    // Auto-detect domain
+    const detected = autoDetectDomain(transcript);
+    const domainEl = document.querySelector(`.domain-chip[data-domain="${detected}"]`);
+    if (domainEl) selectDomain(domainEl, detected);
+
+    showToast(`✓ "${transcript}" 인식 완료!`);
+    playChime('success');
+  };
+
+  obsRec.onerror = (err) => {
+    console.warn('STT Error', err);
+    showToast('음성을 잘 듣지 못했어요. 다시 마이크를 눌러 말씀해 주세요.');
+  };
+
+  obsRec.onend = () => {
+    isObsRecording = false;
+    btn.classList.remove('listening');
+    status.innerText = '마이크를 콕 누르고 말해보세요';
+  };
+
+  try {
+    obsRec.start();
+  } catch (err) {
+    console.error(err);
+    isObsRecording = false;
+    btn.classList.remove('listening');
+  }
+}
+
+function clearObsInput() {
+  document.getElementById('obsText').value = '';
+}
+
+function saveObservation() {
+  const text = document.getElementById('obsText').value.trim();
+  if (!text) {
+    showToast('관찰 내용을 음성으로 말씀하시거나 입력해 주세요.');
+    return;
+  }
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '-').replace('.', '');
+  const timeStr = now.toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+  const record = {
+    id: 'obs_' + Date.now(),
+    child: selectedChild,
+    domain: selectedDomain,
+    content: text,
+    date: dateStr,
+    time: timeStr,
+    timestamp: Date.now()
+  };
+
+  observations.unshift(record);
+  localStorage.setItem(STORAGE_KEY_OBS, JSON.stringify(observations));
+
+  document.getElementById('obsText').value = '';
+  renderObsList();
+  playChime('success');
+  showToast(`✓ [${selectedChild}] 관찰 기록이 안전하게 저장되었어요!`);
+}
+
+function deleteObs(id) {
+  if (confirm('이 관찰 기록을 삭제할까요?')) {
+    observations = observations.filter(o => o.id !== id);
+    localStorage.setItem(STORAGE_KEY_OBS, JSON.stringify(observations));
+    renderObsList();
+    showToast('기록이 삭제되었습니다.');
+  }
+}
+
+function renderObsList() {
+  const container = document.getElementById('obsListContainer');
+  const childFilter = document.getElementById('filterChild').value;
+  const domainFilter = document.getElementById('filterDomain').value;
+
+  let filtered = observations;
+  if (childFilter !== 'ALL') filtered = filtered.filter(o => o.child === childFilter);
+  if (domainFilter !== 'ALL') filtered = filtered.filter(o => o.domain === domainFilter);
+
+  document.getElementById('obsCountBadge').innerText = observations.length;
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:2.5rem 1rem; color:var(--text-muted); background:#FCFBF7; border-radius:var(--radius-md); border:1px dashed var(--border);">
+        <div style="font-size:2rem; margin-bottom:0.4rem;">🌱</div>
+        <div style="font-weight:700;">아직 등록된 관찰 기록이 없어요</div>
+        <div style="font-size:0.85rem; margin-top:0.2rem;">위 마이크를 눌러 아이들의 소중한 놀이 순간을 음성으로 남겨보세요!</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+  filtered.forEach(o => {
+    const card = document.createElement('div');
+    card.className = 'obs-card';
+    card.innerHTML = `
+      <div class="obs-card-header">
+        <div style="display:flex; align-items:center; gap:0.4rem;">
+          <span class="obs-child-tag">👤 ${o.child}</span>
+          <span class="obs-domain-tag">${o.domain}</span>
+        </div>
+        <span class="obs-time">${o.date} ${o.time}</span>
+      </div>
+      <div class="obs-card-body">${escapeHTML(o.content)}</div>
+      <div class="obs-card-footer no-print">
+        <button class="btn btn-outline" style="font-size:0.75rem; padding:0.25rem 0.5rem;" onclick="copySingleObs('${o.id}')">📋 복사</button>
+        <button class="btn btn-danger-outline" onclick="deleteObs('${o.id}')">삭제</button>
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function copySingleObs(id) {
+  const o = observations.find(item => item.id === id);
+  if (!o) return;
+  const txt = `[달누리 유아 관찰] ${o.child} (${o.domain}) - ${o.date} ${o.time}\n${o.content}`;
+  navigator.clipboard.writeText(txt).then(() => showToast('클립보드에 복사되었어요!'));
+}
+
+function exportObsCSV() {
+  if (observations.length === 0) {
+    showToast('저장할 관찰 기록이 없습니다.');
+    return;
+  }
+  let csv = '\uFEFF날짜,시간,유아명,누리과정영역,관찰내용\n';
+  observations.forEach(o => {
+    const cleanContent = `"${o.content.replace(/"/g, '""')}"`;
+    csv += `${o.date},${o.time},${o.child},${o.domain},${cleanContent}\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `달누리반_유아관찰기록_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('✓ 엑셀 CSV 파일로 다운로드되었습니다!');
+}
+
+// --- TO-DO LIST MANAGEMENT ---
+let todoRec = null;
+let isTodoRecording = false;
+
+function toggleTodoRecord() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) {
+    showToast('이 브라우저는 음성 인식을 지원하지 않습니다. 텍스트로 직접 입력해 주세요.');
+    return;
+  }
+
+  const btn = document.getElementById('todoMicBtn');
+  const input = document.getElementById('todoInput');
+
+  if (isTodoRecording) {
+    todoRec && todoRec.stop();
+    return;
+  }
+
+  todoRec = new SpeechRec();
+  todoRec.lang = 'ko-KR';
+  todoRec.continuous = false;
+  todoRec.interimResults = false;
+
+  todoRec.onstart = () => {
+    isTodoRecording = true;
+    btn.classList.add('listening');
+    playChime('start');
+    showToast('🎙️ 오늘 할 일을 말씀해 보세요...');
+  };
+
+  todoRec.onresult = (e) => {
+    const text = e.results[0][0].transcript.trim();
+    input.value = text;
+    addTodo();
+  };
+
+  todoRec.onerror = () => {
+    showToast('음성을 잘 듣지 못했어요. 다시 시도해 주세요.');
+  };
+
+  todoRec.onend = () => {
+    isTodoRecording = false;
+    btn.classList.remove('listening');
+  };
+
+  try {
+    todoRec.start();
+  } catch (err) {
+    isTodoRecording = false;
+    btn.classList.remove('listening');
+  }
+}
+
+function insertTodoTag(tag) {
+  const inp = document.getElementById('todoInput');
+  inp.value = `[${tag}] ` + inp.value.replace(/\[.*?\]\s*/g, '');
+  inp.focus();
+}
+
+function addTodo() {
+  const inp = document.getElementById('todoInput');
+  const text = inp.value.trim();
+  if (!text) {
+    showToast('할 일 내용을 입력해 주세요.');
+    return;
+  }
+
+  let tag = '오늘 꼭';
+  const tagMatch = text.match(/^\[(.*?)\]/);
+  if (tagMatch) tag = tagMatch[1];
+
+  const todo = {
+    id: 'todo_' + Date.now(),
+    text: text.replace(/^\[.*?\]\s*/, ''),
+    tag: tag,
+    done: false,
+    date: new Date().toISOString().slice(0, 10)
+  };
+
+  todos.unshift(todo);
+  localStorage.setItem(STORAGE_KEY_TODO, JSON.stringify(todos));
+  inp.value = '';
+  renderTodoList();
+  playChime('success');
+  showToast('✓ 할 일이 추가되었습니다!');
+}
+
+function toggleTodoDone(id) {
+  const t = todos.find(item => item.id === id);
+  if (t) {
+    t.done = !t.done;
+    localStorage.setItem(STORAGE_KEY_TODO, JSON.stringify(todos));
+    renderTodoList();
+    if (t.done) playChime('check');
+  }
+}
+
+function deleteTodo(id) {
+  todos = todos.filter(t => t.id !== id);
+  localStorage.setItem(STORAGE_KEY_TODO, JSON.stringify(todos));
+  renderTodoList();
+}
+
+function clearDoneTodos() {
+  todos = todos.filter(t => !t.done);
+  localStorage.setItem(STORAGE_KEY_TODO, JSON.stringify(todos));
+  renderTodoList();
+  showToast('완료된 할 일을 모두 정리했어요.');
+}
+
+function renderTodoList() {
+  const container = document.getElementById('todoListContainer');
+  const activeCount = todos.filter(t => !t.done).length;
+  document.getElementById('todoCountBadge').innerText = activeCount;
+
+  if (todos.length === 0) {
+    container.innerHTML = `
+      <div style="text-align:center; padding:2rem; color:var(--text-muted); background:#FCFBF7; border-radius:var(--radius-md); border:1px dashed var(--border);">
+        <div style="font-size:1.8rem; margin-bottom:0.3rem;">🎉</div>
+        <div style="font-weight:700;">모든 할 일을 마쳤거나 등록된 할 일이 없어요!</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = '';
+  todos.forEach(t => {
+    const item = document.createElement('div');
+    item.className = 'todo-item' + (t.done ? ' done' : '');
+    item.innerHTML = `
+      <div class="todo-left">
+        <div class="todo-check" onclick="toggleTodoDone('${t.id}')">
+          ${t.done ? '✓' : ''}
+        </div>
+        <div>
+          <span class="todo-text">${escapeHTML(t.text)}</span>
+          <span class="todo-tag">${escapeHTML(t.tag)}</span>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="padding:0.25rem 0.5rem; font-size:0.75rem;" onclick="deleteTodo('${t.id}')">✕</button>
+    `;
+    container.appendChild(item);
+  });
+}
+
+// --- REPORT TABLE GENERATION ---
+function renderReportTable() {
+  const container = document.getElementById('reportContentArea');
+  const childFilter = document.getElementById('reportFilterChild').value;
+
+  let filtered = observations;
+  if (childFilter !== 'ALL') filtered = filtered.filter(o => o.child === childFilter);
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:2rem; color:var(--text-muted);">출력할 관찰 기록이 없습니다.</div>`;
+    return;
+  }
+
+  let html = `
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid var(--primary); padding-bottom:0.5rem; margin-bottom:0.8rem;">
+      <h3 style="margin:0; font-size:1.15rem; color:var(--primary-dark);">달누리반 유아 관찰기록부</h3>
+      <span style="font-size:0.82rem; color:var(--text-muted);">출력일자: ${new Date().toLocaleDateString('ko-KR')} · 담임교사: 김선미</span>
+    </div>
+    <table class="report-table">
+      <thead>
+        <tr>
+          <th style="width:105px;">일시</th>
+          <th style="width:75px;">유아명</th>
+          <th style="width:105px;">누리과정 영역</th>
+          <th>관찰 상황 및 유아 놀이 행동</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  filtered.forEach(o => {
+    html += `
+      <tr>
+        <td style="font-size:0.82rem; color:#555;">${o.date}<br>${o.time}</td>
+        <td><strong>${o.child}</strong></td>
+        <td><span class="obs-domain-tag">${o.domain}</span></td>
+        <td style="line-height:1.6;">${escapeHTML(o.content)}</td>
+      </tr>
+    `;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+}
+
+function copyFullReportText() {
+  if (observations.length === 0) {
+    showToast('복사할 관찰 기록이 없어요.');
+    return;
+  }
+  let txt = `[달누리반 유아 관찰기록 종합 요약]\n`;
+  observations.forEach(o => {
+    txt += `• ${o.child} | ${o.date} ${o.time} | [${o.domain}]\n  - ${o.content}\n\n`;
+  });
+  navigator.clipboard.writeText(txt).then(() => showToast('✓ 전체 관찰기록 텍스트가 복사되었어요!'));
+}
+
+function copySummaryForMacaron() {
+  let txt = `[선미님의 달누리 교실 브리핑 & 챙김 요청]\n\n`;
+  txt += `📌 [오늘 할 일 현황]\n`;
+  const pendingTodos = todos.filter(t => !t.done);
+  if (pendingTodos.length > 0) {
+    pendingTodos.forEach(t => txt += `- [ ] ${t.text} (${t.tag})\n`);
+  } else {
+    txt += `(남은 할 일 모두 완료)\n`;
+  }
+
+  txt += `\n🌱 [최근 유아 관찰 기록 요약]\n`;
+  const recentObs = observations.slice(0, 5);
+  if (recentObs.length > 0) {
+    recentObs.forEach(o => txt += `• ${o.child} (${o.domain}): ${o.content}\n`);
+  } else {
+    txt += `(새로 등록된 관찰 기록 없음)\n`;
+  }
+
+  navigator.clipboard.writeText(txt).then(() => showToast('✓ 비서 마카롱 전달용 요약본이 복사되었어요!'));
+}
+
+function escapeHTML(str) {
+  return str.replace(/[&<>'"]/g, tag => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    "'": '&#39;',
+    '"': '&quot;'
+  }[tag] || tag));
+}
+
+// --- INIT ---
+window.onload = () => {
+  renderChildrenChips();
+  renderObsList();
+  renderTodoList();
+};
+</script>
+</body>
+</html>
