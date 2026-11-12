@@ -20108,7 +20108,7 @@ const MONTHLY_CURRICULUM = [{"m": "3월", "topic": "유치원과 친구", "sub":
 <meta name="description" content="선생님 도움 없이 내 목소리로 편지를 쓰고, 우표와 왁스 도장을 찍어 진짜 우체통에 부쳐요!">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Noto+Sans+KR:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gaegu:wght@400;700&family=Gamja+Flower&family=Jua&family=Noto+Sans+KR:wght@400;600;700;800;900&family=Single+Day&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #4c3740;
@@ -20122,7 +20122,8 @@ const MONTHLY_CURRICULUM = [{"m": "3월", "topic": "유치원과 친구", "sub":
   --shadow: 0 9px 28px rgba(145,95,104,.13);
   --shadow-lg: 0 17px 44px rgba(143,99,110,.16);
   --font: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  --hand: 'Gaegu', 'Noto Sans KR', sans-serif;
+  --cute: 'Gamja Flower', 'Single Day', 'Gaegu', cursive;
+  --hand: 'Gamja Flower', 'Gaegu', 'Noto Sans KR', sans-serif;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html, body { min-height: 100%; margin: 0; font-family: var(--font); color: var(--ink); }
@@ -20178,7 +20179,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   border-radius: 100px; font: 800 12px/1 var(--font); letter-spacing: .12em;
 }
 .hero-title {
-  font: 700 clamp(32px, 5.2vw, 48px)/1.15 var(--hand); color: #774453;
+  font: 700 clamp(32px, 5.5vw, 50px)/1.15 var(--cute); color: #774453;
   text-shadow: 1px 2px 0 #fff6ec; margin: 10px 0 6px;
 }
 .hero-sub {
@@ -20211,7 +20212,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   box-shadow: var(--shadow); position: relative;
 }
 .q {
-  text-align: center; font: 700 clamp(28px, 5.5vw, 38px)/1.25 var(--hand);
+  text-align: center; font: 700 clamp(28px, 5.5vw, 40px)/1.25 var(--cute);
   color: #794556; margin: 0 0 6px;
 }
 .q-sub {
@@ -20239,6 +20240,41 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
 .btn.lg { padding: 15px 34px; font-size: 18px; border-radius: 99px; }
 .center { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
 
+/* Font Switcher Chip Bar */
+.font-bar {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  padding: 8px 14px; border-radius: 99px; background: #fffcf9; border: 1.5px solid #ebd7d7;
+  margin: 0 auto 16px; max-width: 680px; box-shadow: 0 3px 10px rgba(162,108,113,.06);
+}
+.font-bar-label { font-size: 12px; font-weight: 800; color: #9c6c79; margin-right: 4px; }
+.font-chip {
+  padding: 6px 14px; border-radius: 99px; background: #fff; border: 1.5px solid #e7cfd2;
+  font-size: 14px; font-weight: 700; color: #7a4a58; cursor: pointer; transition: .2s;
+}
+.font-chip:hover { border-color: #d9748b; background: #fff2f5; }
+.font-chip.on {
+  background: #d9748b; color: #fff; border-color: #d9748b;
+  box-shadow: 0 3px 10px rgba(217,116,139,.3);
+}
+
+/* Parent Proof Ribbon Settings */
+.parent-proof-card {
+  max-width: 680px; margin: 16px auto 0; padding: 14px 18px; border-radius: 18px;
+  background: linear-gradient(135deg, #fffaf5, #fff2f4); border: 1.5px solid #f2cfd4;
+  text-align: center; box-shadow: 0 4px 14px rgba(217,116,139,.1);
+}
+.parent-proof-card .pp-title {
+  font: 800 13px var(--font); color: #a1445e; margin-bottom: 6px; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.parent-proof-card .pp-desc {
+  font-size: 12.5px; font-weight: 700; color: #7f5b65; margin-bottom: 8px;
+}
+.parent-proof-input {
+  width: 100%; max-width: 480px; padding: 8px 14px; border-radius: 12px;
+  border: 1.5px solid #e8c2c8; font-size: 14px; text-align: center; font-weight: 700; color: #5a3842;
+  background: #fff;
+}
+
 /* Step 1: Recipients Cards */
 .cards {
   display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
@@ -20257,13 +20293,13 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   box-shadow: 0 8px 24px rgba(217,116,139,.25);
 }
 .card .card-e { font-size: 46px; filter: drop-shadow(0 2px 4px rgba(0,0,0,.08)); }
-.card .card-w { font: 700 22px/1 var(--hand); color: #6d3a4b; }
+.card .card-w { font: 700 24px/1 var(--cute); color: #6d3a4b; }
 
 .custom-recipient {
   max-width: 640px; margin: 0 auto; padding: 18px 20px; border-radius: 22px;
   background: #fff8f5; border: 2px dashed #f0c9ce; text-align: center;
 }
-.custom-recipient h3 { font: 700 20px var(--hand); color: #7f495a; margin-bottom: 8px; }
+.custom-recipient h3 { font: 700 22px var(--cute); color: #7f495a; margin-bottom: 8px; }
 .recipient-entry {
   display: flex; gap: 10px; align-items: center; justify-content: center; flex-wrap: wrap;
 }
@@ -20308,7 +20344,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   padding: 8px 12px; border-radius: 14px; text-align: center;
   box-shadow: 0 3px 10px rgba(0,0,0,.08); border: 1px solid #eed6d5;
 }
-.paper-card .p-name { font: 700 18px var(--hand); color: #6a3a4b; }
+.paper-card .p-name { font: 700 20px var(--cute); color: #6a3a4b; }
 
 /* Step 3: Magic Speaking on Real Paper */
 .letter-stage-wrap {
@@ -20351,7 +20387,7 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   min-height: 22px;
 }
 
-/* Quick Speech Chips (교사 도움 없는 마법 칩) */
+/* Quick Speech Chips */
 .chips-section {
   max-width: 780px; margin: 18px auto 20px; padding: 16px; border-radius: 20px;
   background: #fff8f5; border: 1.5px solid #f2dbdb; text-align: center;
@@ -20375,9 +20411,9 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   max-width: 640px; margin: 12px auto 0; text-align: center;
 }
 .edit-drawer textarea {
-  width: 100%; min-height: 70px; padding: 12px 16px; font-size: 17px;
-  border-radius: 16px; border: 1.8px solid #e8cdd1; font-family: var(--hand);
-  font-size: 22px; font-weight: 700; color: #52373e; background: #fff;
+  width: 100%; min-height: 70px; padding: 12px 16px;
+  border-radius: 16px; border: 1.8px solid #e8cdd1; font-family: var(--cute);
+  font-size: 24px; font-weight: 700; color: #52373e; background: #fff;
 }
 
 /* Trace Mode Tools */
@@ -20448,10 +20484,10 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
   margin: 16px auto; max-width: 520px;
 }
 .mailbox-status-card .p-title {
-  font: 700 24px var(--hand); color: #7f3b4f; margin-bottom: 6px;
+  font: 700 26px var(--cute); color: #7f3b4f; margin-bottom: 6px;
 }
 .mailbox-status-card .p-desc {
-  font-size: 14px; font-weight: 700; color: #81626a; line-height: 1.5;
+  font: 700 20px var(--cute); color: #81626a; line-height: 1.5;
 }
 
 /* Confetti Canvas */
@@ -20479,29 +20515,41 @@ h1, h2, h3 { margin: 0; letter-spacing: -.035em; }
     width: 100%; height: auto; max-height: 180mm; object-fit: contain; border-radius: 10px;
   }
   .print-col-envelope {
-    flex: 1; border: 2px dashed #999; border-radius: 16px; padding: 14px;
+    flex: 1; border: 2px dashed #a3727d; border-radius: 16px; padding: 14px;
     display: flex; flex-direction: column; justify-content: space-between; position: relative;
     background: #fffcf9;
   }
   .print-env-header {
-    text-align: center; border-bottom: 1.5px dashed #bbb; padding-bottom: 8px;
+    text-align: center; border-bottom: 1.5px dashed #dcb3bc; padding-bottom: 8px;
   }
-  .print-env-header h4 { font-size: 16px; margin: 0; color: #333; }
-  .print-env-header p { font-size: 11px; margin: 3px 0 0; color: #666; }
+  .print-env-header h4 { font: 700 18px var(--cute); margin: 0; color: #7b384a; }
+  .print-env-header p { font-size: 11px; margin: 3px 0 0; color: #8a646e; font-weight: 700; }
   .print-env-body {
     flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 10px 16px;
-    border: 1px solid #ccc; border-radius: 12px; margin: 10px 0; background: #fff; position: relative;
+    border: 1.5px solid #e2c0c7; border-radius: 12px; margin: 10px 0; background: #fff; position: relative;
   }
   .print-env-stamp-box {
     position: absolute; top: 12px; right: 12px; width: 44px; height: 52px;
     border: 1.5px dashed #b57a87; border-radius: 6px; display: flex; flex-direction: column;
     align-items: center; justify-content: center; font-size: 9px; color: #b57a87; text-align: center;
   }
-  .print-env-to { font-size: 22px; font-weight: 800; color: #222; margin-bottom: 12px; }
-  .print-env-from { font-size: 17px; font-weight: 700; color: #555; text-align: right; }
+  .print-env-to { font: 700 24px var(--cute); color: #222; margin-bottom: 12px; }
+  .print-env-from { font: 700 20px var(--cute); color: #555; text-align: right; }
+  
+  .print-env-parent-proof {
+    background: #fff3f5; border: 1.2px dashed #e8a2b0; border-radius: 8px; padding: 8px 10px;
+    margin-top: 10px; text-align: center;
+  }
+  .print-env-parent-proof .p-proof-head {
+    font: 800 11px var(--font); color: #b83d5a; margin-bottom: 3px;
+  }
+  .print-env-parent-proof .p-proof-body {
+    font: 700 11px/1.4 var(--font); color: #6d414d;
+  }
+
   .print-env-instructions {
-    font-size: 10.5px; color: #555; line-height: 1.4; text-align: center;
-    background: #f7f3f1; padding: 6px; border-radius: 8px; border: 1px dashed #ddd;
+    font-size: 10.5px; color: #6d4f56; line-height: 1.4; text-align: center;
+    background: #fbf5f3; padding: 6px; border-radius: 8px; border: 1px dashed #ddc4c8;
   }
 }
 </style>
@@ -20581,6 +20629,14 @@ const STAMPS = [
   {id:'snow', e:'⛄', name:'겨울 눈사람 우표', fee:'300원', color:'#72a7cf'}
 ];
 
+const FONTS = [
+  {id:'gamja', name:'🌼 감자꽃체', family:"'Gamja Flower', cursive", scale: 1.05},
+  {id:'dongle', name:'🍩 동글체', family:"'Dongle', sans-serif", scale: 1.3},
+  {id:'single', name:'✏️ 싱글데이', family:"'Single Day', cursive", scale: 1.0},
+  {id:'jua', name:'📖 주아체', family:"'Jua', sans-serif", scale: 0.95},
+  {id:'gaegu', name:'🐸 개구체', family:"'Gaegu', cursive", scale: 1.0}
+];
+
 const QUICK_CHIPS = [
   '사랑해요 언제나 고마워요',
   '선생님 최고예요 보고 싶어요',
@@ -20608,7 +20664,10 @@ const S = {
   to: TO[0],
   paper: PAPERS[0],
   stamp: STAMPS[0],
+  font: FONTS[0],
   hasSeal: true,
+  showParentProof: true,
+  parentProofCustom: safeGet('letter.parentProof') || '',
   text: '엄마 사랑해요 언제나 고마워요',
   from: safeGet('letter.from') || '도윤이',
   customRecipient: safeGet('letter.customRecipient') || '',
@@ -20707,6 +20766,22 @@ function renderTrack() {
     );
     tb.append(item);
   });
+}
+
+/* 글씨체 바 생성 함수 */
+function createFontBar(onSelect) {
+  const bar = E('div', {class: 'font-bar'});
+  bar.append(E('span', {class: 'font-bar-label'}, '🔤 귀여운 글씨체:'));
+  FONTS.forEach(f => {
+    const chip = E('button', {class: 'font-chip' + (S.font.id === f.id ? ' on' : ''), type: 'button', style: {fontFamily: f.family}, onclick: () => {
+      soundTap(); S.font = f;
+      bar.querySelectorAll('.font-chip').forEach(x => x.classList.remove('on'));
+      chip.classList.add('on');
+      onSelect && onSelect();
+    }}, f.name);
+    bar.append(chip);
+  });
+  return bar;
 }
 
 /* ============================================================
@@ -20840,7 +20915,7 @@ function viewSpeak() {
   b.innerHTML = '';
   b.append(
     E('h2', {class: 'q'}, '마이크를 누르고 마음을 말해봐요!'),
-    E('p', {class: 'q-sub'}, '말하는 즉시 편지지에 예쁜 손글씨가 마법처럼 써져요')
+    E('p', {class: 'q-sub'}, '말하는 즉시 편지지에 귀여운 손글씨가 마법처럼 써져요')
   );
 
   /* 실시간 편지지 캔버스 */
@@ -20848,6 +20923,9 @@ function viewSpeak() {
   const cv = E('canvas', {class: 'real-letter-canvas', id: 'liveLetterCanvas'});
   stageWrap.append(cv);
   b.append(stageWrap);
+
+  /* 귀여운 글씨체 선택 바 */
+  b.append(createFontBar(() => paintLive()));
 
   /* 큰 마이크 */
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -20891,13 +20969,13 @@ function viewSpeak() {
   };
   b.append(drawer);
 
-  /* 하단 액션 버튼 (두 가지 길) */
+  /* 하단 액션 버튼 */
   b.append(E('div', {class: 'center'},
     E('button', {class: 'btn ghost', onclick: () => { S.step = 1; render(); }}, '◀ 편지지 바꾸기'),
     E('button', {class: 'btn', onclick: () => { soundTap(); S.step = 35; render(); }}, '✏️ 연한 글씨 따라 쓰기'),
     E('button', {class: 'btn go lg', onclick: () => {
       soundTap(); S.strokes = []; S.step = 3; render();
-    }}, '💌 우표 붙이고 봉투에 넣기 ▶')
+    }}, '💌 우표 붙이고 도장 찍기 ▶')
   ));
 
   /* 캔버스 그리기 함수 */
@@ -20938,27 +21016,27 @@ function viewSpeak() {
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillRect(W * 0.15, H * 0.065, W * 0.7, H * 0.11);
     ctx.fillStyle = '#6a3b4c';
-    ctx.font = `700 ${Math.round(W * 0.05)}px 'Gaegu', 'Noto Sans KR', sans-serif`;
+    ctx.font = `700 ${Math.round(W * 0.055 * (S.font.scale || 1))}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(`${S.to.w}에게`, W * 0.5, H * 0.12);
 
-    /* 본문 글씨 (마법 손글씨) */
+    /* 본문 글씨 (선택된 귀여운 폰트) */
     const text = S.text.trim() || '마이크를 누르고 말을 해보세요!';
     const perLine = W < 480 ? 8 : 11;
     const lines = [];
     let cur = '';
     for (const ch of text) {
-      if (ch === '\\n') { lines.push(cur); cur = ''; continue; }
+      if (ch === '\n') { lines.push(cur); cur = ''; continue; }
       cur += ch;
       if (cur.length >= perLine) { lines.push(cur); cur = ''; }
     }
     if (cur) lines.push(cur);
 
     const displayLines = lines.slice(0, 4);
-    const size = Math.min(Math.round(W * 0.075), Math.round(H / (displayLines.length + 3.2)));
-    ctx.font = `700 ${size}px 'Gaegu', 'Noto Sans KR', sans-serif`;
+    const size = Math.min(Math.round(W * 0.082 * (S.font.scale || 1)), Math.round(H / (displayLines.length + 3.2)));
+    ctx.font = `700 ${size}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const top = H * 0.28, gap = size * 1.35;
+    const top = H * 0.27, gap = size * 1.35;
 
     displayLines.forEach((ln, i) => {
       const y = top + gap * i + size * 0.5;
@@ -20971,11 +21049,28 @@ function viewSpeak() {
     /* 보내는 사람 */
     if (S.from) {
       ctx.fillStyle = '#7a5a64'; ctx.textAlign = 'right';
-      ctx.font = `700 ${Math.round(W * 0.046)}px 'Gaegu', sans-serif`;
-      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.93);
+      ctx.font = `700 ${Math.round(W * 0.048 * (S.font.scale || 1))}px ${S.font.family}`;
+      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.92);
     }
 
-    /* 우표 자리 미리보기 (연한 점선) */
+    /* 부모님 어필 자율 인증 리본 띠 (하단 중앙) */
+    if (S.showParentProof) {
+      const proofMsg = S.parentProofCustom || `🌱 선생님 도움 없이 ${S.from}가 스스로 말하고 완성했어요! 💌`;
+      ctx.save();
+      const rw = Math.min(W * 0.76, 460), rh = H * 0.065;
+      const rx = (W - rw) / 2, ry = H * 0.88;
+      ctx.fillStyle = 'rgba(255, 245, 246, 0.92)';
+      ctx.shadowColor = 'rgba(217,116,139,0.12)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+      ctx.beginPath(); ctx.roundRect ? ctx.roundRect(rx, ry, rw, rh, 99) : ctx.rect(rx, ry, rw, rh); ctx.fill();
+      ctx.strokeStyle = 'rgba(224, 142, 160, 0.65)'; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.fillStyle = '#9e3f5b';
+      ctx.font = `800 ${Math.round(W * 0.027)}px var(--font)`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(proofMsg, W * 0.5, ry + rh * 0.52);
+      ctx.restore();
+    }
+
+    /* 우표 자리 미리보기 */
     ctx.strokeStyle = p.accent + '80'; ctx.lineWidth = 1.5; ctx.setLineDash([2, 4]);
     ctx.strokeRect(W * 0.82, H * 0.07, W * 0.12, H * 0.18);
     ctx.setLineDash([]);
@@ -21031,7 +21126,7 @@ function viewSpeak() {
 }
 
 /* ============================================================
-   3-B단계: 연한 글씨 따라 쓰기 (원하는 아이를 위한 모드)
+   3-B단계: 연한 글씨 따라 쓰기
    ============================================================ */
 function viewTrace() {
   const b = document.getElementById('screenBody');
@@ -21090,7 +21185,7 @@ function viewTrace() {
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillRect(W * 0.15, H * 0.065, W * 0.7, H * 0.11);
     ctx.fillStyle = '#6a3b4c';
-    ctx.font = `700 ${Math.round(W * 0.05)}px 'Gaegu', sans-serif`;
+    ctx.font = `700 ${Math.round(W * 0.055 * (S.font.scale || 1))}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(`${S.to.w}에게`, W * 0.5, H * 0.12);
 
@@ -21106,10 +21201,10 @@ function viewTrace() {
     if (cur) lines.push(cur);
 
     const displayLines = lines.slice(0, 4);
-    const size = Math.min(Math.round(W * 0.075), Math.round(H / (displayLines.length + 3.2)));
-    ctx.font = `700 ${size}px 'Gaegu', sans-serif`;
+    const size = Math.min(Math.round(W * 0.082 * (S.font.scale || 1)), Math.round(H / (displayLines.length + 3.2)));
+    ctx.font = `700 ${size}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const top = H * 0.28, gap = size * 1.35;
+    const top = H * 0.27, gap = size * 1.35;
 
     displayLines.forEach((ln, i) => {
       const y = top + gap * i + size * 0.5;
@@ -21121,8 +21216,8 @@ function viewTrace() {
 
     if (S.from) {
       ctx.fillStyle = '#7a5a64'; ctx.textAlign = 'right';
-      ctx.font = `700 ${Math.round(W * 0.046)}px 'Gaegu', sans-serif`;
-      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.93);
+      ctx.font = `700 ${Math.round(W * 0.048 * (S.font.scale || 1))}px ${S.font.family}`;
+      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.92);
     }
 
     /* 아이가 직접 그린 선 */
@@ -21153,14 +21248,14 @@ function viewTrace() {
 }
 
 /* ============================================================
-   4단계: 우표 붙이기 & 왁스 실링 도장 (티가 팍팍 나는 단계!)
+   4단계: 우표 붙이기 & 왁스 실링 도장 (부모님 어필 문구 탑재!)
    ============================================================ */
 function viewStampAndSeal() {
   const b = document.getElementById('screenBody');
   b.innerHTML = '';
   b.append(
     E('h2', {class: 'q'}, '우표를 붙이고 달누리 도장을 쾅! 찍어요'),
-    E('p', {class: 'q-sub'}, '진짜 편지처럼 오른쪽 위에 우표를 붙이고 황금 왁스 도장으로 완성해요')
+    E('p', {class: 'q-sub'}, '진짜 편지처럼 우표를 붙이고 부모님 감동 인증 띠와 황금 왁스 도장으로 완성해요')
   );
 
   /* 편지 완성본 미리보기 캔버스 */
@@ -21168,6 +21263,34 @@ function viewStampAndSeal() {
   const cv = E('canvas', {class: 'real-letter-canvas', id: 'stampedCanvas'});
   stageWrap.append(cv);
   b.append(stageWrap);
+
+  /* 글씨체 바 */
+  b.append(createFontBar(() => paintFinal()));
+
+  /* 부모님 어필 자율 인증 문구 설정 카드 */
+  const ppCard = E('div', {class: 'parent-proof-card'},
+    E('div', {class: 'pp-title'}, '💖 부모님 감동 어필 문구 (편지 맨 밑에 들어가요)'),
+    E('div', {class: 'pp-desc'}, '아이들이 선생님 도움 없이 스스로 말해서 완성했다는 사실을 부모님께 자랑스럽게 알려드려요!'),
+    E('input', {
+      class: 'parent-proof-input',
+      id: 'parentProofInput',
+      value: S.parentProofCustom || `🌱 선생님 도움 없이 ${S.from}가 스스로 말하고 완성했어요! 💌`,
+      placeholder: '예: 🌱 선생님 도움 없이 스스로 말하고 완성했어요! 💌'
+    }),
+    E('div', {class: 'center', style: {marginTop: '8px', gap: '8px'}},
+      E('button', {class: 'btn', style: {padding: '5px 14px', fontSize: '13px'}, onclick: () => {
+        S.showParentProof = !S.showParentProof;
+        ppCard.querySelector('#toggleProofBtn').textContent = S.showParentProof ? '✅ 인증 문구 보이기 (켜짐)' : '❌ 인증 문구 숨기기 (꺼짐)';
+        paintFinal();
+      }, id: 'toggleProofBtn'}, S.showParentProof ? '✅ 인증 문구 보이기 (켜짐)' : '❌ 인증 문구 숨기기 (꺼짐)')
+    )
+  );
+  ppCard.querySelector('#parentProofInput').oninput = (e) => {
+    S.parentProofCustom = e.target.value.trim();
+    safeSet('letter.parentProof', S.parentProofCustom);
+    paintFinal();
+  };
+  b.append(ppCard);
 
   /* 우표 선택 바 */
   const stampSec = E('div', {class: 'stamp-picker-section'},
@@ -21204,7 +21327,11 @@ function viewStampAndSeal() {
     E('input', {id: 'fromInput', value: S.from, placeholder: '내 이름 (예: 도윤이)', style: {maxWidth: '180px', padding: '8px 14px', borderRadius: '12px', border: '1.8px solid #ecd0d0', fontSize: '16px', textAlign: 'center'}})
   );
   fromRow.querySelector('#fromInput').oninput = (e) => {
-    S.from = e.target.value.trim(); safeSet('letter.from', S.from); paintFinal();
+    S.from = e.target.value.trim(); safeSet('letter.from', S.from);
+    if (!S.parentProofCustom) {
+      document.getElementById('parentProofInput').value = `🌱 선생님 도움 없이 ${S.from}가 스스로 말하고 완성했어요! 💌`;
+    }
+    paintFinal();
   };
   b.append(fromRow);
 
@@ -21241,7 +21368,7 @@ function viewStampAndSeal() {
     ctx.fillStyle = 'rgba(255,255,255,0.85)';
     ctx.fillRect(W * 0.12, H * 0.065, W * 0.65, H * 0.11);
     ctx.fillStyle = '#6a3b4c';
-    ctx.font = `700 ${Math.round(W * 0.05)}px 'Gaegu', sans-serif`;
+    ctx.font = `700 ${Math.round(W * 0.055 * (S.font.scale || 1))}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(`${S.to.w}에게`, W * 0.44, H * 0.12);
 
@@ -21282,10 +21409,10 @@ function viewStampAndSeal() {
     if (cur) lines.push(cur);
 
     const displayLines = lines.slice(0, 4);
-    const size = Math.min(Math.round(W * 0.075), Math.round(H / (displayLines.length + 3.2)));
-    ctx.font = `700 ${size}px 'Gaegu', sans-serif`;
+    const size = Math.min(Math.round(W * 0.082 * (S.font.scale || 1)), Math.round(H / (displayLines.length + 3.2)));
+    ctx.font = `700 ${size}px ${S.font.family}`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const top = H * 0.28, gap = size * 1.35;
+    const top = H * 0.27, gap = size * 1.35;
 
     displayLines.forEach((ln, i) => {
       const y = top + gap * i + size * 0.5;
@@ -21295,7 +21422,7 @@ function viewStampAndSeal() {
       ctx.fillText(ln, W * 0.5, y);
     });
 
-    /* 따라 쓴 선이 있다면 오버레이 */
+    /* 따라 쓴 선 오버레이 */
     S.strokes.forEach(s => {
       ctx.strokeStyle = s.c; ctx.lineWidth = s.w;
       ctx.beginPath();
@@ -21306,8 +21433,8 @@ function viewStampAndSeal() {
     /* 보내는 사람 */
     if (S.from) {
       ctx.fillStyle = '#7a5a64'; ctx.textAlign = 'right';
-      ctx.font = `700 ${Math.round(W * 0.046)}px 'Gaegu', sans-serif`;
-      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.93);
+      ctx.font = `700 ${Math.round(W * 0.048 * (S.font.scale || 1))}px ${S.font.family}`;
+      ctx.fillText(`${S.from} 올림 💌`, W * 0.92, H * 0.92);
     }
 
     /* 왁스 실링 골드 도장 */
@@ -21328,6 +21455,23 @@ function viewStampAndSeal() {
       ctx.fillText('달누리', sealX, sealY - sealR * 0.18);
       ctx.font = `700 ${Math.round(sealR * 0.3)}px var(--font)`;
       ctx.fillText('우체국', sealX, sealY + sealR * 0.3);
+      ctx.restore();
+    }
+
+    /* 부모님 어필 자율 인증 리본 띠 (하단 중앙) */
+    if (S.showParentProof) {
+      const proofMsg = S.parentProofCustom || `🌱 선생님 도움 없이 ${S.from}가 스스로 말하고 완성했어요! 💌`;
+      ctx.save();
+      const rw = Math.min(W * 0.74, 460), rh = H * 0.065;
+      const rx = (W - rw) / 2, ry = H * 0.88;
+      ctx.fillStyle = 'rgba(255, 245, 246, 0.94)';
+      ctx.shadowColor = 'rgba(217,116,139,0.12)'; ctx.shadowBlur = 6; ctx.shadowOffsetY = 2;
+      ctx.beginPath(); ctx.roundRect ? ctx.roundRect(rx, ry, rw, rh, 99) : ctx.rect(rx, ry, rw, rh); ctx.fill();
+      ctx.strokeStyle = 'rgba(224, 142, 160, 0.7)'; ctx.lineWidth = 1.2; ctx.stroke();
+      ctx.fillStyle = '#9e3f5b';
+      ctx.font = `800 ${Math.round(W * 0.026)}px var(--font)`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(proofMsg, W * 0.5, ry + rh * 0.52);
       ctx.restore();
     }
 
@@ -21402,7 +21546,9 @@ function triggerPrint() {
     E('img', {class: 'print-letter-img', src: S.canvas ? S.canvas.toDataURL('image/png') : ''})
   );
 
-  /* 오른쪽: 실물 접는 편지봉투 전개도 */
+  /* 오른쪽: 실물 접는 편지봉투 전개도 + 부모님 감동 가정이음 문구 */
+  const proofMsg = S.parentProofCustom || `선생님 도움 없이 ${S.from}가 스스로 말하고 완성했어요! 💌`;
+
   const colEnv = E('div', {class: 'print-col-envelope'},
     E('div', {class: 'print-env-header'},
       E('h4', {}, '✂️ 달누리반 접는 편지봉투 만들기'),
@@ -21414,7 +21560,11 @@ function triggerPrint() {
         '우표'
       ),
       E('div', {class: 'print-env-to'}, `받는 사람: ${S.to.w} 에게 💖`),
-      E('div', {class: 'print-env-from'}, `보내는 사람: ${S.from} 올림 💌`)
+      E('div', {class: 'print-env-from'}, `보내는 사람: ${S.from} 올림 💌`),
+      E('div', {class: 'print-env-parent-proof'},
+        E('div', {class: 'p-proof-head'}, '🌱 [달누리 가정이음 마음 우체국]'),
+        E('div', {class: 'p-proof-body'}, `이 편지는 유치원에서 선생님의 도움 없이, 우리 아이(${S.from})가 직접 목소리로 말해 글자가 적히는 마법 같은 자율 놀이로 정성껏 지었습니다. 아이의 소중한 마음에 따뜻한 칭찬과 큰 사랑을 보내주세요! 💕`)
+      )
     ),
     E('div', {class: 'print-env-instructions'},
       '1. 바깥 테두리 점선을 가위(✂)로 오려요.<br>',
