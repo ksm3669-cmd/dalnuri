@@ -185,6 +185,46 @@ h1.title{
 #stage.dragging{cursor:grabbing}
 #stage>img#stickerHat{position:absolute;cursor:grab;touch-action:none;pointer-events:auto;filter:drop-shadow(0 10px 16px rgba(90,70,40,.3))}
 #layerFrame{position:absolute;left:0;top:0;width:900px;height:1200px;pointer-events:none}
+
+/* 실시간 얼굴인식 배지 & 쌀 바구니 태그 */
+.face-tracker-badge{
+  position:absolute;top:18px;left:50%;transform:translateX(-50%);
+  background:rgba(255,255,255,.94);border:2.5px solid #8FD06A;border-radius:999px;
+  padding:8px 18px;font-size:clamp(12px,1.4vw,16px);font-weight:800;color:#2D6A4F;
+  box-shadow:0 6px 18px rgba(45,106,79,.18);display:flex;align-items:center;gap:8px;
+  z-index:20;backdrop-filter:blur(6px);pointer-events:none;transition:all .3s;white-space:nowrap;
+}
+.face-tracker-badge.locked{
+  border-color:#E8B93C;background:#FFF9E6;color:#7A5A16;box-shadow:0 8px 22px rgba(232,185,60,.28);
+}
+.pulse-dot{
+  width:10px;height:10px;border-radius:50%;background:#8FD06A;
+  box-shadow:0 0 0 0 rgba(143,208,106,.7);animation:pulseGreen 1.6s infinite;
+}
+.face-tracker-badge.locked .pulse-dot{
+  background:#FFD24E;box-shadow:0 0 0 0 rgba(255,210,78,.7);
+}
+@keyframes pulseGreen{
+  0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(143,208,106,.7)}
+  70%{transform:scale(1.15);box-shadow:0 0 0 10px rgba(143,208,106,0)}
+  100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(143,208,106,0)}
+}
+.booth-rice-badge{
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#FFFDF5,#FFF3D6);border:2.5px solid #E8B93C;
+  border-radius:999px;padding:8px 22px;font-size:clamp(13px,1.5vw,18px);font-weight:900;
+  color:#6B4B2A;box-shadow:0 6px 18px rgba(120,90,40,.18);z-index:20;pointer-events:none;white-space:nowrap;
+}
+.stage-basket-tag{
+  position:absolute;bottom:92px;background:#FFFDF5;border:2.5px solid #C79A2E;
+  border-radius:14px;padding:6px 14px;font-size:15px;font-weight:900;color:#5B4327;
+  box-shadow:0 4px 12px rgba(0,0,0,.14);z-index:15;pointer-events:none;animation:bounceTag 2.4s ease-in-out infinite;
+  white-space:nowrap;
+}
+.tag-left{left:40px}
+.tag-right{right:40px;animation-delay:1.2s}
+@keyframes bounceTag{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
 .modesw{display:flex;gap:6px;background:#F3E9D6;border-radius:999px;padding:5px;margin-bottom:12px}
 .msw{flex:1;border:none;background:transparent;font-family:var(--font);font-weight:800;color:var(--ink2);
   border-radius:999px;padding:10px 6px;font-size:clamp(12px,1.4vw,15px);cursor:pointer;transition:.15s}
@@ -365,6 +405,14 @@ th{background:#F7EEDC;font-weight:800}
             <img id="layerFrame" class="hidden" alt="농장 테두리">
             <img id="stickerHat" class="hidden" alt="밀짚모자 스티커">
             <div id="guide"></div>
+            <!-- 실시간 얼굴인식 배지 & 쌀 바구니 태그 -->
+            <div id="faceTrackerBadge" class="face-tracker-badge">
+              <span class="pulse-dot"></span>
+              <span id="faceTrackerText">✨ 아이 얼굴 자동 인식 중…</span>
+            </div>
+            <div id="tagLeftBasket" class="stage-basket-tag tag-left">🌾 쌀 바구니</div>
+            <div id="tagRightBasket" class="stage-basket-tag tag-right">🌍 세계 먹거리</div>
+            <div id="boothRiceBadge" class="booth-rice-badge">🌾 꼬마 농부의 쌀 수확 현장!</div>
           </div>
           <div id="countdown"></div>
           <div id="flash"></div>
@@ -381,6 +429,7 @@ th{background:#F7EEDC;font-weight:800}
           <button class="msw" data-mode="full">🖼 전체 배경</button>
         </div>
         <div class="row" style="justify-content:flex-start;gap:8px">
+          <button class="chip on" id="btnAutoTrack">✨ 얼굴 자동인식 켜짐</button>
           <button class="chip" id="btnCam">📷 카메라 켜기</button>
           <label class="chip sun" style="cursor:pointer;font-weight:900" title="패드나 스마트폰 기본 카메라로 바로 촬영해요">📸 직접 촬영<input type="file" id="fileCamCapture" accept="image/*" capture="user" class="hidden"></label>
           <button class="chip" id="btnFlip">🔄 앞/뒤 전환</button>
@@ -1113,8 +1162,9 @@ async function startCam(){
     $("#camWarn").classList.add("hidden");
     $("#btnCam").textContent = "📷 카메라 켜짐"; $("#btnCam").classList.add("on");
     $("#btnShoot").classList.remove("hidden");
+    startFaceTracking();
     toast(mode === "full" ? "카메라가 켜졌어요! 아이의 온몸이 화면에 들어오게 맞춰 주세요."
-                          : "카메라가 켜졌어요! 얼굴을 동그라미 안에 맞춰 주세요.");
+                          : "카메라가 켜졌어요! 아이 얼굴을 자동으로 쏙 맞춰드려요.");
   }catch(e){
     console.warn("Camera start failed:", e);
     const isFile = (window.location.protocol === "file:");
@@ -1127,9 +1177,304 @@ async function startCam(){
 }
 function showCamWarn(html){ const w=$("#camWarn"); w.innerHTML=html; w.classList.remove("hidden"); }
 function stopCam(){
+  stopFaceTracking();
   if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
   try{ vid.srcObject=null; }catch(e){}
   $("#btnCam").textContent="📷 카메라 켜기"; $("#btnCam").classList.remove("on");
+}
+
+/* ---------- 실시간 유아 얼굴 인식 & 쌀 렌더링 엔진 ---------- */
+let autoTrackEnabled = true;
+let trackTimer = null;
+let lastManualTime = 0;
+let faceTrackCanvas = null;
+
+async function detectChildFace(el){
+  if(!el) return null;
+  const w = el.videoWidth || el.naturalWidth || el.width;
+  const h = el.videoHeight || el.naturalHeight || el.height;
+  if(!w || !h) return null;
+
+  // 1. 최신 크롬/안드로이드 네이티브 FaceDetector 지원 시 고속 처리
+  if("FaceDetector" in window){
+    try{
+      if(!window._faceDetector) window._faceDetector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
+      const faces = await window._faceDetector.detect(el);
+      if(faces && faces.length > 0){
+        const box = faces[0].boundingBox;
+        return {
+          x: box.x + box.width / 2,
+          y: box.y + box.height / 2,
+          w: box.width,
+          h: box.height,
+          srcW: w,
+          srcH: h
+        };
+      }
+    }catch(err){}
+  }
+
+  // 2. 무설치 순수 캔버스 피부톤·얼굴 윤곽 고속 탐색 (오프라인 100% 호환)
+  if(!faceTrackCanvas){
+    faceTrackCanvas = document.createElement("canvas");
+    faceTrackCanvas.width = 160;
+    faceTrackCanvas.height = 120;
+  }
+  const tw = faceTrackCanvas.width, th = faceTrackCanvas.height;
+  const tctx = faceTrackCanvas.getContext("2d", {willReadFrequently: true});
+  tctx.drawImage(el, 0, 0, tw, th);
+  const data = tctx.getImageData(0, 0, tw, th).data;
+
+  let sumX = 0, sumY = 0, count = 0;
+  let minX = tw, maxX = 0, minY = th, maxY = 0;
+
+  for(let y = 10; y < th - 10; y += 2){
+    for(let x = 10; x < tw - 10; x += 2){
+      const idx = (y * tw + x) * 4;
+      const r = data[idx], g = data[idx+1], b = data[idx+2];
+      if(r > 80 && g > 40 && b > 25 && (r - g) > 12 && r > b && (Math.max(r,g,b) - Math.min(r,g,b)) > 15){
+        const dx = (x - tw / 2) / (tw / 2);
+        const weight = Math.max(0.2, 1.0 - dx * dx * 0.7);
+        sumX += x * weight;
+        sumY += y * weight;
+        count += weight;
+        if(x < minX) minX = x; if(x > maxX) maxX = x;
+        if(y < minY) minY = y; if(y > maxY) maxY = y;
+      }
+    }
+  }
+
+  if(count > 40 && (maxX - minX) > 16 && (maxY - minY) > 16){
+    const scaleX = w / tw;
+    const scaleY = h / th;
+    return {
+      x: (sumX / count) * scaleX,
+      y: (sumY / count) * scaleY,
+      w: (maxX - minX) * scaleX,
+      h: (maxY - minY) * scaleY,
+      srcW: w,
+      srcH: h
+    };
+  }
+  return null;
+}
+
+function startFaceTracking(){
+  if(trackTimer) return;
+  trackTimer = setInterval(async () => {
+    if(!autoTrackEnabled) return;
+    if(Date.now() - lastManualTime < 3500) return;
+    if(!stream || vid.paused || vid.ended || view.src?.kind !== "cam") return;
+
+    try{
+      const face = await detectChildFace(vid);
+      const badge = $("#faceTrackerBadge");
+      if(face){
+        const r = faceRect();
+        const W = r.w, H = r.h;
+        const s0 = Math.max(W / vid.videoWidth, H / vid.videoHeight);
+
+        const desiredScale = (H * 0.74) / (face.h * s0);
+        const targetZoom = Math.min(2.5, Math.max(0.7, desiredScale));
+
+        const vcx = vid.videoWidth / 2;
+        const vcy = vid.videoHeight / 2;
+        const faceCenterY = face.y - face.h * 0.04;
+        const dx = (face.x - vcx) * s0 * targetZoom;
+        const dy = (faceCenterY - vcy) * s0 * targetZoom;
+
+        const targetOx = view.mirror ? -dx : dx;
+        const targetOy = dy;
+
+        view.ox = view.ox * 0.72 + targetOx * 0.28;
+        view.oy = view.oy * 0.72 + targetOy * 0.28;
+        view.zoom = view.zoom * 0.75 + targetZoom * 0.25;
+
+        $("#zoom").value = Math.round(view.zoom * 100);
+        $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+        applyFaceStyle();
+
+        if(badge){
+          badge.classList.add("locked");
+          $("#faceTrackerText").textContent = "✨ 아이 얼굴 쏙 맞춤 완료! 🌾";
+        }
+      }else{
+        if(badge){
+          badge.classList.remove("locked");
+          $("#faceTrackerText").textContent = "👀 카메라 앞에 서면 얼굴이 쏙 들어가요!";
+        }
+      }
+    }catch(e){}
+  }, 90);
+}
+
+function stopFaceTracking(){
+  if(trackTimer){
+    clearInterval(trackTimer);
+    trackTimer = null;
+  }
+}
+
+function updateRiceBoothUI(){
+  const g1 = state.g1 || (S.items.g1 && S.items.g1[0]);
+  const g2 = state.g2 || (S.items.g2 && S.items.g2[0]);
+  const nm = state.name || "달누리 꼬마";
+
+  const bBadge = $("#boothRiceBadge");
+  if(bBadge && g1) bBadge.innerHTML = `🌾 <b>${esc(nm)}</b> 농부의 <b>${esc(g1.name)}</b> 수확!`;
+
+  const tL = $("#tagLeftBasket");
+  if(tL && g1) tL.innerHTML = `🌾 ${esc(g1.name)}`;
+
+  const tR = $("#tagRightBasket");
+  if(tR && g2) tR.innerHTML = `🌍 ${esc(g2.name)}`;
+}
+
+function drawRiceAndFoodInBaskets(ctx){
+  const g1 = state.g1 || (S.items.g1 && S.items.g1[0]);
+  const g2 = state.g2 || (S.items.g2 && S.items.g2[0]);
+
+  // 1. 왼쪽 바구니 (196, 1036) — 내가 뽑은 알록달록 쌀
+  ctx.save();
+  ctx.translate(196, 1036);
+
+  let mainColor = "#FFE488", deepColor = "#E8B93C", lightColor = "#FFF6D4", riceName = "노란색 쌀";
+  if(g1){
+    riceName = g1.name;
+    if(g1.id === "rp" || g1.name.includes("분홍")){
+      mainColor = "#FFAEC0"; deepColor = "#F0728F"; lightColor = "#FFE4EB";
+    }else if(g1.id === "rg" || g1.name.includes("초록")){
+      mainColor = "#A7DE82"; deepColor = "#6BB24A"; lightColor = "#E2F7D2";
+    }else{
+      mainColor = "#FFE488"; deepColor = "#E8B93C"; lightColor = "#FFF6D4";
+    }
+  }
+
+  // 바구니
+  ctx.fillStyle = "#E8B977"; ctx.strokeStyle = "#B9823F"; ctx.lineWidth = 7; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(-62, -8); ctx.lineTo(62, -8); ctx.lineTo(50, 70); ctx.lineTo(-50, 70); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.lineWidth = 13; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(-62, -8); ctx.lineTo(62, -8); ctx.stroke();
+
+  // 쌀더미
+  ctx.fillStyle = mainColor;
+  ctx.beginPath();
+  ctx.ellipse(-24, -18, 32, 16, -0.1, 0, Math.PI * 2);
+  ctx.ellipse(22, -20, 34, 17, 0.1, 0, Math.PI * 2);
+  ctx.ellipse(-2, -32, 28, 14, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // 반짝이는 쌀알
+  ctx.fillStyle = lightColor;
+  const grains = [
+    [-28, -22], [-14, -28], [0, -36], [16, -26], [28, -20],
+    [-8, -18], [10, -16], [-20, -32], [8, -34]
+  ];
+  for(const [gx, gy] of grains){
+    ctx.beginPath();
+    ctx.ellipse(gx, gy, 7, 3.5, 0.4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = deepColor;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // 황금 벼 이삭 풍성하게
+  drawEarsOfRice(ctx, -38, -30, -0.35);
+  drawEarsOfRice(ctx, -18, -44, -0.1);
+  drawEarsOfRice(ctx, 24, -36, 0.3);
+
+  drawBasketTag(ctx, 0, 32, "🌾 " + riceName, mainColor, deepColor);
+  ctx.restore();
+
+  // 2. 오른쪽 바구니 (704, 1036) — 내가 뽑은 세계 먹거리
+  ctx.save();
+  ctx.translate(704, 1036);
+
+  let fMain = "#FFEAA7", fDeep = "#D9A83F", fName = "세계 먹거리";
+  if(g2){
+    fName = g2.name;
+    if(g2.id === "farro" || g2.name.includes("파로")){
+      fMain = "#E5BA73"; fDeep = "#B9823F";
+    }else if(g2.id === "paper" || g2.name.includes("월남쌈")){
+      fMain = "#E8F5E9"; fDeep = "#81C784";
+    }else{
+      fMain = "#FFFFFF"; fDeep = "#B0BEC5";
+    }
+  }
+
+  ctx.fillStyle = "#E8B977"; ctx.strokeStyle = "#B9823F"; ctx.lineWidth = 7; ctx.lineJoin = "round";
+  ctx.beginPath(); ctx.moveTo(-62, -8); ctx.lineTo(62, -8); ctx.lineTo(50, 70); ctx.lineTo(-50, 70); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.lineWidth = 13; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(-62, -8); ctx.lineTo(62, -8); ctx.stroke();
+
+  ctx.fillStyle = fMain;
+  ctx.beginPath();
+  ctx.ellipse(-22, -18, 30, 15, -0.1, 0, Math.PI * 2);
+  ctx.ellipse(22, -20, 32, 16, 0.1, 0, Math.PI * 2);
+  ctx.ellipse(0, -30, 26, 13, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = "#FFF";
+  for(let i = -20; i <= 20; i += 10){
+    ctx.beginPath();
+    ctx.ellipse(i, -24 + (i%20===0 ? -4 : 4), 6, 3, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = fDeep;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+  }
+
+  drawEarsOfRice(ctx, 32, -32, 0.35);
+  drawBasketTag(ctx, 0, 32, "🌍 " + fName, fMain, fDeep);
+  ctx.restore();
+}
+
+function drawEarsOfRice(ctx, bx, by, angle){
+  ctx.save();
+  ctx.translate(bx, by);
+  ctx.rotate(angle);
+  ctx.strokeStyle = "#D9A83F";
+  ctx.lineWidth = 4.5;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(0, 20);
+  ctx.quadraticCurveTo(8, -12, 16, -46);
+  ctx.stroke();
+
+  ctx.fillStyle = "#FFD24E";
+  ctx.strokeStyle = "#C79A2E";
+  ctx.lineWidth = 1.5;
+  for(let i = 0; i < 5; i++){
+    const y = -12 - i * 8.5;
+    const x = i * 2.6;
+    ctx.beginPath(); ctx.ellipse(x - 7, y, 7.5, 4.2, -0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x + 7, y + 2, 7.5, 4.2, 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawBasketTag(ctx, x, y, text, fillC, strokeC){
+  ctx.save();
+  ctx.font = "bold 22px " + FONT;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const tw = ctx.measureText(text).width + 24;
+  const th = 32;
+
+  ctx.fillStyle = "#FFFDF5";
+  ctx.strokeStyle = strokeC;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  roundRect(ctx, x - tw/2, y - th/2, tw, th, 10);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle = "#4A3319";
+  ctx.fillText(text, x, y + 1);
+  ctx.restore();
 }
 
 /* 합성: 뒷배경 → 얼굴(타원 마스크) → 밀짚모자 */
@@ -1169,6 +1514,8 @@ function composeScene(ctx){
     if(layersReady) ctx.drawImage(imgFrame,0,0,SCENE_W,SCENE_H);
   }else{
     if(layersReady) ctx.drawImage(imgFront,0,0,SCENE_W,SCENE_H);
+    // 🌾 쌀과 함께 찍기: 양손 바구니에 선택한 쌀과 세계 먹거리, 황금 벼 이삭 풍성하게 렌더링!
+    drawRiceAndFoodInBaskets(ctx);
   }
 }
 function sceneCanvas(scale){
@@ -1227,6 +1574,26 @@ async function handleCapturedPhoto(file){
   view.mirror = false;
   $("#btnMirror").classList.remove("on");
   setSource("img");
+
+  // 정지 이미지에서도 얼굴 자동 검출 시도하여 쏙 맞춤!
+  try {
+    const face = await detectChildFace(pimg);
+    if(face) {
+      const r = faceRect();
+      const W = r.w, H = r.h;
+      const s0 = Math.max(W / (pimg.naturalWidth || 640), H / (pimg.naturalHeight || 480));
+      const desiredScale = (H * 0.74) / (face.h * s0);
+      view.zoom = Math.min(2.5, Math.max(0.7, desiredScale));
+      const vcx = (pimg.naturalWidth || 640) / 2;
+      const vcy = (pimg.naturalHeight || 480) / 2;
+      view.ox = (face.x - vcx) * s0 * view.zoom;
+      view.oy = (face.y - face.h * 0.04 - vcy) * s0 * view.zoom;
+      $("#zoom").value = Math.round(view.zoom * 100);
+      $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+      applyFaceStyle();
+    }
+  } catch(e) {}
+
   state.photo = {
     el: pimg,
     w: pimg.naturalWidth || 640,
@@ -1244,6 +1611,12 @@ async function handleCapturedPhoto(file){
   guide.classList.add("hide");
   $("#btnGuide").classList.remove("on");
   $("#camWarn").classList.add("hidden");
+
+  const badge = $("#faceTrackerBadge");
+  if(badge) {
+    badge.classList.add("locked");
+    $("#faceTrackerText").textContent = "✨ 얼굴 쏙 맞춤 완료! 🌾";
+  }
   burst(50);
   toast("찰칵! 멋진 사진이 담겼어요. [예쁜 선물 카드 만들기 🎁]를 눌러보세요!");
 }
@@ -1524,6 +1897,7 @@ $("#btnToBooth").onclick=()=>{
   $("#btnShoot").classList.remove("hidden"); $("#btnRetake").classList.add("hidden"); $("#btnMakeCard").classList.add("hidden");
   if(mode!=="full"){ guide.classList.remove("hide"); $("#btnGuide").classList.add("on"); }
   renderSticker();
+  updateRiceBoothUI();
   say("이제 멋진 꼬마 농부로 변신해 볼까요?");
   startCam();
 };
@@ -1574,12 +1948,19 @@ $("#hatSize").oninput=e=>{
   frame.addEventListener("pointerup",up);
   frame.addEventListener("pointercancel",up);
 })();
+$("#btnAutoTrack").onclick = e => {
+  autoTrackEnabled = !autoTrackEnabled;
+  e.target.classList.toggle("on", autoTrackEnabled);
+  e.target.textContent = autoTrackEnabled ? "✨ 얼굴 자동인식 켜짐" : "✋ 수동 조절 모드";
+  toast(autoTrackEnabled ? "얼굴 자동 인식을 켰어요." : "수동 모드로 전환했어요. 슬라이더나 버튼으로 조절하세요.");
+};
 $("#btnCam").onclick=()=>startCam();
 $("#btnFlip").onclick=()=>{ facing=(facing==="user")?"environment":"user"; startCam(); };
 $("#btnMirror").onclick=e=>{ view.mirror=!view.mirror; e.target.classList.toggle("on",view.mirror); applyFaceStyle(); };
 $("#btnGuide").onclick=e=>{ guide.classList.toggle("hide"); e.target.classList.toggle("on",!guide.classList.contains("hide")); };
-$("#zoom").oninput=e=>{ view.zoom=+e.target.value/100; $("#zoomV").textContent=e.target.value+"%"; if(state.photo) state.photo.zoom=view.zoom; applyFaceStyle(); };
+$("#zoom").oninput=e=>{ lastManualTime=Date.now(); view.zoom=+e.target.value/100; $("#zoomV").textContent=e.target.value+"%"; if(state.photo) state.photo.zoom=view.zoom; applyFaceStyle(); };
 $$(".pad button[data-m]").forEach(b=>b.onclick=()=>{
+  lastManualTime=Date.now();
   const step=16, m=b.dataset.m;
   if(m==="u") view.oy-=step; if(m==="d") view.oy+=step;
   if(m==="l") view.ox-=step; if(m==="r") view.ox+=step;
