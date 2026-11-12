@@ -76,10 +76,8 @@ main {
   100% { transform: scale(1); opacity: 1; }
 }
 
-.calsvg {
-  width: clamp(100px, 26vw, 150px); height: auto; display: block; margin: 0 auto;
-  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.08));
-}
+.calsvg { width: clamp(140px, 32vw, 210px); height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.12)); transition: transform 0.3s; }
+.calsvg:hover { transform: scale(1.05); }
 
 .amq {
   font-family: var(--display); font-weight: 700;
@@ -103,8 +101,8 @@ main {
   border-radius: 20px; padding: 12px 24px; box-shadow: 0 6px 16px rgba(49,95,79,0.08);
 }
 .amyear { font-size: 16px; color: var(--sub); }
-.amdate { font-family: var(--display); font-size: 34px; font-weight: 700; color: var(--primary); }
-.amwd { font-size: 18px; font-weight: 700; color: var(--accent); }
+.amdate { font-family: var(--display); font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--primary); line-height: 1.1; margin: 4px 0; }
+.amwd { font-size: clamp(20px, 5vw, 26px); font-weight: 800; color: var(--accent); background: #FEF3C7; padding: 4px 16px; border-radius: 999px; display: inline-block; }
 
 /* Weather Box */
 .airbox {
@@ -239,7 +237,7 @@ const MORNING_STEPS = [
   ['🤝', '친구와 사이좋게 지낼 준비가 됐나요?', '손 대신 따뜻한 말로 이야기해요'],
   ['🔴', '빨간불 — 화가 나면 멈춰요', '다 같이 숨을 다섯 번 쉬어 볼까요?', 'breath'],
   ['🟡', '노란불 — 내 생각을 말해요', '"나는 ○○해서 속상했어" 함께 말해 볼까요?'],
-  ['🟢', '초록불 — 방법을 찾아요', '좋은 방법을 찾고 신나게 몸을 움직여요!'],
+  ['🟢', '초록불 — 방법을 찾아요', '좋은 방법을 찾고 신나게 춤춰요! (몸을 흔들흔들 댄스타임 💃🕺)'],
   ['🎉', '오늘도 즐겁게 놀아요!', '달누리반 친구들 모두 사랑해요!']
 ];
 

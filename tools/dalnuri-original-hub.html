@@ -141,7 +141,48 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
   </div>
 </div>
 <div class="in">
-<div class="dhead"><b id="dDate"></b><span id="dWd"></span><span class="clk" id="dClk"></span></div>
+<!-- 🌟 유아 친화형 초대형 오늘 캘린더 & 날씨 히어로 배너 -->
+<div class="cal-hero-wrap" style="margin: 0 0 18px; background: linear-gradient(135deg, #FFFDF8 0%, #FFFBEB 45%, #F0FDF4 100%); border: 3px solid #FCD34D; border-radius: 24px; padding: 18px 20px; box-shadow: 0 10px 28px rgba(251,191,36,0.15);">
+  <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+    <!-- 1. 거대 캘린더 카드 (아이들이 한눈에 날짜를 알아봄) -->
+    <div style="display: flex; align-items: center; gap: 16px;">
+      <div style="width: 120px; background: #fff; border: 3px solid #E53E3E; border-radius: 18px; overflow: hidden; box-shadow: 0 8px 18px rgba(229,62,62,0.18); text-align: center; flex: none;">
+        <div style="background: #E53E3E; color: #fff; padding: 6px 4px; font-weight: 800; font-size: 13.5px; letter-spacing: -0.5px;" id="heroCalTop">2026년 11월</div>
+        <div style="padding: 6px 0 2px;">
+          <div id="dDateBig" style="font-family: var(--display); font-size: 58px; font-weight: 700; color: #1E293B; line-height: 1; letter-spacing: -1px;">13</div>
+          <div id="dWdBadge" style="margin: 4px auto 6px; display: inline-block; background: #FEF3C7; color: #B45309; padding: 3px 12px; border-radius: 999px; font-size: 14px; font-weight: 800;">금요일 🍁</div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+          <span style="background: #3B82F6; color: #fff; padding: 2px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 800;">달누리반 오늘</span>
+          <span class="clk" id="dClk" style="font-weight: 800; font-size: 16px; color: #475569;">08:00</span>
+        </div>
+        <div id="heroDateHeadline" style="font-family: var(--display); font-size: 26px; font-weight: 700; color: #2B2A4C; line-height: 1.25; margin-bottom: 6px;">
+          오늘은 <span id="heroDateText" style="color: #E53E3E; border-bottom: 3px solid #FCA5A5;">11월 13일 금요일</span>이에요!
+        </div>
+        <p style="margin: 0; font-size: 13px; color: #64748B; line-height: 1.45;">선생님, 친구들과 함께 반갑게 인사하고 신나는 하루를 시작해요 ☀️</p>
+      </div>
+    </div>
+
+    <!-- 2. 실시간 날씨 및 바깥놀이 카드 -->
+    <div style="background: #fff; border: 2px solid #E2E8F0; border-radius: 18px; padding: 12px 18px; display: flex; align-items: center; gap: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.04); margin-left: auto;">
+      <div id="heroWeatherIcon" style="font-size: 38px; line-height: 1;">🌤️</div>
+      <div>
+        <div style="display: flex; align-items: baseline; gap: 6px;">
+          <b id="heroTemp" style="font-size: 22px; color: #1E293B; font-weight: 800;">7°C</b>
+          <span style="font-size: 12px; color: #64748B;">(낮 최고 17°C)</span>
+        </div>
+        <div id="heroAirPill" style="display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;">
+          <span style="background: #E3F3EA; color: #2E7D5B; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;">미세먼지 좋음</span>
+          <span style="background: #E4EEF9; color: #2B6FB8; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;">바깥놀이 추천 🏃</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 구 dhead (하위 호환 유지) -->
+<div class="dhead" style="display:none;"><b id="dDate"></b><span id="dWd"></span></div>
 <div class="dash" id="dash"></div>
 <!-- 0. 🌟 연령별 발달 놀이터 (3세 밥그릇 · 4세 하트 · 5세 돋보기) -->
 <div class="sec" style="margin-top:16px; background:linear-gradient(135deg, #FFFDF8 0%, #FFF5F7 50%, #F0F7FF 100%); border:2px solid #E2E8F0; border-radius:24px; padding:22px 20px 24px; box-shadow:0 8px 25px rgba(0,0,0,0.05);">
@@ -778,7 +819,150 @@ function drawDash(){
   document.getElementById('dDate').textContent=(now.getMonth()+1)+'월 '+now.getDate()+'일';
   document.getElementById('dWd').textContent=WD[now.getDay()]+'요일';
   document.getElementById('dClk').textContent=p2(now.getHours())+':'+p2(now.getMinutes());
+  var elCalTop = document.getElementById('heroCalTop');
+  if(elCalTop) elCalTop.textContent = now.getFullYear() + '년 ' + (now.getMonth()+1) + '월';
+  var elDateBig = document.getElementById('dDateBig');
+  if(elDateBig) elDateBig.textContent = now.getDate();
+  var elWdBadge = document.getElementById('dWdBadge');
+  if(elWdBadge) elWdBadge.textContent = WD[now.getDay()] + '요일 ' + (now.getDay()===0||now.getDay()===6?'🎈':'🍁');
+  var elDateText = document.getElementById('heroDateText');
+  if(elDateText) elDateText.textContent = (now.getMonth()+1) + '월 ' + now.getDate() + '일 ' + WD[now.getDay()] + '요일';
+  if(AIR && AIR.st==='ok'){
+    var elWIcon = document.getElementById('heroWeatherIcon');
+    if(elWIcon) elWIcon.textContent = wIcon(AIR.code);
+    var elTemp = document.getElementById('heroTemp');
+    if(elTemp) elTemp.textContent = Math.round(AIR.t) + '°C';
+    var elAir = document.getElementById('heroAirPill');
+    if(elAir){
+      var g10 = airGrade(AIR.pm10, 'pm10');
+      var playTxt = g10 <= 1 ? '바깥놀이 추천 🏃' : '실내놀이 권장 🏠';
+      elAir.innerHTML = '<span style="background:'+AIRLV[g10][2]+';color:'+AIRLV[g10][1]+';padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;">미세 '+AIRLV[g10][0]+'</span>' +
+        '<span style="background:#E4EEF9;color:#2B6FB8;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;">'+playTxt+'</span>';
+    }
+  }
   var h='';
+  /* ========================================================
+     A. [등원 루틴] 🎒 아침 등원 소지품 정리해요! (가방·물통·수저통·수첩·도장)
+     ======================================================== */
+  var arrState = getArrivalState();
+  var arrDoneCount = 0;
+  var ARR_ITEMS = [
+    {id:'bag', icon:'🎒', title:'가방 정리', sub:'내 사물함 자리에 쏙!'},
+    {id:'bottle', icon:'💧', title:'물통 정리', sub:'물병 자리에 쏙!'},
+    {id:'spoon', icon:'🥄', title:'수저통 정리', sub:'바구니에 쏙!'},
+    {id:'sticker', icon:'📒', title:'수첩 스티커', sub:'오늘 날짜에 톡!'},
+    {id:'stamp', icon:'✏️', title:'언어전달 도장', sub:'선생님과 쾅!'}
+  ];
+  ARR_ITEMS.forEach(function(it){ if(arrState[it.id]) arrDoneCount++; });
+  var allArrDone = (arrDoneCount === ARR_ITEMS.length);
+
+  h += '<div class="dc wide" style="background:linear-gradient(135deg, #FFFDF8 0%, #FFF8E7 100%); border:2.5px solid #FCD34D; border-radius:20px; padding:18px 20px; box-shadow:0 6px 20px rgba(251,191,36,0.14); margin-bottom:14px;">'+
+    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">'+
+      '<div style="display:flex; align-items:center; gap:8px;">'+
+        '<span style="font-size:26px;">🎒</span>'+
+        '<h4 style="font-family:var(--display); font-size:21px; margin:0; color:#92400E; font-weight:800;">아침 등원 소지품 정리했나요?</h4>'+
+        '<span style="background:#FEF3C7; color:#B45309; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:800;">등원 루틴</span>'+
+      '</div>'+
+      '<div style="display:flex; align-items:center; gap:8px;">'+
+        '<span style="font-size:13px; font-weight:800; color:#B45309; background:#FFFBEB; border:1px solid #FDE68A; padding:4px 12px; border-radius:999px;">'+arrDoneCount+' / 5개 완료</span>'+
+        '<button type="button" onclick="resetArrivalRoutine()" style="background:transparent; border:1px solid #CBD5E1; border-radius:8px; padding:3px 8px; font-size:11px; color:#64748B; cursor:pointer;">초기화</button>'+
+      '</div>'+
+    '</div>'+
+    '<p style="font-size:13px; color:#78350F; margin:0 0 14px; line-height:1.5;">아이들이 스스로 <strong>가방과 물통, 수저통</strong>을 제자리에 쏙 넣고 터치하는 자율 체크리스트예요.</p>'+
+    '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:10px;">';
+
+  ARR_ITEMS.forEach(function(it){
+    var isDone = !!arrState[it.id];
+    var bg = isDone ? 'background:#ECFDF5; border-color:#10B981; color:#065F46; box-shadow:0 4px 12px rgba(16,185,129,0.18);' : 'background:#FFFFFF; border-color:#E2E8F0; color:#475569;';
+    var iconBadge = isDone ? '✅' : it.icon;
+    var statusText = isDone ? '완료! 👏' : '터치해서 완료';
+    var statusColor = isDone ? 'color:#059669; font-weight:800;' : 'color:#94A3B8; font-weight:600;';
+
+    h += '<button type="button" onclick="toggleArrivalRoutine(\''+it.id+'\')" style="border:2px solid; border-radius:16px; padding:12px 10px; text-align:center; cursor:pointer; transition:all 0.15s; display:flex; flex-direction:column; align-items:center; gap:3px; '+bg+'">'+
+      '<span style="font-size:30px; margin-bottom:2px;">'+iconBadge+'</span>'+
+      '<b style="font-size:15px; letter-spacing:-0.3px;">'+it.title+'</b>'+
+      '<span style="font-size:11.5px; opacity:0.85;">'+it.sub+'</span>'+
+      '<span style="margin-top:6px; font-size:11px; padding:2px 8px; border-radius:999px; background:rgba(0,0,0,0.04); '+statusColor+'">'+statusText+'</span>'+
+    '</button>';
+  });
+  h += '</div>';
+
+  if(allArrDone){
+    h += '<div style="margin-top:14px; background:#ECFDF5; border:2px solid #34D399; border-radius:14px; padding:12px 16px; color:#065F46; font-size:14px; font-weight:800; text-align:center; box-shadow:0 4px 14px rgba(52,211,153,0.2);">'+
+      '🎉 와! 달누리반 친구들 모두 아침 소지품 정리 완료! 참 잘했어요! 🌟'+
+    '</div>';
+  }
+  h += '</div>';
+
+  /* ========================================================
+     B. [마음 신호등] 🚦 우리 반 마음 신호등 (빨강 들숨날숨 · 노랑 생각표현 · 초록 춤춰요)
+     ======================================================== */
+  h += '<div class="dc wide" style="background:linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border:2.5px solid #94A3B8; border-radius:20px; padding:20px 22px; box-shadow:0 8px 24px rgba(15,23,42,0.08); margin-bottom:14px;">'+
+    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">'+
+      '<div style="display:flex; align-items:center; gap:8px;">'+
+        '<span style="font-size:26px;">🚦</span>'+
+        '<h4 style="font-family:var(--display); font-size:21px; margin:0; color:#1E293B; font-weight:800;">우리 반 마음 신호등</h4>'+
+        '<span style="background:#E2E8F0; color:#334155; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:800;">감정 조절 & 대화</span>'+
+      '</div>'+
+      '<button type="button" onclick="openMorningDirect()" style="background:#334155; color:#fff; border:0; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:700; cursor:pointer;">🖥️ 16장면 아침모임 전체화면 ↗</button>'+
+    '</div>'+
+    '<p style="font-size:13px; color:#475569; margin:0 0 14px; line-height:1.5;">화가 나거나 속상할 때, 신호등 불빛을 보며 차례대로 마음을 가라앉히고 좋은 방법을 찾아요.</p>'+
+
+    '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:14px;">'+
+      '<!-- 1. 빨간불 (들숨날숨 5회 호흡) -->'+
+      '<div style="background:#FFF5F5; border:2px solid #FEB2B2; border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 12px rgba(254,178,178,0.15);">'+
+        '<div style="display:flex; align-items:center; gap:8px;">'+
+          '<span style="font-size:26px;">🔴</span>'+
+          '<div>'+
+            '<b style="font-size:16px; color:#9B1C1C; display:block;">빨간불 — 화가 나면 멈춰요</b>'+
+            '<span style="font-size:12px; color:#C53030; font-weight:600;">다 같이 숨을 다섯 번 쉬어 볼까요?</span>'+
+          '</div>'+
+        '</div>'+
+        '<p style="font-size:12.5px; color:#742A2A; margin:2px 0 6px; line-height:1.45;">화가 날 땐 멈추고 후~ 들숨과 날숨으로 마음을 차분히 가라앉혀요.</p>'+
+        '<div style="background:#fff; border:1.5px dashed #FEB2B2; border-radius:14px; padding:12px; text-align:center;">'+
+          '<div id="hubBrCircle" style="width:68px; height:68px; margin:0 auto 8px; border-radius:50%; background:#FEB2B2; color:#9B1C1C; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; transition:transform 3s ease-in-out;">후~</div>'+
+          '<div id="hubBrLabel" style="font-size:13px; font-weight:700; color:#9B1C1C; margin-bottom:4px;">버튼을 누르면 호흡 시작</div>'+
+          '<div id="hubBrCount" style="font-size:12px; color:#E53E3E; font-weight:700; margin-bottom:8px;">0 / 5 회</div>'+
+          '<button type="button" onclick="startHubBreath()" id="hubBrBtn" style="background:#E53E3E; color:#fff; border:0; padding:8px 16px; border-radius:10px; font-weight:800; font-size:13px; cursor:pointer; width:100%;">💨 들숨날숨 숨쉬기 시작</button>'+
+        '</div>'+
+      '</div>'+
+
+      '<!-- 2. 노란불 (내 생각을 말해요) -->'+
+      '<div style="background:#FFFDF0; border:2px solid #FDE047; border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 12px rgba(253,224,71,0.15);">'+
+        '<div style="display:flex; align-items:center; gap:8px;">'+
+          '<span style="font-size:26px;">🟡</span>'+
+          '<div>'+
+            '<b style="font-size:16px; color:#854D0E; display:block;">노란불 — 내 생각을 말해요</b>'+
+            '<span style="font-size:12px; color:#A16207; font-weight:600;">“나는 ○○해서 속상했어” 다정한 말</span>'+
+          '</div>'+
+        '</div>'+
+        '<p style="font-size:12.5px; color:#713F12; margin:2px 0 6px; line-height:1.45;">손 대신 따뜻한 말로 내 마음을 전해요. 말풍선을 누르면 친구에게 할 말을 연습해요.</p>'+
+        '<div style="display:flex; flex-direction:column; gap:6px;">'+
+          '<button type="button" onclick="speakEmotionPhrase('친구가 양보해 주지 않아서 속상했어.')" style="background:#fff; border:1px solid #FDE047; border-radius:10px; padding:8px 10px; font-size:12.5px; text-align:left; cursor:pointer; color:#713F12; font-weight:600;">💬 “친구가 양보 안 해줘서 속상했어.”</button>'+
+          '<button type="button" onclick="speakEmotionPhrase('내가 먼저 하고 싶었어. 다음엔 내 차례 해도 될까?')" style="background:#fff; border:1px solid #FDE047; border-radius:10px; padding:8px 10px; font-size:12.5px; text-align:left; cursor:pointer; color:#713F12; font-weight:600;">💬 “내가 먼저 하고 싶었어. 다음엔 내 차례 해도 돼?”</button>'+
+          '<button type="button" onclick="speakEmotionPhrase('잠깐만 기다려 줘. 아직 다 안 썼어.')" style="background:#fff; border:1px solid #FDE047; border-radius:10px; padding:8px 10px; font-size:12.5px; text-align:left; cursor:pointer; color:#713F12; font-weight:600;">💬 “잠깐만 기다려 줘, 아직 다 안 썼어.”</button>'+
+        '</div>'+
+      '</div>'+
+
+      '<!-- 3. 초록불 (방법을 찾아서 춤춰요!) -->'+
+      '<div style="background:#F0FDF4; border:2px solid #86EFAC; border-radius:18px; padding:16px; display:flex; flex-direction:column; gap:8px; box-shadow:0 4px 12px rgba(134,239,172,0.15);">'+
+        '<div style="display:flex; align-items:center; gap:8px;">'+
+          '<span style="font-size:26px;">🟢</span>'+
+          '<div>'+
+            '<b style="font-size:16px; color:#166534; display:block;">초록불 — 방법을 찾고 춤춰요!</b>'+
+            '<span style="font-size:12px; color:#15803D; font-weight:600;">좋은 방법을 찾고 신나게 춤춰요 💃🕺</span>'+
+          '</div>'+
+        '</div>'+
+        '<p style="font-size:12.5px; color:#14532D; margin:2px 0 6px; line-height:1.45;">서로 사과하고 좋은 방법을 찾았나요? 신나게 춤추며 다시 활짝 웃어요!</p>'+
+        '<div style="background:#fff; border:1.5px dashed #86EFAC; border-radius:14px; padding:12px; text-align:center;">'+
+          '<div id="hubDanceIcon" style="font-size:32px; margin-bottom:4px;">💃 🎶 🕺</div>'+
+          '<div style="font-size:13px; font-weight:800; color:#15803D; margin-bottom:8px;">몸을 흔들흔들! 기분 최고 댄스 타임!</div>'+
+          '<button type="button" onclick="startDanceCelebration()" style="background:#16A34A; color:#fff; border:0; padding:9px 18px; border-radius:10px; font-weight:800; font-size:13.5px; cursor:pointer; width:100%; box-shadow:0 3px 8px rgba(22,163,74,0.25);">🎉 신나게 춤추기 & 축하 폭죽</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+
   /* 0. 아침모임 바로가기 카드 */
   h+='<div class="dc wide" style="background:linear-gradient(135deg,#FF6B6B 0%,#FFA07A 50%,#4ECDC4 100%);color:#fff;border-color:transparent;box-shadow:0 4px 18px rgba(255,107,107,0.25);padding:16px 18px;">'+
     '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px">'+
@@ -34585,6 +34769,142 @@ window.addEventListener('message', function(e){
     try{ window.recognition && window.recognition.abort(); } catch(err){}
   }
 });
+
+/* --- 달누리반 아침 등원 루틴 & 마음 신호등 인터랙션 함수 --- */
+function getArrivalDateKey(){
+  var now = new Date();
+  return 'dalnuri-arrival-' + now.getFullYear() + '-' + (now.getMonth()+1) + '-' + now.getDate();
+}
+function getArrivalState(){
+  try{
+    return JSON.parse(localStorage.getItem(getArrivalDateKey()) || '{}');
+  }catch(e){ return {}; }
+}
+function toggleArrivalRoutine(itemId){
+  var state = getArrivalState();
+  state[itemId] = !state[itemId];
+  try{ localStorage.setItem(getArrivalDateKey(), JSON.stringify(state)); }catch(e){}
+  playChimeSound(state[itemId] ? 'high' : 'low');
+  drawDash();
+}
+function resetArrivalRoutine(){
+  try{ localStorage.removeItem(getArrivalDateKey()); }catch(e){}
+  drawDash();
+}
+
+function playChimeSound(type){
+  try{
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    var gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    var now = ctx.currentTime;
+    if(type === 'high'){
+      osc.frequency.setValueAtTime(523.25, now); // C5
+      osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.15); // G5
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+      osc.start(now);
+      osc.stop(now + 0.35);
+    } else if(type === 'celebrate'){
+      // 3-note celebration arpeggio
+      [523.25, 659.25, 783.99, 1046.50].forEach(function(freq, i){
+        var o = ctx.createOscillator();
+        var g = ctx.createGain();
+        o.connect(g);
+        g.connect(ctx.destination);
+        var t = now + i * 0.12;
+        o.frequency.setValueAtTime(freq, t);
+        g.gain.setValueAtTime(0.25, t);
+        g.gain.exponentialRampToValueAtTime(0.01, t + 0.25);
+        o.start(t);
+        o.stop(t + 0.25);
+      });
+    } else {
+      osc.frequency.setValueAtTime(392.00, now); // G4
+      gain.gain.setValueAtTime(0.15, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+      osc.start(now);
+      osc.stop(now + 0.2);
+    }
+  }catch(e){}
+}
+
+var hubBreathTimer = null;
+var hubBreathStep = 0;
+function startHubBreath(){
+  var btn = document.getElementById('hubBrBtn');
+  var circle = document.getElementById('hubBrCircle');
+  var label = document.getElementById('hubBrLabel');
+  var count = document.getElementById('hubBrCount');
+  if(!circle || !label) return;
+
+  if(hubBreathTimer){
+    clearInterval(hubBreathTimer);
+    hubBreathTimer = null;
+    circle.style.transform = 'scale(1)';
+    label.textContent = '호흡이 멈췄어요';
+    if(btn) btn.textContent = '💨 들숨날숨 호흡 다시 시작';
+    return;
+  }
+
+  hubBreathStep = 0;
+  if(btn) btn.textContent = '⏹️ 호흡 멈추기';
+  
+  function runStep(){
+    hubBreathStep++;
+    var cycle = Math.ceil(hubBreathStep / 2);
+    if(cycle > 5){
+      clearInterval(hubBreathTimer);
+      hubBreathTimer = null;
+      circle.style.transform = 'scale(1)';
+      label.textContent = '참 잘했어요! 마음이 편안해졌어요 🌸';
+      count.textContent = '5 / 5 회 완료!';
+      if(btn) btn.textContent = '💨 들숨날숨 호흡 다시 하기';
+      playChimeSound('celebrate');
+      return;
+    }
+    count.textContent = cycle + ' / 5 회';
+    if(hubBreathStep % 2 === 1){
+      // 들숨: 커짐
+      circle.style.transform = 'scale(1.4)';
+      circle.style.background = '#FCA5A5';
+      label.textContent = '숨을 천천히 들이쉬어요… (들숨)';
+    } else {
+      // 날숨: 작아짐
+      circle.style.transform = 'scale(0.85)';
+      circle.style.background = '#FEB2B2';
+      label.textContent = '입으로 천천히 후~ 내쉬어요… (날숨)';
+    }
+  }
+  runStep();
+  hubBreathTimer = setInterval(runStep, 3000);
+}
+
+function speakEmotionPhrase(txt){
+  try{
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(txt);
+      u.lang = 'ko-KR';
+      u.rate = 0.9;
+      window.speechSynthesis.speak(u);
+    }
+  }catch(e){}
+  toast('말풍선: ' + txt);
+}
+
+function startDanceCelebration(){
+  var icon = document.getElementById('hubDanceIcon');
+  if(icon){
+    icon.style.transform = 'scale(1.3) rotate(10deg)';
+    setTimeout(function(){ icon.style.transform = 'scale(1) rotate(0deg)'; }, 400);
+  }
+  playChimeSound('celebrate');
+  toast('💃 신나게 춤춰요! 마음이 다시 활짝 피어났어요! 🎉');
+}
+
 </script>
 </body>
 </html>
