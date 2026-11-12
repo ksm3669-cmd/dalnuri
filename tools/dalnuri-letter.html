@@ -501,6 +501,63 @@ const STEPS = ['1. 받는 사람', '2. 편지지', '3. 말하면 써지는 편�
 const MAXCHARS = 45;
 
 const safeGet = (k) => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+
+/* ============================================================
+   데이터 설정
+   ============================================================ */
+const TO = [
+  {id:'mom', e:'👩', w:'엄마'},
+  {id:'dad', e:'👨', w:'아빠'},
+  {id:'friend', e:'🧒', w:'친구'},
+  {id:'teacher', e:'🧑‍🏫', w:'선생님'},
+  {id:'me', e:'🪞', w:'미래의 나'},
+  {id:'family', e:'👵', w:'할머니·할아버지'}
+];
+
+const PAPERS = [
+  {id:'flower', season:'봄', bg:'#FFF9F4', line:'#f2d9d9', e:'🌷', name:'꽃잎 편지지', accent:'#DF9FB1'},
+  {id:'tulip', season:'봄', bg:'#FFFBF4', line:'#f1d9d2', e:'🌷', name:'튤립 정원', accent:'#E0A8B3'},
+  {id:'rainbow', season:'여름', bg:'#F6FAFF', line:'#dae8f3', e:'🌈', name:'무지개 하늘', accent:'#99BCE0'},
+  {id:'sea', season:'여름', bg:'#F5FBFF', line:'#cfe4ef', e:'🐚', name:'바다와 조개', accent:'#96BED9'},
+  {id:'autumn', season:'가을', bg:'#FFF9EF', line:'#eddac8', e:'🍁', name:'가을 단풍', accent:'#E5AF75'},
+  {id:'acorn', season:'가을', bg:'#FCF8F0', line:'#e7d8c4', e:'🌰', name:'도토리 편지', accent:'#C19A81'},
+  {id:'snowman', season:'겨울', bg:'#F7FBFF', line:'#d7e8f4', e:'⛄', name:'겨울 눈사람', accent:'#9DC5E3'},
+  {id:'village', season:'겨울', bg:'#F6FAFF', line:'#dae7f4', e:'🏠', name:'첫눈 내리는 마을', accent:'#A6BBD8'},
+  {id:'mittens', season:'겨울', bg:'#FFFAFC', line:'#ead7e8', e:'🧤', name:'포근한 털장갑', accent:'#CEA1BD'},
+  {id:'winterforest', season:'겨울', bg:'#F7FAFF', line:'#d8e2f3', e:'❄️', name:'하얀 눈꽃 숲', accent:'#A5BBD7'},
+  {id:'birthday', season:'특별한 날', bg:'#FFF9F4', line:'#f1d9cf', e:'🎂', name:'생일 축하', accent:'#E5A6B8'},
+  {id:'love', season:'특별한 날', bg:'#FFF8F9', line:'#efd4da', e:'💌', name:'사랑이 담긴 편지', accent:'#E4A0B2'}
+];
+
+const STAMPS = [
+  {id:'heart', e:'💖', name:'사랑 하트 우표', fee:'300원', color:'#e87b92'},
+  {id:'leaf', e:'🍁', name:'가을 단풍 우표', fee:'300원', color:'#d9824c'},
+  {id:'flower', e:'🌸', name:'달누리 꽃 우표', fee:'300원', color:'#e290a6'},
+  {id:'berry', e:'🍓', name:'달콤 딸기 우표', fee:'300원', color:'#e05a76'},
+  {id:'star', e:'🌟', name:'반짝 별빛 우표', fee:'300원', color:'#d4a342'},
+  {id:'snow', e:'⛄', name:'겨울 눈사람 우표', fee:'300원', color:'#72a7cf'}
+];
+
+const QUICK_CHIPS = [
+  '사랑해요 언제나 고마워요',
+  '선생님 최고예요 보고 싶어요',
+  '나랑 매일매일 사이좋게 놀자',
+  '생일 진심으로 축하해요',
+  '힘내세요 제가 응원해요',
+  '세상에서 제일 많이 사랑해요',
+  '맛있는 밥 많이 드세요',
+  '감기 조심하고 따뜻하게 입어요',
+  '미안해, 우리 다시 웃으며 놀자',
+  '건강하고 언제나 행복하세요',
+  '오늘 하루도 기분 좋게 보내요',
+  '내 마음을 가득 담아 보내요'
+];
+
+const COLORS = ['#4A373A', '#D94B68', '#4285D4', '#2B9E64', '#E67E22', '#8E44AD'];
+const STEPS = ['1. 받는 사람', '2. 편지지', '3. 말하면 써지는 편지', '4. 우표와 도장', '5. 우체통 발송'];
+const MAXCHARS = 45;
+
+const safeGet = (k) => { try { return localStorage.getItem(k); } catch(e){ return null; } };
 const safeSet = (k, v) => { try { localStorage.setItem(k, v); } catch(e){} };
 
 const S = {
@@ -678,7 +735,7 @@ function viewTo() {
       rec.onerror = () => { msg.textContent = '잘 못 들었어요. 천천히 다시 말해 볼까요?'; };
       rec.onend = () => { hearing = false; micBtn.textContent = '🎙️ 말하기'; };
       rec.start();
-    }} catch(err){ msg.textContent = '마이크를 켤 수 없어요. 이름을 직접 적어 주세요.'; }
+    } catch(err){ msg.textContent = '마이크를 켤 수 없어요. 이름을 직접 적어 주세요.'; }
   };
 
   b.append(custom);
