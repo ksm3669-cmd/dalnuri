@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FFF7EE">
+<title>달누리반 교실 패드 7대 놀이터</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gamja+Flower&family=Jua&family=Noto+Sans+KR:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font: 'Noto Sans KR', sans-serif;
+  --cute: 'Gamja Flower', 'Jua', cursive;
+  --bg: #FFF9F2;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; padding: 0; min-height: 100%; font-family: var(--font); background: var(--bg); color: #3E2723; -webkit-user-select: none; user-select: none; }
+
+/* Top Header Bar */
+.pad-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
+  border-bottom: 2px solid #F0DAC8; position: sticky; top: 0; z-index: 100;
+}
+.pad-logo {
+  display: flex; align-items: center; gap: 8px; font: 700 24px var(--cute); color: #8D2B0B;
+}
+.pad-tag {
+  background: #FFE8D6; color: #D84315; padding: 4px 12px; border-radius: 99px; font: 800 12px var(--font);
+}
+.pad-actions {
+  display: flex; align-items: center; gap: 10px;
+}
+.btn-top {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 99px;
+  background: #FFF; border: 1.8px solid #E2C2AB; font-size: 14px; font-weight: 800; color: #5D4037;
+  cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.06); transition: .2s;
+}
+.btn-top:active { transform: scale(0.96); }
+.btn-top.home-btn {
+  background: #FF7043; color: #FFF; border-color: #F4511E; box-shadow: 0 4px 12px rgba(244,81,30,0.3);
+}
+
+/* Home Launcher View */
+.launcher-wrap {
+  max-width: 1080px; margin: 0 auto; padding: 24px 20px 80px; text-align: center;
+}
+.launcher-hero {
+  margin-bottom: 24px;
+}
+.launcher-title {
+  font: 700 clamp(34px, 5.5vw, 52px)/1.2 var(--cute); color: #792A13; margin: 0 0 8px;
+}
+.launcher-sub {
+  font-size: clamp(14px, 3.2vw, 17px); font-weight: 800; color: #8D6E63; margin: 0;
+}
+
+/* 7 Big Activity Tiles Grid */
+.tiles-grid {
+  display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  max-width: 980px; margin: 0 auto;
+}
+.tile-card {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-height: 200px; padding: 22px 18px; border-radius: 28px; background: #FFF;
+  border: 3px solid #EFE0D3; box-shadow: 0 10px 28px rgba(121,85,72,0.1);
+  cursor: pointer; transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.tile-card:hover {
+  transform: translateY(-4px); box-shadow: 0 16px 36px rgba(121,85,72,0.18);
+}
+.tile-card:active { transform: scale(0.96); }
+
+/* Tile Theme Colors */
+.tile-1 { border-color: #FFCC80; background: linear-gradient(145deg, #FFFDF9, #FFF8E7); } /* 한글·수놀이 */
+.tile-2 { border-color: #81D4FA; background: linear-gradient(145deg, #F9FDFF, #E1F5FE); } /* 영어놀이 */
+.tile-3 { border-color: #A5D6A7; background: linear-gradient(145deg, #F9FDF9, #E8F5E9); } /* 작은책방 */
+.tile-4 { border-color: #FFAB91; background: linear-gradient(145deg, #FFFAF9, #FBE9E7); } /* 세계음식 */
+.tile-5 { border-color: #F48FB1; background: linear-gradient(145deg, #FFF9FA, #FCE4EC); } /* 편지쓰기 */
+.tile-6 { border-color: #FFE082; background: linear-gradient(145deg, #FFFDF7, #FFF8E1); } /* 키오스크 */
+.tile-7 { border-color: #CE93D8; background: linear-gradient(145deg, #FAF7FC, #F3E5F5); } /* 생각지도 */
+
+.tile-icon { font-size: clamp(48px, 9vw, 64px); margin-bottom: 8px; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.1)); }
+.tile-name { font: 700 clamp(24px, 4.5vw, 32px)/1.2 var(--cute); margin: 0 0 6px; }
+.tile-desc { font-size: 13.5px; font-weight: 700; color: #6D4C41; margin: 0 0 14px; line-height: 1.4; }
+.tile-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 8px 22px; border-radius: 99px;
+  font-size: 15px; font-weight: 900; background: #FFF; border: 2px solid currentColor;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* Fullscreen App Container */
+.app-viewport {
+  position: fixed; inset: 0; z-index: 500; background: #FFF; display: none; flex-direction: column;
+}
+.app-viewport.on { display: flex; }
+.viewport-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 18px; background: #FFF7ED; border-bottom: 2px solid #FCD34D;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 10;
+}
+.viewport-title {
+  display: flex; align-items: center; gap: 8px; font: 700 22px var(--cute); color: #78350F;
+}
+.viewport-frame {
+  flex: 1; width: 100%; height: 100%; border: 0; background: #FFF;
+}
+</style>
+</head>
+<body>
+
+<!-- Main Launcher Bar -->
+<header class="pad-topbar" id="topbar">
+  <div class="pad-logo">
+    <span>🌿</span> 달누리반 교실 패드
+    <span class="pad-tag">어린이 전용</span>
+  </div>
+  <div class="pad-actions">
+    <a href="../index.html" class="btn-top">🏠 유치원 홈</a>
+  </div>
+</header>
+
+<!-- 7 Big Tiles Launcher -->
+<main class="launcher-wrap" id="launcherView">
+  <div class="launcher-hero">
+    <h1 class="launcher-title">오늘은 어떤 놀이를 해볼까요?</h1>
+    <p class="launcher-sub">하고 싶은 놀이 그림을 손가락으로 콕 누르면 바로 시작돼요!</p>
+  </div>
+
+  <div class="tiles-grid">
+    <!-- 1. 한글 수놀이 -->
+    <div class="tile-card tile-1" onclick="openPadApp('dalnuri-hangul-math.html', '🔤 재미있는 한글·수놀이')">
+      <div class="tile-icon">🔤</div>
+      <h2 class="tile-name" style="color:#C2410C;">재미있는 한글·수놀이</h2>
+      <p class="tile-desc">글자 모으기, 숫자 세기, 맛있는 음식과 겨울 놀이</p>
+      <span class="tile-btn" style="color:#C2410C;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 2. 영어 놀이 -->
+    <div class="tile-card tile-2" onclick="openPadApp('dalnuri-english.html', '🌍 소리로 만나는 영어놀이')">
+      <div class="tile-icon">🌍</div>
+      <h2 class="tile-name" style="color:#0369A1;">소리 영어놀이</h2>
+      <p class="tile-desc">원어민 발음 듣기, 신나는 챈트 따라 말하기</p>
+      <span class="tile-btn" style="color:#0369A1;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 3. 작은 책방 (8쪽 그림사전) -->
+    <div class="tile-card tile-3" onclick="openPadApp('dalnuri-minibook.html', '✏️ 작은 책방 (나만의 그림 사전)')">
+      <div class="tile-icon">✏️</div>
+      <h2 class="tile-name" style="color:#15803D;">작은 책방 (그림사전)</h2>
+      <p class="tile-desc">내가 좋아하는 낱말을 그리고 말해서 만드는 8쪽 사전</p>
+      <span class="tile-btn" style="color:#15803D;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 4. 세계 음식 백과사전 -->
+    <div class="tile-card tile-4" onclick="openPadApp('world-food-encyclopedia.html', '🍕 세계 음식 백과사전')">
+      <div class="tile-icon">🍕</div>
+      <h2 class="tile-name" style="color:#C2410C;">세계 음식 백과사전</h2>
+      <p class="tile-desc">14개국 74종 맛있는 세계 음식 카드와 탐구</p>
+      <span class="tile-btn" style="color:#C2410C;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 5. 편지 쓰기 -->
+    <div class="tile-card tile-5" onclick="openPadApp('dalnuri-letter.html', '💌 말하면 써지는 수채화 편지')">
+      <div class="tile-icon">💌</div>
+      <h2 class="tile-name" style="color:#BE185D;">말하면 써지는 편지</h2>
+      <p class="tile-desc">마이크로 말하면 손글씨가 써지고 우표 붙여 우체통 쏙!</p>
+      <span class="tile-btn" style="color:#BE185D;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 6. 역할놀이 키오스크 -->
+    <div class="tile-card tile-6" onclick="openPadApp('dalnuri-kiosk.html', '🏪 역할놀이 키오스크')">
+      <div class="tile-icon">🏪</div>
+      <h2 class="tile-name" style="color:#B45309;">역할놀이 키오스크</h2>
+      <p class="tile-desc">달누리 마트와 세계 음식점 주문 & 코인 찰칵 결제</p>
+      <span class="tile-btn" style="color:#B45309;">놀러 가기 ▶</span>
+    </div>
+
+    <!-- 7. 생각지도 -->
+    <div class="tile-card tile-7" onclick="openPadApp('mindmap.html', '🧠 생각지도 (8대 씽킹맵)')">
+      <div class="tile-icon">🧠</div>
+      <h2 class="tile-name" style="color:#7E22CE;">생각지도 (씽킹맵)</h2>
+      <p class="tile-desc">동글동글 버블맵과 가지로 내 생각을 자유롭게 펼쳐요</p>
+      <span class="tile-btn" style="color:#7E22CE;">놀러 가기 ▶</span>
+    </div>
+  </div>
+</main>
+
+<!-- Fullscreen Pad Container -->
+<div class="app-viewport" id="viewport">
+  <div class="viewport-topbar">
+    <div class="viewport-title" id="viewportTitle">놀이 중</div>
+    <button type="button" class="btn-top home-btn" onclick="closePadApp()">🏠 다른 놀이 하기 (홈으로)</button>
+  </div>
+  <iframe class="viewport-frame" id="viewportFrame" allow="microphone; autoplay; camera"></iframe>
+</div>
+
+<script>
+function openPadApp(file, title) {
+  const vp = document.getElementById('viewport');
+  const frame = document.getElementById('viewportFrame');
+  const t = document.getElementById('viewportTitle');
+  t.textContent = title;
+  frame.src = file;
+  vp.classList.add('on');
+}
+
+function closePadApp() {
+  const vp = document.getElementById('viewport');
+  const frame = document.getElementById('viewportFrame');
+  frame.src = 'about:blank';
+  vp.classList.remove('on');
+}
+</script>
+</body>
+</html>

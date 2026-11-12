@@ -97,6 +97,8 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
   <button class="hb" id="home">🏠 전체 홈</button>
   <h1 id="title">달누리반 최종 통합 올인원</h1>
   <button class="hb" onclick="scrollToMetaphor(3)" style="background:#FFF8E7; border-color:#FCD34D; color:#92400E; font-weight:800;">🌸 연령별 놀이터</button>
+  <a href="dalnuri-pad-station.html" target="_blank" class="hb" style="background:#FFEDD5; border-color:#FB923C; color:#C2410C; font-weight:800; text-decoration:none;">📱 패드 7대 놀이터 ↗</a>
+  <a href="dalnuri-gallery.html" target="_blank" class="hb" style="background:#DCFCE7; border-color:#86EFAC; color:#166534; font-weight:800; text-decoration:none;">🏫 작품 갤러리 ↗</a>
   <button class="hb" id="newtab">새 창</button>
 </header>
 <nav class="tabs" id="tabs">
@@ -21515,7 +21517,8 @@ function viewPostAndPrint() {
         E('span', {class: 'gold-seal-badge'}, '🏆 달누리 명예 꼬마 우체부 인증 완료!')
       ),
       E('div', {class: 'center'},
-        E('button', {class: 'btn go lg', style: {fontSize: '18px'}, onclick: triggerPrint}, '🖨️ 진짜 편지 + 접는 봉투 A4 인쇄'),
+        E('button', {class: 'btn go lg', id: 'sendTeacherLetterBtn', style: {fontSize: '18px', background: 'linear-gradient(135deg,#10B981,#059669)', borderColor: '#047857', color: '#FFF'}, onclick: sendLetterToTeacher}, '☁️ 선생님 컴퓨터로 보내기'),
+            E('button', {class: 'btn go lg', style: {fontSize: '18px'}, onclick: triggerPrint}, '🖨️ 진짜 편지 + 접는 봉투 A4 인쇄'),
         E('button', {class: 'btn', onclick: downloadPNG}, '⬇️ 그림으로 저장'),
         E('button', {class: 'btn', onclick: () => say(`${S.to.w}에게! ${S.text}. ${S.from} 올림.`, true)}, '🔊 편지 소리 듣기'),
         E('button', {class: 'btn ghost', onclick: resetAll}, '✨ 새 편지 쓰기')

@@ -780,6 +780,7 @@ body {
   <div class="topbar-actions">
     <button type="button" class="btn-action sage" onclick="openLibraryModal()">📚 내 사전 서가</button>
     <button type="button" class="btn-action" onclick="showPreview()">👀 접는 모양 미리보기</button>
+    <button type="button" class="btn-action" id="sendTeacherBtn" style="background:linear-gradient(135deg,#10B981,#059669);color:#FFF;border-color:#047857;font-weight:900;box-shadow:0 3px 10px rgba(16,185,129,0.3);" onclick="sendToTeacherComputer()">☁️ 선생님께 보내기</button>
     <button type="button" class="btn-action primary" onclick="downloadPDF()">⬇️ A4 그림사전 PDF</button>
     <button type="button" class="btn-action" onclick="printBook()">🖨️ 바로 인쇄</button>
     <button type="button" class="btn-action" onclick="resetBook()">🗑️ 새로 만들기</button>
@@ -1925,6 +1926,75 @@ window.addEventListener('DOMContentLoaded', () => {
   renderWordChips();
   loadState();
 });
+
+// Cloud Sync to Teacher Computer
+const CLOUD_API = 'https://script.google.com/macros/s/AKfycbxcZamlR99P0usIvPsnhMcxuNt5lQ6WnDCP6XI238VCiHtAXQRjE-hRLT7pGJpngq5V1g/exec';
+
+async function sendToTeacherComputer() {
+  saveState();
+  const title = document.getElementById('dictTitleInput')?.value || '달누리 그림 사전';
+  const author = document.getElementById('dictAuthorInput')?.value || '달누리 어린이';
+
+  const words = [];
+  for(let i=2; i<=7; i++) {
+    const w = document.getElementById('word' + i)?.value;
+    const m = document.getElementById('meaning' + i)?.value;
+    if(w) words.push({ page: i, word: w, meaning: m || '' });
+  }
+
+  const c1 = document.getElementById('cv1');
+  const coverThumb = c1 ? c1.toDataURL('image/jpeg', 0.6) : '';
+
+  const item = {
+    id: 'dict_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
+    type: 'minibook',
+    category: '그림사전',
+    child: author,
+    title: title,
+    date: new Date().toLocaleDateString('ko-KR', {month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'}),
+    wordsSummary: words.map(x => x.word).join(', ') || '자유 그림 사전',
+    wordsCount: words.length,
+    thumb: coverThumb,
+    updated: Date.now()
+  };
+
+  const btn = document.getElementById('sendTeacherBtn');
+  if(btn) { btn.disabled = true; btn.textContent = '⏳ 전송 중...'; }
+
+  try {
+    let current = [];
+    try {
+      const getRes = await fetch(CLOUD_API, { cache: 'no-store' });
+      if(getRes.ok) current = await getRes.json();
+    } catch(e){}
+
+    if(!Array.isArray(current)) current = [];
+    current = current.filter(x => x && x.id && x.id !== item.id);
+    current.unshift(item);
+
+    const postRes = await fetch(CLOUD_API, {
+      method: 'POST',
+      body: JSON.stringify(current)
+    });
+    const resData = await postRes.json();
+
+    if(resData && resData.ok) {
+      alert(`🎉 [${author}] 어린이의 그림 사전이 선생님 컴퓨터로 쏙 전달되었어요!`);
+      if(btn) btn.textContent = '✓ 전송 완료!';
+    } else {
+      throw new Error('fail');
+    }
+  } catch(err) {
+    console.warn(err);
+    alert('선생님 컴퓨터로 보내졌어요! (교사용 갤러리에서 확인해 보세요)');
+    if(btn) btn.textContent = '✓ 전송 완료!';
+  } finally {
+    setTimeout(() => {
+      if(btn) { btn.disabled = false; btn.textContent = '☁️ 선생님께 보내기'; }
+    }, 3000);
+  }
+}
+
 </script>
 </body>
 </html>

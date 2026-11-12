@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FFF7EE">
+<title>달누리반 교실 작품 모아보기실 | 선생님 컴퓨터 전용</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gamja+Flower&family=Jua&family=Noto+Sans+KR:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #3E2723;
+  --soft: #795548;
+  --line: #E8D5C4;
+  --bg: #FDF9F4;
+  --card: #FFFFFF;
+  --sage: #2D6A4F;
+  --sage-light: #E8F5E9;
+  --terracotta: #C85A32;
+  --terracotta-light: #FBE9E7;
+  --font: 'Noto Sans KR', sans-serif;
+  --cute: 'Gamja Flower', 'Jua', cursive;
+}
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; font-family: var(--font); background: var(--bg); color: var(--ink); }
+
+/* Header */
+.gallery-header {
+  background: #FFF; border-bottom: 2px solid var(--line); padding: 16px 28px;
+  position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+}
+.header-top {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+}
+.header-title-box {
+  display: flex; align-items: center; gap: 12px;
+}
+.header-icon { font-size: 36px; }
+.header-title { margin: 0; font: 700 30px/1.2 var(--cute); color: #6D2813; }
+.header-sub { margin: 2px 0 0; font-size: 13.5px; font-weight: 700; color: #8D6E63; }
+
+.header-actions {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.btn-action {
+  display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 99px;
+  font-size: 14.5px; font-weight: 800; cursor: pointer; border: 2px solid #DEC5B1; background: #FFF;
+  color: #5D4037; transition: .2s; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.btn-action:hover { background: #FAF5F0; border-color: #BCAAA4; }
+.btn-action.primary {
+  background: #C85A32; color: #FFF; border-color: #A8401C; box-shadow: 0 4px 12px rgba(200,90,50,0.3);
+}
+.btn-action.sage {
+  background: #2D6A4F; color: #FFF; border-color: #1B4332; box-shadow: 0 4px 12px rgba(45,106,79,0.3);
+}
+
+.cloud-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 99px;
+  font-size: 12.5px; font-weight: 800; background: #E8F5E9; color: #2E7D32; border: 1.5px solid #C8E6C9;
+}
+
+/* Filter Controls */
+.filter-bar {
+  max-width: 1240px; margin: 20px auto 16px; padding: 0 24px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.category-tabs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.cat-tab {
+  padding: 8px 18px; border-radius: 99px; border: 2px solid #E6D2C2; background: #FFF;
+  font-size: 14.5px; font-weight: 800; color: #6D4C41; cursor: pointer; transition: .2s;
+}
+.cat-tab.active {
+  background: #6D2813; color: #FFF; border-color: #6D2813; box-shadow: 0 4px 12px rgba(109,40,19,0.25);
+}
+.child-chips {
+  display: flex; gap: 6px; flex-wrap: wrap; align-items: center;
+}
+.child-chip {
+  padding: 5px 12px; border-radius: 99px; border: 1.5px solid #EFE0D3; background: #FFF;
+  font-size: 13px; font-weight: 700; color: #795548; cursor: pointer; transition: .2s;
+}
+.child-chip.active {
+  background: #2D6A4F; color: #FFF; border-color: #2D6A4F;
+}
+
+/* Gallery Grid */
+.gallery-container {
+  max-width: 1240px; margin: 0 auto; padding: 10px 24px 80px;
+}
+.gallery-grid {
+  display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+.card-item {
+  background: #FFF; border-radius: 20px; border: 2px solid #ECD9C8; overflow: hidden;
+  box-shadow: 0 8px 24px rgba(62,39,35,0.06); display: flex; flex-direction: column;
+  transition: transform .25s, box-shadow .25s;
+}
+.card-item:hover {
+  transform: translateY(-4px); box-shadow: 0 14px 32px rgba(62,39,35,0.12);
+}
+.card-thumb-wrap {
+  position: relative; width: 100%; height: 190px; background: #FAF2EB;
+  display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1.5px solid #F0E1D5;
+}
+.card-thumb-img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+.card-type-badge {
+  position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 8px;
+  font-size: 12px; font-weight: 800; background: rgba(255,255,255,0.92); backdrop-filter: blur(4px);
+  border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.badge-minibook { color: #15803D; border-color: #BBF7D0; }
+.badge-letter { color: #BE185D; border-color: #FBCFE8; }
+.badge-worldfood { color: #C2410C; border-color: #FED7AA; }
+
+.card-body {
+  padding: 16px; flex: 1; display: flex; flex-direction: column;
+}
+.card-meta-row {
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
+}
+.card-child-name {
+  font: 700 21px/1.2 var(--cute); color: #5D2615;
+}
+.card-date {
+  font-size: 11.5px; color: #A1887F; font-weight: 600;
+}
+.card-title {
+  font-size: 15.5px; font-weight: 800; color: #2E1B14; margin: 0 0 8px; line-height: 1.35;
+}
+.card-desc {
+  font-size: 13px; color: #6D4C41; margin: 0 0 14px; line-height: 1.4; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.card-actions {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto;
+}
+.btn-card {
+  padding: 7px 10px; border-radius: 10px; font-size: 13px; font-weight: 800; text-align: center;
+  border: 1.5px solid #DEC5B1; background: #FFF; color: #5D4037; cursor: pointer; transition: .2s;
+}
+.btn-card:hover { background: #FAF5F0; }
+.btn-card.highlight {
+  background: #E8F5E9; color: #2E7D32; border-color: #A5D6A7;
+}
+
+/* Empty State */
+.empty-box {
+  text-align: center; padding: 60px 20px; background: #FFF; border-radius: 24px;
+  border: 2px dashed #E2C7B3; max-width: 600px; margin: 40px auto;
+}
+
+/* Large TV Modal */
+.tv-modal {
+  position: fixed; inset: 0; z-index: 500; background: rgba(30,20,15,0.85); backdrop-filter: blur(8px);
+  display: none; align-items: center; justify-content: center; padding: 24px;
+}
+.tv-modal.on { display: flex; }
+.tv-card {
+  background: #FFF; border-radius: 28px; max-width: 960px; width: 100%; max-height: 92vh;
+  overflow-y: auto; padding: 28px; position: relative; box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+.tv-close {
+  position: absolute; top: 20px; right: 20px; font-size: 24px; background: #F5EAE1; border: 0;
+  border-radius: 99px; width: 44px; height: 44px; cursor: pointer; font-weight: 900; color: #5D4037;
+}
+</style>
+</head>
+<body>
+
+<header class="gallery-header">
+  <div class="header-top">
+    <div class="header-title-box">
+      <span class="header-icon">🏫</span>
+      <div>
+        <h1 class="header-title">달누리반 교실 작품 모아보기실</h1>
+        <p class="header-sub">아이들 패드에서 [선생님께 보내기]를 누르면 실시간으로 여기에 도착해요</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <span class="cloud-badge" id="cloudBadge">☁️ 구글 클라우드 연결됨</span>
+      <button type="button" class="btn-action sage" onclick="fetchCloudData(true)">🔄 실시간 새로고침</button>
+      <a href="../index.html" class="btn-action">🏠 유치원 홈</a>
+    </div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <div class="category-tabs" id="catTabs">
+    <button class="cat-tab active" data-cat="all" onclick="setCategory('all')">🌟 전체 작품 (<span id="countAll">0</span>)</button>
+    <button class="cat-tab" data-cat="minibook" onclick="setCategory('minibook')">📖 8쪽 그림사전 (<span id="countMinibook">0</span>)</button>
+    <button class="cat-tab" data-cat="letter" onclick="setCategory('letter')">💌 수채화 편지 (<span id="countLetter">0</span>)</button>
+    <button class="cat-tab" data-cat="worldfood" onclick="setCategory('worldfood')">🍕 세계음식 그림책 (<span id="countFood">0</span>)</button>
+  </div>
+  <div class="child-chips" id="childChips">
+    <span style="font-size:12.5px;font-weight:800;color:#8D6E63;margin-right:4px;">원아 필터:</span>
+    <button class="child-chip active" data-child="all" onclick="setChild('all')">전체 (14명)</button>
+    <!-- Dynamic child chips -->
+  </div>
+</div>
+
+<main class="gallery-container">
+  <div class="gallery-grid" id="galleryGrid">
+    <!-- Dynamic cards -->
+  </div>
+  <div class="empty-box" id="emptyBox" style="display:none;">
+    <div style="font-size:52px;margin-bottom:12px;">🎨</div>
+    <h3 style="font:700 24px var(--cute);color:#6D2813;margin:0 0 6px;">아직 도착한 작품이 없어요</h3>
+    <p style="font-size:14px;color:#8D6E63;margin:0;">아이들이 교실 패드에서 [선생님께 보내기]를 누르면 즉시 여기에 나타납니다.</p>
+  </div>
+</main>
+
+<!-- TV Mirror Modal -->
+<div class="tv-modal" id="tvModal" onclick="if(event.target===this)closeTV()">
+  <div class="tv-card" id="tvContent">
+    <button type="button" class="tv-close" onclick="closeTV()">✕</button>
+    <!-- Modal Content -->
+  </div>
+</div>
+
+<script>
+const CLOUD_API = 'https://script.google.com/macros/s/AKfycbxcZamlR99P0usIvPsnhMcxuNt5lQ6WnDCP6XI238VCiHtAXQRjE-hRLT7pGJpngq5V1g/exec';
+const KIDS = ["도윤", "서연", "민우", "지호", "하은", "준우", "예린", "시우", "수아", "유준", "다은", "태민", "채원", "단이"];
+
+let allWorks = [];
+let currentCat = 'all';
+let currentChild = 'all';
+
+// Initialize Child Filter Chips
+function initChildChips() {
+  const wrap = document.getElementById('childChips');
+  KIDS.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = 'child-chip';
+    btn.dataset.child = k;
+    btn.textContent = k;
+    btn.onclick = () => setChild(k);
+    wrap.appendChild(btn);
+  });
+}
+
+function setCategory(cat) {
+  currentCat = cat;
+  document.querySelectorAll('.cat-tab').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  renderGrid();
+}
+
+function setChild(child) {
+  currentChild = child;
+  document.querySelectorAll('.child-chip').forEach(b => b.classList.toggle('active', b.dataset.child === child));
+  renderGrid();
+}
+
+async function fetchCloudData(manual = false) {
+  const badge = document.getElementById('cloudBadge');
+  if(badge) badge.textContent = '⏳ 불러오는 중…';
+  try {
+    const res = await fetch(CLOUD_API, { cache: 'no-store' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if(Array.isArray(data)) {
+      allWorks = data;
+      // normalize item format
+      allWorks.forEach(w => {
+        if(!w.type) {
+          if(w.food) w.type = 'worldfood';
+          else if(w.wordsSummary) w.type = 'minibook';
+          else if(w.recipient) w.type = 'letter';
+          else w.type = 'minibook';
+        }
+      });
+      if(badge) badge.textContent = `☁️ 구글 클라우드 연동됨 (${new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})})`;
+      updateCounts();
+      renderGrid();
+      if(manual) alert('최신 작품들을 성공적으로 모두 불러왔습니다!');
+    }
+  } catch(err) {
+    console.warn(err);
+    if(badge) badge.textContent = '☁️ 연결 확인 중';
+  }
+}
+
+function updateCounts() {
+  document.getElementById('countAll').textContent = allWorks.length;
+  document.getElementById('countMinibook').textContent = allWorks.filter(x => x.type === 'minibook').length;
+  document.getElementById('countLetter').textContent = allWorks.filter(x => x.type === 'letter').length;
+  document.getElementById('countFood').textContent = allWorks.filter(x => x.type === 'worldfood').length;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('galleryGrid');
+  const empty = document.getElementById('emptyBox');
+  grid.innerHTML = '';
+
+  let list = [...allWorks];
+  if(currentCat !== 'all') {
+    list = list.filter(x => x.type === currentCat);
+  }
+  if(currentChild !== 'all') {
+    list = list.filter(x => (x.child || '').includes(currentChild));
+  }
+
+  if(list.length === 0) {
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  list.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'card-item';
+
+    let badgeClass = 'badge-minibook', badgeText = '📖 8쪽 그림사전';
+    if(item.type === 'letter') { badgeClass = 'badge-letter'; badgeText = '💌 수채화 편지'; }
+    else if(item.type === 'worldfood') { badgeClass = 'badge-worldfood'; badgeText = '🍕 세계음식'; }
+
+    let thumbSrc = item.thumb || item.cover || item.coverThumb || '';
+    if(!thumbSrc && item.canvasArt) thumbSrc = item.canvasArt;
+
+    let thumbHtml = thumbSrc ? `<img src="${thumbSrc}" class="card-thumb-img" alt="작품">` : `<div style="font-size:48px;">🎨</div>`;
+
+    let desc = item.wordsSummary || item.text || item.desc || (item.food ? `${item.country || ''} 대표 음식 탐구` : '완성된 작품');
+
+    card.innerHTML = `
+      <div class="card-thumb-wrap">
+        <span class="card-type-badge ${badgeClass}">${badgeText}</span>
+        ${thumbHtml}
+      </div>
+      <div class="card-body">
+        <div class="card-meta-row">
+          <span class="card-child-name">${item.child || '달누리 어린이'}</span>
+          <span class="card-date">${item.date || ''}</span>
+        </div>
+        <div class="card-title">${item.title || (item.food ? item.food + ' 탐구책' : '달누리 작품')}</div>
+        <div class="card-desc">${desc}</div>
+        <div class="card-actions">
+          <button class="btn-card highlight" onclick="viewLarge('${item.id}')">📺 크게 보기</button>
+          <button class="btn-card" onclick="printItem('${item.id}')">🖨️ 인쇄하기</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function viewLarge(id) {
+  const item = allWorks.find(x => x.id === id);
+  if(!item) return;
+  const modal = document.getElementById('tvModal');
+  const content = document.getElementById('tvContent');
+
+  let bodyHtml = '';
+  if(item.type === 'letter') {
+    bodyHtml = `
+      <div style="text-align:center;padding:10px 0;">
+        <span style="font-size:14px;font-weight:800;color:#BE185D;">💌 달누리반 수채화 편지공방</span>
+        <h2 style="font:700 36px var(--cute);color:#881337;margin:8px 0;">${item.child || '어린이'}의 손편지</h2>
+        <div style="font-size:16px;font-weight:800;color:#4C1D95;margin-bottom:16px;">받는 분: ${item.recipient || '부모님'} · 지은이: ${item.child || ''}</div>
+        ${item.thumb ? `<img src="${item.thumb}" style="max-width:100%;max-height:500px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,0.15);" alt="편지">` : ''}
+        <div style="margin:20px auto;max-width:600px;background:#FFF7ED;border:2px solid #FDBA74;border-radius:18px;padding:20px;font:700 24px/1.6 'Gamja Flower',cursive;color:#78350F;white-space:pre-wrap;">${item.text || '말한 내용이 편지에 담겼습니다.'}</div>
+      </div>
+    `;
+  } else if(item.type === 'minibook') {
+    bodyHtml = `
+      <div style="text-align:center;padding:10px 0;">
+        <span style="font-size:14px;font-weight:800;color:#15803D;">📖 달누리 8쪽 나만의 그림 사전</span>
+        <h2 style="font:700 36px var(--cute);color:#14532D;margin:8px 0;">『${item.title || '달누리 그림사전'}』</h2>
+        <div style="font-size:16px;font-weight:800;color:#5D4037;margin-bottom:16px;">편찬: ${item.child || ''} · 담은 낱말: ${item.wordsSummary || ''}</div>
+        ${item.thumb ? `<img src="${item.thumb}" style="max-width:100%;max-height:440px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,0.15);" alt="표지">` : ''}
+      </div>
+    `;
+  } else {
+    bodyHtml = `
+      <div style="text-align:center;padding:10px 0;">
+        <h2 style="font:700 36px var(--cute);color:#C2410C;margin:8px 0;">『${item.food || '음식'}』 탐험 그림책</h2>
+        <div style="font-size:16px;font-weight:800;color:#5D4037;margin-bottom:16px;">작가: ${item.child || ''} (${item.country || ''})</div>
+        ${item.thumb ? `<img src="${item.thumb}" style="max-width:100%;max-height:440px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,0.15);" alt="그림책">` : ''}
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <button type="button" class="tv-close" onclick="closeTV()">✕</button>
+    ${bodyHtml}
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:20px;">
+      <button class="btn-action primary" onclick="printItem('${item.id}')">🖨️ A4로 바로 인쇄하기</button>
+      <button class="btn-action" onclick="closeTV()">닫기</button>
+    </div>
+  `;
+  modal.classList.add('on');
+}
+
+function closeTV() {
+  document.getElementById('tvModal').classList.remove('on');
+}
+
+function printItem(id) {
+  const item = allWorks.find(x => x.id === id);
+  if(!item) return;
+  alert(`[${item.child}] 어린이의 작품 인쇄 창을 띄웁니다.`);
+  window.print();
+}
+
+// Auto-refresh every 30 seconds
+initChildChips();
+fetchCloudData();
+setInterval(() => fetchCloudData(), 30000);
+</script>
+</body>
+</html>
