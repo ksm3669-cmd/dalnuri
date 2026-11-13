@@ -1618,9 +1618,15 @@ function stopFaceTracking(){
   }
 }
 
+function getGiftItem(group, val){
+  if(typeof val === "object" && val !== null) return val;
+  if(typeof val === "number" && S.items[group] && S.items[group][val]) return S.items[group][val];
+  return (S.items[group] && S.items[group][0]) || null;
+}
+
 function updateRiceBoothUI(){
-  const g1 = state.g1 || (S.items.g1 && S.items.g1[0]);
-  const g2 = state.g2 || (S.items.g2 && S.items.g2[0]);
+  const g1 = getGiftItem("g1", state.g1);
+  const g2 = getGiftItem("g2", state.g2);
   const nm = state.name || "달누리 꼬마";
 
   const bBadge = $("#boothRiceBadge");
@@ -1635,8 +1641,8 @@ function updateRiceBoothUI(){
 
 function drawRiceAndFoodInBaskets(ctx, currentMode){
   const m = currentMode || mode;
-  const g1 = state.g1 || (S.items.g1 && S.items.g1[0]);
-  const g2 = state.g2 || (S.items.g2 && S.items.g2[0]);
+  const g1 = getGiftItem("g1", state.g1);
+  const g2 = getGiftItem("g2", state.g2);
 
   let b1x = 196, b1y = 1036, b2x = 704, b2y = 1036;
   if(m === "body"){
@@ -2278,10 +2284,9 @@ $("#btnHome4").onclick=goHome;
 $("#btnToBooth").onclick=()=>{
   show("s5"); layoutStage();
   $("#btnShoot").classList.remove("hidden"); $("#btnRetake").classList.add("hidden"); $("#btnMakeCard").classList.add("hidden");
-  if(mode!=="full"){ guide.classList.remove("hide"); $("#btnGuide").classList.add("on"); }
-  renderSticker();
+  setMode("body");
   updateRiceBoothUI();
-  say("이제 멋진 꼬마 농부로 변신해 볼까요?");
+  say("이제 농부 친구 앞에서 멋지게 사진 찍어 볼까요?");
   startCam();
 };
 $("#btnBack5").onclick=()=>{ stopCam(); show("s4"); };
