@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>달누리반 역할놀이 키오스크 (단독 앱)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -548,7 +551,7 @@
       height: 100%;
       background: rgba(45, 36, 30, 0.65);
       backdrop-filter: blur(4px);
-      z-index: 100;
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -577,6 +580,22 @@
 
     .modal-overlay.open .receipt-box {
       transform: translateY(0) scale(1);
+    }
+
+    
+    /* Confetti Particle Animation */
+    .kiosk-confetti-particle {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      z-index: 10005;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(70vh) rotate(720deg) scale(0.6); }
     }
 
     /* Order Complete Celebration Banner */
@@ -771,7 +790,7 @@
       font-size: 1.3rem;
       letter-spacing: -0.3px;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-      z-index: 300;
+      z-index: 10010;
       pointer-events: none;
       transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
       opacity: 0;
@@ -1010,19 +1029,24 @@
        ============================================================ */
     let audioCtx = null;
     function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      } catch (e) {
+        return null;
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
     }
 
     function playTone(freq, type, duration, delay = 0) {
       if (!isSoundOn) return;
       try {
         const ctx = getAudioContext();
+        if (!ctx) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = type;
@@ -1230,6 +1254,23 @@
     /* ============================================================
        CHECKOUT & RECEIPT
        ============================================================ */
+    function triggerOrderConfetti() {
+      try {
+        const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#FF922B', '#20C997', '#845EF7', '#FF8787'];
+        for (let i = 0; i < 40; i++) {
+          const conf = document.createElement('div');
+          conf.className = 'kiosk-confetti-particle';
+          conf.style.left = (Math.random() * 84 + 8) + 'vw';
+          conf.style.top = (Math.random() * 20 + 8) + 'vh';
+          conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          conf.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+          conf.style.animationDuration = (Math.random() * 1.2 + 1.2) + 's';
+          document.body.appendChild(conf);
+          setTimeout(() => conf.remove(), 2600);
+        }
+      } catch (e) {}
+    }
+
     function handleCheckout(method) {
       if (cart.length === 0) {
         showToast('먼저 드실 음식을 메뉴에서 골라주세요!', '🛍️');
@@ -1237,16 +1278,19 @@
         return;
       }
 
-      if (method === 'coin') {
-        playCoinSound();
-      } else {
-        playCardBeep();
-      }
+      try {
+        if (method === 'coin') {
+          playCoinSound();
+        } else {
+          playCardBeep();
+        }
+      } catch (e) {}
 
-      setTimeout(() => {
+      try {
         playSuccessChime();
-        showReceipt(method);
-      }, 400);
+      } catch (e) {}
+
+      showReceipt(method);
     }
 
     function showReceipt(method) {
@@ -1286,6 +1330,9 @@
       document.getElementById('receiptMethodText').textContent = `결제 수단: ${method === 'coin' ? '🪙 냠냠코인 결제 완료' : '💳 카드 결제 완료'}`;
 
       document.getElementById('receiptModal').classList.add('open');
+
+      // Visual confetti celebration burst
+      triggerOrderConfetti();
 
       // Top toast banner: 주문이 완료되었습니다!
       showToast(`🎉 주문이 완료되었습니다! (주문번호 ${orderNum}번)`, '👨‍🍳');

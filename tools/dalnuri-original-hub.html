@@ -12444,7 +12444,10 @@ initStorage();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>달누리반 역할놀이 키오스크 (단독 앱)<\/title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>달누리반 역할놀이 키오스크 (단독 앱)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -12989,7 +12992,7 @@ initStorage();
       height: 100%;
       background: rgba(45, 36, 30, 0.65);
       backdrop-filter: blur(4px);
-      z-index: 100;
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -13020,34 +13023,114 @@ initStorage();
       transform: translateY(0) scale(1);
     }
 
-    .receipt-decor-top {
-      text-align: center;
-      margin-bottom: 12px;
+    
+    /* Confetti Particle Animation */
+    .kiosk-confetti-particle {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      border-radius: 3px;
+      z-index: 10005;
+      pointer-events: none;
+      animation: confettiFall linear forwards;
+    }
+    @keyframes confettiFall {
+      0% { opacity: 1; transform: translateY(0) rotate(0deg) scale(1); }
+      100% { opacity: 0; transform: translateY(70vh) rotate(720deg) scale(0.6); }
     }
 
-    .order-badge {
-      display: inline-block;
-      background: var(--primary-light);
-      border: 2px solid #FFD8A8;
-      color: var(--primary);
-      padding: 6px 18px;
+    /* Order Complete Celebration Banner */
+    .order-complete-banner {
+      background: linear-gradient(135deg, #FFF4E6 0%, #FFE8CC 100%);
+      border: 3px solid #FFA94D;
+      border-radius: 20px;
+      padding: 16px 14px 12px;
+      text-align: center;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(230, 81, 0, 0.12);
+      animation: popInBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popInBounce {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .order-complete-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 2.5px solid #FF922B;
+      color: #D9480F;
+      padding: 8px 16px;
       border-radius: 999px;
-      font-size: 1.15rem;
+      box-shadow: 0 3px 10px rgba(217, 72, 15, 0.18);
+      margin-bottom: 6px;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .order-complete-emoji {
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .order-complete-text {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+      white-space: nowrap;
+    }
+
+    .order-complete-sub {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #495057;
       margin-bottom: 8px;
     }
 
-    .order-number {
-      font-size: 2.8rem;
-      color: #2D241E;
+    .order-num-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 2px solid #E8590C;
+      padding: 4px 18px;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .order-num-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #8C7A6B;
+    }
+
+    .order-num-val {
+      font-family: 'Jua', sans-serif;
+      font-size: 2.1rem;
+      color: #E8590C;
       line-height: 1;
-      margin-bottom: 4px;
     }
 
     .receipt-date {
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.85rem;
-      color: #8C7A6B;
+      font-size: 0.82rem;
+      color: #A68A78;
+      margin-top: 6px;
     }
+
+    /* Backwards compatibility */
+    .receipt-decor-top { text-align: center; margin-bottom: 12px; }
+    .order-badge { display: none; }
+    .order-number { display: none; }
 
     .receipt-paper {
       background: #FAF7F2;
@@ -13136,21 +13219,25 @@ initStorage();
     /* Toast Notification */
     .kiosk-toast {
       position: fixed;
-      bottom: 24px;
+      top: 24px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(45, 36, 30, 0.92);
+      transform: translateX(-50%) translateY(-60px);
+      background: linear-gradient(135deg, #2D241E 0%, #1A130E 100%);
+      border: 2px solid #FFA94D;
       color: #FFFFFF;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 999px;
-      font-size: 1.05rem;
-      z-index: 200;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      z-index: 10010;
       pointer-events: none;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
       opacity: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .kiosk-toast.show {
@@ -13173,43 +13260,43 @@ initStorage();
       }
       .receipt-actions { display: none; }
     }
-  <\/style>
-<\/head>
+  </style>
+</head>
 <body>
 
   <!-- Top Header Bar -->
   <header class="kiosk-header">
     <div class="brand-box">
-      <div class="brand-icon" id="headerIcon">🏪<\/div>
+      <div class="brand-icon" id="headerIcon">🏪</div>
       <div class="brand-title">
-        <h1 id="kioskStoreTitle">달누리 세계 음식점<\/h1>
-        <p id="kioskStoreSub">유아 역할놀이 키오스크 · 음식을 고르고 주문해요<\/p>
-      <\/div>
-    <\/div>
+        <h1 id="kioskStoreTitle">달누리 세계 음식점</h1>
+        <p id="kioskStoreSub">유아 역할놀이 키오스크 · 음식을 고르고 주문해요</p>
+      </div>
+    </div>
 
     <!-- Store Switcher (Can be locked via Teacher Lock) -->
     <div class="store-switch-group" id="storeSwitchGroup">
       <button class="store-tab-btn active" id="tabWorld" onclick="switchStore('world')">
-        <span>🍲<\/span> 세계 음식점
-      <\/button>
+        <span>🍲</span> 세계 음식점
+      </button>
       <button class="store-tab-btn" id="tabWinter" onclick="switchStore('winter')">
-        <span>🍠<\/span> 겨울 간식점
-      <\/button>
-    <\/div>
+        <span>🍠</span> 겨울 간식점
+      </button>
+    </div>
 
     <!-- Right Controls -->
     <div class="kiosk-tools">
       <button class="tool-btn active" id="btnSound" onclick="toggleSound()">
-        <span id="soundIcon">🔊<\/span> <span id="soundText">소리 켜짐<\/span>
-      <\/button>
+        <span id="soundIcon">🔊</span> <span id="soundText">소리 켜짐</span>
+      </button>
       <button class="tool-btn" id="btnLock" onclick="toggleTeacherLock()">
-        <span id="lockIcon">🔓<\/span> <span id="lockText">화면 고정<\/span>
-      <\/button>
+        <span id="lockIcon">🔓</span> <span id="lockText">화면 고정</span>
+      </button>
       <button class="tool-btn" onclick="toggleFullscreen()">
-        <span>⛶<\/span> <span>전체화면<\/span>
-      <\/button>
-    <\/div>
-  <\/header>
+        <span>⛶</span> <span>전체화면</span>
+      </button>
+    </div>
+  </header>
 
   <!-- Main Kiosk Stage -->
   <main class="kiosk-main">
@@ -13218,92 +13305,100 @@ initStorage();
       <!-- Category Filter Pills -->
       <div class="category-bar" id="categoryBar">
         <!-- Rendered dynamically -->
-      <\/div>
+      </div>
 
       <!-- Menu Items Grid -->
       <div class="menu-grid" id="menuGrid">
         <!-- Rendered dynamically -->
-      <\/div>
-    <\/section>
+      </div>
+    </section>
 
     <!-- Right Cart & Payment Stage -->
     <aside class="cart-panel">
       <div class="cart-header">
-        <h2><span>🧾<\/span> <span>우리 반 주문서<\/span><\/h2>
-        <button class="btn-clear-cart" onclick="clearCart()">비우기 🗑️<\/button>
-      <\/div>
+        <h2><span>🧾</span> <span>우리 반 주문서</span></h2>
+        <button class="btn-clear-cart" onclick="clearCart()">비우기 🗑️</button>
+      </div>
 
       <!-- Cart Items List -->
       <div class="cart-list" id="cartList">
         <div class="cart-empty-msg" id="emptyCartMsg">
-          <div class="empty-icon">🍽️<\/div>
-          <div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!<\/div>
-          <div style="font-size:0.85rem; font-family:'Pretendard', sans-serif;">터치하면 주문서에 차곡차곡 담겨요<\/div>
-        <\/div>
-      <\/div>
+          <div class="empty-icon">🍽️</div>
+          <div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!</div>
+          <div style="font-size:0.85rem; font-family:'Pretendard', sans-serif;">터치하면 주문서에 차곡차곡 담겨요</div>
+        </div>
+      </div>
 
       <!-- Summary Box -->
       <div class="cart-summary">
         <div class="summary-row">
-          <span class="summary-label">합계 금액<\/span>
-          <span class="summary-amount" id="sumPrice">0원<\/span>
-        <\/div>
-        <div class="summary-coins">필요한 냠냠코인: <b id="sumCoins" style="font-size:1.1rem; color:#E65100;">0<\/b>개<\/div>
-      <\/div>
+          <span class="summary-label">합계 금액</span>
+          <span class="summary-amount" id="sumPrice">0원</span>
+        </div>
+        <div class="summary-coins">필요한 냠냠코인: <b id="sumCoins" style="font-size:1.1rem; color:#E65100;">0</b>개</div>
+      </div>
 
       <!-- Payment Actions -->
       <div class="checkout-actions">
         <button class="btn-pay btn-coin-pay" onclick="handleCheckout('coin')">
-          <span>🪙<\/span> <span>냠냠코인으로 결제하기<\/span>
-        <\/button>
+          <span>🪙</span> <span>냠냠코인으로 결제하기</span>
+        </button>
         <button class="btn-pay btn-card-pay" onclick="handleCheckout('card')">
-          <span>💳<\/span> <span>카드로 결제하기 (삑!)<\/span>
-        <\/button>
-      <\/div>
-    <\/aside>
-  <\/main>
+          <span>💳</span> <span>카드로 결제하기 (삑!)</span>
+        </button>
+      </div>
+    </aside>
+  </main>
 
   <!-- Receipt & Kitchen Order Modal -->
   <div class="modal-overlay" id="receiptModal">
     <div class="receipt-box">
-      <div class="receipt-decor-top">
-        <div class="order-badge">주문이 완료되었습니다! ✨<\/div>
-        <div class="order-number" id="receiptOrderNum">🌟 101번<\/div>
-        <div class="receipt-date" id="receiptDate">2026. 11. 09.<\/div>
-      <\/div>
+      <div class="order-complete-banner">
+        <div class="order-complete-badge">
+          <span class="order-complete-emoji">🎉</span>
+          <span class="order-complete-text">주문이 완료되었습니다!</span>
+          <span class="order-complete-emoji">✨</span>
+        </div>
+        <div class="order-complete-sub">👨‍🍳 주방에서 맛있는 요리를 준비하고 있어요!</div>
+        <div class="order-num-pill">
+          <span class="order-num-label">주문번호</span>
+          <span class="order-num-val" id="receiptOrderNum">🌟 101번</span>
+        </div>
+        <div class="receipt-date" id="receiptDate">2026년 11월 13일</div>
+      </div>
 
       <div class="receipt-paper" id="receiptPaperList">
         <!-- Rendered items -->
-      <\/div>
+      </div>
 
       <div class="receipt-total-bar">
-        <span class="receipt-total-label">결제 금액<\/span>
-        <span class="receipt-total-val" id="receiptTotalVal">0원<\/span>
-      <\/div>
+        <span class="receipt-total-label">결제 금액</span>
+        <span class="receipt-total-val" id="receiptTotalVal">0원</span>
+      </div>
       <div style="font-family:'Pretendard', sans-serif; font-size:0.88rem; color:#8C7A6B; text-align:right; margin-bottom:12px;" id="receiptMethodText">
         결제 방식: 냠냠코인
-      <\/div>
+      </div>
 
       <div class="receipt-cheer-msg">
         👨‍🍳 주방에서 맛있게 요리하고 있어요!<br>
         번호가 불리면 음식을 받아가세요! 💖
-      <\/div>
+      </div>
 
       <div class="receipt-actions">
         <button class="btn-receipt btn-print" onclick="window.print()">
-          <span>🖨️<\/span> <span>인쇄 / 저장<\/span>
-        <\/button>
+          <span>🖨️</span> <span>인쇄 / 저장</span>
+        </button>
         <button class="btn-receipt btn-close-receipt" onclick="closeReceipt()">
-          <span>✨<\/span> <span>새 주문 받기<\/span>
-        <\/button>
-      <\/div>
-    <\/div>
-  <\/div>
+          <span>✨</span> <span>다음 친구 주문하기</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Toast Notification -->
   <div class="kiosk-toast" id="kioskToast">
-    <span id="toastIcon">✨<\/span> <span id="toastMsg">알림 메시지<\/span>
-  <\/div>
+    <span id="toastIcon">✨</span> <span id="toastMsg">알림 메시지</span>
+  </div>
 
   <script>
     /* ============================================================
@@ -13375,19 +13470,24 @@ initStorage();
        ============================================================ */
     let audioCtx = null;
     function getAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      } catch (e) {
+        return null;
       }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
     }
 
     function playTone(freq, type, duration, delay = 0) {
       if (!isSoundOn) return;
       try {
         const ctx = getAudioContext();
+        if (!ctx) return;
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.type = type;
@@ -13415,10 +13515,11 @@ initStorage();
     }
 
     function playSuccessChime() {
-      playTone(523.25, 'triangle', 0.2, 0);    // C5
-      playTone(659.25, 'triangle', 0.2, 0.12); // E5
-      playTone(783.99, 'triangle', 0.2, 0.24); // G5
-      playTone(1046.50, 'sine', 0.45, 0.36);   // C6
+      playTone(523.25, 'triangle', 0.22, 0);     // C5
+      playTone(659.25, 'triangle', 0.22, 0.12);  // E5
+      playTone(783.99, 'triangle', 0.22, 0.24);  // G5
+      playTone(1046.50, 'sine', 0.35, 0.36);    // C6
+      playTone(1318.51, 'sine', 0.45, 0.48);    // E6
     }
 
     /* ============================================================
@@ -13427,12 +13528,18 @@ initStorage();
     function speak(text) {
       if (!isSoundOn || !('speechSynthesis' in window)) return;
       try {
-        window.speechSynthesis.cancel();
+        const synth = window.speechSynthesis;
         const u = new SpeechSynthesisUtterance(text);
         u.lang = 'ko-KR';
-        u.rate = 1.05;
-        u.pitch = 1.15;
-        window.speechSynthesis.speak(u);
+        u.rate = 0.98;
+        u.pitch = 1.12;
+        window.__lastKioskUtterance = u;
+        if (synth.speaking || synth.pending) {
+          synth.cancel();
+          setTimeout(() => { synth.speak(u); }, 50);
+        } else {
+          synth.speak(u);
+        }
       } catch(e) {}
     }
 
@@ -13496,12 +13603,12 @@ initStorage();
         card.onclick = () => addToCart(item);
 
         card.innerHTML = `
-          <div class="menu-badge">${item.country}<\/div>
-          <div class="menu-icon">${item.icon}<\/div>
-          <div class="menu-name">${item.name}<\/div>
-          <div class="menu-desc">${item.desc}<\/div>
-          <div class="menu-price-tag">${item.price.toLocaleString()}원 (🪙 ${item.coins}개)<\/div>
-          <button class="btn-add">주문서에 담기 +<\/button>
+          <div class="menu-badge">${item.country}</div>
+          <div class="menu-icon">${item.icon}</div>
+          <div class="menu-name">${item.name}</div>
+          <div class="menu-desc">${item.desc}</div>
+          <div class="menu-price-tag">${item.price.toLocaleString()}원 (🪙 ${item.coins}개)</div>
+          <button class="btn-add">주문서에 담기 +</button>
         `;
         grid.appendChild(card);
       });
@@ -13566,17 +13673,17 @@ initStorage();
         row.className = 'cart-item';
         row.innerHTML = `
           <div class="cart-item-info">
-            <span class="cart-item-icon">${item.icon}<\/span>
+            <span class="cart-item-icon">${item.icon}</span>
             <div>
-              <div class="cart-item-title">${item.name}<\/div>
-              <div class="cart-item-sub">${(item.price * item.qty).toLocaleString()}원 (코인 ${item.coins * item.qty}개)<\/div>
-            <\/div>
-          <\/div>
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-sub">${(item.price * item.qty).toLocaleString()}원 (코인 ${item.coins * item.qty}개)</div>
+            </div>
+          </div>
           <div class="cart-qty-ctrl">
-            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="빼기">−<\/button>
-            <span class="qty-num">${item.qty}<\/span>
-            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="더하기">+<\/button>
-          <\/div>
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="빼기">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="더하기">+</button>
+          </div>
         `;
         list.appendChild(row);
       });
@@ -13588,6 +13695,23 @@ initStorage();
     /* ============================================================
        CHECKOUT & RECEIPT
        ============================================================ */
+    function triggerOrderConfetti() {
+      try {
+        const colors = ['#FF6B6B', '#4ECDC4', '#FFD166', '#FF922B', '#20C997', '#845EF7', '#FF8787'];
+        for (let i = 0; i < 40; i++) {
+          const conf = document.createElement('div');
+          conf.className = 'kiosk-confetti-particle';
+          conf.style.left = (Math.random() * 84 + 8) + 'vw';
+          conf.style.top = (Math.random() * 20 + 8) + 'vh';
+          conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          conf.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+          conf.style.animationDuration = (Math.random() * 1.2 + 1.2) + 's';
+          document.body.appendChild(conf);
+          setTimeout(() => conf.remove(), 2600);
+        }
+      } catch (e) {}
+    }
+
     function handleCheckout(method) {
       if (cart.length === 0) {
         showToast('먼저 드실 음식을 메뉴에서 골라주세요!', '🛍️');
@@ -13595,16 +13719,19 @@ initStorage();
         return;
       }
 
-      if (method === 'coin') {
-        playCoinSound();
-      } else {
-        playCardBeep();
-      }
+      try {
+        if (method === 'coin') {
+          playCoinSound();
+        } else {
+          playCardBeep();
+        }
+      } catch (e) {}
 
-      setTimeout(() => {
+      try {
         playSuccessChime();
-        showReceipt(method);
-      }, 400);
+      } catch (e) {}
+
+      showReceipt(method);
     }
 
     function showReceipt(method) {
@@ -13630,8 +13757,8 @@ initStorage();
         const row = document.createElement('div');
         row.className = 'receipt-item-row';
         row.innerHTML = `
-          <span>${item.icon} ${item.name} × ${item.qty}<\/span>
-          <span style="font-weight:bold;">${(item.price * item.qty).toLocaleString()}원<\/span>
+          <span>${item.icon} ${item.name} × ${item.qty}</span>
+          <span style="font-weight:bold;">${(item.price * item.qty).toLocaleString()}원</span>
         `;
         paperList.appendChild(row);
       });
@@ -13645,7 +13772,14 @@ initStorage();
 
       document.getElementById('receiptModal').classList.add('open');
 
-      speak(`딩동! 주문번호 ${orderNum}번, ${summaryText} 주문이 완료되었습니다. 주방에서 맛있게 요리해 드릴게요!`);
+      // Visual confetti celebration burst
+      triggerOrderConfetti();
+
+      // Top toast banner: 주문이 완료되었습니다!
+      showToast(`🎉 주문이 완료되었습니다! (주문번호 ${orderNum}번)`, '👨‍🍳');
+
+      // Cheerful voice announcement: Starts with "주문이 완료되었습니다!"
+      speak(`주문이 완료되었습니다! 주문번호 ${orderNum}번 고객님, ${summaryText} 맛있게 요리해 드릴게요!`);
     }
 
     function closeReceipt() {
@@ -13738,8 +13872,8 @@ initStorage();
       }
     });
   <\/script>
-<\/body>
-<\/html>
+</body>
+</html>
 
 </script>
 <script type="text/plain" id="app14">
