@@ -181,6 +181,46 @@ h1.title{
 }
 #faceWin>video,#faceWin>img{position:absolute;left:0;top:0;object-fit:fill}
 #faceWin.full{-webkit-mask-image:none;mask-image:none;border-radius:0;background:#DCEFFA}
+#faceWin.body{
+  border-radius:36px;background:transparent;
+  -webkit-mask-image:radial-gradient(ellipse at center, #000 78%, rgba(0,0,0,0) 100%);
+  mask-image:radial-gradient(ellipse at center, #000 78%, rgba(0,0,0,0) 100%);
+}
+
+/* 유아 신체 인식 실루엣 가이드 */
+.body-guide-wrap{
+  position:absolute;pointer-events:none;z-index:18;
+  display:flex;flex-direction:column;align-items:center;
+  transition:all .25s ease-out;width:280px;
+}
+.body-guide-wrap.hide{display:none}
+.body-guide-head{
+  width:130px;height:150px;border-radius:50%;
+  border:4px dashed rgba(143,208,106,.95);
+  box-shadow:0 0 16px rgba(143,208,106,.4);
+  background:rgba(143,208,106,.06);
+}
+.body-guide-torso{
+  width:260px;height:360px;border-radius:38px 38px 20px 20px;
+  border:4px dashed rgba(143,208,106,.95);margin-top:10px;
+  box-shadow:0 0 20px rgba(143,208,106,.3);
+  background:rgba(143,208,106,.05);
+}
+.body-guide-label{
+  margin-top:12px;background:rgba(255,255,255,.95);border:2px solid #8FD06A;
+  border-radius:999px;padding:5px 14px;font-size:14px;font-weight:900;color:#2D6A4F;
+  box-shadow:0 4px 12px rgba(45,106,79,.2);white-space:nowrap;
+}
+.body-guide-wrap.locked .body-guide-head,
+.body-guide-wrap.locked .body-guide-torso{
+  border-color:#FFD24E;border-style:solid;
+  box-shadow:0 0 24px rgba(255,210,78,.55);background:rgba(255,246,214,.14);
+}
+.body-guide-wrap.locked .body-guide-label{
+  border-color:#E8B93C;background:#FFF9E6;color:#7A5A16;
+}
+.tag-body-left{left:360px !important;bottom:130px !important}
+.tag-body-right{right:20px !important;bottom:130px !important}
 #stage{cursor:grab}
 #stage.dragging{cursor:grabbing}
 #stage>img#stickerHat{position:absolute;cursor:grab;touch-action:none;pointer-events:auto;filter:drop-shadow(0 10px 16px rgba(90,70,40,.3))}
@@ -399,20 +439,28 @@ th{background:#F7EEDC;font-weight:800}
       <div>
         <div id="boothFrame">
           <div id="stage">
-            <img id="layerBack" alt="농부 배경">
-            <div id="faceWin"><video id="cam" playsinline muted autoplay></video><img id="photoImg" alt="" class="hidden"></div>
-            <img id="layerFront" alt="밀짚모자">
+            <img id="layerBack" class="hidden" alt="농부 배경">
+            <img id="layerBodyBack" alt="농부 친구와 함께 배경">
+            <div id="faceWin" class="body"><video id="cam" playsinline muted autoplay></video><img id="photoImg" alt="" class="hidden"></div>
+            <img id="layerFront" class="hidden" alt="밀짚모자">
+            <img id="layerBodyFront" alt="가을 수확 전경">
             <img id="layerFrame" class="hidden" alt="농장 테두리">
             <img id="stickerHat" class="hidden" alt="밀짚모자 스티커">
-            <div id="guide"></div>
-            <!-- 실시간 얼굴인식 배지 & 쌀 바구니 태그 -->
+            <div id="guide" class="hide"></div>
+            <!-- 실시간 유아 신체 가이드 실루엣 -->
+            <div id="bodyGuide" class="body-guide-wrap">
+              <div class="body-guide-head"></div>
+              <div class="body-guide-torso"></div>
+              <div class="body-guide-label">🧑‍🌾 유아 신체 인식 구역</div>
+            </div>
+            <!-- 실시간 신체/얼굴인식 배지 & 쌀 바구니 태그 -->
             <div id="faceTrackerBadge" class="face-tracker-badge">
               <span class="pulse-dot"></span>
-              <span id="faceTrackerText">✨ 아이 얼굴 자동 인식 중…</span>
+              <span id="faceTrackerText">✨ 유아 신체 자동 인식 중…</span>
             </div>
-            <div id="tagLeftBasket" class="stage-basket-tag tag-left">🌾 쌀 바구니</div>
-            <div id="tagRightBasket" class="stage-basket-tag tag-right">🌍 세계 먹거리</div>
-            <div id="boothRiceBadge" class="booth-rice-badge">🌾 꼬마 농부의 쌀 수확 현장!</div>
+            <div id="tagLeftBasket" class="stage-basket-tag tag-body-left">🌾 쌀 바구니</div>
+            <div id="tagRightBasket" class="stage-basket-tag tag-body-right">🌍 세계 먹거리</div>
+            <div id="boothRiceBadge" class="booth-rice-badge">🌾 달누리반 꼬마 농부의 쌀 수확 현장!</div>
           </div>
           <div id="countdown"></div>
           <div id="flash"></div>
@@ -425,11 +473,12 @@ th{background:#F7EEDC;font-weight:800}
       </div>
       <div class="boothside">
         <div class="modesw">
-          <button class="msw on" data-mode="face">🧑‍🌾 얼굴만 합성</button>
-          <button class="msw" data-mode="full">🖼 전체 배경</button>
+          <button class="msw on" data-mode="body">🌾 농부 앞에서 서기 (신체 인식)</button>
+          <button class="msw" data-mode="face">🧑‍🌾 꼬마 농부 변신 (얼굴 쏙)</button>
+          <button class="msw" data-mode="full">🖼 자유 포토존</button>
         </div>
         <div class="row" style="justify-content:flex-start;gap:8px">
-          <button class="chip on" id="btnAutoTrack">✨ 얼굴 자동인식 켜짐</button>
+          <button class="chip on" id="btnAutoTrack">✨ 신체 자동인식 켜짐</button>
           <button class="chip" id="btnCam">📷 카메라 켜기</button>
           <label class="chip sun" style="cursor:pointer;font-weight:900" title="패드나 스마트폰 기본 카메라로 바로 촬영해요">📸 직접 촬영<input type="file" id="fileCamCapture" accept="image/*" capture="user" class="hidden"></label>
           <button class="chip" id="btnFlip">🔄 앞/뒤 전환</button>
@@ -898,16 +947,141 @@ const SVG_HAT = `<svg xmlns="http://www.w3.org/2000/svg" width="560" height="320
 </g>
 </svg>`;
 
+
+/* ---------- 농부와 함께 서기 (신체 인식 모드) SVG (900 x 1200) ---------- */
+const SVG_BODY_BACK = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+<defs>
+ <linearGradient id="skyB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#BCE8FF"/><stop offset="1" stop-color="#EEFAFF"/></linearGradient>
+ <linearGradient id="padB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8E0A0"/><stop offset="1" stop-color="#E7BC5A"/></linearGradient>
+ <linearGradient id="fldB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A8DE74"/><stop offset="1" stop-color="#76BE50"/></linearGradient>
+ <linearGradient id="shirtB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF9F8B"/><stop offset="1" stop-color="#F57F6B"/></linearGradient>
+ <linearGradient id="deniB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7FB4EC"/><stop offset="1" stop-color="#5E96D8"/></linearGradient>
+ <linearGradient id="hatB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7AC"/><stop offset="1" stop-color="#F0C772"/></linearGradient>
+ <linearGradient id="brimB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6D590"/><stop offset="1" stop-color="#E3B55F"/></linearGradient>
+ <radialGradient id="sunGB" cx="50%" cy="50%"><stop offset="0" stop-color="#FFF0AE"/><stop offset="1" stop-color="#FFD24E"/></radialGradient>
+ <pattern id="chkB" width="36" height="36" patternUnits="userSpaceOnUse">
+   <rect width="36" height="36" fill="none"/>
+   <rect width="36" height="10" fill="#ffffff" opacity=".35"/>
+   <rect width="10" height="36" fill="#ffffff" opacity=".35"/>
+ </pattern>
+</defs>
+<rect width="900" height="1200" fill="url(#skyB)"/>
+<circle cx="780" cy="110" r="66" fill="url(#sunGB)"/>
+<g stroke="#FFD24E" stroke-width="9" stroke-linecap="round" opacity=".75">
+ <path d="M780 14 v-0.5 M780 18 L780 -4"/><path d="M884 110 L910 110"/><path d="M706 36 L688 18"/><path d="M854 36 L872 18"/><path d="M706 184 L688 202"/><path d="M854 184 L872 202"/>
+</g>
+<g fill="#ffffff" opacity=".92">
+ <ellipse cx="140" cy="130" rx="72" ry="40"/><ellipse cx="194" cy="142" rx="54" ry="32"/><ellipse cx="90" cy="144" rx="46" ry="28"/>
+ <g opacity=".75"><ellipse cx="460" cy="80" rx="52" ry="26"/><ellipse cx="500" cy="90" rx="38" ry="20"/></g>
+</g>
+<path d="M0 480 Q140 420 280 470 Q380 508 480 470 Q620 420 750 470 Q830 500 900 480 L900 700 L0 700 Z" fill="#8FD06A"/>
+<path d="M0 520 Q160 470 320 514 Q440 550 580 508 Q730 460 900 520 L900 730 L0 730 Z" fill="#7CC457" opacity=".85"/>
+<path d="M0 560 L900 560 L900 740 L0 740 Z" fill="url(#padB)"/>
+<g stroke="#D9A83F" stroke-width="4.5" stroke-linecap="round" opacity=".5">
+ <path d="M30 740 L42 610"/><path d="M90 740 L102 620"/><path d="M150 740 L160 610"/><path d="M210 740 L220 622"/>
+ <path d="M600 740 L610 610"/><path d="M660 740 L670 620"/><path d="M720 740 L730 610"/><path d="M780 740 L790 622"/>
+</g>
+<g opacity=".85" transform="translate(76,550) scale(.8)">
+ <path d="M0 0 L0 150" stroke="#B98A4E" stroke-width="11" stroke-linecap="round"/>
+ <path d="M-46 40 L46 40" stroke="#B98A4E" stroke-width="10" stroke-linecap="round"/>
+ <circle cx="0" cy="-14" r="30" fill="#F6E0B6" stroke="#C79A5E" stroke-width="4.5"/>
+ <circle cx="-10" cy="-19" r="4" fill="#6B4B2A"/><circle cx="10" cy="-19" r="4" fill="#6B4B2A"/>
+ <path d="M-9 -5 Q0 3 9 -5" stroke="#6B4B2A" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <path d="M-36 -34 Q0 -60 36 -34 Z" fill="#EFC877" stroke="#C79A5E" stroke-width="4.5"/>
+ <path d="M-40 40 L-18 95 L20 95 L42 40 Z" fill="#FFCF8A" stroke="#D9A83F" stroke-width="4.5"/>
+</g>
+<path d="M0 700 Q220 660 450 686 Q690 710 900 676 L900 1200 L0 1200 Z" fill="url(#fldB)"/>
+
+<!-- 농부 캐릭터 (오른쪽에서 아이를 흐뭇하게 맞이하며 서 있는 다정한 모습) -->
+<g id="farmerFriend">
+ <ellipse cx="670" cy="1178" rx="210" ry="32" fill="#5A8A3C" opacity=".16"/>
+ <!-- 팔 -->
+ <path d="M570 770 C510 820 470 910 450 990" fill="none" stroke="#F0836E" stroke-width="72" stroke-linecap="round"/>
+ <path d="M750 770 C810 820 840 910 820 990" fill="none" stroke="#F0836E" stroke-width="72" stroke-linecap="round"/>
+ <!-- 몸통 -->
+ <path d="M520 1200 C520 930 560 720 670 700 C780 720 820 930 820 1200 Z" fill="url(#shirtB)"/>
+ <path d="M520 1200 C520 930 560 720 670 700 C780 720 820 930 820 1200 Z" fill="url(#chkB)"/>
+ <path d="M520 1200 C520 930 560 720 670 700 C780 720 820 930 820 1200 Z" fill="none" stroke="#D96A56" stroke-width="7"/>
+ <!-- 멜빵바지 -->
+ <path d="M550 1200 L550 1020 Q550 990 580 990 L760 990 Q790 990 790 1020 L790 1200 Z" fill="url(#deniB)" stroke="#4E82C2" stroke-width="7"/>
+ <rect x="605" y="890" width="130" height="110" rx="20" fill="url(#deniB)" stroke="#4E82C2" stroke-width="7"/>
+ <path d="M620 896 L620 836 Q620 800 648 788" fill="none" stroke="#5E96D8" stroke-width="24" stroke-linecap="round"/>
+ <path d="M720 896 L720 836 Q720 800 692 788" fill="none" stroke="#5E96D8" stroke-width="24" stroke-linecap="round"/>
+ <circle cx="620" cy="906" r="9" fill="#FFD95E" stroke="#D9A83F" stroke-width="3.5"/>
+ <circle cx="720" cy="906" r="9" fill="#FFD95E" stroke="#D9A83F" stroke-width="3.5"/>
+ <!-- 손 -->
+ <circle cx="448" cy="1000" r="40" fill="#F7D9B6" stroke="#D8A878" stroke-width="6"/>
+ <circle cx="820" cy="1000" r="40" fill="#F7D9B6" stroke="#D8A878" stroke-width="6"/>
+ <!-- 목과 얼굴 -->
+ <rect x="635" y="580" width="70" height="130" rx="30" fill="#F3CDA4"/>
+ <ellipse cx="670" cy="520" rx="116" ry="128" fill="#F7DEC3" stroke="#E0BC96" stroke-width="6"/>
+ <!-- 귀 -->
+ <ellipse cx="550" cy="530" rx="22" ry="28" fill="#F7D9B6" stroke="#D8A878" stroke-width="5"/>
+ <ellipse cx="790" cy="530" rx="22" ry="28" fill="#F7D9B6" stroke="#D8A878" stroke-width="5"/>
+ <!-- 눈 웃음 (^^) -->
+ <path d="M610 505 Q624 490 638 505" fill="none" stroke="#5B4327" stroke-width="6" stroke-linecap="round"/>
+ <path d="M698 505 Q712 490 726 505" fill="none" stroke="#5B4327" stroke-width="6" stroke-linecap="round"/>
+ <!-- 볼터치와 주근깨 -->
+ <ellipse cx="616" cy="532" rx="20" ry="12" fill="#FFAEC0" opacity=".65"/>
+ <ellipse cx="720" cy="532" rx="20" ry="12" fill="#FFAEC0" opacity=".65"/>
+ <circle cx="612" cy="526" r="2.5" fill="#C77850"/><circle cx="620" cy="530" r="2.5" fill="#C77850"/><circle cx="616" cy="535" r="2.5" fill="#C77850"/>
+ <circle cx="716" cy="526" r="2.5" fill="#C77850"/><circle cx="724" cy="530" r="2.5" fill="#C77850"/><circle cx="720" cy="535" r="2.5" fill="#C77850"/>
+ <!-- 코와 활짝 웃는 입 -->
+ <ellipse cx="668" cy="522" rx="8" ry="6" fill="#E8B88E"/>
+ <path d="M642 546 Q668 578 694 546 Z" fill="#E05B48" stroke="#5B4327" stroke-width="5" stroke-linejoin="round"/>
+ <path d="M650 548 Q668 562 686 548" fill="#FFF" opacity=".9"/>
+ <!-- 밀짚모자 -->
+ <ellipse cx="670" cy="442" rx="140" ry="28" fill="#8A6A3C" opacity=".14"/>
+ <path d="M590 398 Q594 286 670 282 Q746 286 750 398 Z" fill="url(#hatB)" stroke="#C99A46" stroke-width="7" stroke-linejoin="round"/>
+ <g stroke="#D9B470" stroke-width="4" opacity=".8" fill="none">
+  <path d="M612 390 Q616 305 670 296"/><path d="M646 388 Q648 306 672 294"/>
+  <path d="M694 388 Q692 306 668 294"/><path d="M728 390 Q724 305 670 296"/>
+ </g>
+ <path d="M590 384 Q670 410 750 384 L752 402 Q670 430 588 402 Z" fill="#FF8E7A" stroke="#E3705C" stroke-width="5" stroke-linejoin="round"/>
+ <ellipse cx="670" cy="398" rx="180" ry="40" fill="url(#brimB)" stroke="#C99A46" stroke-width="7"/>
+ <g transform="translate(760,375) rotate(14)">
+  <path d="M0 0 Q22 -20 44 -4 Q24 14 0 0 Z" fill="#8FD06A" stroke="#6BB24A" stroke-width="4" stroke-linejoin="round"/>
+ </g>
+</g>
+</svg>`;
+
+const SVG_BODY_FRONT = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+<defs>
+ <linearGradient id="signG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF5"/><stop offset="1" stop-color="#FFF0D0"/></linearGradient>
+</defs>
+<!-- 상단 가을 수확 팻말 -->
+<g transform="translate(450, 60)">
+ <path d="M-220 0 L220 0 L200 46 L-200 46 Z" fill="url(#signG)" stroke="#B9823F" stroke-width="5" stroke-linejoin="round"/>
+ <circle cx="-190" cy="23" r="5" fill="#D9A83F"/><circle cx="190" cy="23" r="5" fill="#D9A83F"/>
+ <text x="0" y="32" font-family="'Pretendard Variable',Pretendard,sans-serif" font-weight="900" font-size="24" fill="#6B4B2A" text-anchor="middle">🌾 달누리반 가을 쌀 수확 포토존 🌾</text>
+</g>
+<!-- 하단 풍성한 벼 이삭과 잔디 (유아와 농부의 발 아래를 포근하게 감싸줌) -->
+<g opacity=".92">
+ <path d="M0 1150 Q120 1110 240 1146 Q380 1180 520 1136 Q680 1098 900 1140 L900 1200 L0 1200 Z" fill="#8FD06A" opacity=".7"/>
+ <path d="M0 1168 Q180 1130 360 1162 Q540 1190 720 1146 L900 1166 L900 1200 L0 1200 Z" fill="#6FB84C"/>
+</g>
+<g stroke="#D9A83F" stroke-width="5" stroke-linecap="round" opacity=".8">
+ <path d="M40 1200 q10 -50 24 -70"/><path d="M120 1200 q8 -46 20 -64"/>
+ <path d="M220 1200 q12 -52 28 -72"/><path d="M340 1200 q10 -48 24 -68"/>
+ <path d="M480 1200 q12 -50 26 -70"/><path d="M620 1200 q10 -46 22 -64"/>
+ <path d="M780 1200 q12 -52 26 -72"/><path d="M860 1200 q8 -44 18 -60"/>
+</g>
+</svg>`;
+
 function svgURL(s){ return "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(s); }
 const imgBack=new Image(), imgFront=new Image(), imgFrame=new Image(), imgHat=new Image();
+const imgBodyBack=new Image(), imgBodyFront=new Image();
 let layersReady=false;
 const layersP = Promise.all([
   new Promise(r=>{ imgBack.onload=r; imgBack.onerror=r; imgBack.src=svgURL(SVG_BACK); }),
   new Promise(r=>{ imgFront.onload=r; imgFront.onerror=r; imgFront.src=svgURL(SVG_FRONT); }),
+  new Promise(r=>{ imgBodyBack.onload=r; imgBodyBack.onerror=r; imgBodyBack.src=svgURL(SVG_BODY_BACK); }),
+  new Promise(r=>{ imgBodyFront.onload=r; imgBodyFront.onerror=r; imgBodyFront.src=svgURL(SVG_BODY_FRONT); }),
   new Promise(r=>{ imgFrame.onload=r; imgFrame.onerror=r; imgFrame.src=svgURL(SVG_FRAME); }),
   new Promise(r=>{ imgHat.onload=r; imgHat.onerror=r; imgHat.src=svgURL(SVG_HAT); })
 ]).then(()=>{ layersReady=true; });
 $("#layerBack").src=imgBack.src; $("#layerFront").src=imgFront.src;
+$("#layerBodyBack").src=imgBodyBack.src; $("#layerBodyFront").src=imgBodyFront.src;
 $("#layerFrame").src=imgFrame.src; $("#stickerHat").src=imgHat.src;
 const HAT_RATIO=320/560;
 
@@ -1053,14 +1227,15 @@ function renderResult(){
 /* ---------- 사진관 ---------- */
 const faceWin=$("#faceWin"), guide=$("#guide"), vid=$("#cam"), pimg=$("#photoImg"), hatEl=$("#stickerHat");
 const view={zoom:1, ox:0, oy:0, mirror:true, src:null};  // src: {el,w,h,kind}
-let mode="face";                                         // "face"=얼굴만 합성, "full"=전체 배경
-const sticker={on:true, x:220, y:120, w:460};            // 전체 배경 모드의 밀짚모자 스티커(장면 좌표)
+let mode="body";                                         // "body"=농부 앞에서 서기(신체인식), "face"=얼굴만 합성, "full"=전체 배경
+const sticker={on:true, x:190, y:140, w:260};            // 밀짚모자 스티커(장면 좌표)
 let stream=null, facing="user";
 
 function faceRect(m){
-  return (m||mode)==="full"
-    ? {x:0, y:0, w:SCENE_W, h:SCENE_H}
-    : {x:FACE.cx-FACE.rx, y:FACE.cy-FACE.ry, w:FACE.rx*2, h:FACE.ry*2};
+  const curM = m || mode;
+  if(curM === "full") return {x:0, y:0, w:SCENE_W, h:SCENE_H};
+  if(curM === "body") return {x:20, y:120, w:560, h:980};
+  return {x:FACE.cx-FACE.rx, y:FACE.cy-FACE.ry, w:FACE.rx*2, h:FACE.ry*2};
 }
 
 function layoutStage(){
@@ -1072,10 +1247,20 @@ function placeFaceWindow(){
   const r=faceRect();
   faceWin.style.left=r.x+"px"; faceWin.style.top=r.y+"px";
   faceWin.style.width=r.w+"px"; faceWin.style.height=r.h+"px";
-  guide.style.left=(FACE.cx-FACE.rx+8)+"px";
-  guide.style.top =(FACE.cy-FACE.ry+8)+"px";
-  guide.style.width =(FACE.rx*2-16)+"px";
-  guide.style.height=(FACE.ry*2-16)+"px";
+  faceWin.className = mode;
+
+  if(mode === "face"){
+    guide.style.left=(FACE.cx-FACE.rx+8)+"px";
+    guide.style.top =(FACE.cy-FACE.ry+8)+"px";
+    guide.style.width =(FACE.rx*2-16)+"px";
+    guide.style.height=(FACE.ry*2-16)+"px";
+  } else if(mode === "body"){
+    const bg=$("#bodyGuide");
+    if(bg){
+      bg.style.left=(r.x + 140)+"px";
+      bg.style.top =(r.y + 70)+"px";
+    }
+  }
 }
 placeFaceWindow();
 
@@ -1098,20 +1283,42 @@ function setMode(m){
   if(m===mode) return;
   mode=m;
   $$(".msw").forEach(b=>b.classList.toggle("on",b.dataset.mode===m));
-  const full=(m==="full");
-  faceWin.classList.toggle("full",full);
-  $("#layerBack").classList.toggle("hidden",full);
-  $("#layerFront").classList.toggle("hidden",full);
-  $("#layerFrame").classList.toggle("hidden",!full);
-  $("#hatCtl").classList.toggle("hidden",!full);
-  $("#btnGuide").classList.toggle("hidden",full);
-  guide.classList.toggle("hide",full);
-  $("#btnGuide").classList.toggle("on",!full);
-  $("#zoomL").textContent=full?"사진 크기":"얼굴 크기";
-  $("#padL").textContent=full?"사진 위치 옮기기":"얼굴 위치 옮기기";
-  $("#boothHelp").innerHTML=full
-    ? "· 아이의 <b>온몸</b>이 화면에 들어오게 찍는 모드예요.<br>· 화면을 끌어서 위치를, 슬라이더로 크기를 맞춰 주세요.<br>· 모자 스티커는 직접 끌어서 머리 위에 올려 주세요.<br>· 사진은 이 기기 안에서만 처리되고 어디에도 전송되지 않습니다."
-    : "· 얼굴이 동그란 안내선 안에 오도록 맞춰 주세요.<br>· 카메라가 열리지 않으면 <b>사진 올리기</b>로도 똑같이 만들 수 있어요.<br>· 사진은 이 기기 안에서만 처리되고 어디에도 전송되지 않습니다.";
+  const isBody=(m==="body");
+  const isFace=(m==="face");
+  const isFull=(m==="full");
+
+  $("#layerBack").classList.toggle("hidden",!isFace);
+  $("#layerFront").classList.toggle("hidden",!isFace);
+  $("#layerBodyBack").classList.toggle("hidden",!isBody);
+  $("#layerBodyFront").classList.toggle("hidden",!isBody);
+  $("#layerFrame").classList.toggle("hidden",!isFull);
+
+  $("#guide").classList.toggle("hide",!isFace);
+  $("#bodyGuide").classList.toggle("hide",!isBody);
+  $("#btnGuide").classList.toggle("hidden",isFull);
+  $("#hatCtl").classList.toggle("hidden",isFace);
+
+  const tL=$("#tagLeftBasket"), tR=$("#tagRightBasket");
+  if(tL) tL.className="stage-basket-tag " + (isBody?"tag-body-left":"tag-left");
+  if(tR) tR.className="stage-basket-tag " + (isBody?"tag-body-right":"tag-right");
+
+  if(isBody){
+    $("#zoomL").textContent="신체/상체 크기";
+    $("#padL").textContent="아이 위치 옮기기";
+    $("#boothHelp").innerHTML="· 아이가 <b>카메라 앞에 서면</b> 신체(상체/전신)를 자동으로 인식해서 농부 옆에 쏙 맞춰드려요!<br>· 화면을 끌거나 슬라이더로 크기와 위치를 편하게 조절할 수도 있어요.<br>· <b>[👒 모자 스티커]</b>를 켜면 아이 머리 위에 귀여운 꼬마 농부 모자가 올라가요.";
+    sticker.x=190; sticker.y=140; sticker.w=260;
+    $("#btnAutoTrack").textContent="✨ 신체 자동인식 켜짐";
+  } else if(isFace){
+    $("#zoomL").textContent="얼굴 크기";
+    $("#padL").textContent="얼굴 위치 옮기기";
+    $("#boothHelp").innerHTML="· 얼굴이 동그란 안내선 안에 오도록 맞춰 주세요.<br>· 카메라가 열리지 않으면 <b>사진 올리기</b>로도 똑같이 만들 수 있어요.<br>· 사진은 이 기기 안에서만 안전하게 처리됩니다.";
+    $("#btnAutoTrack").textContent="✨ 얼굴 자동인식 켜짐";
+  } else {
+    $("#zoomL").textContent="사진 크기";
+    $("#padL").textContent="사진 위치 옮기기";
+    $("#boothHelp").innerHTML="· 아이의 <b>온몸</b>이 화면에 들어오게 찍는 모드예요.<br>· 화면을 끌어서 위치를, 슬라이더로 크기를 맞춰 주세요.<br>· 모자 스티커는 직접 끌어서 머리 위에 올려 주세요.";
+    sticker.x=220; sticker.y=120; sticker.w=460;
+  }
   view.zoom=1; view.ox=0; view.oy=0;
   $("#zoom").value=100; $("#zoomV").textContent="100%";
   if(state.photo){ state.photo.mode=mode; state.photo.zoom=1; state.photo.ox=0; state.photo.oy=0; }
@@ -1163,8 +1370,7 @@ async function startCam(){
     $("#btnCam").textContent = "📷 카메라 켜짐"; $("#btnCam").classList.add("on");
     $("#btnShoot").classList.remove("hidden");
     startFaceTracking();
-    toast(mode === "full" ? "카메라가 켜졌어요! 아이의 온몸이 화면에 들어오게 맞춰 주세요."
-                          : "카메라가 켜졌어요! 아이 얼굴을 자동으로 쏙 맞춰드려요.");
+    toast(mode === "body" ? "카메라가 켜졌어요! 아이의 신체(상체/전신)를 자동으로 쏙 맞춰드려요." : (mode === "full" ? "카메라가 켜졌어요! 온몸이 화면에 들어오게 맞춰 주세요." : "카메라가 켜졌어요! 아이 얼굴을 자동으로 쏙 맞춰드려요."));
   }catch(e){
     console.warn("Camera start failed:", e);
     const isFile = (window.location.protocol === "file:");
@@ -1183,83 +1389,120 @@ function stopCam(){
   $("#btnCam").textContent="📷 카메라 켜기"; $("#btnCam").classList.remove("on");
 }
 
-/* ---------- 실시간 유아 얼굴 인식 & 쌀 렌더링 엔진 ---------- */
+/* ---------- 실시간 유아 신체 & 얼굴 인식 엔진 ---------- */
 let autoTrackEnabled = true;
 let trackTimer = null;
 let lastManualTime = 0;
 let faceTrackCanvas = null;
 
-async function detectChildFace(el){
+async function detectChildBody(el){
   if(!el) return null;
   const w = el.videoWidth || el.naturalWidth || el.width;
   const h = el.videoHeight || el.naturalHeight || el.height;
   if(!w || !h) return null;
 
-  // 1. 최신 크롬/안드로이드 네이티브 FaceDetector 지원 시 고속 처리
+  let face = null;
   if("FaceDetector" in window){
     try{
       if(!window._faceDetector) window._faceDetector = new FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
       const faces = await window._faceDetector.detect(el);
       if(faces && faces.length > 0){
         const box = faces[0].boundingBox;
-        return {
-          x: box.x + box.width / 2,
-          y: box.y + box.height / 2,
-          w: box.width,
-          h: box.height,
-          srcW: w,
-          srcH: h
-        };
+        face = { x: box.x + box.width / 2, y: box.y + box.height / 2, w: box.width, h: box.height, srcW: w, srcH: h };
       }
     }catch(err){}
   }
 
-  // 2. 무설치 순수 캔버스 피부톤·얼굴 윤곽 고속 탐색 (오프라인 100% 호환)
   if(!faceTrackCanvas){
     faceTrackCanvas = document.createElement("canvas");
-    faceTrackCanvas.width = 160;
-    faceTrackCanvas.height = 120;
+    faceTrackCanvas.width = 160; faceTrackCanvas.height = 120;
   }
   const tw = faceTrackCanvas.width, th = faceTrackCanvas.height;
   const tctx = faceTrackCanvas.getContext("2d", {willReadFrequently: true});
   tctx.drawImage(el, 0, 0, tw, th);
   const data = tctx.getImageData(0, 0, tw, th).data;
+  const scaleX = w / tw, scaleY = h / th;
 
-  let sumX = 0, sumY = 0, count = 0;
-  let minX = tw, maxX = 0, minY = th, maxY = 0;
-
-  for(let y = 10; y < th - 10; y += 2){
-    for(let x = 10; x < tw - 10; x += 2){
-      const idx = (y * tw + x) * 4;
-      const r = data[idx], g = data[idx+1], b = data[idx+2];
-      if(r > 80 && g > 40 && b > 25 && (r - g) > 12 && r > b && (Math.max(r,g,b) - Math.min(r,g,b)) > 15){
-        const dx = (x - tw / 2) / (tw / 2);
-        const weight = Math.max(0.2, 1.0 - dx * dx * 0.7);
-        sumX += x * weight;
-        sumY += y * weight;
-        count += weight;
-        if(x < minX) minX = x; if(x > maxX) maxX = x;
-        if(y < minY) minY = y; if(y > maxY) maxY = y;
+  if(!face){
+    let sumX = 0, sumY = 0, count = 0;
+    let minX = tw, maxX = 0, minY = th, maxY = 0;
+    for(let y = 8; y < th - 8; y += 2){
+      for(let x = 8; x < tw - 8; x += 2){
+        const idx = (y * tw + x) * 4;
+        const r = data[idx], g = data[idx+1], b = data[idx+2];
+        if(r > 80 && g > 40 && b > 25 && (r - g) > 12 && r > b && (Math.max(r,g,b) - Math.min(r,g,b)) > 15){
+          const dx = (x - tw / 2) / (tw / 2);
+          const weight = Math.max(0.2, 1.0 - dx * dx * 0.7);
+          sumX += x * weight; sumY += y * weight; count += weight;
+          if(x < minX) minX = x; if(x > maxX) maxX = x;
+          if(y < minY) minY = y; if(y > maxY) maxY = y;
+        }
       }
+    }
+    if(count > 30 && (maxX - minX) > 14 && (maxY - minY) > 14){
+      face = { x: (sumX / count) * scaleX, y: (sumY / count) * scaleY, w: (maxX - minX) * scaleX, h: (maxY - minY) * scaleY, srcW: w, srcH: h };
     }
   }
 
-  if(count > 40 && (maxX - minX) > 16 && (maxY - minY) > 16){
-    const scaleX = w / tw;
-    const scaleY = h / th;
+  if(face){
+    const headTop = Math.max(0, face.y - face.h * 0.6);
+    const estimatedShoulderW = face.w * 2.5;
+    const startTy = Math.min(th - 1, Math.max(0, Math.round((face.y + face.h * 0.5) / scaleY)));
+    let minBodyTx = tw, maxBodyTx = 0, lastBodyTy = startTy, bodyPixelCount = 0;
+
+    for(let ty = startTy; ty < th - 2; ty += 2){
+      let rowPixels = 0;
+      for(let tx = 4; tx < tw - 4; tx += 2){
+        const idx = (ty * tw + tx) * 4;
+        const r = data[idx], g = data[idx+1], b = data[idx+2];
+        const isSubject = (r + g + b > 60) && (r + g + b < 720);
+        const distFromFaceX = Math.abs(tx * scaleX - face.x);
+        if(isSubject && distFromFaceX < estimatedShoulderW * 0.85){
+          rowPixels++;
+          if(tx < minBodyTx) minBodyTx = tx;
+          if(tx > maxBodyTx) maxBodyTx = tx;
+        }
+      }
+      if(rowPixels > 4){ lastBodyTy = ty; bodyPixelCount += rowPixels; }
+    }
+
+    let bodyLeft = Math.max(0, face.x - estimatedShoulderW / 2);
+    let bodyRight = Math.min(w, face.x + estimatedShoulderW / 2);
+    let bodyBottom = Math.min(h, face.y + face.h * 4.2);
+    if(bodyPixelCount > 30 && maxBodyTx > minBodyTx){
+      bodyLeft = Math.max(0, minBodyTx * scaleX);
+      bodyRight = Math.min(w, maxBodyTx * scaleX);
+      bodyBottom = Math.min(h, lastBodyTy * scaleY);
+    }
+
+    const bodyWidth = Math.max(face.w * 2.0, bodyRight - bodyLeft);
+    const bodyHeight = Math.max(face.h * 3.0, bodyBottom - headTop);
     return {
-      x: (sumX / count) * scaleX,
-      y: (sumY / count) * scaleY,
-      w: (maxX - minX) * scaleX,
-      h: (maxY - minY) * scaleY,
-      srcW: w,
-      srcH: h
+      type: "body",
+      face: face,
+      body: {
+        x: face.x,
+        y: (headTop + bodyBottom) / 2,
+        w: bodyWidth,
+        h: bodyHeight,
+        top: headTop,
+        bottom: bodyBottom,
+        left: bodyLeft,
+        right: bodyRight
+      },
+      srcW: w, srcH: h
     };
   }
   return null;
 }
 
-function startFaceTracking(){
+async function detectChildFace(el){
+  if(!el) return null;
+  const res = await detectChildBody(el);
+  return res ? res.face : null;
+}
+
+function startTracking(){
   if(trackTimer) return;
   trackTimer = setInterval(async () => {
     if(!autoTrackEnabled) return;
@@ -1267,47 +1510,107 @@ function startFaceTracking(){
     if(!stream || vid.paused || vid.ended || view.src?.kind !== "cam") return;
 
     try{
-      const face = await detectChildFace(vid);
       const badge = $("#faceTrackerBadge");
-      if(face){
-        const r = faceRect();
-        const W = r.w, H = r.h;
-        const s0 = Math.max(W / vid.videoWidth, H / vid.videoHeight);
+      const bodyGuideEl = $("#bodyGuide");
 
-        const desiredScale = (H * 0.74) / (face.h * s0);
-        const targetZoom = Math.min(2.5, Math.max(0.7, desiredScale));
+      if(mode === "body"){
+        const res = await detectChildBody(vid);
+        if(res && res.body){
+          const body = res.body;
+          const r = faceRect("body");
+          const W = r.w, H = r.h;
+          const s0 = Math.max(W / vid.videoWidth, H / vid.videoHeight);
 
-        const vcx = vid.videoWidth / 2;
-        const vcy = vid.videoHeight / 2;
-        const faceCenterY = face.y - face.h * 0.04;
-        const dx = (face.x - vcx) * s0 * targetZoom;
-        const dy = (faceCenterY - vcy) * s0 * targetZoom;
+          const desiredScale = (H * 0.74) / (body.h * s0);
+          const targetZoom = Math.min(2.2, Math.max(0.65, desiredScale));
 
-        const targetOx = view.mirror ? -dx : dx;
-        const targetOy = dy;
+          const vcx = vid.videoWidth / 2;
+          const vcy = vid.videoHeight / 2;
+          const bodyCenterY = body.y - body.h * 0.05;
+          const dx = (body.x - vcx) * s0 * targetZoom;
+          const dy = (bodyCenterY - vcy) * s0 * targetZoom;
 
-        view.ox = view.ox * 0.72 + targetOx * 0.28;
-        view.oy = view.oy * 0.72 + targetOy * 0.28;
-        view.zoom = view.zoom * 0.75 + targetZoom * 0.25;
+          const targetOx = view.mirror ? -dx : dx;
+          const targetOy = dy;
 
-        $("#zoom").value = Math.round(view.zoom * 100);
-        $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
-        applyFaceStyle();
+          view.ox = view.ox * 0.70 + targetOx * 0.30;
+          view.oy = view.oy * 0.70 + targetOy * 0.30;
+          view.zoom = view.zoom * 0.72 + targetZoom * 0.28;
 
-        if(badge){
-          badge.classList.add("locked");
-          $("#faceTrackerText").textContent = "✨ 아이 얼굴 쏙 맞춤 완료! 🌾";
+          $("#zoom").value = Math.round(view.zoom * 100);
+          $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+          applyFaceStyle();
+
+          // 모자 스티커 자동 위치 연동 (머리 위)
+          if(res.face && sticker.on){
+            const g = faceGeom();
+            const faceCenterX = r.x + g.left + (view.mirror ? (vid.videoWidth - res.face.x) : res.face.x) * (g.dw / vid.videoWidth);
+            const faceTopY = r.y + g.top + (res.face.y - res.face.h * 0.55) * (g.dh / vid.videoHeight);
+            sticker.w = Math.max(160, Math.min(320, res.face.w * (g.dw / vid.videoWidth) * 1.8));
+            sticker.x = faceCenterX - sticker.w / 2;
+            sticker.y = faceTopY - sticker.w * 0.45;
+            renderSticker();
+          }
+
+          if(badge){
+            badge.classList.add("locked");
+            $("#faceTrackerText").textContent = "✨ 유아 신체 인식 완료! 🌾 농부와 함께 찰칵!";
+          }
+          if(bodyGuideEl){
+            bodyGuideEl.classList.add("locked");
+          }
+        } else {
+          if(badge){
+            badge.classList.remove("locked");
+            $("#faceTrackerText").textContent = "👀 카메라 앞에 서면 아이 몸을 자동으로 쏙 맞춰요!";
+          }
+          if(bodyGuideEl){
+            bodyGuideEl.classList.remove("locked");
+          }
         }
-      }else{
-        if(badge){
-          badge.classList.remove("locked");
-          $("#faceTrackerText").textContent = "👀 카메라 앞에 서면 얼굴이 쏙 들어가요!";
+      } else if(mode === "face"){
+        const face = await detectChildFace(vid);
+        if(face){
+          const r = faceRect("face");
+          const W = r.w, H = r.h;
+          const s0 = Math.max(W / vid.videoWidth, H / vid.videoHeight);
+
+          const desiredScale = (H * 0.74) / (face.h * s0);
+          const targetZoom = Math.min(2.5, Math.max(0.7, desiredScale));
+
+          const vcx = vid.videoWidth / 2;
+          const vcy = vid.videoHeight / 2;
+          const faceCenterY = face.y - face.h * 0.04;
+          const dx = (face.x - vcx) * s0 * targetZoom;
+          const dy = (faceCenterY - vcy) * s0 * targetZoom;
+
+          const targetOx = view.mirror ? -dx : dx;
+          const targetOy = dy;
+
+          view.ox = view.ox * 0.72 + targetOx * 0.28;
+          view.oy = view.oy * 0.72 + targetOy * 0.28;
+          view.zoom = view.zoom * 0.75 + targetZoom * 0.25;
+
+          $("#zoom").value = Math.round(view.zoom * 100);
+          $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+          applyFaceStyle();
+
+          if(badge){
+            badge.classList.add("locked");
+            $("#faceTrackerText").textContent = "✨ 아이 얼굴 쏙 맞춤 완료! 🌾";
+          }
+        } else {
+          if(badge){
+            badge.classList.remove("locked");
+            $("#faceTrackerText").textContent = "👀 카메라 앞에 서면 얼굴이 쏙 들어가요!";
+          }
         }
       }
     }catch(e){}
   }, 90);
 }
 
+function startFaceTracking(){ startTracking(); }
 function stopFaceTracking(){
   if(trackTimer){
     clearInterval(trackTimer);
@@ -1330,13 +1633,20 @@ function updateRiceBoothUI(){
   if(tR && g2) tR.innerHTML = `🌍 ${esc(g2.name)}`;
 }
 
-function drawRiceAndFoodInBaskets(ctx){
+function drawRiceAndFoodInBaskets(ctx, currentMode){
+  const m = currentMode || mode;
   const g1 = state.g1 || (S.items.g1 && S.items.g1[0]);
   const g2 = state.g2 || (S.items.g2 && S.items.g2[0]);
 
-  // 1. 왼쪽 바구니 (196, 1036) — 내가 뽑은 알록달록 쌀
+  let b1x = 196, b1y = 1036, b2x = 704, b2y = 1036;
+  if(m === "body"){
+    b1x = 420; b1y = 990;
+    b2x = 810; b2y = 990;
+  }
+
+  // 1. 왼쪽 바구니 — 내가 뽑은 알록달록 쌀
   ctx.save();
-  ctx.translate(196, 1036);
+  ctx.translate(b1x, b1y);
 
   let mainColor = "#FFE488", deepColor = "#E8B93C", lightColor = "#FFF6D4", riceName = "노란색 쌀";
   if(g1){
@@ -1388,9 +1698,9 @@ function drawRiceAndFoodInBaskets(ctx){
   drawBasketTag(ctx, 0, 32, "🌾 " + riceName, mainColor, deepColor);
   ctx.restore();
 
-  // 2. 오른쪽 바구니 (704, 1036) — 내가 뽑은 세계 먹거리
+  // 2. 오른쪽 바구니 — 내가 뽑은 세계 먹거리
   ctx.save();
-  ctx.translate(704, 1036);
+  ctx.translate(b2x, b2y);
 
   let fMain = "#FFEAA7", fDeep = "#D9A83F", fName = "세계 먹거리";
   if(g2){
@@ -1477,45 +1787,98 @@ function drawBasketTag(ctx, x, y, text, fillC, strokeC){
   ctx.restore();
 }
 
-/* 합성: 뒷배경 → 얼굴(타원 마스크) → 밀짚모자 */
+/* 합성: 모드별 레이어 조판 */
 function composeScene(ctx){
   ctx.clearRect(0,0,SCENE_W,SCENE_H);
-  const src=state.photo||view.src;
-  const m=(state.photo&&state.photo.mode)||mode;
-  const full=(m==="full");
-  const r=faceRect(m);
-  if(!full && layersReady) ctx.drawImage(imgBack,0,0,SCENE_W,SCENE_H);
-  if(src&&src.el&&src.w&&src.h){
-    const W=r.w, H=r.h;
-    const off=document.createElement("canvas"); off.width=W; off.height=H;
-    const o=off.getContext("2d");
-    const s0=Math.max(W/src.w,H/src.h), s=s0*(src.zoom!=null?src.zoom:view.zoom);
-    const dw=src.w*s, dh=src.h*s;
-    const ox=(src.ox!=null?src.ox:view.ox), oy=(src.oy!=null?src.oy:view.oy);
-    const mir=(src.mirror!=null?src.mirror:view.mirror);
-    const left=(W-dw)/2+ox, top=(H-dh)/2+oy;
-    o.save();
-    if(mir){ o.translate(left+dw/2,top+dh/2); o.scale(-1,1); o.drawImage(src.el,-dw/2,-dh/2,dw,dh); }
-    else { o.drawImage(src.el,left,top,dw,dh); }
-    o.restore();
-    if(!full){
-      // 부드러운 타원 마스크 (CSS radial-gradient closest-side 72% 와 동일)
-      o.globalCompositeOperation="destination-in";
-      o.save(); o.translate(W/2,H/2); o.scale(1,H/W);
-      const gr=o.createRadialGradient(0,0,0,0,0,W/2);
-      gr.addColorStop(0,"rgba(0,0,0,1)"); gr.addColorStop(.72,"rgba(0,0,0,1)"); gr.addColorStop(1,"rgba(0,0,0,0)");
-      o.fillStyle=gr; o.beginPath(); o.arc(0,0,W/2,0,Math.PI*2); o.fill(); o.restore();
+  const src = state.photo || view.src;
+  const m = (state.photo && state.photo.mode) || mode;
+  const r = faceRect(m);
+
+  if(m === "body"){
+    // 1. 농부 친구와 함께 서는 가을 들판 뒷배경
+    if(layersReady) ctx.drawImage(imgBodyBack, 0, 0, SCENE_W, SCENE_H);
+
+    // 2. 유아 신체/상체 카메라 영상 (자연스러운 소프트 마스크 페더링)
+    if(src && src.el && src.w && src.h){
+      const W = r.w, H = r.h;
+      const off = document.createElement("canvas"); off.width = W; off.height = H;
+      const o = off.getContext("2d");
+      const s0 = Math.max(W/src.w, H/src.h), s = s0 * (src.zoom != null ? src.zoom : view.zoom);
+      const dw = src.w * s, dh = src.h * s;
+      const ox = (src.ox != null ? src.ox : view.ox), oy = (src.oy != null ? src.oy : view.oy);
+      const mir = (src.mirror != null ? src.mirror : view.mirror);
+      const left = (W - dw) / 2 + ox, top = (H - dh) / 2 + oy;
+
+      o.save();
+      if(mir){ o.translate(left + dw/2, top + dh/2); o.scale(-1, 1); o.drawImage(src.el, -dw/2, -dh/2, dw, dw * (src.h/src.w)); }
+      else { o.drawImage(src.el, left, top, dw, dh); }
+      o.restore();
+
+      o.globalCompositeOperation = "destination-in";
+      const gr = o.createRadialGradient(W/2, H/2, Math.min(W,H)*0.36, W/2, H/2, Math.min(W,H)*0.55);
+      gr.addColorStop(0, "rgba(0,0,0,1)");
+      gr.addColorStop(0.85, "rgba(0,0,0,1)");
+      gr.addColorStop(1, "rgba(0,0,0,0)");
+      o.fillStyle = gr;
+      o.fillRect(0, 0, W, H);
+
+      ctx.drawImage(off, r.x, r.y);
     }
-    ctx.drawImage(off,r.x,r.y);
-  }
-  if(full){
-    const st=(state.photo&&state.photo.sticker)||sticker;
-    if(layersReady && st.on) ctx.drawImage(imgHat,st.x,st.y,st.w,st.w*HAT_RATIO);
-    if(layersReady) ctx.drawImage(imgFrame,0,0,SCENE_W,SCENE_H);
-  }else{
-    if(layersReady) ctx.drawImage(imgFront,0,0,SCENE_W,SCENE_H);
-    // 🌾 쌀과 함께 찍기: 양손 바구니에 선택한 쌀과 세계 먹거리, 황금 벼 이삭 풍성하게 렌더링!
-    drawRiceAndFoodInBaskets(ctx);
+
+    // 3. 밀짚모자 스티커 (머리 위)
+    const st = (state.photo && state.photo.sticker) || sticker;
+    if(layersReady && st.on){
+      ctx.drawImage(imgHat, st.x, st.y, st.w, st.w * HAT_RATIO);
+    }
+
+    // 4. 쌀과 세계 먹거리 선물 바구니
+    drawRiceAndFoodInBaskets(ctx, "body");
+
+    // 5. 전경 (하단 풍성한 벼 이삭과 상단 가을 팻말)
+    if(layersReady) ctx.drawImage(imgBodyFront, 0, 0, SCENE_W, SCENE_H);
+
+  } else if(m === "face"){
+    if(layersReady) ctx.drawImage(imgBack, 0, 0, SCENE_W, SCENE_H);
+    if(src && src.el && src.w && src.h){
+      const W = r.w, H = r.h;
+      const off = document.createElement("canvas"); off.width = W; off.height = H;
+      const o = off.getContext("2d");
+      const s0 = Math.max(W/src.w, H/src.h), s = s0 * (src.zoom != null ? src.zoom : view.zoom);
+      const dw = src.w * s, dh = src.h * s;
+      const ox = (src.ox != null ? src.ox : view.ox), oy = (src.oy != null ? src.oy : view.oy);
+      const mir = (src.mirror != null ? src.mirror : view.mirror);
+      const left = (W - dw) / 2 + ox, top = (H - dh) / 2 + oy;
+      o.save();
+      if(mir){ o.translate(left + dw/2, top + dh/2); o.scale(-1, 1); o.drawImage(src.el, -dw/2, -dh/2, dw, dh); }
+      else { o.drawImage(src.el, left, top, dw, dh); }
+      o.restore();
+      o.globalCompositeOperation = "destination-in";
+      o.save(); o.translate(W/2, H/2); o.scale(1, H/W);
+      const gr = o.createRadialGradient(0, 0, 0, 0, 0, W/2);
+      gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(0.72, "rgba(0,0,0,1)"); gr.addColorStop(1, "rgba(0,0,0,0)");
+      o.fillStyle = gr; o.beginPath(); o.arc(0, 0, W/2, 0, Math.PI*2); o.fill(); o.restore();
+      ctx.drawImage(off, r.x, r.y);
+    }
+    if(layersReady) ctx.drawImage(imgFront, 0, 0, SCENE_W, SCENE_H);
+    drawRiceAndFoodInBaskets(ctx, "face");
+
+  } else {
+    // m === "full"
+    if(src && src.el && src.w && src.h){
+      const W = SCENE_W, H = SCENE_H;
+      const s0 = Math.max(W/src.w, H/src.h), s = s0 * (src.zoom != null ? src.zoom : view.zoom);
+      const dw = src.w * s, dh = src.h * s;
+      const ox = (src.ox != null ? src.ox : view.ox), oy = (src.oy != null ? src.oy : view.oy);
+      const mir = (src.mirror != null ? src.mirror : view.mirror);
+      const left = (W - dw) / 2 + ox, top = (H - dh) / 2 + oy;
+      ctx.save();
+      if(mir){ ctx.translate(left + dw/2, top + dh/2); ctx.scale(-1, 1); ctx.drawImage(src.el, -dw/2, -dh/2, dw, dh); }
+      else { ctx.drawImage(src.el, left, top, dw, dh); }
+      ctx.restore();
+    }
+    const st = (state.photo && state.photo.sticker) || sticker;
+    if(layersReady && st.on) ctx.drawImage(imgHat, st.x, st.y, st.w, st.w * HAT_RATIO);
+    if(layersReady) ctx.drawImage(imgFrame, 0, 0, SCENE_W, SCENE_H);
   }
 }
 function sceneCanvas(scale){
@@ -1575,22 +1938,42 @@ async function handleCapturedPhoto(file){
   $("#btnMirror").classList.remove("on");
   setSource("img");
 
-  // 정지 이미지에서도 얼굴 자동 검출 시도하여 쏙 맞춤!
+  // 정지 이미지에서도 신체/얼굴 자동 검출 시도하여 쏙 맞춤!
   try {
-    const face = await detectChildFace(pimg);
-    if(face) {
-      const r = faceRect();
-      const W = r.w, H = r.h;
-      const s0 = Math.max(W / (pimg.naturalWidth || 640), H / (pimg.naturalHeight || 480));
-      const desiredScale = (H * 0.74) / (face.h * s0);
-      view.zoom = Math.min(2.5, Math.max(0.7, desiredScale));
-      const vcx = (pimg.naturalWidth || 640) / 2;
-      const vcy = (pimg.naturalHeight || 480) / 2;
-      view.ox = (face.x - vcx) * s0 * view.zoom;
-      view.oy = (face.y - face.h * 0.04 - vcy) * s0 * view.zoom;
-      $("#zoom").value = Math.round(view.zoom * 100);
-      $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
-      applyFaceStyle();
+    if(mode === "body") {
+      const res = await detectChildBody(pimg);
+      if(res && res.body) {
+        const body = res.body;
+        const r = faceRect("body");
+        const W = r.w, H = r.h;
+        const s0 = Math.max(W / (pimg.naturalWidth || 640), H / (pimg.naturalHeight || 480));
+        const desiredScale = (H * 0.74) / (body.h * s0);
+        view.zoom = Math.min(2.2, Math.max(0.65, desiredScale));
+        const vcx = (pimg.naturalWidth || 640) / 2;
+        const vcy = (pimg.naturalHeight || 480) / 2;
+        const bodyCenterY = body.y - body.h * 0.05;
+        view.ox = (body.x - vcx) * s0 * view.zoom;
+        view.oy = (bodyCenterY - vcy) * s0 * view.zoom;
+        $("#zoom").value = Math.round(view.zoom * 100);
+        $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+        applyFaceStyle();
+      }
+    } else {
+      const face = await detectChildFace(pimg);
+      if(face) {
+        const r = faceRect();
+        const W = r.w, H = r.h;
+        const s0 = Math.max(W / (pimg.naturalWidth || 640), H / (pimg.naturalHeight || 480));
+        const desiredScale = (H * 0.74) / (face.h * s0);
+        view.zoom = Math.min(2.5, Math.max(0.7, desiredScale));
+        const vcx = (pimg.naturalWidth || 640) / 2;
+        const vcy = (pimg.naturalHeight || 480) / 2;
+        view.ox = (face.x - vcx) * s0 * view.zoom;
+        view.oy = (face.y - face.h * 0.04 - vcy) * s0 * view.zoom;
+        $("#zoom").value = Math.round(view.zoom * 100);
+        $("#zoomV").textContent = Math.round(view.zoom * 100) + "%";
+        applyFaceStyle();
+      }
     }
   } catch(e) {}
 
@@ -1615,7 +1998,7 @@ async function handleCapturedPhoto(file){
   const badge = $("#faceTrackerBadge");
   if(badge) {
     badge.classList.add("locked");
-    $("#faceTrackerText").textContent = "✨ 얼굴 쏙 맞춤 완료! 🌾";
+    $("#faceTrackerText").textContent = (mode === "body") ? "✨ 신체 인식 맞춤 완료! 🌾 농부와 함께 찰칵!" : "✨ 얼굴 쏙 맞춤 완료! 🌾";
   }
   burst(50);
   toast("찰칵! 멋진 사진이 담겼어요. [예쁜 선물 카드 만들기 🎁]를 눌러보세요!");
@@ -1951,8 +2334,9 @@ $("#hatSize").oninput=e=>{
 $("#btnAutoTrack").onclick = e => {
   autoTrackEnabled = !autoTrackEnabled;
   e.target.classList.toggle("on", autoTrackEnabled);
-  e.target.textContent = autoTrackEnabled ? "✨ 얼굴 자동인식 켜짐" : "✋ 수동 조절 모드";
-  toast(autoTrackEnabled ? "얼굴 자동 인식을 켰어요." : "수동 모드로 전환했어요. 슬라이더나 버튼으로 조절하세요.");
+  const tag = (mode === "body") ? "신체" : "얼굴";
+  e.target.textContent = autoTrackEnabled ? `✨ ${tag} 자동인식 켜짐` : "✋ 수동 조절 모드";
+  toast(autoTrackEnabled ? `${tag} 자동 인식을 켰어요.` : "수동 모드로 전환했어요. 슬라이더나 버튼으로 조절하세요.");
 };
 $("#btnCam").onclick=()=>startCam();
 $("#btnFlip").onclick=()=>{ facing=(facing==="user")?"environment":"user"; startCam(); };
