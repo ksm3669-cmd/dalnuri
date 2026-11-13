@@ -579,34 +579,95 @@
       transform: translateY(0) scale(1);
     }
 
-    .receipt-decor-top {
+    /* Order Complete Celebration Banner */
+    .order-complete-banner {
+      background: linear-gradient(135deg, #FFF4E6 0%, #FFE8CC 100%);
+      border: 3px solid #FFA94D;
+      border-radius: 20px;
+      padding: 16px 14px 12px;
       text-align: center;
       margin-bottom: 12px;
+      box-shadow: 0 4px 14px rgba(230, 81, 0, 0.12);
+      animation: popInBounce 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .order-badge {
-      display: inline-block;
-      background: var(--primary-light);
-      border: 2px solid #FFD8A8;
-      color: var(--primary);
-      padding: 6px 18px;
+    @keyframes popInBounce {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .order-complete-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 2.5px solid #FF922B;
+      color: #D9480F;
+      padding: 8px 20px;
       border-radius: 999px;
-      font-size: 1.15rem;
+      box-shadow: 0 3px 10px rgba(217, 72, 15, 0.18);
+      margin-bottom: 6px;
+    }
+
+    .order-complete-emoji {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .order-complete-text {
+      font-family: 'Jua', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+    }
+
+    .order-complete-sub {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #495057;
       margin-bottom: 8px;
     }
 
-    .order-number {
-      font-size: 2.8rem;
-      color: #2D241E;
+    .order-num-pill {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 2px solid #E8590C;
+      padding: 4px 18px;
+      border-radius: 14px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .order-num-label {
+      font-family: 'Pretendard', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #8C7A6B;
+    }
+
+    .order-num-val {
+      font-family: 'Jua', sans-serif;
+      font-size: 2.1rem;
+      color: #E8590C;
       line-height: 1;
-      margin-bottom: 4px;
     }
 
     .receipt-date {
       font-family: 'Pretendard', sans-serif;
-      font-size: 0.85rem;
-      color: #8C7A6B;
+      font-size: 0.82rem;
+      color: #A68A78;
+      margin-top: 6px;
     }
+
+    /* Backwards compatibility */
+    .receipt-decor-top { text-align: center; margin-bottom: 12px; }
+    .order-badge { display: none; }
+    .order-number { display: none; }
 
     .receipt-paper {
       background: #FAF7F2;
@@ -695,21 +756,25 @@
     /* Toast Notification */
     .kiosk-toast {
       position: fixed;
-      bottom: 24px;
+      top: 24px;
       left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(45, 36, 30, 0.92);
+      transform: translateX(-50%) translateY(-60px);
+      background: linear-gradient(135deg, #2D241E 0%, #1A130E 100%);
+      border: 2px solid #FFA94D;
       color: #FFFFFF;
-      padding: 12px 24px;
+      padding: 14px 28px;
       border-radius: 999px;
-      font-size: 1.05rem;
-      z-index: 200;
+      font-family: 'Jua', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: -0.3px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      z-index: 300;
       pointer-events: none;
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s;
       opacity: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .kiosk-toast.show {
@@ -825,10 +890,18 @@
   <!-- Receipt & Kitchen Order Modal -->
   <div class="modal-overlay" id="receiptModal">
     <div class="receipt-box">
-      <div class="receipt-decor-top">
-        <div class="order-badge">주문이 완료되었습니다! ✨</div>
-        <div class="order-number" id="receiptOrderNum">🌟 101번</div>
-        <div class="receipt-date" id="receiptDate">2026. 11. 09.</div>
+      <div class="order-complete-banner">
+        <div class="order-complete-badge">
+          <span class="order-complete-emoji">🎉</span>
+          <span class="order-complete-text">주문이 완료되었습니다!</span>
+          <span class="order-complete-emoji">✨</span>
+        </div>
+        <div class="order-complete-sub">👨‍🍳 주방에서 맛있는 요리를 준비하고 있어요!</div>
+        <div class="order-num-pill">
+          <span class="order-num-label">주문번호</span>
+          <span class="order-num-val" id="receiptOrderNum">🌟 101번</span>
+        </div>
+        <div class="receipt-date" id="receiptDate">2026년 11월 13일</div>
       </div>
 
       <div class="receipt-paper" id="receiptPaperList">
@@ -853,7 +926,7 @@
           <span>🖨️</span> <span>인쇄 / 저장</span>
         </button>
         <button class="btn-receipt btn-close-receipt" onclick="closeReceipt()">
-          <span>✨</span> <span>새 주문 받기</span>
+          <span>✨</span> <span>다음 친구 주문하기</span>
         </button>
       </div>
     </div>
@@ -974,10 +1047,11 @@
     }
 
     function playSuccessChime() {
-      playTone(523.25, 'triangle', 0.2, 0);    // C5
-      playTone(659.25, 'triangle', 0.2, 0.12); // E5
-      playTone(783.99, 'triangle', 0.2, 0.24); // G5
-      playTone(1046.50, 'sine', 0.45, 0.36);   // C6
+      playTone(523.25, 'triangle', 0.22, 0);     // C5
+      playTone(659.25, 'triangle', 0.22, 0.12);  // E5
+      playTone(783.99, 'triangle', 0.22, 0.24);  // G5
+      playTone(1046.50, 'sine', 0.35, 0.36);    // C6
+      playTone(1318.51, 'sine', 0.45, 0.48);    // E6
     }
 
     /* ============================================================
@@ -986,12 +1060,18 @@
     function speak(text) {
       if (!isSoundOn || !('speechSynthesis' in window)) return;
       try {
-        window.speechSynthesis.cancel();
+        const synth = window.speechSynthesis;
         const u = new SpeechSynthesisUtterance(text);
         u.lang = 'ko-KR';
-        u.rate = 1.05;
-        u.pitch = 1.15;
-        window.speechSynthesis.speak(u);
+        u.rate = 0.98;
+        u.pitch = 1.12;
+        window.__lastKioskUtterance = u;
+        if (synth.speaking || synth.pending) {
+          synth.cancel();
+          setTimeout(() => { synth.speak(u); }, 50);
+        } else {
+          synth.speak(u);
+        }
       } catch(e) {}
     }
 
@@ -1204,7 +1284,11 @@
 
       document.getElementById('receiptModal').classList.add('open');
 
-      speak(`딩동! 주문번호 ${orderNum}번, ${summaryText} 주문이 완료되었습니다. 주방에서 맛있게 요리해 드릴게요!`);
+      // Top toast banner: 주문이 완료되었습니다!
+      showToast(`🎉 주문이 완료되었습니다! (주문번호 ${orderNum}번)`, '👨‍🍳');
+
+      // Cheerful voice announcement: Starts with "주문이 완료되었습니다!"
+      speak(`주문이 완료되었습니다! 주문번호 ${orderNum}번 고객님, ${summaryText} 맛있게 요리해 드릴게요!`);
     }
 
     function closeReceipt() {
