@@ -560,7 +560,7 @@ border-color:var(--sage-line);box-shadow:0 20px 60px rgba(29,91,77,.13)}
       <button class="toc-close" id="btnTocClose" aria-label="목차 닫기">✕</button>
     </div>
     <ul class="toc-list" id="tocList">
-      <li class="active"><a href="#cover"><span class="tno">표지</span><span>표지 &amp; 박람회 강의 안내</span></a></li>
+      <li class="active"><a href="#cover"><span class="tno">00</span><span>표지 &amp; 박람회 강의 안내</span></a></li>
       <li><a href="#ch1"><span class="tno">01</span><span>연구대회 보고서 쓰기</span><span class="toc-tag">1부</span></a></li>
       <li><a href="#ch2"><span class="tno">02</span><span>정책·이론과 PUZZLE 6대 역량</span></a></li>
       <li><a href="#ch3"><span class="tno">03</span><span>조각탐구 4단계 설계</span></a></li>
@@ -592,54 +592,69 @@ border-color:var(--sage-line);box-shadow:0 20px 60px rgba(29,91,77,.13)}
       </p>
 
       <div class="cover-art" aria-hidden="true">
-        <svg viewBox="0 0 420 210" role="img" aria-label="여섯 개의 퍼즐 조각이 모여 하나의 그림을 이루는 수채화 일러스트">
+        <svg viewBox="0 0 420 250" role="img" aria-label="여섯 개의 퍼즐 조각이 서로 맞물려 하나의 그림을 이루는 수채화 일러스트">
           <defs>
             <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#DCEBE0"/><stop offset="1" stop-color="#B9D6C4"/>
+              <stop offset="0" stop-color="#E4F0E7"/><stop offset="1" stop-color="#B4D2C0"/>
             </linearGradient>
             <linearGradient id="pg2" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#F7E6D5"/><stop offset="1" stop-color="#E9C6A9"/>
+              <stop offset="0" stop-color="#FAEBDD"/><stop offset="1" stop-color="#E8C4A6"/>
             </linearGradient>
             <linearGradient id="pg3" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#E3EEF1"/><stop offset="1" stop-color="#BED8DE"/>
+              <stop offset="0" stop-color="#E8F1F4"/><stop offset="1" stop-color="#BCD6DD"/>
             </linearGradient>
             <linearGradient id="pg4" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#F3EFD9"/><stop offset="1" stop-color="#E1D6A6"/>
+              <stop offset="0" stop-color="#F6F1DE"/><stop offset="1" stop-color="#DCCF9E"/>
             </linearGradient>
             <linearGradient id="pg5" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#F2E2DD"/><stop offset="1" stop-color="#DDB8AC"/>
+              <stop offset="0" stop-color="#F7E7E2"/><stop offset="1" stop-color="#DCB3A5"/>
             </linearGradient>
             <linearGradient id="pg6" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#E6EEE4"/><stop offset="1" stop-color="#C9DCC6"/>
+              <stop offset="0" stop-color="#EBF2E6"/><stop offset="1" stop-color="#C3D8BF"/>
             </linearGradient>
-            <symbol id="piece" viewBox="0 0 100 100">
-              <path d="M8,8 H38 C38,-2 46,-6 52,-2 C58,2 58,8 58,8 H92 V38 C102,38 106,46 102,52 C98,58 92,58 92,58 V92 H58 C58,102 50,106 44,102 C38,98 38,92 38,92 H8 V58 C-2,58 -6,50 -2,44 C2,38 8,38 8,38 Z"
-                    fill="none" stroke="rgba(29,91,77,.16)" stroke-width="1.6"/>
-            </symbol>
+            <filter id="softy" x="-30%" y="-30%" width="160%" height="160%">
+              <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#1D5B4D" flood-opacity="0.16"/>
+            </filter>
           </defs>
-          <!-- 수채화 번짐 -->
-          <g opacity=".55">
-            <ellipse cx="120" cy="90" rx="76" ry="52" fill="#E8F1EA"/>
-            <ellipse cx="300" cy="120" rx="82" ry="56" fill="#FBEEE2"/>
-            <ellipse cx="210" cy="176" rx="90" ry="34" fill="#EAF3F5"/>
+
+          <g opacity=".6">
+            <ellipse cx="120" cy="80" rx="86" ry="58" fill="#E9F2EC"/>
+            <ellipse cx="300" cy="120" rx="92" ry="62" fill="#FCEFE3"/>
+            <ellipse cx="210" cy="216" rx="110" ry="30" fill="#EAF3F5"/>
           </g>
-          <g>
-            <use href="#piece" x="40" y="18" width="86" height="86" fill="url(#pg1)"/>
-            <text x="83" y="74" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#1D5B4D" opacity=".85">P</text>
-            <use href="#piece" x="126" y="18" width="86" height="86" fill="url(#pg2)"/>
-            <text x="169" y="74" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#B96A48" opacity=".9">U</text>
-            <use href="#piece" x="212" y="18" width="86" height="86" fill="url(#pg3)"/>
-            <text x="255" y="74" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#4E7C8C" opacity=".9">Z</text>
-            <use href="#piece" x="298" y="18" width="86" height="86" fill="url(#pg4)"/>
-            <text x="341" y="74" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#96823C" opacity=".95">Z</text>
-            <use href="#piece" x="126" y="104" width="86" height="86" fill="url(#pg5)"/>
-            <text x="169" y="160" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#A9705C" opacity=".95">L</text>
-            <use href="#piece" x="212" y="104" width="86" height="86" fill="url(#pg6)"/>
-            <text x="255" y="160" text-anchor="middle" font-family="Jua,sans-serif" font-size="26" fill="#4B7A5B" opacity=".95">E</text>
+
+          <g filter="url(#softy)">
+            <!-- 1행 -->
+            <circle cx="152" cy="52" r="11" fill="url(#pg1)"/>
+            <circle cx="100" cy="118" r="11" fill="url(#pg1)"/>
+            <rect x="48" y="14" width="104" height="104" rx="20" fill="url(#pg1)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="100" y="78" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#1D5B4D" opacity=".82">P</text>
+
+            <circle cx="262" cy="52" r="11" fill="url(#pg2)"/>
+            <circle cx="210" cy="118" r="11" fill="url(#pg2)"/>
+            <rect x="158" y="14" width="104" height="104" rx="20" fill="url(#pg2)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="210" y="78" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#A9603F" opacity=".9">U</text>
+
+            <circle cx="372" cy="52" r="11" fill="url(#pg3)"/>
+            <circle cx="320" cy="118" r="11" fill="url(#pg3)"/>
+            <rect x="268" y="14" width="104" height="104" rx="20" fill="url(#pg3)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="320" y="78" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#3F6E7E" opacity=".9">Z</text>
+
+            <!-- 2행 -->
+            <circle cx="152" cy="162" r="11" fill="url(#pg4)"/>
+            <rect x="48" y="124" width="104" height="104" rx="20" fill="url(#pg4)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="100" y="188" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#8A7635" opacity=".95">Z</text>
+
+            <circle cx="262" cy="162" r="11" fill="url(#pg5)"/>
+            <rect x="158" y="124" width="104" height="104" rx="20" fill="url(#pg5)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="210" y="188" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#9C6552" opacity=".95">L</text>
+
+            <circle cx="372" cy="162" r="11" fill="url(#pg6)"/>
+            <rect x="268" y="124" width="104" height="104" rx="20" fill="url(#pg6)" stroke="#FFFFFF" stroke-opacity=".6" stroke-width="1.6"/>
+            <text x="320" y="188" text-anchor="middle" font-family="Jua,Pretendard,sans-serif" font-size="31" fill="#416F52" opacity=".95">E</text>
           </g>
-          <g opacity=".7" stroke="#C9A227" stroke-width="1.4" stroke-dasharray="4 4" fill="none">
-            <path d="M62,196 C120,208 300,208 360,194"/>
-          </g>
+
+          <path d="M64,240 C140,250 300,248 366,236" fill="none" stroke="#C9A227" stroke-width="1.5" stroke-dasharray="5 5" opacity=".65"/>
         </svg>
       </div>
 
