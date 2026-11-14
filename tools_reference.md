@@ -10,7 +10,7 @@
 ## 3. 깃허브 페이지스 달누리반 통합 포털
 - **포털 메인**: https://ksm3669-cmd.github.io/dalnuri/
 - **🌟 달누리반 최종 통합 올인원 마스터 (26종 전체 앱 완결판)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-original-hub.html
-- **🇬🇧 리노리 10분 영어이야기놀이 (단독 전용 앱 · 4가지 주제 × 5일 = 20편 영어 이야기)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-linori-english.html
+- **🇬🇧 달누리 10분 영어이야기놀이 (단독 전용 앱 · 4가지 주제 × 5일 = 20편 영어 이야기)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-linori-english.html
 - **달누리반 연령별 발달 놀이터 (3세 밥그릇 · 4세 하트 · 5세 돋보기)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-metaphor-hub.html
 - **달누리반 전체 놀이 선택 앱 (선미님 원본 전체놀이선택앱 직통 링크)**: https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-all-play-selector.html
 - **놀이달력에서 올인원 앱까지 (유치원 교사용 실천 전자책)**: https://ksm3669-cmd.github.io/dalnuri/ebook/
