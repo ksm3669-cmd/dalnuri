@@ -442,8 +442,32 @@
     }
     .sheet:last-of-type{break-after:auto}
     #cover{padding:0}
-    .cover-inner{padding:20mm 17mm 6mm}
-    #cover .folio{margin:10mm 17mm 0}
+    .cover-inner{padding:13mm 15mm 4mm}
+    .cover-ribbon{font-size:8.5pt;padding:3px 10px}
+    .cover-eyebrow{margin:11px 0 7px;font-size:7.5pt}
+    .cover-h1{font-size:28pt;line-height:1.26;margin-bottom:9px}
+    .cover-sub{font-size:10pt;line-height:1.6;margin-bottom:11px}
+    .cover-art{margin:2px 0 11px}
+    .cover-art svg{max-width:300px}
+    .cover-meta{gap:7px;margin:4px 0 9px}
+    .meta-box{padding:8px 11px}
+    .meta-box .k{font-size:6.8pt;margin-bottom:4px}
+    .meta-box .v{font-size:10pt}
+    .meta-box .s{font-size:8pt}
+    .badge{font-size:6.6pt;padding:2px 6px}
+    .cover-parts{gap:5px}
+    .part-card{padding:7px 9px}
+    .part-card .pn{font-size:6.8pt;margin-bottom:2px}
+    .part-card b{font-size:9pt;margin-bottom:3px}
+    .part-card p{font-size:7.6pt;line-height:1.5}
+    .cover-tools{margin-top:9px;padding-top:8px}
+    .cover-tools h4{font-size:6.8pt;margin-bottom:6px}
+    .tool-row{gap:5px}
+    .tool-row div{padding:5px 7px;font-size:8pt}
+    .tool-row div span{font-size:6.8pt;line-height:1.45}
+    #cover .folio{margin:8mm 15mm 0}
+    details.acc{break-inside:auto}
+    details.acc summary{background:#eef2e8}
     .ch-index{display:none}
     .ch-title{font-size:24pt}
     .ch-desc{font-size:10.5pt}
@@ -2239,6 +2263,17 @@
   /* ---------- 인쇄 · PDF ---------- */
   var printBtn = document.getElementById('printBtn');
   if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
+  /* 인쇄할 때는 접힌 <details>를 펼쳐 내용이 종이에 남게 하고, 끝나면 원래대로 돌린다 */
+  window.addEventListener('beforeprint', function () {
+    [].forEach.call(document.querySelectorAll('details'), function (d) {
+      if (!d.open) { d.setAttribute('data-print-open', '1'); d.open = true; }
+    });
+  });
+  window.addEventListener('afterprint', function () {
+    [].forEach.call(document.querySelectorAll('details[data-print-open]'), function (d) {
+      d.open = false; d.removeAttribute('data-print-open');
+    });
+  });
 
   /* ---------- 그래프 등장 ---------- */
   var chart = document.getElementById('chart');
