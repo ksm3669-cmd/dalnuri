@@ -164,6 +164,9 @@
   .top-controls :is(a,button,select):hover{background:var(--sage-soft);border-color:var(--sage-line)}
   .top-controls button.primary{background:var(--sage);border-color:var(--sage);color:#fff}
   .top-controls button.primary:hover{background:var(--sage-2)}
+  /* HTML 파일 저장 — 본문을 파일로 내려받는 버튼(PDF 옆) */
+  .top-controls button.save-html{display:inline-flex;align-items:center;gap:4px;color:var(--terra);border-color:var(--terra);background:var(--paper)}
+  .top-controls button.save-html:hover{background:var(--terra-soft);border-color:var(--terra);color:var(--terra)}
   .reading-position{color:var(--ink-soft);font-size:11px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
 
   /* ================= 종이 시트 ================= */
@@ -535,6 +538,7 @@
     .top-controls{gap:4px}
     .top-controls select,.top-controls a,.top-controls button{font-size:10.5px;padding:4px 7px;min-height:32px}
     .top-controls select{max-width:122px}
+    .top-controls button.save-html .save-extra{display:none}
     .quick-link{display:none}
     .reading-position{display:none}
     .ch-title{font-size:1.5rem;line-height:1.44}
@@ -631,6 +635,7 @@
         <button type="button" id="fsUp" title="글자 크게" aria-label="글자 크게">가+</button>
         <button type="button" id="themeBtn" title="배경색: 세이지" aria-label="배경색: 세이지">배경</button>
         <button type="button" id="printBtn" class="primary" title="전체 인쇄 또는 PDF로 저장">PDF</button>
+        <button type="button" id="htmlSaveBtn" class="save-html" title="이 전자책을 HTML 파일 하나로 저장합니다 — 내려받아 오프라인에서도 열립니다">HTML<span class="save-extra"> 파일 저장</span></button>
       </div>
     </div>
 
@@ -2262,6 +2267,50 @@
   /* ---------- 인쇄 · PDF ---------- */
   var printBtn = document.getElementById('printBtn');
   if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
+
+  /* ---------- HTML 파일 저장 (모바일 다운로드용) ---------- */
+  var saveBtn = document.getElementById('htmlSaveBtn');
+  if (saveBtn) {
+    var SAVE_NAME = '사회정서_PUZZLE_전자책.html';
+    var saveMarkup = saveBtn.innerHTML;
+    var saveTimer = null;
+    var say = function (txt) {
+      if (saveTimer) clearTimeout(saveTimer);
+      saveBtn.textContent = txt;
+      saveTimer = setTimeout(function () { saveBtn.innerHTML = saveMarkup; }, 2600);
+    };
+    var currentHtml = function () {
+      var fallback = function () {
+        return '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      };
+      if (!(window.fetch && window.Blob && window.URL && window.URL.createObjectURL)) {
+        return Promise.resolve(fallback());
+      }
+      return fetch(location.href, { cache: 'no-store' }).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      }).catch(fallback);
+    };
+    saveBtn.addEventListener('click', function () {
+      say('준비 중…');
+      currentHtml().then(function (text) {
+        var blob = new Blob([text], { type: 'application/octet-stream' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = SAVE_NAME;
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+        say('저장했어요 ✓');
+      }).catch(function () {
+        say('저장할 수 없어요');
+      });
+    });
+  }
+
   /* 인쇄할 때는 접힌 <details>를 펼쳐 내용이 종이에 남게 하고, 끝나면 원래대로 돌린다 */
   window.addEventListener('beforeprint', function () {
     [].forEach.call(document.querySelectorAll('details'), function (d) {
