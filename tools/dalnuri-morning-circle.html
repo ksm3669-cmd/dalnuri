@@ -61,8 +61,8 @@ header {
 /* Main Stage */
 main {
   flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 16px; text-align: center; overflow-y: auto;
+  align-items: center; justify-content: center; justify-content: safe center;
+  padding: clamp(12px, 2.2vh, 24px) 16px; text-align: center; overflow-y: auto;
   position: relative;
 }
 
@@ -76,7 +76,7 @@ main {
   100% { transform: scale(1); opacity: 1; }
 }
 
-.calsvg { width: clamp(140px, 32vw, 210px); height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 8px 20px rgba(0,0,0,0.12)); transition: transform 0.3s; }
+.calsvg { width: clamp(136px, 29vw, 244px); height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 10px 24px rgba(0,0,0,0.14)); transition: transform 0.3s; }
 .calsvg:hover { transform: scale(1.05); }
 
 .amq {
@@ -90,19 +90,31 @@ main {
 }
 
 .amextra {
-  width: 100%; max-width: 520px; margin: 6px auto 0;
+  width: 100%; max-width: 760px; margin: 6px auto 0;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
 .amextra[hidden] { display: none !important; }
 
-/* Date Box */
+/* Date Box — 교실 TV·모바일 모두 한눈에 들어오도록 크게 */
 .datebox {
-  background: var(--panel); border: 2px solid var(--primary-light);
-  border-radius: 20px; padding: 12px 24px; box-shadow: 0 6px 16px rgba(49,95,79,0.08);
+  background: var(--panel); border: 3px solid var(--primary-light);
+  border-radius: clamp(20px, 3vw, 34px);
+  padding: clamp(14px, 2.2vw, 30px) clamp(20px, 4.4vw, 56px) clamp(16px, 2.4vw, 32px);
+  box-shadow: 0 10px 30px rgba(49,95,79,0.14);
+  display: flex; flex-direction: column; align-items: center;
+  gap: clamp(2px, 0.7vw, 9px); width: 100%; max-width: 100%;
 }
-.amyear { font-size: 16px; color: var(--sub); }
-.amdate { font-family: var(--display); font-size: clamp(40px, 10vw, 56px); font-weight: 700; color: var(--primary); line-height: 1.1; margin: 4px 0; }
-.amwd { font-size: clamp(20px, 5vw, 26px); font-weight: 800; color: var(--accent); background: #FEF3C7; padding: 4px 16px; border-radius: 999px; display: inline-block; }
+.amyear { font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; color: var(--sub); letter-spacing: 0.02em; line-height: 1.2; }
+.amdate {
+  font-family: var(--display); font-weight: 700; color: var(--primary);
+  font-size: clamp(56px, 12.5vw, 118px); line-height: 1.04;
+  margin: 0; white-space: nowrap; letter-spacing: -0.01em;
+}
+.amwd {
+  font-size: clamp(27px, 4.4vw, 46px); font-weight: 800; color: var(--accent);
+  background: #FEF3C7; padding: clamp(4px, 0.7vw, 9px) clamp(18px, 3vw, 36px);
+  border-radius: 999px; display: inline-block; line-height: 1.25;
+}
 
 /* Weather Box */
 .airbox {
