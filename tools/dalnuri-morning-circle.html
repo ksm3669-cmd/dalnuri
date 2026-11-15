@@ -102,16 +102,17 @@ main {
   padding: clamp(14px, 2.2vw, 30px) clamp(20px, 4.4vw, 56px) clamp(16px, 2.4vw, 32px);
   box-shadow: 0 10px 30px rgba(49,95,79,0.14);
   display: flex; flex-direction: column; align-items: center;
-  gap: clamp(2px, 0.7vw, 9px); width: 100%; max-width: 100%;
+  gap: clamp(2px, 0.7vw, 9px);
+  width: fit-content; min-width: min(100%, 420px); max-width: 100%; margin: 0 auto;
 }
 .amyear { font-size: clamp(20px, 2.4vw, 30px); font-weight: 700; color: var(--sub); letter-spacing: 0.02em; line-height: 1.2; }
 .amdate {
   font-family: var(--display); font-weight: 700; color: var(--primary);
-  font-size: clamp(56px, 12.5vw, 118px); line-height: 1.04;
+  font-size: clamp(60px, 15vw, 118px); line-height: 1.04;
   margin: 0; white-space: nowrap; letter-spacing: -0.01em;
 }
 .amwd {
-  font-size: clamp(27px, 4.4vw, 46px); font-weight: 800; color: var(--accent);
+  font-size: clamp(28px, 6.4vw, 46px); font-weight: 800; color: var(--accent);
   background: #FEF3C7; padding: clamp(4px, 0.7vw, 9px) clamp(18px, 3vw, 36px);
   border-radius: 999px; display: inline-block; line-height: 1.25;
 }
