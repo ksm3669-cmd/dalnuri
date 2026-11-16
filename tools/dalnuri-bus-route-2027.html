@@ -292,7 +292,7 @@ function popupHtml(s, time){
       <div class="pop-name">${s.name}${badge}</div>
       <div class="pop-time" style="color:${CUR.color}">${CUR.badge} · ${time}</div>
       ${s.note?`<div class="pop-note">${s.note}</div>`:''}
-      ${s.photoCap?`<div class="pop-credit">사진: ${s.photoCap}</div>`:''}
+      ${s.photo && s.photoCap?`<div class="pop-credit">사진: ${s.photoCap}</div>`:''}
       <div class="pop-links">
         <a class="naver" href="${naverUrl(s)}" target="_blank" rel="noopener">네이버 지도</a>
         <a class="google" href="${googleUrl(s)}" target="_blank" rel="noopener">구글 지도</a>
