@@ -312,7 +312,7 @@ function stopPopup(key, time){
     </div>`;
 }
 
-function drawCourse(c, dim){
+function drawCourse(c, dim, withSchool){
   const stops = c.stops.map(s => ({...s, ...DATA.stops[s.key]}));
   const line = L.polyline(c.path, {color:'#fff', weight:11, opacity:dim?0.35:0.95, lineJoin:'round'}).addTo(layer);
   L.polyline(c.path, {color:c.color, weight:7, opacity:dim?0.55:1, lineJoin:'round'}).addTo(layer);
@@ -339,6 +339,12 @@ function drawCourse(c, dim){
     markers[s.key] = mk;
   });
 
+  if (withSchool === false) return line;
+  drawSchoolMarker(c);
+  return line;
+}
+
+function drawSchoolMarker(c){
   const k = DATA.kinder;
   L.marker([k.lat, k.lon], {icon: L.divIcon({className:'', iconSize:[34,34], iconAnchor:[17,17],
       html:`<div class="school-wrap"><div class="school-pin">🏫</div><div class="school-label">유치원</div></div>`}),
@@ -347,7 +353,6 @@ function drawCourse(c, dim){
       <div class="pop-time">출발 ${c.start} · 도착 ${c.end}</div>
       <div class="pop-links"><a class="naver" href="https://map.naver.com/p?c=${k.lon},${k.lat},17,0,0,0,dh" target="_blank">네이버 지도</a>
       <a class="google" href="https://www.google.com/maps/search/?api=1&query=${k.lat},${k.lon}" target="_blank">구글 지도</a></div>`);
-  return line;
 }
 
 function render(){
@@ -355,12 +360,14 @@ function render(){
   const bounds = [];
   if (showAll){
     DATA.courses.forEach(c => {
-      drawCourse(c, true);
+      drawCourse(c, true, false);
       c.path.forEach(p => bounds.push(p));
     });
+    const first = DATA.courses[0];
+    drawSchoolMarker(first);
   } else {
     const c = DATA.courses.find(x => x.id === active);
-    drawCourse(c, false);
+    drawCourse(c, false, true);
     c.path.forEach(p => bounds.push(p));
   }
   bounds.push([DATA.kinder.lat, DATA.kinder.lon]);
