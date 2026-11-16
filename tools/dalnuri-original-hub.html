@@ -552,7 +552,7 @@ iframe{width:100%;height:100%;border:0;display:block;background:var(--bg)}
 <div class="note"><b>기록은 기기에 저장됩니다</b>앱마다 저장 공간이 따로 있어요. 플랫폼에서 적은 기록과 앱을 따로 열어 적은 기록은 서로 보이지 않습니다. 하나만 정해서 쓰세요.</div>
 <div class="note"><b>우리 가족 하루 · 탐험대는 저장이 다릅니다</b>이 두 앱은 claude.ai 화면에서 열어야 가족끼리 같은 내용이 보이고 폰 캘린더도 따라옵니다. 이 파일에서 열면 이 기기에 저장된 내용만 보여요. 위쪽 띠의 <b style="display:inline">원래 주소로 열기</b>를 누르면 됩니다.</div>
 </div></div>
-  <iframe id="frame" class="hidden" title="앱 화면"></iframe>
+  <iframe id="frame" class="hidden" title="앱 화면" allow="autoplay; microphone; camera; fullscreen; clipboard-write" allowfullscreen></iframe>
 </main>
 <script>
 const NAMES = [
@@ -12454,8 +12454,7 @@ initStorage();
 </html>
 
 </script>
-<script type="text/plain" id="app13">
-<!DOCTYPE html>
+<script type="text/plain" id="app13"><!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -12463,7 +12462,7 @@ initStorage();
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>달누리반 역할놀이 키오스크 (단독 앱)</title>
+  <title>달누리반 역할놀이 키오스크 (단독 앱)<\/title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Jua&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -13276,43 +13275,43 @@ initStorage();
       }
       .receipt-actions { display: none; }
     }
-  </style>
-</head>
+  <\/style>
+<\/head>
 <body>
 
   <!-- Top Header Bar -->
   <header class="kiosk-header">
     <div class="brand-box">
-      <div class="brand-icon" id="headerIcon">🏪</div>
+      <div class="brand-icon" id="headerIcon">🏪<\/div>
       <div class="brand-title">
-        <h1 id="kioskStoreTitle">달누리 세계 음식점</h1>
-        <p id="kioskStoreSub">유아 역할놀이 키오스크 · 음식을 고르고 주문해요</p>
-      </div>
-    </div>
+        <h1 id="kioskStoreTitle">달누리 세계 음식점<\/h1>
+        <p id="kioskStoreSub">유아 역할놀이 키오스크 · 음식을 고르고 주문해요<\/p>
+      <\/div>
+    <\/div>
 
     <!-- Store Switcher (Can be locked via Teacher Lock) -->
     <div class="store-switch-group" id="storeSwitchGroup">
       <button class="store-tab-btn active" id="tabWorld" onclick="switchStore('world')">
-        <span>🍲</span> 세계 음식점
-      </button>
+        <span>🍲<\/span> 세계 음식점
+      <\/button>
       <button class="store-tab-btn" id="tabWinter" onclick="switchStore('winter')">
-        <span>🍠</span> 겨울 간식점
-      </button>
-    </div>
+        <span>🍠<\/span> 겨울 간식점
+      <\/button>
+    <\/div>
 
     <!-- Right Controls -->
     <div class="kiosk-tools">
       <button class="tool-btn active" id="btnSound" onclick="toggleSound()">
-        <span id="soundIcon">🔊</span> <span id="soundText">소리 켜짐</span>
-      </button>
+        <span id="soundIcon">🔊<\/span> <span id="soundText">소리 켜짐<\/span>
+      <\/button>
       <button class="tool-btn" id="btnLock" onclick="toggleTeacherLock()">
-        <span id="lockIcon">🔓</span> <span id="lockText">화면 고정</span>
-      </button>
+        <span id="lockIcon">🔓<\/span> <span id="lockText">화면 고정<\/span>
+      <\/button>
       <button class="tool-btn" onclick="toggleFullscreen()">
-        <span>⛶</span> <span>전체화면</span>
-      </button>
-    </div>
-  </header>
+        <span>⛶<\/span> <span>전체화면<\/span>
+      <\/button>
+    <\/div>
+  <\/header>
 
   <!-- Main Kiosk Stage -->
   <main class="kiosk-main">
@@ -13321,100 +13320,100 @@ initStorage();
       <!-- Category Filter Pills -->
       <div class="category-bar" id="categoryBar">
         <!-- Rendered dynamically -->
-      </div>
+      <\/div>
 
       <!-- Menu Items Grid -->
       <div class="menu-grid" id="menuGrid">
         <!-- Rendered dynamically -->
-      </div>
-    </section>
+      <\/div>
+    <\/section>
 
     <!-- Right Cart & Payment Stage -->
     <aside class="cart-panel">
       <div class="cart-header">
-        <h2><span>🧾</span> <span>우리 반 주문서</span></h2>
-        <button class="btn-clear-cart" onclick="clearCart()">비우기 🗑️</button>
-      </div>
+        <h2><span>🧾<\/span> <span>우리 반 주문서<\/span><\/h2>
+        <button class="btn-clear-cart" onclick="clearCart()">비우기 🗑️<\/button>
+      <\/div>
 
       <!-- Cart Items List -->
       <div class="cart-list" id="cartList">
         <div class="cart-empty-msg" id="emptyCartMsg">
-          <div class="empty-icon">🍽️</div>
-          <div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!</div>
-          <div style="font-size:0.85rem; font-family:'Pretendard', sans-serif;">터치하면 주문서에 차곡차곡 담겨요</div>
-        </div>
-      </div>
+          <div class="empty-icon">🍽️<\/div>
+          <div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!<\/div>
+          <div style="font-size:0.85rem; font-family:'Pretendard', sans-serif;">터치하면 주문서에 차곡차곡 담겨요<\/div>
+        <\/div>
+      <\/div>
 
       <!-- Summary Box -->
       <div class="cart-summary">
         <div class="summary-row">
-          <span class="summary-label">합계 금액</span>
-          <span class="summary-amount" id="sumPrice">0원</span>
-        </div>
-        <div class="summary-coins">필요한 냠냠코인: <b id="sumCoins" style="font-size:1.1rem; color:#E65100;">0</b>개</div>
-      </div>
+          <span class="summary-label">합계 금액<\/span>
+          <span class="summary-amount" id="sumPrice">0원<\/span>
+        <\/div>
+        <div class="summary-coins">필요한 냠냠코인: <b id="sumCoins" style="font-size:1.1rem; color:#E65100;">0<\/b>개<\/div>
+      <\/div>
 
       <!-- Payment Actions -->
       <div class="checkout-actions">
         <button class="btn-pay btn-coin-pay" onclick="handleCheckout('coin')">
-          <span>🪙</span> <span>냠냠코인으로 결제하기</span>
-        </button>
+          <span>🪙<\/span> <span>냠냠코인으로 결제하기<\/span>
+        <\/button>
         <button class="btn-pay btn-card-pay" onclick="handleCheckout('card')">
-          <span>💳</span> <span>카드로 결제하기 (삑!)</span>
-        </button>
-      </div>
-    </aside>
-  </main>
+          <span>💳<\/span> <span>카드로 결제하기 (삑!)<\/span>
+        <\/button>
+      <\/div>
+    <\/aside>
+  <\/main>
 
   <!-- Receipt & Kitchen Order Modal -->
   <div class="modal-overlay" id="receiptModal">
     <div class="receipt-box">
       <div class="order-complete-banner">
         <div class="order-complete-badge">
-          <span class="order-complete-emoji">🎉</span>
-          <span class="order-complete-text">주문이 완료되었습니다!</span>
-          <span class="order-complete-emoji">✨</span>
-        </div>
-        <div class="order-complete-sub">👨‍🍳 주방에서 맛있는 요리를 준비하고 있어요!</div>
+          <span class="order-complete-emoji">🎉<\/span>
+          <span class="order-complete-text">주문이 완료되었습니다!<\/span>
+          <span class="order-complete-emoji">✨<\/span>
+        <\/div>
+        <div class="order-complete-sub">👨‍🍳 주방에서 맛있는 요리를 준비하고 있어요!<\/div>
         <div class="order-num-pill">
-          <span class="order-num-label">주문번호</span>
-          <span class="order-num-val" id="receiptOrderNum">🌟 101번</span>
-        </div>
-        <div class="receipt-date" id="receiptDate">2026년 11월 13일</div>
-      </div>
+          <span class="order-num-label">주문번호<\/span>
+          <span class="order-num-val" id="receiptOrderNum">🌟 101번<\/span>
+        <\/div>
+        <div class="receipt-date" id="receiptDate">2026년 11월 13일<\/div>
+      <\/div>
 
       <div class="receipt-paper" id="receiptPaperList">
         <!-- Rendered items -->
-      </div>
+      <\/div>
 
       <div class="receipt-total-bar">
-        <span class="receipt-total-label">결제 금액</span>
-        <span class="receipt-total-val" id="receiptTotalVal">0원</span>
-      </div>
+        <span class="receipt-total-label">결제 금액<\/span>
+        <span class="receipt-total-val" id="receiptTotalVal">0원<\/span>
+      <\/div>
       <div style="font-family:'Pretendard', sans-serif; font-size:0.88rem; color:#8C7A6B; text-align:right; margin-bottom:12px;" id="receiptMethodText">
         결제 방식: 냠냠코인
-      </div>
+      <\/div>
 
       <div class="receipt-cheer-msg">
         👨‍🍳 주방에서 맛있게 요리하고 있어요!<br>
         번호가 불리면 음식을 받아가세요! 💖
-      </div>
+      <\/div>
 
       <div class="receipt-actions">
         <button class="btn-receipt btn-print" onclick="window.print()">
-          <span>🖨️</span> <span>인쇄 / 저장</span>
-        </button>
+          <span>🖨️<\/span> <span>인쇄 / 저장<\/span>
+        <\/button>
         <button class="btn-receipt btn-close-receipt" onclick="closeReceipt()">
-          <span>✨</span> <span>다음 친구 주문하기</span>
-        </button>
-      </div>
-    </div>
-  </div>
+          <span>✨<\/span> <span>다음 친구 주문하기<\/span>
+        <\/button>
+      <\/div>
+    <\/div>
+  <\/div>
 
   <!-- Toast Notification -->
   <div class="kiosk-toast" id="kioskToast">
-    <span id="toastIcon">✨</span> <span id="toastMsg">알림 메시지</span>
-  </div>
+    <span id="toastIcon">✨<\/span> <span id="toastMsg">알림 메시지<\/span>
+  <\/div>
 
   <script>
     /* ============================================================
@@ -13482,22 +13481,151 @@ initStorage();
     let orderCounter = 101;
 
     /* ============================================================
-       WEB AUDIO SYNTHESIZER
+       🔊 SOUND ENGINE (2026-11-16) — 어떤 패드에서도 반드시 소리가 나게
+       · 1단계: Web Audio 오실레이터 효과음 (오디오컨텍스트가 살아 있으면)
+       · 2단계: HTML5 <audio> 로 직접 만든 WAV 효과음 (컨텍스트가 막혀도 재생)
+       · 말소리: 기기 음성(Web Speech) → 실패/무응답이면 구글 TTS 스트리밍
+                 → 스트리밍도 안 되면 효과음으로 반드시 알린다 (절대 무음 금지)
        ============================================================ */
     let audioCtx = null;
+    let audioPrimed = false;
+    let primeEl = null;
+    let silentWavUrl = '';
+    let chimeWavUrl = '';
+    let ttsAudioEl = null;
+    let ttsToken = 0;
+
+    // 검증용 기록 (실제 재생 경로 추적)
+    window.__kioskSoundLog = [];
+    function logSound(entry) {
+      try {
+        window.__kioskSoundLog.push({ t: Date.now(), e: entry });
+        if (window.__kioskSoundLog.length > 60) window.__kioskSoundLog.shift();
+      } catch (e) {}
+    }
+    window.__kioskSoundLast = 'none';
+    function markSound(entry) {
+      window.__kioskSoundLast = entry;
+      logSound(entry);
+    }
+
+    function writeAscii(view, offset, text) {
+      for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i));
+    }
+
+    // 외부 파일 없이 16bit 모노 WAV 소리를 직접 만들어 Blob URL 로 돌려준다.
+    function buildWavUrl(durationSec, renderSample) {
+      try {
+        const sr = 22050;
+        const n = Math.max(1, Math.floor(sr * durationSec));
+        const buffer = new ArrayBuffer(44 + n * 2);
+        const view = new DataView(buffer);
+        writeAscii(view, 0, 'RIFF');
+        view.setUint32(4, 36 + n * 2, true);
+        writeAscii(view, 8, 'WAVE');
+        writeAscii(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sr, true);
+        view.setUint32(28, sr * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeAscii(view, 36, 'data');
+        view.setUint32(40, n * 2, true);
+        for (let i = 0; i < n; i++) {
+          let s = 0;
+          try { s = renderSample(i / sr) || 0; } catch (e) { s = 0; }
+          s = Math.max(-1, Math.min(1, s));
+          view.setInt16(44 + i * 2, (s * 32767) | 0, true);
+        }
+        return URL.createObjectURL(new Blob([buffer], { type: 'audio/wav' }));
+      } catch (e) {
+        return '';
+      }
+    }
+
+    function getSilentWavUrl() {
+      if (!silentWavUrl) silentWavUrl = buildWavUrl(0.12, function () { return 0; }) || '';
+      return silentWavUrl;
+    }
+
+    // 딩—동—댕 완료 멜로디 (Web Audio 없이도 울리는 WAV)
+    function getChimeWavUrl() {
+      if (chimeWavUrl) return chimeWavUrl;
+      const notes = [
+        { f: 523.25, t: 0.00, d: 0.30 },
+        { f: 659.25, t: 0.16, d: 0.30 },
+        { f: 783.99, t: 0.32, d: 0.34 },
+        { f: 1046.50, t: 0.50, d: 0.66 }
+      ];
+      chimeWavUrl = buildWavUrl(1.3, function (t) {
+        let v = 0;
+        for (let i = 0; i < notes.length; i++) {
+          const nt = notes[i];
+          const local = t - nt.t;
+          if (local < 0 || local > nt.d) continue;
+          const env = Math.pow(1 - local / nt.d, 2.2);
+          const ph = 2 * Math.PI * nt.f * local;
+          v += 0.42 * env * (Math.sin(ph) + 0.28 * Math.sin(2 * ph) + 0.12 * Math.sin(3 * ph));
+        }
+        return v * 0.55;
+      }) || '';
+      return chimeWavUrl;
+    }
+
     function getAudioContext() {
       try {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx && audioCtx.state === 'suspended') {
-          audioCtx.resume();
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (!Ctx) return null;
+        if (!audioCtx) audioCtx = new Ctx();
+        if (audioCtx && audioCtx.state === 'suspended' && audioCtx.resume) {
+          try {
+            const p = audioCtx.resume();
+            if (p && p.catch) p.catch(function () {});
+          } catch (e) {}
         }
         return audioCtx;
       } catch (e) {
         return null;
       }
     }
+
+    // 첫 터치 순간에 오디오 잠금을 풀어 둔다 (패드 브라우저의 자동재생 차단 대비)
+    function unlockAudio() {
+      getAudioContext();
+      try {
+        if (!primeEl) {
+          primeEl = document.createElement('audio');
+          primeEl.setAttribute('playsinline', '');
+          primeEl.setAttribute('webkit-playsinline', '');
+          primeEl.preload = 'auto';
+          primeEl.style.display = 'none';
+          const silent = getSilentWavUrl();
+          if (silent) primeEl.src = silent;
+          (document.body || document.documentElement).appendChild(primeEl);
+        }
+        const p = primeEl.play();
+        if (p && p.then) {
+          p.then(function () {
+            try { primeEl.pause(); primeEl.currentTime = 0; } catch (e) {}
+          }, function () {});
+        }
+      } catch (e) {}
+      try {
+        if ('speechSynthesis' in window && window.speechSynthesis.getVoices) {
+          window.speechSynthesis.getVoices();
+        }
+      } catch (e) {}
+      audioPrimed = true;
+    }
+
+    document.addEventListener('pointerdown', function () {
+      let ctxRunning = false;
+      try { ctxRunning = !!(audioCtx && audioCtx.state === 'running'); } catch (e) {}
+      if (audioPrimed && ctxRunning) return;
+      unlockAudio();
+    }, true);
 
     function playTone(freq, type, duration, delay = 0) {
       if (!isSoundOn) return;
@@ -13530,33 +13658,223 @@ initStorage();
       playTone(1760, 'square', 0.15); // A6
     }
 
+    // HTML5 <audio> 완료 효과음 — 오디오컨텍스트가 막힌 패드에서도 반드시 울린다
+    function playWavChime() {
+      try {
+        const url = getChimeWavUrl();
+        if (!url) return false;
+        const a = new Audio(url);
+        a.setAttribute('playsinline', '');
+        a.setAttribute('webkit-playsinline', '');
+        a.preload = 'auto';
+        a.volume = 1;
+        ttsAudioEl = null;
+        window.__kioskChimeAudio = a;
+        a.onended = function () {
+          try { a.pause(); } catch (e) {}
+        };
+        const p = a.play();
+        if (p && p.then) {
+          p.then(function () { markSound('chime-wav'); }, function () { markSound('chime-wav-blocked'); });
+        } else {
+          markSound('chime-wav');
+        }
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
     function playSuccessChime() {
-      playTone(523.25, 'triangle', 0.22, 0);     // C5
-      playTone(659.25, 'triangle', 0.22, 0.12);  // E5
-      playTone(783.99, 'triangle', 0.22, 0.24);  // G5
-      playTone(1046.50, 'sine', 0.35, 0.36);    // C6
-      playTone(1318.51, 'sine', 0.45, 0.48);    // E6
+      if (!isSoundOn) return;
+      let ctxRunning = false;
+      try {
+        const ctx = getAudioContext();
+        ctxRunning = !!(ctx && ctx.state === 'running');
+      } catch (e) { ctxRunning = false; }
+
+      if (ctxRunning) {
+        markSound('chime-web');
+        playTone(523.25, 'triangle', 0.22, 0);     // C5
+        playTone(659.25, 'triangle', 0.22, 0.12);  // E5
+        playTone(783.99, 'triangle', 0.22, 0.24);  // G5
+        playTone(1046.50, 'sine', 0.35, 0.36);     // C6
+        playTone(1318.51, 'sine', 0.45, 0.48);     // E6
+        return;
+      }
+      // 오디오컨텍스트가 잠겨 있어도 WAV 효과음으로 반드시 알린다
+      if (!playWavChime()) {
+        // 마지막 수단: 컨텍스트를 한 번 더 열어 본다
+        try {
+          getAudioContext();
+          playTone(880, 'triangle', 0.3, 0);
+          playTone(1320, 'triangle', 0.4, 0.25);
+          markSound('chime-web-retry');
+        } catch (e) {}
+      }
     }
 
     /* ============================================================
-       TEXT TO SPEECH (TTS)
+       TEXT TO SPEECH (기기 음성 → 스트리밍 음성 → 효과음)
        ============================================================ */
-    function speak(text) {
-      if (!isSoundOn || !('speechSynthesis' in window)) return;
+    function cleanForSpeech(text) {
+      return String(text == null ? '' : text)
+        .replace(/[\u{1F000}-\u{1FAFF}]/gu, ' ')
+        .replace(/[\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}\u{20E3}]/gu, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function koVoiceAvailable() {
       try {
+        if (!('speechSynthesis' in window) || !window.speechSynthesis.getVoices) return false;
+        const voices = window.speechSynthesis.getVoices() || [];
+        if (!voices.length) return true; // 아직 목록 전 — 일단 시도해 본다
+        return voices.some(function (v) { return v && v.lang && v.lang.toLowerCase().indexOf('ko') === 0; });
+      } catch (e) {
+        return true;
+      }
+    }
+
+    function stopSpeaking() {
+      ttsToken++;
+      try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+      try { if (ttsAudioEl) { ttsAudioEl.pause(); ttsAudioEl.removeAttribute('src'); } } catch (e) {}
+      ttsAudioEl = null;
+    }
+
+    function splitForTts(text) {
+      const raw = String(text).match(/[^.!?~]+[.!?~]*/g) || [String(text)];
+      const out = [];
+      raw.forEach(function (part) {
+        let s = part.trim();
+        if (!s) return;
+        while (s.length > 90) {
+          let cut = s.lastIndexOf(' ', 90);
+          if (cut < 30) cut = 90;
+          out.push(s.slice(0, cut).trim());
+          s = s.slice(cut).trim();
+        }
+        if (s) out.push(s);
+      });
+      return out;
+    }
+
+    function ttsUrlCandidates(chunk) {
+      const q = encodeURIComponent(chunk);
+      return [
+        'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=ko&q=' + q,
+        'https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q=' + q
+      ];
+    }
+
+    // HTML5 <audio> 한국어 음성 스트리밍 (패드 기기 음성 엔진이 없어도 재생)
+    function speakHtml5Audio(text, token) {
+      const chunks = splitForTts(text);
+      if (!chunks.length) return;
+      let idx = 0;
+      let hostIdx = 0;
+      let failures = 0;
+
+      function playNext() {
+        if (token !== ttsToken) return;
+        if (idx >= chunks.length) return;
+        const urls = ttsUrlCandidates(chunks[idx]);
+        if (hostIdx >= urls.length) {
+          hostIdx = 0;
+          idx++;
+          failures++;
+          playNext();
+          return;
+        }
+        const url = urls[hostIdx];
+        let a;
+        try { a = new Audio(url); } catch (e) { hostIdx++; playNext(); return; }
+        a.setAttribute('playsinline', '');
+        a.setAttribute('webkit-playsinline', '');
+        a.preload = 'auto';
+        a.volume = 1;
+        ttsAudioEl = a;
+        a.onended = function () {
+          hostIdx = 0;
+          idx++;
+          playNext();
+        };
+        a.onerror = function () {
+          hostIdx++;
+          playNext();
+        };
+        let p = null;
+        try { p = a.play(); } catch (e) { hostIdx++; playNext(); return; }
+        if (p && p.then) {
+          p.then(function () { markSound('speak-html5'); }, function () { hostIdx++; playNext(); });
+        } else {
+          markSound('speak-html5');
+        }
+      }
+      playNext();
+    }
+
+    // 기기 음성(Web Speech). 무응답이면 0.7초 안에 스트리밍 음성으로 자동 전환.
+    function tryWebSpeech(text, token) {
+      try {
+        if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance !== 'function') return false;
         const synth = window.speechSynthesis;
+        if (!synth || typeof synth.speak !== 'function') return false;
+        if (synth.paused && synth.resume) synth.resume();
+
+        let settled = false;
+        let watchdog = null;
+
+        const failover = function () {
+          if (settled) return;
+          settled = true;
+          if (watchdog) { clearTimeout(watchdog); watchdog = null; }
+          if (token !== ttsToken) return; // 새 안내가 시작됐으면 조용히 물러난다
+          markSound('speak-web-failed');
+          try { synth.cancel(); } catch (e) {}
+          speakHtml5Audio(text, token);
+        };
+
         const u = new SpeechSynthesisUtterance(text);
         u.lang = 'ko-KR';
         u.rate = 0.98;
         u.pitch = 1.12;
+        u.volume = 1;
+        u.onstart = function () {
+          settled = true;
+          if (watchdog) { clearTimeout(watchdog); watchdog = null; }
+          markSound('speak-web');
+        };
+        u.onend = function () {
+          settled = true;
+          if (watchdog) { clearTimeout(watchdog); watchdog = null; }
+        };
+        u.onerror = function () { failover(); };
         window.__lastKioskUtterance = u;
-        if (synth.speaking || synth.pending) {
-          synth.cancel();
-          setTimeout(() => { synth.speak(u); }, 50);
-        } else {
-          synth.speak(u);
-        }
-      } catch(e) {}
+        synth.speak(u);
+
+        watchdog = setTimeout(function () {
+          if (settled) return;
+          if (token !== ttsToken) return;
+          if (synth.speaking || synth.pending) { settled = true; return; } // 엔진이 말하는 중이면 그대로 둔다
+          failover();
+        }, 700);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    function speak(text) {
+      if (!isSoundOn) return;
+      const clean = cleanForSpeech(text);
+      if (!clean) return;
+      const token = ++ttsToken;
+      try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {}
+      if (koVoiceAvailable() && tryWebSpeech(clean, token)) return;
+      markSound('speak-direct-html5');
+      speakHtml5Audio(clean, token);
     }
 
     /* ============================================================
@@ -13619,12 +13937,12 @@ initStorage();
         card.onclick = () => addToCart(item);
 
         card.innerHTML = `
-          <div class="menu-badge">${item.country}</div>
-          <div class="menu-icon">${item.icon}</div>
-          <div class="menu-name">${item.name}</div>
-          <div class="menu-desc">${item.desc}</div>
-          <div class="menu-price-tag">${item.price.toLocaleString()}원 (🪙 ${item.coins}개)</div>
-          <button class="btn-add">주문서에 담기 +</button>
+          <div class="menu-badge">${item.country}<\/div>
+          <div class="menu-icon">${item.icon}<\/div>
+          <div class="menu-name">${item.name}<\/div>
+          <div class="menu-desc">${item.desc}<\/div>
+          <div class="menu-price-tag">${item.price.toLocaleString()}원 (🪙 ${item.coins}개)<\/div>
+          <button class="btn-add">주문서에 담기 +<\/button>
         `;
         grid.appendChild(card);
       });
@@ -13689,17 +14007,17 @@ initStorage();
         row.className = 'cart-item';
         row.innerHTML = `
           <div class="cart-item-info">
-            <span class="cart-item-icon">${item.icon}</span>
+            <span class="cart-item-icon">${item.icon}<\/span>
             <div>
-              <div class="cart-item-title">${item.name}</div>
-              <div class="cart-item-sub">${(item.price * item.qty).toLocaleString()}원 (코인 ${item.coins * item.qty}개)</div>
-            </div>
-          </div>
+              <div class="cart-item-title">${item.name}<\/div>
+              <div class="cart-item-sub">${(item.price * item.qty).toLocaleString()}원 (코인 ${item.coins * item.qty}개)<\/div>
+            <\/div>
+          <\/div>
           <div class="cart-qty-ctrl">
-            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="빼기">−</button>
-            <span class="qty-num">${item.qty}</span>
-            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="더하기">+</button>
-          </div>
+            <button class="qty-btn" onclick="changeQty('${item.id}', -1)" aria-label="빼기">−<\/button>
+            <span class="qty-num">${item.qty}<\/span>
+            <button class="qty-btn" onclick="changeQty('${item.id}', 1)" aria-label="더하기">+<\/button>
+          <\/div>
         `;
         list.appendChild(row);
       });
@@ -13729,6 +14047,9 @@ initStorage();
     }
 
     function handleCheckout(method) {
+      // 결제 버튼을 누른 바로 그 순간에 오디오 잠금을 푼다 (패드 자동재생 차단 대비)
+      try { unlockAudio(); } catch (e) {}
+
       if (cart.length === 0) {
         showToast('먼저 드실 음식을 메뉴에서 골라주세요!', '🛍️');
         speak('주문서가 비어있어요. 음식을 먼저 골라주세요.');
@@ -13752,6 +14073,8 @@ initStorage();
 
     function showReceipt(method) {
       const orderNum = orderCounter++;
+      // 어떤 기기에서도 완료 알림이 무음으로 끝나지 않도록 미리 잠금 해제
+      try { if (audioPrimed) getAudioContext(); } catch (e) {}
       document.getElementById('receiptOrderNum').textContent = `🌟 ${orderNum}번`;
 
       const now = new Date();
@@ -13773,8 +14096,8 @@ initStorage();
         const row = document.createElement('div');
         row.className = 'receipt-item-row';
         row.innerHTML = `
-          <span>${item.icon} ${item.name} × ${item.qty}</span>
-          <span style="font-weight:bold;">${(item.price * item.qty).toLocaleString()}원</span>
+          <span>${item.icon} ${item.name} × ${item.qty}<\/span>
+          <span style="font-weight:bold;">${(item.price * item.qty).toLocaleString()}원<\/span>
         `;
         paperList.appendChild(row);
       });
@@ -13795,7 +14118,19 @@ initStorage();
       showToast(`🎉 주문이 완료되었습니다! (주문번호 ${orderNum}번)`, '👨‍🍳');
 
       // Cheerful voice announcement: Starts with "주문이 완료되었습니다!"
+      const announceAt = Date.now();
       speak(`주문이 완료되었습니다! 주문번호 ${orderNum}번 고객님, ${summaryText} 맛있게 요리해 드릴게요!`);
+
+      // 기기 음성도 스트리밍 음성도 막힌 패드에서는 효과음으로라도 반드시 알린다
+      setTimeout(function () {
+        try {
+          const log = window.__kioskSoundLog || [];
+          const spoke = log.some(function (x) {
+            return x.t >= announceAt && (x.e === 'speak-web' || x.e === 'speak-html5');
+          });
+          if (!spoke && isSoundOn) playWavChime();
+        } catch (e) {}
+      }, 1800);
     }
 
     function closeReceipt() {
@@ -13815,7 +14150,10 @@ initStorage();
       document.getElementById('soundIcon').textContent = isSoundOn ? '🔊' : '🔇';
       document.getElementById('soundText').textContent = isSoundOn ? '소리 켜짐' : '소리 꺼짐';
       showToast(isSoundOn ? '소리가 켜졌습니다.' : '소리가 꺼졌습니다.', isSoundOn ? '🔊' : '🔇');
-      if (isSoundOn) playTapSound();
+      if (isSoundOn) {
+        playSuccessChime();
+        speak('소리가 켜졌습니다.');
+      }
     }
 
     function toggleTeacherLock() {
@@ -13888,9 +14226,8 @@ initStorage();
       }
     });
   <\/script>
-</body>
-</html>
-
+<\/body>
+<\/html>
 </script>
 <script type="text/plain" id="app14">
 <!doctype html>
