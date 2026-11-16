@@ -118,6 +118,40 @@
     .namewrap{grid-column:1 / -1}
   }
 
+  /* ── 기타(희망 장소) 줄 ── */
+  .row.etc{cursor:default;background:#FCFBF6;border-top:1.5px dashed #DDD5C4}
+  .num.plus{background:#fff !important;color:#7C8798;border:1.5px dashed #AEB6C2;font-size:15px;line-height:1}
+  .thumb.etcbadge{display:grid;place-items:center;font-size:11px;font-weight:800;color:#7C8798;background:#F4F1EA;border:1px dashed #D8D1C1}
+  .etcwrap{display:flex;flex-direction:column;gap:6px}
+
+  /* ── 보내기 줄 ── */
+  .sendbar{margin-top:14px;padding-top:12px;border-top:1px dashed #E7DFCF;display:flex;flex-direction:column;gap:9px}
+  .sendbar .note{font-size:11.5px;color:var(--muted);line-height:1.55}
+  .btn.wide{width:100%;padding:13px 14px;font-size:14.5px}
+  .btn.send{background:#1F7A44;border-color:#1F7A44;color:#fff}
+  .btn.send:disabled{background:#EDE9DF;border-color:#EDE9DF;color:#A2AAB4;cursor:default}
+  .btn.small{padding:8px 11px;font-size:12.5px;border-radius:9px}
+
+  /* ── 모달 ── */
+  .modal{position:fixed;inset:0;background:rgba(23,35,59,.45);display:none;place-items:center;padding:14px;z-index:9000}
+  .modal.open{display:grid}
+  .sheet{background:#fff;border-radius:20px;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:18px 18px 16px;box-shadow:0 24px 60px rgba(23,35,59,.32)}
+  .sheet .x{float:right;border:none;background:#F4F1EA;color:#5C6A7E;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer}
+  .sheet h3{margin:2px 0 4px;font-size:18px;letter-spacing:-.01em}
+  .sheet p.h{margin:0 0 12px;font-size:12.5px;color:var(--muted);line-height:1.55}
+  .sheet textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:12px;padding:10px;font-family:inherit;font-size:13px;line-height:1.55;resize:vertical;background:#FCFAF5}
+  .sheet .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .pin{display:flex;gap:8px;margin:6px 0 0}
+  .pin input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px 12px;font-size:14px;font-family:inherit}
+  .sum{margin-top:14px}
+  .sum .tot{font-size:13px;color:var(--muted);margin:0 0 8px}
+  .sum .tot b{color:var(--ink);font-size:16px}
+  .grp{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:8px;background:#fff}
+  .grp .gh{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:13.5px;font-weight:800}
+  .grp .gh span{font-size:12px;color:var(--muted);font-weight:700}
+  .grp .gl{margin:5px 0 0;font-size:13px;color:#33415A;line-height:1.6}
+  .grp .gl em{font-style:normal;color:#8C95A3;font-size:12px}
+
   /* ── 인쇄용 정적 시트 (화면에서는 숨김) ── */
   .print-sheet{display:none}
   @page{size:A3 landscape;margin:9mm}
@@ -168,6 +202,7 @@
     </div>
     <div class="tools">
       <button class="btn" id="allBtn">1·2코스 한눈에</button>
+      <button class="btn" id="teacherBtn">👩‍🏫 선생님 취합</button>
       <button class="btn primary" id="printBtn">A3 가로 인쇄</button>
       <span class="hint">인쇄 대화상자에서 <b>A3 · 가로</b>, 여백 <b>기본</b>으로 고르세요</span>
     </div>
@@ -184,15 +219,57 @@
     </div>
     <div class="card panel">
       <h2>정류장별 자녀 이름 적기</h2>
-      <p class="sub">정류장을 누르면 그 장소 사진과 지도 위치가 뜹니다. 칸에 이름을 적으면 저장되고 인쇄물에 함께 나옵니다.</p>
+      <p class="sub">정류장을 누르면 그 장소 사진과 지도 위치가 뜹니다. 칸에 이름을 적으면 이 폰에 저장되고, <b>선생님께 보내기</b>로 신청을 전달합니다.</p>
       <div class="rows" id="rows"></div>
+      <div class="sendbar" id="sendbar"></div>
     </div>
   </main>
 
   <footer>
-    ※ 정차 시각은 <b>평소 운행 기준</b>입니다. 2026년 11월 19일(수능일)은 1시간 늦게 운행합니다.<br>
-    ※ 실제 도로 주행 경로 및 정차 위치는 확정 유아 명단·모의주행 후 변동될 수 있습니다. · 지도·지명 © Google, 사진 © 각 장소 등록 사진(Google 지도·네이버 지도)
+    ※ 정차 시각은 <b>평소 운행 시간 기준</b>입니다. 1·2코스에 없는 곳에 사시면 표 맨 아래 <b>기타</b> 칸에 희망 탑승 장소와 자녀 이름을 적어 주세요.<br>
+    ※ 적은 이름은 부모님 폰에만 저장되고, <b>선생님께 보내기</b>를 누를 때만 선생님께 전달됩니다. · 실제 도로 주행 경로 및 정차 위치는 확정 유아 명단·모의주행 후 변동될 수 있습니다. · 지도·지명 © Google, 사진 © 각 장소 등록 사진(Google 지도·네이버 지도)
   </footer>
+
+  <!-- 부모님 보내기 창 -->
+  <div class="modal" id="shareModal">
+    <div class="sheet">
+      <button class="x" data-close="shareModal">✕</button>
+      <h3>선생님께 보내기</h3>
+      <p class="h">아래 내용을 <b>복사</b>해서 카카오톡·문자로 선생님께 보내 주세요. 보내 주시면 선생님이 한 번에 취합할 수 있어요.</p>
+      <textarea id="shareText" readonly></textarea>
+      <div class="actions">
+        <button class="btn primary small" id="copyBtn">내용 복사</button>
+        <a class="btn small" id="smsLink" href="#">문자로 보내기</a>
+        <button class="btn small" data-close="shareModal">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 선생님 취합 창 -->
+  <div class="modal" id="teacherModal">
+    <div class="sheet">
+      <button class="x" data-close="teacherModal">✕</button>
+      <h3>👩‍🏫 선생님 취합</h3>
+      <p class="h">부모님께 받은 신청 메시지를 붙여넣으면 코스·정류장별로 정리해 드려요.</p>
+      <div id="pinGate">
+        <div class="pin">
+          <input id="pinInput" type="password" inputmode="numeric" placeholder="선생님 PIN">
+          <button class="btn primary" id="pinBtn">들어가기</button>
+        </div>
+        <p class="h" style="margin:8px 0 0">PIN은 <b>dalnuri</b> 입니다.</p>
+      </div>
+      <div id="teacherBody" style="display:none">
+        <textarea id="pasteBox" placeholder="예)&#10;[2027 통학차량 탑승신청]&#10;자녀 이름: 김하준&#10;2코스 · 양지마을아파트 (8:28)"></textarea>
+        <div class="actions">
+          <button class="btn primary small" id="parseBtn">정리하기</button>
+          <button class="btn small" id="csvBtn">CSV로 저장</button>
+          <button class="btn small" id="printSumBtn">인쇄하기</button>
+          <button class="btn small" id="clearSumBtn">전체 지우기</button>
+        </div>
+        <div class="sum" id="sumBox"></div>
+      </div>
+    </div>
+  </div>
  </div>
  
     <section class="print-sheet" data-course="c1">
@@ -213,11 +290,11 @@
           <p class="ps-sub">현장에서 펜으로 자녀 이름을 적어 주세요</p>
           <table class="ps-table">
             <thead><tr><th>번호</th><th>정류장</th><th>시간</th><th>자녀 이름</th></tr></thead>
-            <tbody><tr><td class="c-num"><span style="background:#1D5FBF">1</span></td><td class="c-name">대전지방국토관리청</td><td class="c-time" style="color:#1D5FBF">8:08</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">2</span></td><td class="c-name">GS편의점 뉴대전홍도점</td><td class="c-time" style="color:#1D5FBF">8:11</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">3</span></td><td class="c-name">베스트육가공</td><td class="c-time" style="color:#1D5FBF">8:14</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">4</span></td><td class="c-name">대동산업</td><td class="c-time" style="color:#1D5FBF">8:16</td><td class="c-blank"></td></tr></tbody>
+            <tbody><tr><td class="c-num"><span style="background:#1D5FBF">1</span></td><td class="c-name">대전지방국토관리청</td><td class="c-time" style="color:#1D5FBF">8:08</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">2</span></td><td class="c-name">GS편의점 뉴대전홍도점</td><td class="c-time" style="color:#1D5FBF">8:11</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">3</span></td><td class="c-name">베스트육가공</td><td class="c-time" style="color:#1D5FBF">8:14</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#1D5FBF">4</span></td><td class="c-name">대동산업</td><td class="c-time" style="color:#1D5FBF">8:16</td><td class="c-blank"></td></tr><tr class="ps-etc"><td class="c-num"><span style="background:#7C8798">+</span></td><td class="c-name">기타 · 희망 장소</td><td class="c-time" style="color:#7C8798;font-size:8pt">직접 적기</td><td class="c-blank"></td></tr></tbody>
           </table>
         </div>
       </div>
-      <p class="ps-foot">※ 정차 시각은 평소 운행 기준입니다(2026-11-19 수능일은 1시간 늦게 운행). 실제 주행 경로·정차 위치는 모의주행 후 확정됩니다. · 지도·지명 © Google · 1/2쪽</p>
+      <p class="ps-foot">※ 정차 시각은 평소 운행 시간 기준입니다. 1·2코스에 없는 곳에 사시면 표 맨 아래 <b>기타</b> 칸에 희망 탑승 장소와 자녀 이름을 적어 주세요. 실제 주행 경로·정차 위치는 모의주행 후 확정됩니다. · 지도·지명 © Google · 1/2쪽</p>
     </section>
     <section class="print-sheet" data-course="c2">
       <div class="ps-head">
@@ -237,11 +314,11 @@
           <p class="ps-sub">현장에서 펜으로 자녀 이름을 적어 주세요</p>
           <table class="ps-table">
             <thead><tr><th>번호</th><th>정류장</th><th>시간</th><th>자녀 이름</th></tr></thead>
-            <tbody><tr><td class="c-num"><span style="background:#E31C5F">1</span></td><td class="c-name">양지마을아파트</td><td class="c-time" style="color:#E31C5F">8:28</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">2</span></td><td class="c-name">평화로운아파트</td><td class="c-time" style="color:#E31C5F">8:32</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">3</span></td><td class="c-name">동광스텐</td><td class="c-time" style="color:#E31C5F">8:38</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">4</span></td><td class="c-name">조명랜드</td><td class="c-time" style="color:#E31C5F">8:40</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">5</span></td><td class="c-name">한신전기상사</td><td class="c-time" style="color:#E31C5F">8:50</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">6</span></td><td class="c-name">현암아파트</td><td class="c-time" style="color:#E31C5F">8:52</td><td class="c-blank"></td></tr></tbody>
+            <tbody><tr><td class="c-num"><span style="background:#E31C5F">1</span></td><td class="c-name">양지마을아파트</td><td class="c-time" style="color:#E31C5F">8:28</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">2</span></td><td class="c-name">평화로운아파트</td><td class="c-time" style="color:#E31C5F">8:32</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">3</span></td><td class="c-name">동광스텐</td><td class="c-time" style="color:#E31C5F">8:38</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">4</span></td><td class="c-name">조명랜드</td><td class="c-time" style="color:#E31C5F">8:40</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">5</span></td><td class="c-name">한신전기상사</td><td class="c-time" style="color:#E31C5F">8:50</td><td class="c-blank"></td></tr><tr><td class="c-num"><span style="background:#E31C5F">6</span></td><td class="c-name">현암아파트</td><td class="c-time" style="color:#E31C5F">8:52</td><td class="c-blank"></td></tr><tr class="ps-etc"><td class="c-num"><span style="background:#7C8798">+</span></td><td class="c-name">기타 · 희망 장소</td><td class="c-time" style="color:#7C8798;font-size:8pt">직접 적기</td><td class="c-blank"></td></tr></tbody>
           </table>
         </div>
       </div>
-      <p class="ps-foot">※ 정차 시각은 평소 운행 기준입니다(2026-11-19 수능일은 1시간 늦게 운행). 실제 주행 경로·정차 위치는 모의주행 후 확정됩니다. · 지도·지명 © Google · 2/2쪽</p>
+      <p class="ps-foot">※ 정차 시각은 평소 운행 시간 기준입니다. 1·2코스에 없는 곳에 사시면 표 맨 아래 <b>기타</b> 칸에 희망 탑승 장소와 자녀 이름을 적어 주세요. 실제 주행 경로·정차 위치는 모의주행 후 확정됩니다. · 지도·지명 © Google · 2/2쪽</p>
     </section>
 </div>
 
@@ -390,8 +467,7 @@ function renderMeta(){
   if (showAll){
     const t = DATA.courses.map(c=>`${c.badge} ${c.time}`);
     el.innerHTML = `<span class="chip">현재 운행 <b>1·2코스</b></span>` +
-      t.map(x=>`<span class="chip">${x.split(' ')[0]}<b>${x.split(' ').slice(1).join(' ')}</b></span>`).join('') +
-      `<span class="chip">수능일(11/19) <b>1시간 지연</b></span>`;
+      t.map(x=>`<span class="chip">${x.split(' ')[0]}<b>${x.split(' ').slice(1).join(' ')}</b></span>`).join('');
     return;
   }
   const c = DATA.courses.find(x => x.id === active);
@@ -422,35 +498,278 @@ function focusStop(key){
   if (mk){ map.flyTo(mk.getLatLng(), 17, {duration:.7}); setTimeout(() => mk.openPopup(), 450); }
 }
 
+const LS = (k, v) => v === undefined ? (localStorage.getItem('bus2027:' + k) || '') : localStorage.setItem('bus2027:' + k, v);
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+
 function renderRows(){
   const box = $('#rows');
   if (showAll){
     box.innerHTML = `<p class="sub" style="margin:6px 0 0">코스를 선택하면 정류장별 이름 칸이 나옵니다.</p>`;
+    $('#sendbar').innerHTML = '';
     return;
   }
   const c = DATA.courses.find(x => x.id === active);
-  box.innerHTML = c.stops.map((s, i) => {
+  const stopsHtml = c.stops.map((s, i) => {
     const d = DATA.stops[s.key];
-    const saved = localStorage.getItem('bus2027:' + c.id + ':' + s.key) || '';
+    const saved = LS(c.id + ':' + s.key);
     const thumb = d.photo ? `<img class="thumb" src="${d.photo}" alt="">` : `<div class="thumb"></div>`;
     return `<div class="row" data-key="${s.key}">
       <div class="num" style="background:${c.color}">${i+1}</div>
       ${thumb}
       <div class="sname">${d.name}${d.ok?'':'<span class="pin-dot" title="위치 확인 중"></span>'}
         <div class="stime" style="color:${c.color};font-size:13px">${s.time}</div></div>
-      <div class="namewrap"><input data-course="${c.id}" data-key="${s.key}" placeholder="자녀 이름" value="${saved}"></div>
+      <div class="namewrap"><input data-course="${c.id}" data-key="${s.key}" placeholder="자녀 이름" value="${esc(saved)}"></div>
     </div>`;
   }).join('');
+  const etcHtml = `<div class="row etc" data-key="__etc">
+      <div class="num plus">＋</div>
+      <div class="thumb etcbadge">기타</div>
+      <div class="sname">기타 · 희망 탑승 장소
+        <div class="stime" style="color:#7C8798;font-size:12.5px">1·2코스에 없는 곳</div></div>
+      <div class="namewrap etcwrap">
+        <input data-course="${c.id}" data-key="__etc_place" placeholder="희망 장소 (주소·건물명)" value="${esc(LS(c.id + ':__etc_place'))}">
+        <input data-course="${c.id}" data-key="__etc" placeholder="자녀 이름" value="${esc(LS(c.id + ':__etc'))}">
+      </div>
+    </div>`;
+  box.innerHTML = stopsHtml + etcHtml;
   box.querySelectorAll('input').forEach(inp => {
-    inp.oninput = () => localStorage.setItem('bus2027:' + inp.dataset.course + ':' + inp.dataset.key, inp.value.trim());
+    inp.oninput = () => {
+      localStorage.setItem('bus2027:' + inp.dataset.course + ':' + inp.dataset.key, inp.value.trim());
+      renderSendbar();
+    };
   });
   box.querySelectorAll('.row').forEach(r => {
+    if (r.dataset.key === '__etc') return;
     r.onclick = (ev) => { if (ev.target.tagName === 'INPUT') return; focusStop(r.dataset.key); };
   });
+  renderSendbar();
+}
+
+/* ── 부모님 신청 모으기 · 보내기 ── */
+function collectEntries(){
+  const out = [];
+  DATA.courses.forEach(c => {
+    c.stops.forEach(s => {
+      const v = LS(c.id + ':' + s.key).trim();
+      if (v) out.push({course:c.badge, stop:DATA.stops[s.key].name, time:s.time, etc:'', child:v});
+    });
+  });
+  DATA.courses.forEach(c => {
+    const n = LS(c.id + ':__etc').trim(), p = LS(c.id + ':__etc_place').trim();
+    if (n || p) out.push({course:c.badge, stop:'기타', time:'', etc:p, child:n});
+  });
+  return out;
+}
+
+function buildMessage(entries){
+  const byChild = new Map();
+  entries.forEach(e => {
+    const k = e.child || '(이름 미기재)';
+    if (!byChild.has(k)) byChild.set(k, []);
+    byChild.get(k).push(e);
+  });
+  const blocks = [];
+  byChild.forEach((list, child) => {
+    const lines = ['[2027 통학차량 탑승신청]', '자녀 이름: ' + child];
+    list.forEach(e => {
+      lines.push(e.stop === '기타'
+        ? `${e.course} · 기타 : ${e.etc || '(장소 미기재)'}`
+        : `${e.course} · ${e.stop}${e.time ? ' (' + e.time + ')' : ''}`);
+    });
+    blocks.push(lines.join('\n'));
+  });
+  return blocks.join('\n\n');
+}
+
+function renderSendbar(){
+  const box = $('#sendbar');
+  if (!box) return;
+  const list = collectEntries();
+  box.innerHTML = `
+    <div class="note">적은 이름은 이 폰에 저장돼요. <b>선생님께 보내기</b>를 누르면 카카오톡·문자로 신청 내용이 전달됩니다.</div>
+    <button class="btn send wide" id="sendBtn" ${list.length ? '' : 'disabled'}>${list.length ? `선생님께 보내기 · ${list.length}건` : '자녀 이름을 적으면 보낼 수 있어요'}</button>`;
+  const b = $('#sendBtn');
+  if (b) b.onclick = sendToTeacher;
+}
+
+async function sendToTeacher(){
+  const entries = collectEntries();
+  if (!entries.length) return;
+  const text = buildMessage(entries);
+  if (navigator.share){
+    try {
+      await navigator.share({title:'2027 통학차량 탑승신청', text});
+      const b = $('#sendBtn');
+      if (b){ b.textContent = '보냈어요 ✓ 선생님께 전달'; setTimeout(renderSendbar, 2200); }
+      return;
+    }
+    catch(e){ if (e && e.name === 'AbortError') return; }
+  }
+  $('#shareText').value = text;
+  $('#smsLink').href = 'sms:?body=' + encodeURIComponent(text);
+  openModal('shareModal');
+}
+
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+/* ── 선생님 취합 ── */
+const TEACHER_PIN = 'dalnuri';
+function loadRecords(){ try { return JSON.parse(localStorage.getItem('bus2027:collect') || '[]'); } catch(e){ return []; } }
+function saveRecords(recs){ localStorage.setItem('bus2027:collect', JSON.stringify(recs)); }
+
+function openTeacher(){
+  openModal('teacherModal');
+  if (sessionStorage.getItem('bus2027:teacher') === '1'){
+    $('#pinGate').style.display = 'none';
+    $('#teacherBody').style.display = 'block';
+    renderSummary();
+  } else {
+    $('#pinGate').style.display = 'block';
+    $('#teacherBody').style.display = 'none';
+    setTimeout(() => $('#pinInput').focus(), 120);
+  }
+}
+
+function checkPin(){
+  if ($('#pinInput').value.trim().toLowerCase() === TEACHER_PIN){
+    sessionStorage.setItem('bus2027:teacher', '1');
+    $('#pinGate').style.display = 'none';
+    $('#teacherBody').style.display = 'block';
+    renderSummary();
+  } else {
+    alert('PIN이 맞지 않아요.');
+  }
+}
+
+function parsePasted(text){
+  const out = [];
+  let child = '';
+  text.split(/\r?\n/).forEach(raw => {
+    const line = raw.replace(/\s+/g, ' ').trim();
+    if (!line) return;
+    let m = line.match(/자녀\s*이름\s*[:：]\s*(.+)$/);
+    if (m){ child = m[1].replace(/[()\[\]]/g, '').trim(); return; }
+    m = line.match(/^(\d)\s*코스\s*[·:：\-]\s*(.+)$/);
+    if (!m) return;
+    let place = m[2].trim(), time = '';
+    const t = place.match(/\((\d{1,2}:\d{2})\)\s*$/);
+    if (t){ time = t[1]; place = place.slice(0, t.index).trim(); }
+    let etc = '';
+    const e = place.match(/^기타\s*[:：]?\s*(.*)$/);
+    if (e){ place = '기타'; etc = e[1].trim(); }
+    out.push({course: m[1] + '코스', stop: place, time: time, etc: etc, child: child});
+  });
+  return out;
+}
+
+function mergeRecords(list){
+  const recs = loadRecords();
+  let added = 0;
+  list.forEach(r => {
+    const dup = recs.some(x => x.course === r.course && x.stop === r.stop && (x.etc || '') === (r.etc || '') && x.child === r.child);
+    if (!dup){ r.at = new Date().toLocaleString('ko-KR', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}); recs.push(r); added++; }
+  });
+  saveRecords(recs);
+  return added;
+}
+
+function groupRecords(recs){
+  const groups = [];
+  DATA.courses.forEach(c => {
+    c.stops.forEach(s => {
+      const nm = DATA.stops[s.key].name;
+      const hit = recs.filter(r => r.course === c.badge && r.stop === nm);
+      if (hit.length) groups.push({title: `${c.badge} · ${nm}`, sub: s.time, color: c.color, list: hit});
+    });
+  });
+  const etcs = recs.filter(r => r.stop === '기타');
+  if (etcs.length) groups.push({title: '기타 · 희망 탑승 장소', sub: '1·2코스 외', color: '#7C8798', list: etcs});
+  const known = new Set(groups.reduce((a, g) => a.concat(g.list), []));
+  const rest = recs.filter(r => !known.has(r));
+  if (rest.length) groups.push({title: '그 밖에 적힌 곳', sub: '', color: '#8C95A3', list: rest});
+  return groups;
+}
+
+function renderSummary(){
+  const box = $('#sumBox');
+  const recs = loadRecords();
+  if (!recs.length){
+    box.innerHTML = `<p class="sub" style="margin:8px 0 0">아직 받은 신청이 없어요. 받은 메시지를 위 칸에 붙여넣고 <b>정리하기</b>를 눌러 주세요.</p>`;
+    return;
+  }
+  const names = new Set(recs.map(r => r.child).filter(Boolean));
+  const groups = groupRecords(recs);
+  box.innerHTML = `<p class="tot">총 <b>${names.size}</b>명 · <b>${recs.length}</b>건 접수</p>` +
+    groups.map(g => `<div class="grp">
+      <div class="gh" style="color:${g.color}">${g.title}<span>${g.list.length}명${g.sub ? ' · ' + g.sub : ''}</span></div>
+      <div class="gl">${g.list.map(r => r.stop === '기타'
+        ? `${esc(r.child || '(이름 미기재)')} <em>${esc(r.etc || '장소 미기재')}</em>`
+        : esc(r.child || '(이름 미기재)')).join(' · ')}</div>
+    </div>`).join('');
+}
+
+function downloadCsv(){
+  const recs = loadRecords();
+  if (!recs.length){ alert('내려받을 접수 내역이 없어요.'); return; }
+  const head = ['코스', '정류장', '정차시각', '희망장소(기타)', '자녀 이름', '접수 시각'];
+  const rows = recs.map(r => [r.course, r.stop, r.time || '', r.etc || '', r.child || '', r.at || '']);
+  const csv = '\ufeff' + [head].concat(rows).map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+  a.download = '2027_통학차량_탑승신청_취합.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+}
+
+function printSummary(){
+  const recs = loadRecords();
+  if (!recs.length){ alert('인쇄할 접수 내역이 없어요.'); return; }
+  const names = new Set(recs.map(r => r.child).filter(Boolean));
+  const groups = groupRecords(recs);
+  const body = groups.map(g => `<tr><th colspan="2" style="background:${g.color}1a;color:${g.color}">${g.title} <span style="font-weight:600;color:#6B7A90">${g.list.length}명 ${g.sub || ''}</span></th></tr>` +
+    g.list.map(r => `<tr><td>${esc(r.child || '(이름 미기재)')}</td><td style="color:#6B7A90">${r.stop === '기타' ? esc(r.etc || '') : ' '}</td></tr>`).join('')).join('');
+  const w = window.open('', '_blank');
+  if (!w) { alert('팝업이 막혀 있어요. 브라우저에서 팝업을 허용해 주세요.'); return; }
+  w.document.write(`<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>2027 통학차량 탑승신청 취합</title>
+  <style>body{font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",sans-serif;padding:22px;color:#17233B}
+  h1{font-size:21px;margin:0 0 4px}.sub{color:#6B7A90;font-size:12.5px;margin:0 0 16px}
+  table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:6px 9px;border-bottom:1px solid #E3DCCD}th{font-size:13.5px}
+  @page{size:A4;margin:12mm}</style></head><body>
+  <h1>2027학년도 통학차량 탑승 신청 취합</h1>
+  <p class="sub">대전동산초등학교병설유치원 · 총 ${names.size}명 / ${recs.length}건 · ${new Date().toLocaleDateString('ko-KR')}</p>
+  <table>${body}</table></body></html>`);
+  w.document.close();
+  setTimeout(() => { w.focus(); w.print(); }, 450);
 }
 
 $('#allBtn').onclick = () => { showAll = !showAll; render(); $('#allBtn').textContent = showAll ? '코스별로 보기' : '1·2코스 한눈에'; };
 $('#printBtn').onclick = () => { map.invalidateSize(); setTimeout(() => window.print(), 350); };
+$('#teacherBtn').onclick = openTeacher;
+$('#pinBtn').onclick = checkPin;
+$('#pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
+$('#parseBtn').onclick = () => {
+  const list = parsePasted($('#pasteBox').value || '');
+  if (!list.length){ alert('정리할 신청 내용을 찾지 못했어요. 받은 메시지를 그대로 붙여넣어 주세요.'); return; }
+  const added = mergeRecords(list);
+  $('#pasteBox').value = '';
+  renderSummary();
+  alert(added ? `${added}건을 새로 정리했어요.` : '이미 정리된 신청이에요.');
+};
+$('#csvBtn').onclick = downloadCsv;
+$('#printSumBtn').onclick = printSummary;
+$('#clearSumBtn').onclick = () => {
+  if (confirm('이 폰에 정리된 접수 내역을 모두 지울까요?')){ saveRecords([]); renderSummary(); }
+};
+document.querySelectorAll('[data-close]').forEach(b => b.onclick = () => closeModal(b.dataset.close));
+document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); }));
+$('#copyBtn').onclick = async () => {
+  const ta = $('#shareText');
+  try { await navigator.clipboard.writeText(ta.value); }
+  catch(e){ ta.select(); document.execCommand('copy'); }
+  $('#copyBtn').textContent = '복사했어요 ✓';
+  setTimeout(() => { $('#copyBtn').textContent = '내용 복사'; }, 1800);
+};
 window.addEventListener('beforeprint', () => map.invalidateSize());
 window.addEventListener('resize', () => map.invalidateSize());
 
