@@ -47,6 +47,8 @@
   .rows{display:flex;flex-direction:column}
   .row{display:grid;grid-template-columns:26px 1fr auto 96px;gap:8px;align-items:center;padding:9px 0;border-top:1px solid #F0EBE1}
   .row:first-child{border-top:none}
+  .row{cursor:pointer}
+  .row:hover{background:#FBFAF6}
   .num{width:24px;height:24px;border-radius:50%;color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center}
   .sname{font-size:13.5px;font-weight:700;line-height:1.25}
   .stime{font-size:14px;font-weight:800;white-space:nowrap}
@@ -73,7 +75,13 @@
     box-shadow:0 3px 10px rgba(23,35,59,.28);font-weight:800;color:#fff;font-size:15px;
   }
   .stop-pin span{width:27px;height:27px;border-radius:50%;display:grid;place-items:center}
-  .school-pin{font-size:26px;line-height:1;filter:drop-shadow(0 3px 6px rgba(23,35,59,.35))}
+  .school-pin{font-size:30px;line-height:1;filter:drop-shadow(0 3px 6px rgba(23,35,59,.35))}
+  .school-wrap{position:relative;width:34px;height:34px;display:grid;place-items:center}
+  .school-label{
+    position:absolute;top:32px;left:50%;transform:translateX(-50%);
+    background:#fff;border:1px solid #E3DCCD;border-radius:9px;padding:3px 9px;
+    font-size:11.5px;font-weight:800;white-space:nowrap;box-shadow:0 2px 8px rgba(23,35,59,.16);color:#17233B;
+  }
   .arrow{width:0;height:0}
   footer{margin-top:16px;font-size:12px;color:#8A94A4;line-height:1.6}
   .legend{display:flex;gap:14px;flex-wrap:wrap;margin:10px 2px 0;font-size:12px;color:var(--muted)}
@@ -145,6 +153,7 @@ const DATA = {"stops": {"국토관리청": {"name": "대전지방국토관리청
 const $ = s => document.querySelector(s);
 let active = DATA.courses[0].id;
 let showAll = false;
+let markers = {};
 
 const map = L.map('map', {zoomControl:true, attributionControl:true});
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -160,9 +169,9 @@ function bearing(a, b){
 }
 
 function arrowIcon(angle, color){
-  return L.divIcon({className:'', iconSize:[14,14],
-    html:`<div style="transform:rotate(${angle}deg);width:14px;height:14px;display:grid;place-items:center">
-      <div style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid ${color};opacity:.95"></div></div>`});
+  return L.divIcon({className:'', iconSize:[18,18],
+    html:`<div style="transform:rotate(${angle}deg);width:18px;height:18px;display:grid;place-items:center">
+      <div style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid ${color};opacity:.96;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))"></div></div>`});
 }
 
 function naverUrl(s){ return `https://map.naver.com/p?c=${s.lon},${s.lat},17,0,0,0,dh`; }
@@ -187,27 +196,30 @@ function drawCourse(c, dim){
   L.polyline(c.path, {color:c.color, weight:7, opacity:dim?0.55:1, lineJoin:'round'}).addTo(layer);
 
   // 진행 방향 화살표
-  let acc = 0, next = 260;
+  let acc = 0, next = 210;
   for (let i=1;i<c.path.length;i++){
     const a = c.path[i-1], b = c.path[i];
     const d = map.distance(L.latLng(a), L.latLng(b));
     acc += d;
     if (acc > next){
-      next += 260;
+      next += 210;
       const ang = bearing(a,b);
       L.marker(b, {icon: arrowIcon(ang, '#fff'), interactive:false, keyboard:false}).addTo(layer);
     }
   }
 
+  markers = {};
   stops.forEach((s, i) => {
     const icon = L.divIcon({className:'', iconSize:[34,34],
       html:`<div class="stop-pin" style="background:#fff"><span style="background:${c.color}">${i+1}</span></div>`});
-    L.marker([s.lat, s.lon], {icon, title:s.name}).addTo(layer)
+    const mk = L.marker([s.lat, s.lon], {icon, title:s.name}).addTo(layer)
       .bindPopup(stopPopup(s.key, s.time), {maxWidth:260});
+    markers[s.key] = mk;
   });
 
   const k = DATA.kinder;
-  L.marker([k.lat, k.lon], {icon: L.divIcon({className:'', iconSize:[34,34], html:'<div class="school-pin">🏫</div>'}),
+  L.marker([k.lat, k.lon], {icon: L.divIcon({className:'', iconSize:[34,34], iconAnchor:[17,17],
+      html:`<div class="school-wrap"><div class="school-pin">🏫</div><div class="school-label">유치원</div></div>`}),
     title:k.full, zIndexOffset:500}).addTo(layer)
     .bindPopup(`<div class="pop-name">${k.full}</div>
       <div class="pop-time">출발 ${c.start} · 도착 ${c.end}</div>
@@ -272,7 +284,7 @@ function renderRows(){
   box.innerHTML = c.stops.map((s, i) => {
     const d = DATA.stops[s.key];
     const saved = localStorage.getItem('bus2027:' + c.id + ':' + s.key) || '';
-    return `<div class="row">
+    return `<div class="row" data-key="${s.key}">
       <div class="num" style="background:${c.color}">${i+1}</div>
       <div class="sname">${d.name}${d.ok?'':'<span class="pin-dot" title="위치 확인 중"></span>'}</div>
       <div class="stime" style="color:${c.color}">${s.time}</div>
@@ -281,6 +293,13 @@ function renderRows(){
   }).join('');
   box.querySelectorAll('input').forEach(inp => {
     inp.oninput = () => localStorage.setItem('bus2027:' + inp.dataset.course + ':' + inp.dataset.key, inp.value.trim());
+  });
+  box.querySelectorAll('.row').forEach(r => {
+    r.onclick = (ev) => {
+      if (ev.target.tagName === 'INPUT') return;
+      const mk = markers[r.dataset.key];
+      if (mk){ map.flyTo(mk.getLatLng(), 17, {duration:.7}); setTimeout(() => mk.openPopup(), 450); }
+    };
   });
 }
 
