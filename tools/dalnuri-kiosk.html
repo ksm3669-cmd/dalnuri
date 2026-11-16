@@ -1495,6 +1495,16 @@
     /* ============================================================
        CART OPERATIONS
        ============================================================ */
+    // 주문서가 비었을 때 안내를 매번 새로 그린다 (기존 요소를 지웠다 다시 붙이다
+    // 두 번째 주문부터 빈 화면이 깨지던 문제 수정 — 2026-11-16)
+    let EMPTY_CART_HTML = '';
+    function emptyCartHtml() {
+      if (!EMPTY_CART_HTML) {
+        const el = document.getElementById('emptyCartMsg');
+        EMPTY_CART_HTML = el ? el.outerHTML : '<div class="cart-empty-msg" id="emptyCartMsg"><div class="empty-icon">🍽️</div><div style="font-size:1.15rem;">드시고 싶은 음식을 골라주세요!</div><div style="font-size:0.85rem; font-family:\'Pretendard\', sans-serif;">터치하면 주문서에 차곡차곡 담겨요</div></div>';
+      }
+      return EMPTY_CART_HTML;
+    }
     function addToCart(item) {
       playCoinSound();
       const existing = cart.find(c => c.id === item.id);
@@ -1529,11 +1539,9 @@
 
     function renderCart() {
       const list = document.getElementById('cartList');
-      const emptyMsg = document.getElementById('emptyCartMsg');
 
       if (cart.length === 0) {
-        list.innerHTML = '';
-        list.appendChild(emptyMsg);
+        list.innerHTML = emptyCartHtml();
         document.getElementById('sumPrice').textContent = '0원';
         document.getElementById('sumCoins').textContent = '0';
         return;
