@@ -77,9 +77,9 @@
   .tag.road{background:#EDF2FB;color:#2C5AA0}
 
   /* ── 팝업 ── */
-  .leaflet-popup-content{font-family:inherit;margin:0;width:300px !important}
-  .pop-photo{width:300px;height:170px;object-fit:cover;display:block;border-radius:14px 14px 0 0;background:#F3EEE4}
-  .pop-nophoto{width:300px;height:118px;display:grid;place-items:center;background:#F6F2E8;color:#8C95A3;font-size:12.5px;border-radius:14px 14px 0 0;text-align:center;padding:10px}
+  .leaflet-popup-content{font-family:inherit;margin:0;width:330px !important}
+  .pop-photo{width:330px;height:186px;object-fit:cover;display:block;border-radius:14px 14px 0 0;background:#F3EEE4}
+  .pop-nophoto{width:330px;height:126px;display:grid;place-items:center;background:#F6F2E8;color:#8C95A3;font-size:12.5px;border-radius:14px 14px 0 0;text-align:center;padding:10px}
   .pop-body{padding:11px 13px 13px}
   .pop-name{font-size:16px;font-weight:800;margin:0 0 3px}
   .pop-time{font-size:13px;font-weight:800;margin:0 0 6px}
@@ -87,8 +87,8 @@
   .pop-credit{font-size:10.5px;color:#9AA3AF;margin:0 0 9px}
   .pop-links{display:flex;gap:6px;flex-wrap:wrap}
   .pop-links a{
-    text-decoration:none;font-size:12px;font-weight:800;color:var(--ink);
-    border:1px solid #E3DCCD;border-radius:8px;padding:6px 9px;background:#fff;
+    text-decoration:none;font-size:11.5px;font-weight:800;color:var(--ink);
+    border:1px solid #E3DCCD;border-radius:8px;padding:6px 8px;background:#fff;
   }
   .pop-links a.naver{color:#03C75A;border-color:#B9EBD0}
   .pop-links a.google{color:#1A73E8;border-color:#C6DBFB}
@@ -317,7 +317,7 @@ function drawCourse(c, dim, withSchool){
       drawnStops.add(s.key);
       L.circleMarker(s.pin || [s.lat, s.lon], {radius:5, color:'#fff', weight:2,
         fillColor:c.color, fillOpacity:1, title:s.name})
-        .addTo(layer).bindPopup(popupHtml(s, s.time), {maxWidth:320, minWidth:300, closeButton:true, autoPanPadding:[24,24]});
+        .addTo(layer).bindPopup(popupHtml(s, s.time), {maxWidth:350, minWidth:330, closeButton:true, autoPanPadding:[24,24]});
     });
     return;
   }
@@ -326,7 +326,7 @@ function drawCourse(c, dim, withSchool){
     const icon = L.divIcon({className:'', iconSize:[34,34],
       html:`<div class="stop-pin" style="background:#fff"><span style="background:${c.color}">${i+1}</span></div>`});
     const mk = L.marker(s.pin || [s.lat, s.lon], {icon, title:s.name}).addTo(layer)
-      .bindPopup(popupHtml(s, s.time), {maxWidth:320, minWidth:300, autoPanPadding:[24,24]});
+      .bindPopup(popupHtml(s, s.time), {maxWidth:350, minWidth:330, autoPanPadding:[24,24]});
     markers[s.key] = mk;
   });
   if (withSchool === false) return;
@@ -350,7 +350,7 @@ function drawSchoolMarker(c){
   L.marker([k.lat, k.lon], {icon: L.divIcon({className:'', iconSize:[34,34], iconAnchor:[17,17],
       html:`<div class="school-wrap"><div class="school-pin">🏫</div><div class="school-label">유치원</div></div>`}),
     title:k.full, zIndexOffset:500}).addTo(layer)
-    .bindPopup(html, {maxWidth:320, minWidth:300, autoPanPadding:[24,24]});
+    .bindPopup(html, {maxWidth:350, minWidth:330, autoPanPadding:[24,24]});
 }
 
 function render(){
