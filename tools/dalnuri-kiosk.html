@@ -1335,13 +1335,13 @@
         if (!played && onAllFailed) onAllFailed(); // 모든 음성 경로 실패 → 비상 음성/효과음
       }
 
-      // 응답이 늦거나 먹통인 패드에서 하염없이 기다리지 않는다 (3.2초 안에 소리가 안 나면 비상 음성)
+      // 응답이 늦거나 먹통인 패드에서 하염없이 기다리지 않는다 (2.2초 안에 소리가 안 나면 비상 음성)
       deadline = setTimeout(function () {
         if (finished) return;
         if (played) { finished = true; return; }
         try { if (ttsAudioEl) ttsAudioEl.pause(); } catch (e) {}
         finish();
-      }, 3200);
+      }, 2200);
 
       function playNext() {
         if (token !== ttsToken || finished) return;
