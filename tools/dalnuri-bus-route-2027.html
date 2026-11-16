@@ -310,17 +310,6 @@ function drawCourse(c, dim, withSchool){
   L.polyline(c.path, {color:'#fff', weight:11, opacity:dim?0.35:0.95, lineJoin:'round'}).addTo(layer);
   L.polyline(c.path, {color:c.color, weight:7, opacity:dim?0.55:1, lineJoin:'round'}).addTo(layer);
 
-  const total = c.path.reduce((s,p,i)=> i? s + map.distance(L.latLng(c.path[i-1]), L.latLng(p)) : 0, 0);
-  const step = Math.max(320, total / 20);
-  let acc = 0, next = step;
-  for (let i=1;i<c.path.length;i++){
-    const a = c.path[i-1], b = c.path[i];
-    acc += map.distance(L.latLng(a), L.latLng(b));
-    if (acc > next){
-      next += step;
-      L.marker(b, {icon: arrowIcon(bearing(a,b), '#fff'), interactive:false, keyboard:false}).addTo(layer);
-    }
-  }
 
   if (dim){
     stops.forEach(s => {
