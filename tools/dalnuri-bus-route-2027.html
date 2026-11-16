@@ -269,9 +269,10 @@ function bearing(a, b){
 }
 
 function arrowIcon(angle, color){
-  return L.divIcon({className:'', iconSize:[12,12],
-    html:`<div style="transform:rotate(${angle}deg);width:12px;height:12px;display:grid;place-items:center">
-      <div style="width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid ${color};opacity:.95;filter:drop-shadow(0 1px 1px rgba(0,0,0,.22))"></div></div>`});
+  // 노선 위에 얹는 방향 표시(∧ 모양) — 선을 끊어 보이게 하지 않는다
+  return L.divIcon({className:'', iconSize:[11,11],
+    html:`<div style="width:11px;height:11px;display:grid;place-items:center">
+      <div style="width:7px;height:7px;border-top:2px solid ${color};border-right:2px solid ${color};opacity:.92;transform:rotate(${angle + 45}deg)"></div></div>`});
 }
 
 function naverUrl(s){ return `https://map.naver.com/p?c=${s.lon},${s.lat},17,0,0,0,dh`; }
@@ -310,7 +311,7 @@ function drawCourse(c, dim, withSchool){
   L.polyline(c.path, {color:c.color, weight:7, opacity:dim?0.55:1, lineJoin:'round'}).addTo(layer);
 
   const total = c.path.reduce((s,p,i)=> i? s + map.distance(L.latLng(c.path[i-1]), L.latLng(p)) : 0, 0);
-  const step = Math.max(260, total / 26);
+  const step = Math.max(320, total / 20);
   let acc = 0, next = step;
   for (let i=1;i<c.path.length;i++){
     const a = c.path[i-1], b = c.path[i];
