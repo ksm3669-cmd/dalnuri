@@ -1321,46 +1321,74 @@
     function speakHtml5Audio(text, token, onAllFailed) {
       const chunks = splitForTts(text);
       if (!chunks.length) { if (onAllFailed) onAllFailed(); return; }
+
       let idx = 0;
       let hostIdx = 0;
       let played = 0;
+      let finished = false;
+
+      function finish() {
+        if (finished) return;
+        finished = true;
+        if (!played && onAllFailed) onAllFailed(); // 모든 음성 경로 실패 → 비상 음성/효과음
+      }
 
       function playNext() {
-        if (token !== ttsToken) return;
-        if (idx >= chunks.length) {
-          if (!played && onAllFailed) onAllFailed(); // 모든 음성 경로 실패 → 비상 음성/효과음
-          return;
-        }
+        if (token !== ttsToken || finished) return;
+        if (idx >= chunks.length) { finish(); return; }
+
         const urls = ttsUrlCandidates(chunks[idx]);
-        if (hostIdx >= urls.length) {
-          hostIdx = 0;
-          idx++;
-          playNext();
-          return;
-        }
-        const url = urls[hostIdx];
-        let a;
-        try { a = new Audio(url); } catch (e) { hostIdx++; playNext(); return; }
+        if (hostIdx >= urls.length) { hostIdx = 0; idx++; playNext(); return; }
+
+        let a = null;
+        try { a = new Audio(urls[hostIdx]); } catch (e) { hostIdx++; playNext(); return; }
+
         a.setAttribute('playsinline', '');
         a.setAttribute('webkit-playsinline', '');
         a.preload = 'auto';
         a.volume = 1;
         ttsAudioEl = a;
-        a.onended = function () {
+
+        let advanced = false;   // 이 조각에서 다음 단계로 두 번 넘어가지 않게
+        let counted = false;    // 실제 재생된 조각 수는 한 번만 센다
+        let started = false;
+
+        const countPlayed = function () {
+          if (counted) return;
+          counted = true;
           played++;
+        };
+        const nextChunk = function () {
+          if (advanced) return;
+          advanced = true;
+          countPlayed();
           hostIdx = 0;
           idx++;
           playNext();
         };
-        a.onerror = function () {
+        const nextHost = function () {
+          if (advanced) return;
+          advanced = true;
           hostIdx++;
           playNext();
         };
+
+        a.onended = nextChunk;
+        a.onerror = function () { if (started) nextChunk(); else nextHost(); };
+
         let p = null;
-        try { p = a.play(); } catch (e) { hostIdx++; playNext(); return; }
+        try { p = a.play(); } catch (e) { nextHost(); return; }
         if (p && p.then) {
-          p.then(function () { markSound('speak-html5'); }, function () { hostIdx++; playNext(); });
+          p.then(function () {
+            started = true;
+            countPlayed();
+            markSound('speak-html5');
+          }, function () {
+            nextHost();
+          });
         } else {
+          started = true;
+          countPlayed();
           markSound('speak-html5');
         }
       }
@@ -1422,7 +1450,10 @@
     function playClip(dataUri) {
       try {
         if (!dataUri) return;
+        // 같은 음성 조각이 겹쳐 들리지 않게 이전 것은 멈춘다
+        if (window.__kioskClipAudio) { try { window.__kioskClipAudio.pause(); } catch (e) {} }
         const a = new Audio(dataUri);
+        window.__kioskClipAudio = a;
         a.setAttribute('playsinline', '');
         a.setAttribute('webkit-playsinline', '');
         a.preload = 'auto';
