@@ -404,7 +404,7 @@ function renderMeta(){
 function renderStrip(){
   const c = showAll ? null : DATA.courses.find(x => x.id === active);
   const box = $('#photostrip');
-  if (!c){ box.innerHTML = `<div class="pcard" style="cursor:default"><div class="noimg">코스를 선택하면 정류장 사진이 나옵니다</div></div>`; return; }
+  if (!c){ box.innerHTML = `<div style="flex:1;display:grid;place-items:center;min-height:100px;color:#8C95A3;font-size:12.5px;background:#F8F5EE;border:1px dashed #E0D8C7;border-radius:12px">코스를 선택하면 그 코스 정류장 사진이 여기에 나옵니다</div>`; return; }
   box.innerHTML = c.stops.map((s, i) => {
     const d = DATA.stops[s.key];
     const img = d.photo ? `<img src="${d.photo}" alt="${d.name} 사진">`
