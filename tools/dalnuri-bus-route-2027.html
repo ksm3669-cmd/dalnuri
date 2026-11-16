@@ -276,6 +276,7 @@ const $ = s => document.querySelector(s);
 let active = DATA.courses[0].id;
 let showAll = false;
 let markers = {};
+const drawnStops = new Set();
 
 const map = L.map('map', {zoomControl:true, attributionControl:true});
 L.tileLayer('https://mt{s}.google.com/vt/lyrs=m&hl=ko&x={x}&y={y}&z={z}', {
@@ -331,6 +332,17 @@ function drawCourse(c, dim, withSchool){
     }
   }
 
+  if (dim){
+    // 한눈에 보기: 같은 정류장은 한 번만, 작은 점으로
+    stops.forEach(s => {
+      if (drawnStops.has(s.key)) return;
+      drawnStops.add(s.key);
+      L.circleMarker(s.pin || [s.lat, s.lon], {radius:5, color:'#fff', weight:2,
+        fillColor:c.color, fillOpacity:1, title:s.name})
+        .addTo(layer).bindPopup(stopPopup(s.key, s.time), {maxWidth:260});
+    });
+    return line;
+  }
   markers = {};
   stops.forEach((s, i) => {
     const icon = L.divIcon({className:'', iconSize:[34,34],
@@ -358,6 +370,7 @@ function drawSchoolMarker(c){
 
 function render(){
   layer.clearLayers();
+  drawnStops.clear();
   const bounds = [];
   if (showAll){
     DATA.courses.forEach(c => {
