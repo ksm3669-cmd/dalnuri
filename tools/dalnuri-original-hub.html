@@ -793,7 +793,7 @@ function lessonOf(iso){
   try{
     var el0=document.getElementById('app0');if(!el0)return null;
     var src=el0.textContent;
-    var re=new RegExp("'"+iso+"':\\{w:(\\d+),play:'([^']*)',ev:\\[([^\\]]*)\\],book:\\['([^']*)','([^']*)'\\]");
+    var re=new RegExp("'"+iso+"':\\{w:(\\d+),play:'([^']*)',ev:\\[(.*?)\\],book:\\['([^']*)','([^']*)'\\]");
     var m=re.exec(src);if(!m)return null;
     var ev=m[3].split(',').map(function(x){return x.trim().replace(/^'|'$/g,'')}).filter(Boolean);
     var ex=new RegExp("'"+iso+"':\\{intro:'([^']*)'").exec(src);
