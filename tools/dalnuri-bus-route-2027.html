@@ -508,8 +508,8 @@ function renderMeta(){
   const el = $('#meta');
   if (showAll){
     el.innerHTML = `<span class="chip">현재 운행 <b>1·2코스</b></span>` +
-      DATA.courses.map(c => `<span class="chip" style="border-color:${c.color};color:${c.color}">${c.badge}<b style="color:${c.color}">등원 ${c.shifts.in.start}~${c.shifts.in.end}</b></span>` +
-        `<span class="chip">하원<b>${c.shifts.out.start}~${c.shifts.out.end}</b></span>`).join('');
+      DATA.courses.map(c => `<span class="chip" style="border-color:${c.color};color:${c.color}">${c.badge} 등원<b style="color:${c.color}">${c.shifts.in.start}~${c.shifts.in.end}</b></span>` +
+        `<span class="chip" style="border-color:${c.color}">하원<b>${c.shifts.out.start}~${c.shifts.out.end}</b></span>`).join('');
     return;
   }
   const c = DATA.courses.find(x => x.id === active);
@@ -796,7 +796,16 @@ function printSummary(){
 }
 
 $('#allBtn').onclick = () => { showAll = !showAll; render(); $('#allBtn').textContent = showAll ? '코스별로 보기' : '1·2코스 한눈에'; };
-$('#printBtn').onclick = () => { map.invalidateSize(); setTimeout(() => window.print(), 350); };
+$('#printBtn').onclick = () => {
+  const sheets = [...document.querySelectorAll('.print-sheet')];
+  const wasAll = showAll;
+  if (wasAll) sheets.forEach(el => el.classList.add('active'));
+  map.invalidateSize();
+  setTimeout(() => window.print(), 350);
+  window.addEventListener('afterprint', () => {
+    if (wasAll) sheets.forEach(el => el.classList.remove('active'));
+  }, {once:true});
+};
 $('#teacherBtn').onclick = openTeacher;
 $('#pinBtn').onclick = checkPin;
 $('#pinInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPin(); });
