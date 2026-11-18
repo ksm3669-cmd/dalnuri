@@ -164,7 +164,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 }
 .primary:hover{box-shadow:0 10px 22px rgba(63,85,68,.28)}
 .primary:active{transform:scale(.97)}
-.primary.wood{background:linear-gradient(180deg,#E2C6AB,var(--wood-d));box-shadow:0 8px 18px rgba(169,129,100,.24)}
+.primary.wood{background:linear-gradient(180deg,#C6A183,#8E6949);box-shadow:0 8px 18px rgba(142,105,73,.28)}
 .primary.quiet{background:var(--paper-2);color:var(--sage-d);border:1.5px solid var(--sage-mid);box-shadow:var(--shadow-s)}
 .primary[disabled]{opacity:.45;cursor:not-allowed;box-shadow:none}
 .btn-row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
@@ -1831,7 +1831,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
     { k: 'anger', em: '😠', t: '화남', face: ' 눈썹이 올라가고 입이 꼭 다물어져요.', body: '얼굴이 뜨겁고 주먹에 힘이 들어가요.', when: '장난감을 빼앗겼을 때, 순서가 밀렸을 때.', how: '멈춘 뒤 숨을 크게 세 번 쉬어 보세요.', v: '화남은 마음속 불꽃이에요. 먼저 멈추고 숨을 크게 쉬어요.' },
     { k: 'fear', em: '😨', t: '두려움', face: '눈이 커지고 몸이 굳어요.', body: '심장이 빨리 뛰고 손이 차가워져요.', when: '어두운 곳, 처음 해 보는 일, 큰 소리.', how: '곁에 있는 사람과 손을 잡고 하나씩 해 보세요.', v: '두려움은 나를 지키려는 마음이에요. 곁에 있는 사람과 함께 해 봐요.' },
     { k: 'surprise', em: '😲', t: '놀람', face: '눈이 동그래지고 입이 벌어져요.', body: '몸이 움찔하고 잠시 멈춰요.', when: '예상하지 못한 소리, 깜짝 선물.', how: '잠시 멈춰 깊게 숨을 쉬고 둘러보세요.', v: '놀람은 깜짝 놀란 마음이에요. 잠시 멈춰 숨을 쉬어요.' },
-    { k: 'shy', em: '😳', t: '부끄러움', face: '얼굴이 빨개지고 눈을 피해요.', body: '얼굴이 뜨겁고 어색해요.', when: '많은 사람 앞에서 발표할 때, 처음 만난 친구.', how: '천천히 숨을 쉬고 작은 목소리로 인사해 보세요.', v: '부끄러움은 마음이 살떨리는 거예요. 천천히 해도 괜찮아요.' },
+    { k: 'shy', em: '😳', t: '부끄러움', face: '얼굴이 빨개지고 눈을 피해요.', body: '얼굴이 뜨겁고 어색해요.', when: '많은 사람 앞에서 발표할 때, 처음 만난 친구.', how: '천천히 숨을 쉬고 작은 목소리로 인사해 보세요.', v: '부끄러움은 마음이 살짝 떨리는 거예요. 천천히 해도 괜찮아요.' },
     { k: 'worry', em: '😟', t: '걱정', face: '눈썹이 모이고 입술을 살짝 깨물어요.', body: '배가 살짝 아프고 마음이 조마조마해요.', when: '내일 발표가 있을 때, 엄마와 떨어질 때.', how: '걱정을 말이나 글로 꺼내고 상자에 넣어 보세요.', v: '걱정은 아직 오지 않은 일을 미리 안아 보는 마음이에요.' },
     { k: 'calm', em: '😌', t: '편안함', face: '표정이 부드럽고 어깨에 힘이 빠져요.', body: '숨이 고르고 몸이 포근해요.', when: '좋아하는 그림책을 볼 때, 햇살을 쬘 때.', how: '이 편안한 느낌을 기억해 두었다가 힘들 때 꺼내 보세요.', v: '편안함은 마음이 포근한 이불을 덮은 느낌이에요.' }
   ];
@@ -1932,7 +1932,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
         setLamps(st.s);
         if (st.s === 0) {
           stage.innerHTML = '<span class="mini-title">1. 빨강 — 멈춰요</span>' +
-            '<p class="lead">몸을 멈추고 두 발을 바닥에 단단히 디듸요. 화가 나도 괜찮아요, 먼저 멈춰요.</p>' +
+            '<p class="lead">몸을 멈추고 두 발을 바닥에 단단히 디뎌요. 화가 나도 괜찮아요, 먼저 멈춰요.</p>' +
             '<div class="huge-count" id="tlCount">' + st.left + '</div>' +
             '<div class="btn-row" style="margin-top:14px"><button class="primary" id="tlNext">이제 숨을 쉬어요 →</button></div>';
           sheetSay = '먼저 멈춰요. 두 발을 바닥에 단단히 디디고, 숨을 참지 않아요.';
