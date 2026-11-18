@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>사회정서 앱 뷰포트 확인</title>
+<style>
+  html,body{margin:0;padding:0;background:#dcd6c8;height:100%}
+  iframe{border:0;display:block;margin:0 auto;background:#FBF8F1}
+</style>
+</head>
+<body>
+<iframe id="f" title="확인용 뷰포트"></iframe>
+<script>
+  var p = new URLSearchParams(location.search);
+  var w = parseInt(p.get('w'), 10) || 1366;
+  var h = parseInt(p.get('h'), 10) || 768;
+  var f = document.getElementById('f');
+  f.style.width = w + 'px';
+  f.style.height = h + 'px';
+  f.src = 'https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-sel-2027.html';
+</script>
+</body>
+</html>
