@@ -18,7 +18,7 @@
   var f = document.getElementById('f');
   f.style.width = (w + extra) + 'px';
   f.style.height = h + 'px';
-  f.src = 'https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-sel-2027.html';
+  f.src = 'https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-sel-2027.html?v=' + Date.now();
   f.addEventListener('load', function () {
     var y = parseInt(p.get('scroll'), 10) || 0;
     try { f.contentWindow.scrollTo(0, y); } catch (e) {}
