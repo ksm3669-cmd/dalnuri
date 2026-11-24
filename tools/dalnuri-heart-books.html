@@ -293,6 +293,14 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
   .foot .in{font-size:10.5px}
 }
 @media (max-width:520px){
+  .brand small{display:none}
+  .bar-tools .btn.save span{display:none}
+  .bar-tools .btn.save{padding:9px 12px}
+  .brand .mark{width:34px;height:34px;font-size:17px}
+  .chip{padding:6px 10px;font-size:11px;min-height:32px;gap:4px}
+  .filterbar{gap:6px;margin:18px 0 14px}
+  .filterbar .flabel{display:none}
+  .hero h1{font-size:25px}
   .works-grid{grid-template-columns:1fr 1fr}
   .tile .cap{font-size:9.5px}
   .wait-grid{grid-template-columns:1fr}
@@ -319,7 +327,7 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
       <button type="button" data-view="links" aria-pressed="false">가정용 링크</button>
     </nav>
     <div class="bar-tools">
-      <button type="button" class="btn save" id="saveHtml" title="이 화면 전체를 오프라인 HTML 파일로 저장합니다"><b aria-hidden="true">💾</b><span>HTML 저장</span></button>
+      <button type="button" class="btn save" id="saveHtml" aria-label="이 화면을 HTML 파일로 저장" title="이 화면 전체를 오프라인 HTML 파일로 저장합니다"><b aria-hidden="true">💾</b><span>HTML 저장</span></button>
     </div>
   </div>
 </header>
