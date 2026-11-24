@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>검증 프레임</title>
+<style>html,body{margin:0;background:#cfd6cc}iframe{border:0;display:block;background:#fff}</style>
+</head><body>
+<div id="host"></div>
+<script>
+var p = new URLSearchParams(location.search);
+var w = +(p.get("w")||1440), h = +(p.get("h")||900), y = +(p.get("y")||0), v = p.get("v")||"parents", kid = p.get("kid")||"";
+var f = document.createElement("iframe");
+f.width = w; f.height = h; f.style.width = w+"px"; f.style.height = h+"px";
+f.onload = function(){
+  try {
+    var d = f.contentWindow;
+    if(kid){ d.location.hash = "#" + v + "/" + encodeURIComponent(kid); }
+    else { d.location.hash = "#" + v; }
+    setTimeout(function(){ d.scrollTo(0, y); }, 400);
+  } catch(e){}
+};
+f.src = "./dalnuri-heart-books.html";
+document.getElementById("host").appendChild(f);
+</script>
+</body></html>
