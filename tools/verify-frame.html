@@ -12,7 +12,7 @@ f.style.width = w+"px"; f.style.height = h+"px";
 f.onload = function(){
   setTimeout(function(){ try { f.contentWindow.scrollTo(0, y); } catch(e){} }, 250);
 };
-f.src = "./dalnuri-heart-books.html" + (p.get("hash") || "");
+f.src = "./dalnuri-heart-books.html?cb=" + (p.get("cb") || "1") + (p.get("hash") || "");
 document.body.appendChild(f);
 </script>
 </body></html>
