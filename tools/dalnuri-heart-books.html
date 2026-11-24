@@ -70,6 +70,7 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
   background:linear-gradient(165deg,#fffdf7 0%,#f8f6ec 46%,#edf1e2 100%);box-shadow:var(--shadow2);padding:34px 36px 30px}
 .hero:after{content:"";position:absolute;inset:auto -60px -120px auto;width:360px;height:360px;border-radius:50%;
   background:radial-gradient(circle at 40% 40%,rgba(201,168,106,.16),rgba(201,168,106,0) 68%)}
+.hero h1,.hero p.lead,.hero .stats{max-width:640px;position:relative;z-index:1}
 .hero h1{font-family:var(--serif);font-size:clamp(26px,3.4vw,38px);line-height:1.4;letter-spacing:-.06em;color:var(--green-d);margin-top:9px}
 .hero h1 em{font-style:normal;color:var(--gold);position:relative}
 .hero h1 em:after{content:"";position:absolute;left:0;right:-2px;bottom:2px;height:7px;border-radius:4px;background:linear-gradient(90deg,rgba(201,168,106,.35),rgba(201,168,106,.05))}
@@ -77,6 +78,14 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .stats{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
 .stat{display:flex;align-items:baseline;gap:6px;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.72);border:1px solid var(--line2);font-size:11.5px;color:#5b6857}
 .stat b{font-family:var(--serif);font-size:15px;color:var(--green-d);letter-spacing:-.02em}
+.collage{position:absolute;right:34px;top:50%;transform:translateY(-50%);display:flex;gap:16px;align-items:center;pointer-events:none}
+.collage figure{margin:0;background:#fffefb;padding:7px 7px 22px;border-radius:4px;box-shadow:0 18px 34px -22px rgba(44,70,58,.65);border:1px solid #eae5d6}
+.collage figure:nth-child(1){transform:rotate(-3.2deg) translateY(6px);width:158px}
+.collage figure:nth-child(2){transform:rotate(2.4deg) translateY(-12px);width:176px}
+.collage figure:nth-child(3){transform:rotate(-1.4deg) translateY(14px);width:150px}
+.collage img{width:100%;height:190px;object-fit:cover;object-position:50% 22%;border-radius:2px;display:block}
+.collage figcaption{font-family:var(--serif);font-size:9.5px;color:#9a937f;text-align:center;padding-top:6px;letter-spacing:-.02em}
+@media (max-width:1180px){.collage{display:none}}
 .hero-tip{margin-top:16px;font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
 .hero-tip i{width:22px;height:1px;background:var(--gold2);display:inline-block}
 
@@ -94,7 +103,7 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .pairs{display:flex;flex-direction:column;gap:22px}
 .pair{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:var(--cream);
   border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
-.note{position:relative;padding:26px 26px 22px;background:linear-gradient(170deg,#fffef7 0%,#fbf8ee 62%,#f4f2e6 100%);border-right:1px solid var(--line)}
+.note{position:relative;display:flex;flex-direction:column;padding:26px 26px 22px;background:linear-gradient(170deg,#fffef7 0%,#fbf8ee 62%,#f4f2e6 100%);border-right:1px solid var(--line)}
 .note .who{display:flex;align-items:center;gap:11px}
 .avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:3px solid #e9efdd;background:#eef1e6;box-shadow:0 4px 10px -6px rgba(44,70,58,.5)}
 .avatar img{width:100%;height:100%;object-fit:cover}
@@ -108,7 +117,8 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .quote:before{content:"“";position:absolute;left:-4px;top:-8px;font-family:Georgia,serif;font-size:38px;line-height:1;color:var(--gold2);opacity:.75}
 .quote:after{content:"";position:absolute;left:5px;top:14px;bottom:6px;width:1px;background:linear-gradient(180deg,rgba(201,168,106,.55),rgba(201,168,106,.05))}
 .note .from{margin-top:14px;font-size:10.5px;color:#8b9384;display:flex;align-items:center;gap:6px}
-.note-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;padding-top:15px;border-top:1px dashed var(--line2)}
+.note-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto;padding-top:16px;border-top:1px dashed var(--line2)}
+.note .from{margin-bottom:0}
 .works{padding:22px 24px 24px;background:var(--white);display:flex;flex-direction:column;min-width:0}
 .works-head{display:flex;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap}
 .works-head .cov{width:34px;height:46px;border-radius:3px;overflow:hidden;border:1px solid var(--line2);box-shadow:0 4px 8px -6px rgba(44,70,58,.6);flex:0 0 auto;background:#f2f4ea}
@@ -184,7 +194,9 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .bh h4{font-family:var(--serif);font-size:19px;color:var(--green-d);letter-spacing:-.05em;font-weight:400}
 .bh .cnt{font-size:11px;color:var(--muted)}
 .bh .sp{margin-left:auto}
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(146px,1fr));gap:12px}
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}}
+@media (max-width:620px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
 .pgrid .tile .cap{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:34px}
 .stories{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
 .story{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:11px 12px 9px;box-shadow:var(--shadow)}
@@ -276,7 +288,6 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
   .gh h3{font-size:21px}
   .lrow{grid-template-columns:1fr;gap:9px}
   .lrow .acts{justify-content:flex-start}
-  .pgrid{grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:9px}
   .stories{grid-template-columns:1fr}
   .mbody img{max-height:calc(100vh - 210px)}
   .mfoot .strip{display:none}
@@ -322,6 +333,7 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
         <p class="lead">가정에서 남겨 주신 마음과 그 책에 담긴 아이의 작품을 나란히 놓았습니다. 어느 아이의 어떤 작품을 보고 쓰신 글인지 한눈에 보이고, 작품은 눌러서 크게 볼 수 있어요.</p>
         <div class="stats" id="stats"></div>
         <p class="hero-tip"><i></i><span id="collectedLine"></span></p>
+        <div class="collage" id="heroCollage" aria-hidden="true"></div>
       </div>
       <div class="filterbar" id="filterbar" role="group" aria-label="유아별 보기"></div>
       <div class="pairs" id="pairList" data-live></div>
@@ -621,7 +633,8 @@ function renderKidPanel(){
 
   var sb = k.books.story;
   html += '<div class="bookblock"><div class="bh"><span class="idx">두 번째 책</span><h4>'+esc(sb.title)+'</h4>'+
-    '<span class="cnt">그림책 '+sb.stories.length+'권 · 본문 '+sb.stories.length*2+'쪽</span></div>'+
+    '<span class="cnt">그림책 '+sb.stories.length+'권 · 본문 '+sb.stories.length*2+'쪽</span>'+
+    '<a class="btn small sp" href="'+esc(k.viewer)+'?book='+encodeURIComponent(k.childId)+'" target="_blank" rel="noopener noreferrer">책으로 읽기 ↗</a></div>'+
     '<div class="stories">'+sb.stories.map(function(st,si){
       var base = si*2;
       return '<div class="story"><div class="st"><span class="no">'+String(si+1).padStart(2,"0")+'</span><b>'+esc(st.t)+'</b></div>'+
@@ -689,7 +702,9 @@ function renderModal(){
   $("#mAv").innerHTML = '<img src="'+img(kidFace(k))+'" alt="">';
   $("#mTitle").textContent = k.name + " · " + bookTitle(k, M.book);
   $("#mSub").textContent = (M.book==="growth" ? "마음성장책 " + (M.index+1) + "쪽" : p.t + " · " + p.kind);
-  $("#mCount").textContent = (M.index+1) + " / " + pages.length;
+  $("#mCount").textContent = M.spread && M.book === "story"
+    ? ((M.index % 2 === 0 ? M.index : M.index - 1) + 1) + "–" + Math.min(pages.length, (M.index % 2 === 0 ? M.index : M.index - 1) + 2) + " / " + pages.length
+    : (M.index + 1) + " / " + pages.length;
   $("#mViewer").href = k.viewer + "?book=" + encodeURIComponent(M.book==="growth" ? k.childId+"-growth" : k.childId) + "&page=" + (M.index+1);
   var spreadBtn = $("#mSpread");
   var canSpread = (M.book === "story");
@@ -717,7 +732,7 @@ function renderModal(){
 function step(delta){
   var k = K[M.kid]; if(!k) return;
   var pages = pageList(k, M.book);
-  var idx = M.index + delta;
+  var idx = M.index + (M.spread && M.book === "story" ? delta * 2 : delta);
   if(idx < 0) idx = pages.length - 1;
   if(idx >= pages.length) idx = 0;
   if(M.spread) idx = (M.book==="story") ? (Math.floor(idx/2)*2) : idx;
@@ -815,8 +830,25 @@ function route(){
   setView(v, true);
 }
 
+/* ── 히어로 콜라주 ─────────────────────── */
+function renderCollage(){
+  var picks = [
+    { kid:"이누리", book:"story", i:4, cap:"누리 · 그림" },
+    { kid:"정윤우", book:"story", i:1, cap:"윤우 · 하고 싶은 말" },
+    { kid:"이미영", book:"growth", i:2, cap:"미영 · 마음 기록" }
+  ];
+  var html = "";
+  picks.forEach(function(p){
+    var k = K[p.kid]; if(!k) return;
+    var pages = pageList(k, p.book);
+    var pg = pages[p.i]; if(!pg) return;
+    html += '<figure><img src="'+img(pg.src)+'" alt=""><figcaption>'+esc(p.cap)+'</figcaption></figure>';
+  });
+  var host = $("#heroCollage"); if(host) host.innerHTML = html;
+}
+
 /* ── 시작 ──────────────────────────────── */
-renderStats(); renderFilter(); renderPairs(); renderLinks(); renderKidChips(); renderKidPanel();
+renderStats(); renderFilter(); renderPairs(); renderLinks(); renderKidChips(); renderKidPanel(); renderCollage();
 route();
 })();
 </script>
