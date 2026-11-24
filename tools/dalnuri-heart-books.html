@@ -103,15 +103,16 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .pairs{display:flex;flex-direction:column;gap:22px}
 .pair{background:var(--cream);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
 .note{position:relative;display:flex;flex-direction:column;padding:22px 28px 20px;background:linear-gradient(170deg,#fffef7 0%,#fbf8ee 64%,#f6f2e6 100%);border-bottom:1px solid var(--line)}
-.note:before{content:"";position:absolute;right:14px;bottom:-14px;width:150px;height:210px;background:var(--wm) center/contain no-repeat;opacity:.075;pointer-events:none;border-radius:4px}
 .note .who{display:flex;align-items:center;gap:11px;position:relative;z-index:1}
 .avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:3px solid #e9efdd;background:#eef1e6;box-shadow:0 4px 10px -6px rgba(44,70,58,.5)}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar.cover img{object-fit:cover;object-position:50% 18%}
 .who .nm{font-family:var(--serif);font-size:17px;color:var(--green-d);letter-spacing:-.04em;line-height:1.35}
-.who .bk{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
+.who .bk{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:3px;flex-wrap:wrap}
+.who .bk .dot{color:#c3bda9}
+.who .bk time{font-size:10.5px;color:#8b9384}
 .who .bk b{color:#5c6a55;font-weight:600}
-.who time{margin-left:auto;font-size:10.5px;color:#8b9384;text-align:right;line-height:1.5;white-space:nowrap}
+.who .nm-line{min-width:0}
 .note>*{position:relative;z-index:1}
 .quote{position:relative;margin-top:14px;padding:2px 0 0 22px;font-family:var(--serif);font-size:17px;line-height:2.02;max-width:74ch;
   letter-spacing:-.04em;color:#333d31;word-break:keep-all;overflow-wrap:anywhere}
@@ -521,11 +522,11 @@ function pairCard(m){
   var total = pages.length;
   var childBook = bookTitle(k, m.book);
   return '<article class="pair" data-kid="'+esc(k.key)+'">'+
-    '<div class="note" style="--wm:url('+img(k.books[m.book].cover)+')">'+
+    '<div class="note">'+
       '<div class="who">'+avatar(k)+
-        '<div style="min-width:0"><div class="nm">'+esc(k.name)+'</div>'+
-        '<div class="bk"><span aria-hidden="true">📖</span><b>'+esc(childBook)+'</b></div></div>'+
-        '<time datetime="'+esc(m.iso)+'">'+esc(m.date)+'<br>'+esc(m.time)+'</time>'+
+        '<div class="nm-line"><div class="nm">'+esc(k.name)+'</div>'+
+        '<div class="bk"><span aria-hidden="true">📖</span><b>'+esc(childBook)+'</b>'+
+        '<span class="dot" aria-hidden="true">·</span><time datetime="'+esc(m.iso)+'">'+esc(m.date)+' '+esc(m.time)+'</time></div></div>'+
       '</div>'+
       '<blockquote class="quote">'+esc(m.text)+'</blockquote>'+
       '<div class="from"><span aria-hidden="true">✿</span> 가정에서 전한 글 · 선생님만 확인</div>'+
