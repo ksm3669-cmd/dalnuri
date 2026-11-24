@@ -104,7 +104,8 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .pair{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);background:var(--cream);
   border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow)}
 .note{position:relative;display:flex;flex-direction:column;padding:26px 26px 22px;background:linear-gradient(170deg,#fffef7 0%,#fbf8ee 62%,#f4f2e6 100%);border-right:1px solid var(--line)}
-.note .who{display:flex;align-items:center;gap:11px}
+.note:before{content:"";position:absolute;right:-24px;bottom:-26px;width:210px;height:290px;background:var(--wm) center/contain no-repeat;opacity:.07;pointer-events:none;border-radius:4px}
+.note .who{display:flex;align-items:center;gap:11px;position:relative;z-index:1}
 .avatar{width:52px;height:52px;border-radius:50%;overflow:hidden;flex:0 0 auto;border:3px solid #e9efdd;background:#eef1e6;box-shadow:0 4px 10px -6px rgba(44,70,58,.5)}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar.cover img{object-fit:cover;object-position:50% 18%}
@@ -112,6 +113,7 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .who .bk{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:2px}
 .who .bk b{color:#5c6a55;font-weight:600}
 .who time{margin-left:auto;font-size:10.5px;color:#8b9384;text-align:right;line-height:1.5;white-space:nowrap}
+.note>*{position:relative;z-index:1}
 .quote{position:relative;margin-top:auto;padding:4px 0 0 20px;font-family:var(--serif);font-size:15.5px;line-height:2.05;
   letter-spacing:-.04em;color:#333d31;word-break:keep-all;overflow-wrap:anywhere}
 .quote:before{content:"“";position:absolute;left:-4px;top:-8px;font-family:Georgia,serif;font-size:38px;line-height:1;color:var(--gold2);opacity:.75}
@@ -127,6 +129,9 @@ h2.sec{font-family:var(--serif);font-size:23px;letter-spacing:-.05em;color:var(-
 .works-head .ttl b{display:block;font-family:var(--serif);font-size:14px;color:var(--green-d);letter-spacing:-.03em;font-weight:400}
 .works-head .pages{margin-left:auto;font-size:10.5px;color:#8b9384;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;white-space:nowrap}
 .works-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.works-grid.four{grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.works-grid.four .tile .cap{font-size:9.5px;padding:5px 6px 6px}
+@media (max-width:760px){.works-grid.four{grid-template-columns:1fr 1fr;gap:10px}.works-grid.four .tile .cap{font-size:10px;padding:6px 8px}}
 .tile{position:relative;display:block;width:100%;padding:0;border-radius:12px;overflow:hidden;background:#f3f1e7;
   border:1px solid var(--line);transition:.18s;text-align:left}
 .tile:hover{border-color:var(--sage3);box-shadow:0 12px 22px -18px rgba(44,70,58,.7);transform:translateY(-2px)}
@@ -523,7 +528,7 @@ function pairCard(m){
   var total = pages.length;
   var childBook = bookTitle(k, m.book);
   return '<article class="pair" data-kid="'+esc(k.key)+'">'+
-    '<div class="note">'+
+    '<div class="note" style="--wm:url('+img(k.books[m.book].cover)+')">'+
       '<div class="who">'+avatar(k)+
         '<div style="min-width:0"><div class="nm">'+esc(k.name)+'</div>'+
         '<div class="bk"><span aria-hidden="true">📖</span><b>'+esc(childBook)+'</b></div></div>'+
@@ -543,7 +548,7 @@ function pairCard(m){
         '<span class="ttl"><b>'+esc(childBook)+'</b>부모님이 읽으신 책 · 아이 작품 '+total+'쪽</span>'+
         '<span class="pages">'+total+'쪽 중 '+preview.length+'쪽</span>'+
       '</div>'+
-      '<div class="works-grid">'+tilesHtml(k, m.book, preview)+'</div>'+
+      '<div class="works-grid'+(m.book==="growth"?" four":"")+'">'+tilesHtml(k, m.book, preview)+'</div>'+
       '<div class="works-more">'+
         '<button type="button" class="btn small primary" data-gallery="'+esc(k.key)+'" data-book="'+m.book+'">이 책 '+total+'쪽 모두 보기 →</button>'+
         '<button type="button" class="btn small" data-gallery="'+esc(k.key)+'" data-book="'+(m.book==="growth"?"story":"growth")+'">'+
