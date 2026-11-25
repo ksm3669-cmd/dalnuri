@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>표지 모바일·오류 확인용(임시)</title>
+<style>body{margin:0;background:#e9e6e0;font:13px/1.4 -apple-system,"Malgun Gothic",sans-serif;display:flex;gap:20px;padding:10px;align-items:flex-start}
+figure{margin:0;background:#fff;box-shadow:0 4px 18px #0002}
+figcaption{padding:4px 8px;color:#444}
+iframe{display:block;border:0}
+pre{max-width:420px;white-space:pre-wrap;font-size:11px;background:#fff;padding:8px;margin:0}</style></head>
+<body>
+<figure><figcaption>360 × 620</figcaption><iframe id="f360" width="360" height="620"></iframe></figure>
+<figure><figcaption>412 × 660</figcaption><iframe id="f412" width="412" height="660"></iframe></figure>
+<pre id="log">probe 준비 중…</pre>
+<script>
+(function(){
+  var PROBE = '<scr'+'ipt>window.__errs=[];(function(){var e=window.__errs;'
+    + 'addEventListener("error",function(ev){e.push("error: "+(ev.message||"")+" @"+(ev.filename||"")+":"+(ev.lineno||"")+(ev.target&&ev.target.tagName?" ["+ev.target.tagName+"]":""));},true);'
+    + 'addEventListener("unhandledrejection",function(ev){e.push("rejection: "+ev.reason);});'
+    + 'var ce=console.error;console.error=function(){e.push("console.error: "+Array.prototype.join.call(arguments," "));ce.apply(console,arguments);};'
+    + 'var cw=console.warn;console.warn=function(){e.push("console.warn: "+Array.prototype.join.call(arguments," "));cw.apply(console,arguments);};'
+    + '})();</scr'+'ipt>';
+  var log = document.getElementById('log');
+  var src = 'expo-2026-archive.html?v=check';
+  fetch(src, {cache:'no-store'}).then(function(r){return r.text();}).then(function(html){
+    var base = '<base href="' + new URL(src, location.href).href + '">';
+    var out = html.replace(/<head>/i, '<head>' + base + PROBE);
+    var url = URL.createObjectURL(new Blob([out], {type:'text/html'}));
+    var frames = [['f360', url], ['f412', url]];
+    var pending = frames.length, results = {};
+    frames.forEach(function(pair){
+      var f = document.getElementById(pair[0]);
+      f.addEventListener('load', function(){
+        setTimeout(function(){
+          var w = f.contentWindow;
+          var s = w.document.querySelector('#slide-1');
+          var r = s.getBoundingClientRect();
+          var rel = function(el){ var b = el.getBoundingClientRect(); return [Math.round(b.left-r.left), Math.round(b.top-r.top), Math.round(b.width), Math.round(b.height)]; };
+          var cs = function(sel){ return w.getComputedStyle(s.querySelector(sel)); };
+          results[pair[0]] = {
+            card:[Math.round(r.width), Math.round(r.height)],
+            kicker: rel(s.querySelector('.expo-cover-kicker')),
+            title: rel(s.querySelector('.expo-cover-title')),
+            rule: rel(s.querySelector('.expo-cover-rule')),
+            date: rel(s.querySelector('time')),
+            name: rel(s.querySelector('.expo-cover-name')),
+            fs:{kicker:cs('.expo-cover-kicker').fontSize,title:cs('.expo-cover-title').fontSize,date:cs('time').fontSize,name:cs('.expo-cover-name').fontSize},
+            scrollX: w.document.documentElement.scrollWidth > w.document.documentElement.clientWidth,
+            errs: (w.__errs||[]).slice(0,8)
+          };
+          if(--pending === 0){ window.__report = results; log.textContent = JSON.stringify(results, null, 1); }
+        }, 2600);
+      });
+      f.src = pair[1];
+    });
+  }).catch(function(e){ log.textContent = 'fetch 실패: ' + e; });
+})();
+</script>
+</body></html>
