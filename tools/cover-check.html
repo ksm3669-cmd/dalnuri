@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><title>표지 모바일·오류 확인용(임시)</title>
-<style>body{margin:0;background:#e9e6e0;font:13px/1.4 -apple-system,"Malgun Gothic",sans-serif;display:flex;gap:20px;padding:10px;align-items:flex-start}
+<style>body{margin:0;background:#e9e6e0;font:13px/1.4 -apple-system,"Malgun Gothic",sans-serif;display:flex;gap:20px;padding:10px;align-items:flex-start;flex-wrap:wrap}
 figure{margin:0;background:#fff;box-shadow:0 4px 18px #0002}
 figcaption{padding:4px 8px;color:#444}
 iframe{display:block;border:0}
 pre{max-width:420px;white-space:pre-wrap;font-size:11px;background:#fff;padding:8px;margin:0}</style></head>
 <body>
-<figure><figcaption>360 × 620</figcaption><iframe id="f360" width="360" height="620"></iframe></figure>
+<figure><figcaption>1366 × 800</figcaption><iframe id="f1366" width="1366" height="800"></iframe></figure>
 <figure><figcaption>412 × 660</figcaption><iframe id="f412" width="412" height="660"></iframe></figure>
 <pre id="log">probe 준비 중…</pre>
 <script>
@@ -23,7 +23,7 @@ pre{max-width:420px;white-space:pre-wrap;font-size:11px;background:#fff;padding:
     var base = '<base href="' + new URL(src, location.href).href + '">';
     var out = html.replace(/<head>/i, '<head>' + base + PROBE);
     var url = URL.createObjectURL(new Blob([out], {type:'text/html'}));
-    var frames = [['f360', url], ['f412', url]];
+    var frames = [['f1366', url], ['f412', url]];
     var pending = frames.length, results = {};
     frames.forEach(function(pair){
       var f = document.getElementById(pair[0]);
