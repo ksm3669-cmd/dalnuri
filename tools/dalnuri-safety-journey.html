@@ -161,7 +161,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .stops{position:absolute;inset:0;z-index:3}
 .stop{
   position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
-  width:var(--ds,76px);height:var(--ds,76px);display:block;
+  width:var(--ds,72px);height:var(--ds,72px);display:block;
   animation:pop .45s cubic-bezier(.2,1.3,.4,1) both;animation-delay:var(--d,0s);
 }
 @keyframes pop{from{opacity:0;transform:translate(-50%,-42%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
@@ -714,9 +714,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 
             <!-- 여정 길 (스크립트가 그려요) -->
             <g id="trailLayer" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path id="trailShadow" stroke="#8F7B58" stroke-width="50" opacity=".12" filter="url(#blur6)"/>
-              <path id="trailEdge" stroke="#E7D5B1" stroke-width="44"/>
-              <path id="trailFill" stroke="#FCF3E1" stroke-width="35"/>
+              <path id="trailShadow" stroke="#8F7B58" stroke-width="44" opacity=".12" filter="url(#blur6)"/>
+              <path id="trailEdge" stroke="#E3CFA9" stroke-width="38"/>
+              <path id="trailFill" stroke="#FCF3E1" stroke-width="30"/>
               <path id="trailDash" stroke="#FFFDF8" stroke-width="3.2" stroke-dasharray="1 23"/>
             </g>
 
@@ -934,7 +934,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   /* ---------- 역별 내용 ---------- */
   var STOPS = [
     {
-      id: 'life', no: 1, cls: 's1', icon: 'door', x: 18, y: 65,
+      id: 'life', no: 1, cls: 's1', icon: 'door', x: 18, y: 69,
       cat: '생활안전', title: '문 앞 한 뼘, 계단 한 손', sub: '문 · 계단 · 교실 도구',
       say: '문은 벽이 아니라 ‘친구가 있는 곳’이에요. 문 앞에서 한 뼘만 멈춰 볼까요?',
       mistakes: [
@@ -960,7 +960,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '우리 집 방문을 열 때 아이가 “한 뼘!”을 외치게 해 보세요.'
     },
     {
-      id: 'traffic', no: 2, cls: 's2', icon: 'light', x: 30.8, y: 76.7,
+      id: 'traffic', no: 2, cls: 's2', icon: 'light', x: 30.8, y: 75,
       cat: '교통안전', title: '초록불 뒤, 3초의 법칙', sub: '횡단보도 · 사각지대',
       say: '초록불은 ‘출발’ 신호가 아니라 ‘확인’ 신호예요.',
       mistakes: [
@@ -987,7 +987,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '등원길 횡단보도에서 아이와 소리 내어 “하나·둘·셋”, 그리고 운전자와 눈 맞추기.'
     },
     {
-      id: 'fire', no: 3, cls: 's3', icon: 'fire', x: 43.8, y: 58.3,
+      id: 'fire', no: 3, cls: 's3', icon: 'fire', x: 43.8, y: 64,
       cat: '화재안전', title: '낮게, 벽을 짚고, 손등부터', sub: '소방대피 손동작 · 자세',
       say: '불보다 무서운 건 연기예요. 낮게, 벽을 짚고, 문은 손등으로 확인해요.',
       mistakes: [
@@ -1014,7 +1014,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '집 대피로를 한 번 걸어 보고, 아이가 방문 손잡이를 손등으로 대 보게 해 주세요.'
     },
     {
-      id: 'quake', no: 4, cls: 's4', icon: 'quake', x: 56, y: 75,
+      id: 'quake', no: 4, cls: 's4', icon: 'quake', x: 56, y: 70,
       cat: '지진안전', title: '책상 아래 30초, 문 먼저, 담장 멀리', sub: '3단계 대피',
       say: '흔들릴 때 뛰어나가면 더 다쳐요. 순서가 있어요 — 몸, 문, 넓은 곳.',
       mistakes: [
@@ -1041,7 +1041,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '아이 책상 다리를 잡고 30초 버티기, 그리고 현관문부터 “문 열기”까지 한 번.'
     },
     {
-      id: 'stranger', no: 5, cls: 's5', icon: 'hand', x: 66.8, y: 55.6,
+      id: 'stranger', no: 5, cls: 's5', icon: 'hand', x: 66.8, y: 60,
       cat: '신변보호', title: '어른 팔 두 개, 반대 방향, 이름 부르기', sub: '거리 · 방향 · 외침',
       say: '“도와주세요”보다 “이 사람 몰라요!”가 훨씬 멀리 들려요.',
       mistakes: [
@@ -1067,7 +1067,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '가족 암호 하나 정하고, 아이와 함께 큰 소리로 “이 사람 몰라요!” 해 보기.'
     },
     {
-      id: 'firstaid', no: 6, cls: 's6', icon: 'phone', x: 77.5, y: 72.2,
+      id: 'firstaid', no: 6, cls: 's6', icon: 'phone', x: 77.5, y: 67,
       cat: '응급·생활', title: '119 세 가지, 물 15분, 손가락 넣지 않기', sub: '119 · 화상 · 기도막힘',
       say: '급할수록 순서대로. 119는 “어디”부터 말해요.',
       mistakes: [
@@ -1095,7 +1095,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '아이와 119 역할놀이 — “어디예요?” “누가 다쳤어요?” “끊지 마세요” 세 문장.'
     },
     {
-      id: 'digital', no: 7, cls: 's7', icon: 'screen', x: 87.5, y: 48.6,
+      id: 'digital', no: 7, cls: 's7', icon: 'screen', x: 87.5, y: 53,
       cat: '디지털안전', title: '화면은 한 뼘 반, 20분마다 먼 곳', sub: '거리 · 쉬기 · 링크',
       say: '눈은 쉬어야 오래 봐요. 20분 보면 20초, 창밖을 봐요.',
       mistakes: [
@@ -1122,7 +1122,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     }
   ];
 
-  var FINISH = { x: 93.8, y: 30.6, label: '도착 · 안전가방' };
+  var FINISH = { x: 93.8, y: 36, label: '도착 · 안전가방' };
 
   var CHECKS = [
     { g: '등원길에서', em: '🚸', items: [
@@ -1232,14 +1232,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     var d = 'M' + pts[0][0] + ' ' + pts[0][1];
     for (var i = 0; i < pts.length - 1; i++) {
       var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
-      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
-      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      var c1x = p1[0] + (p2[0] - p0[0]) / 7.5, c1y = p1[1] + (p2[1] - p0[1]) / 7.5;
+      var c2x = p2[0] - (p3[0] - p1[0]) / 7.5, c2y = p2[1] - (p3[1] - p1[1]) / 7.5;
       d += 'C' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ',' + c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ',' + p2[0] + ' ' + p2[1];
     }
     return d;
   }
   function drawTrail() {
-    var pts = [[118, 592]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 7.2]; })).concat([[FINISH.x * 16, FINISH.y * 7.2]]);
+    var pts = [[118, 560]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 7.2]; })).concat([[FINISH.x * 16, FINISH.y * 7.2]]);
     var d = smoothPath(pts);
     ['trailShadow', 'trailEdge', 'trailFill', 'trailDash'].forEach(function (id) {
       var el = document.getElementById(id);
