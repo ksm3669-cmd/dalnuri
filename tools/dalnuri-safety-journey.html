@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FBF8F1">
+<meta name="description" content="달콩이와 함께 떠나는 안전 배움의 여정 — 생활·교통·화재·지진·신변·응급·디지털 안전의 진짜 디테일, 학부모 오리엔테이션">
+<title>달콩이와 함께 떠나는 안전 배움의 여정 · 달누리반</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Jua&family=Gowun+Dodum&family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   달콩이와 함께 떠나는 안전 배움의 여정
+   종이 질감 · 수채화 · 색연필 팔레트
+   ========================================================= */
+:root{
+  --paper:#FBF8F1;
+  --paper-2:#F6F0E2;
+  --card:#FFFDF8;
+  --sage:#5F7A61;
+  --sage-d:#3F5544;
+  --sage-l:#E9F0E5;
+  --sage-mid:#A9BFA4;
+  --wood:#D9B99B;
+  --wood-d:#A98164;
+  --ink:#39362C;
+  --muted:#7E7868;
+  --line:#E7E0CF;
+  --rose:#C4887C;
+  --sun:#E3B85C;
+  --sky:#9DB9C9;
+  --plum:#9A8AA8;
+  --radius:22px;
+  --shadow:0 10px 26px rgba(94,80,58,.09);
+  --shadow-s:0 4px 12px rgba(94,80,58,.07);
+  --display:'Gaegu','Jua','Gowun Dodum',cursive;
+  --body:'Gowun Dodum','Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  margin:0;padding:0;min-height:100%;
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(circle at 6% 4%, rgba(169,191,164,.26) 0%, rgba(169,191,164,0) 32%),
+    radial-gradient(circle at 95% 10%, rgba(217,185,155,.24) 0%, rgba(217,185,155,0) 30%),
+    radial-gradient(circle at 80% 92%, rgba(196,136,124,.12) 0%, rgba(196,136,124,0) 34%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.62;
+  word-break:keep-all;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--display);letter-spacing:-.2px;margin:0;color:var(--sage-d);font-weight:700}
+p{margin:0}
+button{font-family:inherit;color:inherit;cursor:pointer;border:none;background:none;font-size:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid rgba(95,122,97,.45);outline-offset:2px}
+.muted{color:var(--muted);font-size:.92rem}
+.hand{font-family:var(--display)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ============ 상단 바 ============ */
+.topbar{
+  position:sticky;top:0;z-index:70;
+  background:rgba(251,248,241,.94);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border-bottom:1.5px solid var(--line);
+  padding:9px clamp(10px,2vw,24px);
+}
+.topbar-in{max-width:1600px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;min-width:0}
+.brand .mark{
+  width:38px;height:38px;flex:none;border-radius:12px;display:grid;place-items:center;
+  background:radial-gradient(circle at 32% 26%, #FFFDF6, var(--sage-l));
+  border:1.6px solid var(--sage-mid);box-shadow:var(--shadow-s);
+}
+.brand .mark svg{width:24px;height:24px}
+.brand b{font-family:var(--display);font-size:1.14rem;color:var(--sage-d);letter-spacing:-.3px;display:block;line-height:1.15}
+.brand span{font-size:.72rem;color:var(--muted);letter-spacing:.02em;display:block}
+.topbar .spacer{flex:1 1 auto}
+.tabs{display:flex;gap:4px;background:var(--paper-2);border:1.4px solid var(--line);border-radius:999px;padding:4px}
+.tab{
+  min-height:40px;padding:7px 15px;border-radius:999px;font-weight:800;font-size:.9rem;color:var(--muted);
+  display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:background .16s,color .16s,box-shadow .16s;
+}
+.tab .em{font-size:1.02rem;line-height:1}
+.tab.is-on{background:var(--card);color:var(--sage-d);box-shadow:var(--shadow-s);border:1px solid var(--sage-mid)}
+.tab:active{transform:scale(.98)}
+.tools{display:flex;gap:6px;align-items:center}
+.icon-btn{
+  width:42px;height:42px;border-radius:13px;background:var(--card);border:1.4px solid var(--line);
+  display:grid;place-items:center;font-size:1.05rem;box-shadow:var(--shadow-s);transition:background .15s,transform .14s;
+}
+.icon-btn:hover{background:var(--paper-2)}
+.icon-btn:active{transform:scale(.95)}
+.icon-btn.is-off{opacity:.5;filter:grayscale(1)}
+.voice-btn{
+  min-height:42px;padding:6px 13px;border-radius:999px;background:var(--card);border:1.4px solid var(--line);
+  display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.83rem;color:var(--sage-d);box-shadow:var(--shadow-s);
+}
+.voice-btn .dot{width:9px;height:9px;border-radius:50%;background:var(--sage);box-shadow:0 0 0 3px rgba(95,122,97,.18)}
+.voice-btn.is-off{color:var(--muted)}
+.voice-btn.is-off .dot{background:#BDB6A6;box-shadow:none}
+
+/* ============ 레이아웃 ============ */
+.wrap{max-width:1600px;margin:0 auto;padding:clamp(12px,2vw,24px) clamp(10px,2vw,24px) 76px}
+.view{display:none;animation:fade .3s ease}
+.view.is-on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ============ 히어로 ============ */
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.hero .kicker{
+  display:inline-flex;align-items:center;gap:7px;font-family:var(--display);font-weight:700;font-size:.9rem;color:#7A5A2E;
+  background:linear-gradient(180deg,#FBF1D8,#F6E5BE);border:1.4px dashed var(--wood-d);border-radius:999px;padding:4px 13px;margin-bottom:8px;
+}
+.hero h1{font-size:clamp(1.55rem,3.2vw,2.4rem);line-height:1.22;letter-spacing:-.6px}
+.hero h1 em{
+  font-style:normal;white-space:nowrap;padding:0 3px;border-radius:5px;
+  background:linear-gradient(transparent 56%, rgba(227,184,92,.34) 56%, rgba(169,191,164,.40) 94%, transparent 94%);
+}
+.hero p.lead{margin-top:6px;color:#5F5A4C;font-size:clamp(.9rem,1.5vw,1rem)}
+.hero-side{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.prog-card{
+  display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);
+  border-radius:18px;padding:9px 14px;box-shadow:var(--shadow-s);
+}
+.prog-card .ring{width:46px;height:46px;flex:none;position:relative}
+.prog-card .ring svg{width:46px;height:46px;transform:rotate(-90deg)}
+.prog-card .ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:.86rem;color:var(--sage-d)}
+.prog-card .txt b{display:block;font-family:var(--display);font-size:1rem;color:var(--sage-d);line-height:1.2}
+.prog-card .txt span{font-size:.74rem;color:var(--muted)}
+
+/* ============ 여정 지도 무대 ============ */
+.mapstage{position:relative}
+.mapscroll{overflow-x:auto;overflow-y:hidden;border-radius:26px;scrollbar-width:thin;scrollbar-color:#D7CDB8 transparent;padding-bottom:2px}
+.mapscroll::-webkit-scrollbar{height:9px}
+.mapscroll::-webkit-scrollbar-thumb{background:#DDD4C1;border-radius:9px}
+.mapbox{
+  position:relative;min-width:1080px;width:100%;aspect-ratio:16/9;
+  border-radius:26px;border:2px solid var(--wood);overflow:hidden;
+  box-shadow:0 18px 40px rgba(94,80,58,.16), inset 0 0 0 6px rgba(255,253,248,.5);
+  background:#EFF5EC;
+}
+.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene text{font-family:var(--display)}
+.map-sign{
+  position:absolute;top:3.2%;left:50%;transform:translateX(-50%);
+  text-align:center;pointer-events:none;z-index:2;width:min(70%,820px);
+}
+.map-sign .hand-top{font-family:var(--display);font-weight:700;color:#7C6A4E;font-size:.9rem;letter-spacing:.02em}
+.map-sign h2{font-size:clamp(1.1rem,2vw,1.9rem);color:#4E6B50;line-height:1.2;text-shadow:0 2px 0 rgba(255,253,248,.8)}
+.map-sign p{font-size:.82rem;color:#6F7F68;margin-top:2px}
+
+/* 역 마커 */
+.stops{position:absolute;inset:0;z-index:3}
+.stop{
+  position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  animation:pop .45s cubic-bezier(.2,1.3,.4,1) both;animation-delay:var(--d,0s);
+}
+@keyframes pop{from{opacity:0;transform:translate(-50%,-42%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.stop-dot{
+  width:76px;height:76px;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 34% 26%, #FFFDF6 8%, var(--s1) 92%);
+  border:2.5px solid var(--s2);
+  box-shadow:0 9px 20px rgba(94,80,58,.2), inset 0 2px 6px rgba(255,255,255,.9);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.stop-dot svg{width:36px;height:36px;color:var(--s3)}
+.stop:hover .stop-dot,.stop:focus-visible .stop-dot{transform:translateY(-4px) scale(1.05);box-shadow:0 14px 26px rgba(94,80,58,.26), inset 0 2px 6px rgba(255,255,255,.95)}
+.stop-num{
+  position:absolute;top:-7px;left:-7px;width:27px;height:27px;border-radius:50%;
+  background:var(--s2);color:#FFFDF8;font-family:var(--display);font-weight:700;font-size:.82rem;
+  display:grid;place-items:center;box-shadow:0 3px 7px rgba(94,80,58,.22);border:1.5px solid rgba(255,253,248,.85);
+}
+.stop-star{
+  position:absolute;top:-6px;right:-8px;width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(180deg,#FBE7B0,#EFCB6F);border:1.5px solid #D7AE55;
+  display:none;place-items:center;font-size:.78rem;box-shadow:0 3px 8px rgba(160,120,40,.28);
+  animation:starPop .4s cubic-bezier(.2,1.4,.4,1) both;
+}
+@keyframes starPop{from{transform:scale(.2) rotate(-40deg);opacity:0}to{transform:none;opacity:1}}
+.stop.is-done .stop-star{display:grid}
+.stop.is-done .stop-dot{background:radial-gradient(circle at 34% 26%, #FFFDF6 8%, #F4EFDF 92%)}
+.stop-label{
+  font-family:var(--display);font-weight:700;font-size:15.5px;line-height:1.15;color:#48453B;
+  background:rgba(255,253,248,.93);border:1.6px solid var(--s2);border-radius:999px;
+  padding:4px 13px;white-space:nowrap;box-shadow:0 4px 10px rgba(94,80,58,.14);
+  display:flex;align-items:baseline;gap:5px;
+}
+.stop-label small{font-family:var(--body);font-size:10.5px;font-weight:400;color:#8A8374;letter-spacing:-.2px}
+.stop-finish .stop-dot{width:66px;height:66px}
+.map-hint{
+  position:absolute;left:18px;bottom:14px;z-index:4;
+  font-family:var(--display);font-size:.86rem;color:#6E6449;background:rgba(255,253,248,.86);
+  border:1.4px dashed var(--wood-d);border-radius:999px;padding:4px 13px;pointer-events:none;
+}
+/* 역별 색 */
+.s1{--s1:#E9F0E5;--s2:#A9BFA4;--s3:#4C6B4E}
+.s2{--s1:#E3EEF3;--s2:#A7C4D1;--s3:#4E7182}
+.s3{--s1:#FBEDE4;--s2:#DDB395;--s3:#8E6042}
+.s4{--s1:#F6EFDD;--s2:#DCC79B;--s3:#8A6D3F}
+.s5{--s1:#EFEAF4;--s2:#C0B3D0;--s3:#6F5F82}
+.s6{--s1:#F8EBE7;--s2:#DDB6AC;--s3:#8E5C50}
+.s7{--s1:#E2F0EC;--s2:#A3CBC1;--s3:#3F6E63}
+
+/* ============ 비밀가방 바 ============ */
+.bagbar{
+  margin-top:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  background:linear-gradient(180deg,#FFFDF8,#F7F1E1);
+  border:1.8px dashed var(--wood-d);border-radius:22px;padding:12px clamp(12px,2vw,20px);
+  box-shadow:var(--shadow-s);
+}
+.bagbar .bag{width:52px;height:52px;flex:none;display:grid;place-items:center;background:radial-gradient(circle at 34% 26%,#FFFDF6,#EDE4CE);border-radius:16px;border:1.6px solid var(--wood)}
+.bagbar .t b{display:block;font-family:var(--display);font-size:1.08rem;color:var(--sage-d);line-height:1.25}
+.bagbar .t span{font-size:.82rem;color:var(--muted)}
+.bagbar .steps3{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:auto}
+.bstep{
+  display:inline-flex;align-items:center;gap:6px;font-size:.83rem;font-weight:700;color:#5A5648;
+  background:var(--card);border:1.4px solid var(--line);border-radius:999px;padding:5px 12px;box-shadow:var(--shadow-s);
+}
+.bstep .em{font-size:.95rem}
+.bstep .n{font-family:var(--display);color:var(--sage);font-size:.9rem}
+.arrow{color:var(--wood-d);font-size:.9rem}
+.bagbadge{
+  display:none;align-items:center;gap:7px;font-family:var(--display);font-weight:700;font-size:.9rem;color:#7A5A2E;
+  background:linear-gradient(180deg,#FBE7B0,#F3D68B);border:1.6px solid #D7AE55;border-radius:999px;padding:5px 13px;
+  animation:starPop .4s cubic-bezier(.2,1.4,.4,1) both;
+}
+.bagbadge.is-on{display:inline-flex}
+
+/* 역 바로가기 칩 */
+.jumprow{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.jumprow .lbl{font-size:.78rem;font-weight:800;color:var(--muted);margin-right:2px}
+.jump{
+  display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:5px 13px;border-radius:999px;
+  background:var(--card);border:1.4px solid var(--line);font-size:.84rem;font-weight:700;color:#55513F;
+  box-shadow:var(--shadow-s);transition:transform .14s,border-color .14s,background .14s;
+}
+.jump:hover{border-color:var(--sage-mid);background:var(--paper-2)}
+.jump:active{transform:scale(.96)}
+.jump .n{font-family:var(--display);color:var(--sage);font-size:.86rem}
+.jump.is-done{background:var(--sage-l);border-color:var(--sage-mid);color:var(--sage-d)}
+.jump .st{color:#C99A2E;font-size:.8rem;display:none}
+.jump.is-done .st{display:inline}
+
+/* ============ 모바일 세로 여정 ============ */
+.maplist{display:none;margin-top:6px}
+.ml{position:relative;padding-left:52px}
+.ml::before{
+  content:"";position:absolute;left:24px;top:14px;bottom:14px;width:3px;border-radius:3px;
+  background-image:linear-gradient(#CFC4AC 45%, transparent 45%);background-size:3px 13px;opacity:.9;
+}
+.ml-row{
+  position:relative;display:flex;align-items:center;gap:12px;width:100%;
+  background:var(--card);border:1.5px solid var(--line);border-radius:18px;
+  padding:11px 14px;margin-bottom:10px;text-align:left;box-shadow:var(--shadow-s);
+  transition:transform .14s,border-color .14s;
+}
+.ml-row:active{transform:scale(.99)}
+.ml-dot{
+  position:absolute;left:-52px;top:50%;transform:translateY(-50%);
+  width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 26%,#FFFDF6 8%,var(--s1) 92%);
+  border:2.2px solid var(--s2);box-shadow:0 6px 14px rgba(94,80,58,.18);
+}
+.ml-dot svg{width:24px;height:24px;color:var(--s3)}
+.ml-dot .n{
+  position:absolute;top:-6px;left:-6px;width:20px;height:20px;border-radius:50%;
+  background:var(--s2);color:#FFFDF8;font-family:var(--display);font-size:.7rem;display:grid;place-items:center;
+  border:1.2px solid rgba(255,253,248,.9);
+}
+.ml-body{flex:1;min-width:0}
+.ml-body b{display:block;font-family:var(--display);font-size:1.02rem;color:var(--sage-d);line-height:1.25}
+.ml-body em{display:block;font-style:normal;font-size:.82rem;color:var(--muted);margin-top:1px}
+.ml-go{color:var(--wood-d);font-size:1.2rem;flex:none}
+.ml-row .star{color:#C99A2E;display:none;font-size:.9rem}
+.ml-row.is-done .star{display:inline}
+.ml-finish{display:flex;align-items:center;gap:10px;margin-top:4px;padding-left:0}
+
+/* ============ 카드 · 공통 ============ */
+.card{
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:clamp(14px,2vw,22px);margin-bottom:16px;position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23p)' opacity='0.035'/%3E%3C/svg%3E");
+}
+.card > *{position:relative}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.card-title{display:flex;align-items:center;gap:12px;min-width:0}
+.card-title h2{font-size:clamp(1.18rem,2.2vw,1.45rem);line-height:1.2}
+.card-title p{margin-top:2px}
+.badge-round{
+  width:46px;height:46px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:22px;
+  background:radial-gradient(circle at 34% 28%, #FFFDF6, var(--sage-l));
+  border:1.5px solid var(--sage-mid);box-shadow:inset 0 1px 5px rgba(255,255,255,.85);
+}
+.lead-box{
+  border-radius:16px;background:var(--sage-l);border:1.5px solid var(--sage-mid);
+  padding:12px 16px;font-size:.94rem;color:#43523C;margin-bottom:14px;
+}
+.lead-box b{color:var(--sage-d)}
+.ghost{
+  min-height:38px;padding:7px 14px;border-radius:999px;background:var(--paper-2);
+  border:1.4px solid var(--line);font-size:.83rem;font-weight:800;color:var(--sage-d);
+  transition:transform .14s ease,background .14s ease;
+}
+.ghost:hover{background:#F2ECDD}
+.ghost:active{transform:scale(.96)}
+.primary{
+  min-height:48px;padding:10px 24px;border-radius:999px;
+  background:linear-gradient(180deg,#6E8B6E,var(--sage));color:#FFFDF8;
+  font-weight:800;font-size:.98rem;letter-spacing:.01em;
+  box-shadow:0 8px 18px rgba(63,85,68,.24), inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .15s ease, box-shadow .15s ease;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.primary:active{transform:scale(.97)}
+.primary.quiet{background:var(--paper-2);color:var(--sage-d);border:1.5px solid var(--sage-mid);box-shadow:var(--shadow-s)}
+
+/* ============ 부모님 가이드 ============ */
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
+.gcard{
+  background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:15px 16px;
+  box-shadow:var(--shadow-s);display:flex;flex-direction:column;gap:9px;position:relative;
+  border-top:4px solid var(--s2);
+}
+.gcard .gtop{display:flex;align-items:center;gap:10px}
+.gcard .gdot{width:40px;height:40px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--s1);border:1.5px solid var(--s2);color:var(--s3)}
+.gcard .gdot svg{width:22px;height:22px}
+.gcard h3{font-size:1.06rem;line-height:1.25}
+.gcard .gcat{font-size:.74rem;color:var(--muted);letter-spacing:.02em}
+.gcard .gwhy{font-size:.9rem;color:#4C4940}
+.gcard .gwhy b{color:var(--sage-d);font-weight:800}
+.gcard .gmiss{font-size:.84rem;color:#8A6A60;background:#FBF3EF;border-radius:11px;padding:7px 11px;border:1px solid #EFDCD5}
+.gcard .ghome{font-size:.84rem;color:#5B6B54;display:flex;gap:6px;align-items:flex-start}
+.gcard .gmore{margin-top:auto;display:flex;justify-content:flex-end}
+.ages{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.age{border-radius:16px;padding:13px 15px;border:1.5px solid var(--line);background:var(--card)}
+.age b{font-family:var(--display);font-size:1rem;color:var(--sage-d);display:block;margin-bottom:4px}
+.age p{font-size:.86rem;color:#55513F}
+.age.a3{border-top:4px solid #C7D8C2}
+.age.a4{border-top:4px solid #A7C4D1}
+.age.a5{border-top:4px solid #C0B3D0}
+.qa{display:grid;gap:10px}
+.qa details{background:var(--paper-2);border:1.4px solid var(--line);border-radius:14px;padding:11px 15px}
+.qa summary{font-weight:800;cursor:pointer;color:var(--sage-d);font-size:.94rem;list-style:none}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::before{content:"Q.";font-family:var(--display);color:var(--wood-d);margin-right:6px}
+.qa details[open] summary{margin-bottom:6px}
+.qa p{font-size:.9rem;color:#4C4940;padding-left:18px}
+
+/* ============ 가족 안전 체크 ============ */
+.check-top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.check-meter{flex:1;min-width:220px}
+.bar{height:14px;border-radius:999px;background:var(--paper-2);border:1.4px solid var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#A9BFA4,#6E8B6E);transition:width .35s ease}
+.check-meter .lab{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:5px}
+.check-meter .lab b{color:var(--sage-d);font-family:var(--display);font-size:.95rem}
+.cgroup{margin-bottom:6px}
+.cgroup h3{display:flex;align-items:center;gap:8px;font-size:1.04rem;color:var(--sage-d);margin:14px 0 8px}
+.cgroup h3 .em{font-size:1.1rem}
+.citem{
+  display:flex;align-items:flex-start;gap:11px;background:var(--card);border:1.4px solid var(--line);
+  border-radius:14px;padding:11px 14px;margin-bottom:8px;width:100%;text-align:left;
+  transition:background .16s,border-color .16s;
+}
+.citem:hover{border-color:var(--sage-mid)}
+.citem .box{
+  width:24px;height:24px;flex:none;border-radius:8px;border:2px solid #C9C0AC;background:#FFFDF8;
+  display:grid;place-items:center;color:#FFFDF8;font-size:.82rem;margin-top:1px;transition:background .16s,border-color .16s;
+}
+.citem.on .box{background:var(--sage);border-color:var(--sage)}
+.citem .ct{font-size:.92rem;color:#4A473D;line-height:1.5}
+.citem .ct b{font-weight:800;color:var(--sage-d)}
+.citem.on .ct{color:var(--muted)}
+.citem.on .ct b{color:#6E8B6E}
+.bunny-note{
+  display:flex;gap:12px;align-items:center;background:linear-gradient(180deg,#FFF9EC,#FBF3E0);
+  border:1.6px dashed var(--wood-d);border-radius:18px;padding:12px 16px;margin-bottom:14px;
+}
+.bunny-note .b{width:52px;height:52px;flex:none}
+.bunny-note p{font-size:.92rem;color:#6B5B3E;line-height:1.5}
+.bunny-note p b{color:#7A5A2E}
+
+/* ============ 오버레이 · 역 상세 ============ */
+.overlay{
+  position:fixed;inset:0;z-index:120;display:none;
+  background:rgba(58,54,44,.44);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  padding:clamp(0px,2.4vw,26px);align-items:center;justify-content:center;
+}
+.overlay.is-on{display:flex}
+.sheet{
+  width:100%;max-width:1020px;max-height:92vh;background:var(--paper);
+  border-radius:24px;border:1.5px solid var(--wood);
+  box-shadow:0 30px 70px rgba(40,36,28,.32);
+  display:flex;flex-direction:column;overflow:hidden;
+  animation:sheetIn .3s cubic-bezier(.2,1,.3,1);
+}
+@keyframes sheetIn{from{opacity:0;transform:translateY(18px) scale(.985)}to{opacity:1;transform:none}}
+.sheet-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+  padding:13px 18px;background:var(--card);border-bottom:1.5px solid var(--line);flex:none;
+}
+.sheet-head .hgroup{display:flex;align-items:center;gap:11px;min-width:0}
+.sheet-head .hdot{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--s1);border:1.6px solid var(--s2);color:var(--s3)}
+.sheet-head .hdot svg{width:24px;height:24px}
+.sheet-head h2{font-size:clamp(1.12rem,2.2vw,1.42rem);line-height:1.22}
+.sheet-head .sub{font-size:.78rem;color:var(--muted);margin-top:1px}
+.sheet-head .toolbar{display:flex;gap:6px;align-items:center;flex:none}
+.sheet-body{padding:clamp(13px,2.2vw,22px);overflow-y:auto;overscroll-behavior:contain}
+.sheet-body::-webkit-scrollbar{width:9px}
+.sheet-body::-webkit-scrollbar-thumb{background:#DDD4C1;border-radius:9px}
+
+.say{display:flex;gap:11px;align-items:flex-start;background:linear-gradient(180deg,#FFF9EC,#FBF3E0);border:1.6px dashed var(--wood-d);border-radius:18px;padding:11px 15px;margin-bottom:14px}
+.say .bunny{width:52px;height:52px;flex:none}
+.say p{font-size:.92rem;color:#6B5B3E;line-height:1.55}
+.say p b{font-family:var(--display);color:#7A5A2E;font-size:.98rem}
+.sec{display:flex;align-items:center;gap:8px;margin:18px 0 9px}
+.sec .em{font-size:1.08rem}
+.sec h3{font-size:1.1rem;color:var(--sage-d)}
+.sec .cnt{font-size:.76rem;font-weight:700;color:#A79E8A;background:var(--paper-2);border-radius:999px;padding:2px 9px;border:1px solid var(--line)}
+.wrong-list{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.wrong-list li{display:flex;gap:9px;background:#FBF1EE;border:1.3px solid #EBD5CD;border-radius:13px;padding:9px 13px;font-size:.9rem;color:#6E4B43;line-height:1.5}
+.wrong-list .x{flex:none;width:20px;height:20px;border-radius:50%;background:#E9CFC6;color:#8E5C50;display:grid;place-items:center;font-size:.7rem;font-weight:800;margin-top:2px}
+.wrong-list li b{font-weight:800;color:#7B4A3E}
+.steps{display:grid;gap:9px}
+.step{display:flex;gap:11px;background:var(--card);border:1.4px solid var(--line);border-radius:15px;padding:11px 14px}
+.step .n{
+  flex:none;width:26px;height:26px;border-radius:50%;background:var(--s1);border:1.5px solid var(--s2);color:var(--s3);
+  display:grid;place-items:center;font-family:var(--display);font-size:.85rem;font-weight:700;margin-top:1px;
+}
+.step .sb{min-width:0}
+.step .st-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:2px}
+.step b{font-size:.95rem;font-weight:800;color:#3F5544;line-height:1.4}
+.tag{font-size:.68rem;font-weight:800;letter-spacing:.02em;padding:1px 8px;border-radius:999px;background:var(--s1);color:var(--s3);border:1px solid var(--s2);white-space:nowrap}
+.step p{font-size:.88rem;color:#545044;line-height:1.58}
+.step p i{font-style:normal;color:var(--wood-d);font-weight:700}
+
+.trial{background:linear-gradient(180deg,#F7F3E8,#FBF8F1);border:1.6px solid var(--wood);border-radius:18px;padding:14px 16px}
+.trial .tq{font-family:var(--display);font-size:1.02rem;color:var(--sage-d);margin-bottom:9px;line-height:1.35}
+.trial .opts{display:grid;gap:7px}
+.opt{
+  display:flex;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--line);border-radius:13px;
+  padding:9px 13px;font-size:.9rem;color:#4F4B40;text-align:left;transition:border-color .15s,background .15s,transform .12s;
+}
+.opt .mk{width:22px;height:22px;flex:none;border-radius:50%;border:1.8px solid #C9C0AC;display:grid;place-items:center;font-size:.68rem;color:transparent;font-weight:800}
+.opt:hover{border-color:var(--sage-mid);background:var(--paper-2)}
+.opt:active{transform:scale(.99)}
+.opt.is-right{background:var(--sage-l);border-color:var(--sage);color:var(--sage-d);font-weight:700}
+.opt.is-right .mk{background:var(--sage);border-color:var(--sage);color:#FFFDF8}
+.opt.is-wrong{background:#FBF1EE;border-color:#DDB6AC;color:#8E5C50;animation:shake .32s}
+.opt.is-wrong .mk{background:#E9CFC6;border-color:#DDB6AC;color:#8E5C50}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.trial .fb{margin-top:9px;font-size:.87rem;color:#5A6B53;background:var(--sage-l);border:1.3px solid var(--sage-mid);border-radius:12px;padding:9px 12px;display:none}
+.trial .fb.is-on{display:block}
+.trial .fb.bad{color:#7B4A3E;background:#FBF1EE;border-color:#EBD5CD}
+.pnote{background:var(--sage-l);border:1.5px solid var(--sage-mid);border-radius:16px;padding:12px 16px}
+.pnote b{display:block;font-family:var(--display);font-size:1rem;color:var(--sage-d);margin-bottom:3px}
+.pnote p{font-size:.9rem;color:#41503B;line-height:1.6}
+.sheet-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:var(--card);border-top:1.5px solid var(--line);flex:none;flex-wrap:wrap}
+.sheet-foot .who{font-size:.78rem;color:var(--muted)}
+.sheet-foot .nav{display:flex;gap:7px}
+
+/* ============ 토스트 ============ */
+.toast-wrap{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;width:min(92vw,440px)}
+.toast{
+  background:rgba(63,85,68,.96);color:#FFFDF8;font-size:.88rem;font-weight:700;
+  padding:10px 18px;border-radius:999px;box-shadow:0 10px 26px rgba(40,36,28,.3);
+  display:flex;align-items:center;gap:8px;animation:toastIn .3s cubic-bezier(.2,1.3,.4,1) both;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ============ 반응형 ============ */
+@media (max-width:1080px){
+  .hero h1{font-size:clamp(1.45rem,4.2vw,2rem)}
+}
+@media (max-width:820px){
+  .topbar-in{gap:8px}
+  .jumprow{display:none}
+  .brand b{font-size:1.02rem}
+  .brand span{display:none}
+  .tabs{order:3;width:100%;justify-content:space-between}
+  .tab{flex:1;justify-content:center;padding:7px 8px;font-size:.84rem;min-height:42px}
+  .mapstage{display:none}
+  .maplist{display:block}
+  .bagbar{gap:10px;padding:11px 13px}
+  .bagbar .steps3{margin-left:0;width:100%}
+  .bagbar .bag{width:44px;height:44px}
+  .wrap{padding-bottom:64px}
+  .ages{grid-template-columns:1fr}
+  .guide-grid{grid-template-columns:1fr}
+  .sheet{max-height:94vh;border-radius:20px 20px 0 0}
+  .sheet-body{padding:13px}
+  .sheet-head{padding:11px 13px}
+  .sheet-head .hdot{width:38px;height:38px}
+  .sheet-head .hdot svg{width:20px;height:20px}
+  .sheet-foot{padding:9px 12px}
+  .hero-side{width:100%}
+  .prog-card{flex:1}
+  .steps{grid-template-columns:1fr}
+  .trial{padding:12px}
+}
+@media (min-width:821px) and (max-width:1080px){
+  .mapbox{min-width:1000px}
+}
+@media (min-width:900px){
+  .steps.two{grid-template-columns:1fr 1fr}
+  .steps.two .step:last-child:nth-child(odd){grid-column:1 / -1}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001s!important;transition-duration:.001s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#5F7A61" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 4.8 5.6v5.7c0 4.2 3 7.6 7.2 9 4.2-1.4 7.2-4.8 7.2-9V5.6L12 3Z" fill="#E9F0E5"/>
+          <path d="m8.6 12.1 2.3 2.2 4.5-4.4" stroke="#4C6B4E" stroke-width="2"/>
+        </svg>
+      </span>
+      <span>
+        <b>안전 배움의 여정</b>
+        <span>안전비밀요원 · 달콩이와 함께</span>
+      </span>
+    </div>
+    <div class="spacer"></div>
+    <nav class="tabs" aria-label="화면 고르기">
+      <button class="tab is-on" data-view="map" aria-pressed="true"><span class="em">🗺️</span>여정 지도</button>
+      <button class="tab" data-view="guide" aria-pressed="false"><span class="em">🍀</span>부모님 가이드</button>
+      <button class="tab" data-view="check" aria-pressed="false"><span class="em">✅</span>가족 안전 체크</button>
+    </nav>
+    <div class="tools">
+      <button class="voice-btn" id="voiceToggle" aria-pressed="true" title="음성 안내 켜기·끄기">
+        <span class="dot" aria-hidden="true"></span><span id="voiceLabel">음성 안내</span>
+      </button>
+      <button class="icon-btn" id="fsBtn" title="전체화면" aria-label="전체화면">⛶</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= 여정 지도 ================= -->
+  <section class="view is-on" id="view-map">
+
+    <div class="hero">
+      <div>
+        <span class="kicker">학부모 오리엔테이션 · 안전비밀요원</span>
+        <h1>달콩이와 함께 떠나는 <em>안전 배움의 여정</em></h1>
+        <p class="lead">일곱 개의 이정표를 지나면, 우리 가족 안전 비밀가방이 완성돼요. 역을 눌러 <b>진짜 디테일</b>을 확인해 보세요.</p>
+      </div>
+      <div class="hero-side">
+        <div class="prog-card" title="여정 진행 상황">
+          <span class="ring">
+            <svg viewBox="0 0 46 46" aria-hidden="true">
+              <circle cx="23" cy="23" r="19" fill="none" stroke="#EDE6D6" stroke-width="5"/>
+              <circle id="ringFg" cx="23" cy="23" r="19" fill="none" stroke="#6E8B6E" stroke-width="5" stroke-linecap="round" stroke-dasharray="119.4" stroke-dashoffset="119.4"/>
+            </svg>
+            <b id="ringTxt">0/7</b>
+          </span>
+          <span class="txt"><b>안전 여정</b><span id="progNote">아직 출발 전이에요</span></span>
+        </div>
+        <button class="ghost" id="goCheck">오늘의 1분 미션 →</button>
+      </div>
+    </div>
+
+    <div class="mapstage">
+      <div class="mapscroll" id="mapScroll">
+        <div class="mapbox">
+          <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#E4F0F3"/>
+                <stop offset="46%" stop-color="#EFF6EA"/>
+                <stop offset="100%" stop-color="#FAF7EE"/>
+              </linearGradient>
+              <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#D7E6D2"/><stop offset="100%" stop-color="#C6DCC0"/>
+              </linearGradient>
+              <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#C4DABD"/><stop offset="100%" stop-color="#B2CDA6"/>
+              </linearGradient>
+              <linearGradient id="hillRight" x1="0.2" y1="0" x2="0.8" y2="1">
+                <stop offset="0" stop-color="#C9DEBF"/><stop offset="100%" stop-color="#AEC9A3"/>
+              </linearGradient>
+              <linearGradient id="grassG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#E6F0DA"/><stop offset="100%" stop-color="#D3E5C4"/>
+              </linearGradient>
+              <linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#D6E9EF"/><stop offset="100%" stop-color="#BFDCE6"/>
+              </linearGradient>
+              <radialGradient id="sunG">
+                <stop offset="0" stop-color="#FBF0CE" stop-opacity=".95"/>
+                <stop offset="100%" stop-color="#FBF0CE" stop-opacity="0"/>
+              </radialGradient>
+              <filter id="blur14" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+              <filter id="blur6" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
+              <filter id="grainF">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="n"/>
+                <feColorMatrix in="n" type="saturate" values="0"/>
+              </filter>
+              <symbol id="tree" viewBox="0 0 100 120">
+                <path d="M46 118c1-18 0-30-2-44h12c-2 14-3 26-2 44Z" fill="#B9926C"/>
+                <path d="M50 76c-4-6-10-8-14-8 4-2 10-1 14 3Z" fill="#A98164"/>
+                <ellipse cx="50" cy="52" rx="33" ry="29" fill="#A9C79E"/>
+                <ellipse cx="31" cy="61" rx="21" ry="18" fill="#9BBC90"/>
+                <ellipse cx="69" cy="63" rx="19" ry="16" fill="#B7D0AB"/>
+                <ellipse cx="50" cy="33" rx="19" ry="15" fill="#BDD6B1"/>
+                <ellipse cx="43" cy="45" rx="11" ry="7" fill="#D2E5C7" opacity=".65"/>
+                <ellipse cx="62" cy="52" rx="8" ry="5" fill="#CFE3C4" opacity=".5"/>
+              </symbol>
+              <symbol id="bush" viewBox="0 0 80 50">
+                <ellipse cx="26" cy="34" rx="22" ry="15" fill="#B7D0AB"/>
+                <ellipse cx="52" cy="33" rx="20" ry="14" fill="#A9C79E"/>
+                <ellipse cx="40" cy="26" rx="18" ry="13" fill="#C3DAB7"/>
+                <ellipse cx="34" cy="24" rx="8" ry="5" fill="#D6E8CC" opacity=".75"/>
+              </symbol>
+              <symbol id="flower" viewBox="0 0 24 24">
+                <g fill="#F6E4B8">
+                  <circle cx="12" cy="6.5" r="3.2"/><circle cx="17.4" cy="10.4" r="3.2"/>
+                  <circle cx="15.3" cy="16.6" r="3.2"/><circle cx="8.7" cy="16.6" r="3.2"/>
+                  <circle cx="6.6" cy="10.4" r="3.2"/>
+                </g>
+                <circle cx="12" cy="12" r="3" fill="#E9C98A"/>
+              </symbol>
+              <symbol id="tuft" viewBox="0 0 40 26">
+                <g stroke="#9EBE92" stroke-width="2.6" stroke-linecap="round" fill="none">
+                  <path d="M8 25c0-6 1-10 4-14"/><path d="M15 25c0-7 0-11-1-15"/><path d="M22 25c0-6 2-10 5-14"/><path d="M29 25c-1-6-1-10 1-13"/>
+                </g>
+              </symbol>
+            </defs>
+
+            <rect width="1600" height="900" fill="url(#skyG)"/>
+            <circle cx="188" cy="128" r="150" fill="url(#sunG)"/>
+            <g fill="#FFFDF8" opacity=".82">
+              <ellipse cx="300" cy="150" rx="86" ry="26"/><ellipse cx="370" cy="138" rx="56" ry="20"/><ellipse cx="240" cy="140" rx="44" ry="16"/>
+              <ellipse cx="1120" cy="128" rx="70" ry="21"/><ellipse cx="1176" cy="118" rx="44" ry="15"/>
+              <ellipse cx="1440" cy="290" rx="62" ry="18" opacity=".7"/><ellipse cx="1490" cy="282" rx="38" ry="12" opacity=".7"/>
+            </g>
+            <g stroke="#8FA9A6" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".45">
+              <path d="M900 150q7-8 14 0"/><path d="M920 140q6-7 12 0"/><path d="M736 196q6-7 12 0"/>
+            </g>
+
+            <!-- 먼 산 · 가까운 언덕 -->
+            <path d="M0 512c150-58 286-46 430-8 148 40 262 22 402-6 138-28 268-10 388 18l380 12v372H0Z" fill="url(#hillFar)" opacity=".95"/>
+            <path d="M0 600c168-52 316-34 470-4 156 30 280 12 424-14 132-24 246-2 366 26l340 10v282H0Z" fill="url(#hillMid)" opacity=".9"/>
+            <path d="M0 664c196-46 358-22 540 6 168 26 300 6 440-16 96-16 178-4 262 8l358 8v230H0Z" fill="url(#grassG)"/>
+            <!-- 오른쪽 언덕(도착지) -->
+            <path d="M1128 706c96-138 190-282 300-372 52-42 112-68 172-84v650H1128Z" fill="url(#hillRight)"/>
+            <path d="M1196 700c84-124 168-250 264-330 40-34 84-56 140-74" fill="none" stroke="#C2DBB6" stroke-width="6" opacity=".5" stroke-linecap="round"/>
+            <!-- 연못 -->
+            <ellipse cx="286" cy="826" rx="214" ry="64" fill="url(#waterG)"/>
+            <ellipse cx="286" cy="820" rx="176" ry="46" fill="#E4F1F4" opacity=".5"/>
+            <path d="M120 828q40-10 84-2M300 846q54-12 104-2" stroke="#FFFDF8" stroke-width="3.6" stroke-linecap="round" fill="none" opacity=".75"/>
+            <!-- 나무 · 덤불 · 꽃 -->
+            <use href="#tree" x="122" y="376" width="104" height="126"/>
+            <use href="#tree" x="400" y="392" width="88" height="106"/>
+            <use href="#tree" x="596" y="330" width="96" height="116"/>
+            <use href="#tree" x="842" y="352" width="112" height="136"/>
+            <use href="#tree" x="996" y="326" width="82" height="100"/>
+            <use href="#tree" x="1176" y="430" width="86" height="104"/>
+            <use href="#tree" x="1512" y="400" width="92" height="112"/>
+            <use href="#tree" x="700" y="742" width="92" height="112"/>
+            <use href="#tree" x="952" y="768" width="76" height="92"/>
+            <use href="#tree" x="1116" y="742" width="86" height="104"/>
+            <use href="#bush" x="368" y="536" width="88" height="55"/>
+            <use href="#bush" x="636" y="452" width="76" height="48"/>
+            <use href="#bush" x="884" y="520" width="82" height="52"/>
+            <use href="#bush" x="1186" y="546" width="78" height="49"/>
+            <use href="#bush" x="486" y="742" width="94" height="58"/>
+            <use href="#bush" x="1330" y="612" width="72" height="45"/>
+            <use href="#flower" x="176" y="632" width="22" height="22"/>
+            <use href="#flower" x="352" y="700" width="20" height="20"/>
+            <use href="#flower" x="556" y="596" width="22" height="22"/>
+            <use href="#flower" x="664" y="708" width="20" height="20"/>
+            <use href="#flower" x="806" y="672" width="22" height="22"/>
+            <use href="#flower" x="1032" y="628" width="20" height="20"/>
+            <use href="#flower" x="1092" y="706" width="22" height="22"/>
+            <use href="#flower" x="1206" y="726" width="20" height="20"/>
+            <use href="#flower" x="1312" y="656" width="22" height="22"/>
+            <use href="#flower" x="1466" y="640" width="20" height="20"/>
+            <use href="#flower" x="1504" y="540" width="22" height="22"/>
+            <use href="#flower" x="408" y="656" width="20" height="20"/>
+            <use href="#flower" x="900" y="712" width="22" height="22"/>
+            <use href="#flower" x="244" y="596" width="20" height="20"/>
+            <use href="#flower" x="1372" y="742" width="22" height="22"/>
+            <use href="#tuft" x="232" y="600" width="40" height="26"/>
+            <use href="#tuft" x="470" y="762" width="40" height="26"/>
+            <use href="#tuft" x="752" y="556" width="40" height="26"/>
+            <use href="#tuft" x="936" y="722" width="40" height="26"/>
+            <use href="#tuft" x="1168" y="664" width="40" height="26"/>
+            <use href="#tuft" x="1424" y="700" width="40" height="26"/>
+            <use href="#tuft" x="108" y="782" width="40" height="26"/>
+
+            <!-- 여정 길 (스크립트가 그려요) -->
+            <g id="trailLayer" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path id="trailShadow" stroke="#8F7B58" stroke-width="58" opacity=".14" filter="url(#blur6)"/>
+              <path id="trailEdge" stroke="#E6D3AE" stroke-width="52"/>
+              <path id="trailFill" stroke="#FBF1DC" stroke-width="42"/>
+              <path id="trailDash" stroke="#FFFDF8" stroke-width="3.4" stroke-dasharray="1 24"/>
+            </g>
+
+            <!-- 출발 표지판 -->
+            <g transform="translate(58,556) rotate(-3)">
+              <rect x="52" y="34" width="9" height="76" rx="4" fill="#C39A72"/>
+              <rect x="0" y="0" width="120" height="42" rx="9" fill="#EBD9B8" stroke="#B9926C" stroke-width="2.4"/>
+              <text x="60" y="28" text-anchor="middle" font-size="22" fill="#6E5A3E" font-weight="700">여정 시작</text>
+            </g>
+            <!-- 도착 깃발 -->
+            <g transform="translate(1508,158)">
+              <rect x="-3" y="0" width="6" height="132" rx="3" fill="#B9926C"/>
+              <path d="M3 6 76 26 3 48Z" fill="#C4887C" stroke="#A26C60" stroke-width="1.6" stroke-linejoin="round"/>
+              <circle cx="0" cy="0" r="7" fill="#E3B85C" stroke="#B9926C" stroke-width="1.8"/>
+            </g>
+            <!-- 종이 결 -->
+            <rect width="1600" height="900" filter="url(#grainF)" opacity=".05" style="mix-blend-mode:multiply"/>
+          </svg>
+
+          <div class="map-sign">
+            <div class="hand-top">안전비밀요원 달콩이의</div>
+            <h2>안전 배움의 여정</h2>
+            <p>생활 · 교통 · 화재 · 지진 · 신변 · 응급 · 디지털</p>
+          </div>
+
+          <div class="stops" id="stops"></div>
+          <div class="map-hint">역을 누르면 부모님용 디테일이 열려요</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bagbar">
+      <span class="bag" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="34" height="34" fill="none" stroke="#A98164" stroke-width="1.8" stroke-linejoin="round">
+          <path d="M14 17v-3a10 10 0 0 1 20 0v3" stroke-linecap="round"/>
+          <rect x="7" y="16" width="34" height="26" rx="7" fill="#F3E2C4"/>
+          <path d="M7 27h34" stroke="#D9B99B"/>
+          <rect x="19" y="23" width="10" height="8" rx="2.5" fill="#E9CFA6" stroke="#B9926C"/>
+          <path d="M12 34h6M30 34h6" stroke="#C9A97F" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="t">
+        <b>우리 가족 안전 비밀가방</b>
+        <span>이정표로 알고 → 몸으로 해 보고 → 집에서 한 번 더 확인해요</span>
+      </span>
+      <div class="steps3">
+        <span class="bstep"><span class="n">1</span> 이정표 · 알고</span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="bstep"><span class="n">2</span> 작은 미션 · 해 보고</span>
+        <span class="arrow" aria-hidden="true">→</span>
+        <span class="bstep"><span class="n">3</span> 가정 연계 · 확인</span>
+        <span class="bagbadge" id="bagBadge">🏅 안전비밀요원 배지</span>
+      </div>
+    </div>
+
+    <div class="jumprow" id="jumpRow" aria-label="역 바로가기"></div>
+
+    <div class="maplist" id="mapList" aria-label="여정 역 목록"></div>
+  </section>
+
+  <!-- ================= 부모님 가이드 ================= -->
+  <section class="view" id="view-guide">
+    <div class="hero">
+      <div>
+        <span class="kicker">부모님 가이드</span>
+        <h1>왜 이 <em>디테일</em>이 중요할까요?</h1>
+        <p class="lead">아이에게 안전은 ‘조심해’라는 말이 아니라, 몸이 기억하는 작은 동작이에요.</p>
+      </div>
+    </div>
+
+    <div class="lead-box">
+      <b>한 줄로 말하면,</b> 사고는 대개 ‘서두른 한 걸음’과 ‘모르고 한 동작’에서 생겨요. 그래서 이 여정은 “멈춰요·생각해요” 같은 뻔한 말 대신,
+      <b>손이 어디로 가고, 눈이 어디를 보고, 몇 초를 세는지</b>까지만 담았어요. 아이가 몸으로 한 번 해 보면, 그 순간이 진짜 안전이 돼요.
+    </div>
+
+    <div class="guide-grid" id="guideGrid"></div>
+
+    <div class="card" style="margin-top:18px">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="badge-round" aria-hidden="true">🌱</span>
+          <div><h2>나이에 맞춰 이만큼씩</h2><p class="muted">아이마다 속도가 달라요. 지금 되는 것부터 시작하면 돼요.</p></div>
+        </div>
+      </div>
+      <div class="ages">
+        <div class="age a3"><b>만 3세</b><p>어른 손을 잡고 <b>‘하나·둘·셋’</b>을 함께 소리 내어 세어 봐요. 몸은 아직 어른이 이끌어 주세요.</p></div>
+        <div class="age a4"><b>만 4세</b><p>횡단보도에서 <b>손을 머리 위로 번쩍</b> 들어 보이고, 멈춰 선 차의 운전자를 손가락으로 가리켜 봐요.</p></div>
+        <div class="age a5"><b>만 5세</b><p><b>운전자와 눈 마주치기</b>와 주차된 차 사이에서 먼저 멈춰 좌우 확인하기까지 해 봐요.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="badge-round" aria-hidden="true">💬</span>
+          <div><h2>부모님이 자주 묻는 세 가지</h2><p class="muted">오리엔테이션 뒤에 많이 나온 질문이에요.</p></div>
+        </div>
+      </div>
+      <div class="qa">
+        <details>
+          <summary>아이가 갑자기 겁이 많아졌어요. 괜찮을까요?</summary>
+          <p>안전을 배우는 과정에서 ‘조심’이라는 감각이 생긴 거예요. 무섭게 말하기보다 “그럴 땐 이렇게” 하고 동작을 같이 해 보세요. 두려움 대신 ‘내가 할 수 있다’는 자신감이 남아요.</p>
+        </details>
+        <details>
+          <summary>몇 살부터 혼자 횡단보도를 건널 수 있나요?</summary>
+          <p>초등 저학년 전까지는 어른과 함께가 안전해요. 혼자 걷기 전에 <b>3초 세기 · 눈 마주치기 · 손 들기</b> 세 가지를 아이가 자기 말로 설명할 수 있는지로 확인해 보세요. 말로 설명할 수 있으면 몸도 기억하고 있어요.</p>
+        </details>
+        <details>
+          <summary>현장학습·나들이 전에 뭘 먼저 알려 주면 좋을까요?</summary>
+          <p>장소 이름, 만나는 곳, 그리고 <b>‘헤어졌을 때 서는 자리’</b>를 정해 주세요. “잃어버리면 가만히 있어”보다 “버스에서 내린 그 자리, 안내소 앞”처럼 아이가 눈으로 찾을 수 있는 표지를 정하는 게 좋아요.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 가족 안전 체크 ================= -->
+  <section class="view" id="view-check">
+    <div class="hero">
+      <div>
+        <span class="kicker">오늘 우리 집 1분 미션</span>
+        <h1>우리 가족 <em>안전 체크</em></h1>
+        <p class="lead">등원길에서, 집 안에서, 비상시에 — 오늘 하나만 해 봐도 충분해요.</p>
+      </div>
+    </div>
+
+    <div class="bunny-note">
+      <span class="b" id="bunnyNoteSlot" aria-hidden="true"></span>
+      <p id="bunnyNote"><b>달콩이:</b> 체크는 이 기기에만 저장돼요. 집에서 아이와 함께 하나씩 눌러 보세요!</p>
+    </div>
+
+    <div class="card">
+      <div class="check-top">
+        <div class="check-meter">
+          <div class="lab"><span>오늘의 실천</span><b id="checkCount">0 / 11</b></div>
+          <div class="bar"><i id="checkBar"></i></div>
+        </div>
+        <button class="ghost" id="checkReset">처음부터 다시</button>
+      </div>
+      <div id="checkList"></div>
+      <p class="muted" style="margin-top:12px">아이와 함께 해 본 것만 체크해 주세요. 체크한 날은 달콩이가 칭찬 배지를 보내요.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= 역 상세 시트 ================= -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head">
+      <div class="hgroup">
+        <span class="hdot" id="sheetDot" aria-hidden="true"></span>
+        <div>
+          <h2 id="sheetTitle">역</h2>
+          <p class="sub" id="sheetSub"></p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button class="icon-btn" id="sheetVoice" title="이 역의 디테일 듣기" aria-label="이 역의 디테일 듣기">🔊</button>
+        <button class="icon-btn" id="sheetClose" title="닫기" aria-label="닫기">✕</button>
+      </div>
+    </div>
+    <div class="sheet-body" id="sheetBody"></div>
+    <div class="sheet-foot">
+      <span class="who" id="sheetWho"></span>
+      <div class="nav">
+        <button class="ghost" id="sheetPrev">← 이전 역</button>
+        <button class="ghost" id="sheetNext">다음 역 →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts" aria-live="polite"></div>
+<script>
+/* =========================================================
+   달콩이와 함께 떠나는 안전 배움의 여정
+   단일 파일 · 로그인 없음 · 이 기기에만 저장
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  };
+
+  /* ---------- 그림(아이콘) ---------- */
+  var IC = {
+    door: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 20V5.8A1.8 1.8 0 0 1 8.3 4h7.4a1.8 1.8 0 0 1 1.8 1.8V20"/><path d="M4 20h16"/><circle cx="14.1" cy="12" r="1.05" fill="currentColor" stroke="none"/></svg>',
+    light: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2.6" width="10" height="18.8" rx="5"/><circle cx="12" cy="7.4" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="12" cy="16.6" r="1.7"/></svg>',
+    fire: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8c3.5 3.5 5.7 6.4 5.7 9.7A5.7 5.7 0 0 1 12 18.2a5.7 5.7 0 0 1-5.7-5.7c0-3.3 2.2-6.2 5.7-9.7Z"/><path d="M12 11.2c1.4 1.4 2.1 2.5 2.1 3.6a2.1 2.1 0 0 1-4.2 0c0-1.1.7-2.2 2.1-3.6Z"/><path d="M5.4 21h13.2"/></svg>',
+    quake: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.2h18"/><path d="M5.8 9.2V20"/><path d="M18.2 9.2V20"/><path d="M9.2 12.6c-1.4 1.5-1.4 3.9 0 5.4"/><path d="M14.8 12.6c1.4 1.5 1.4 3.9 0 5.4"/></svg>',
+    hand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7.6 12.2V7.1a1.35 1.35 0 0 1 2.7 0v4.5"/><path d="M10.3 11.4V5.7a1.35 1.35 0 0 1 2.7 0v5.5"/><path d="M13 11.6V7a1.35 1.35 0 0 1 2.7 0v4.6"/><path d="M15.7 12.1V9.2a1.3 1.3 0 0 1 2.6 0v4.7c0 3.5-2.3 6.2-5.5 6.2-2.3 0-3.9-1.1-5-3.1l-2-3.4a1.45 1.45 0 0 1 2.4-1.6l1.3 1.9"/></svg>',
+    phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.4 3.4h3.3l1.5 4.1-2 1.4a12.8 12.8 0 0 0 6.5 6.5l1.4-2 4.1 1.5v3.3a2 2 0 0 1-2.2 2A16.4 16.4 0 0 1 2.4 5.6a2 2 0 0 1 2-2.2Z"/><path d="M14.6 3.2a4.6 4.6 0 0 1 4.2 4.2"/></svg>',
+    screen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.4" width="18" height="12.4" rx="2.2"/><path d="M9.2 20.4h5.6"/><path d="M12 16.8v3.6"/><path d="M7.6 9.4h8.8"/></svg>',
+    flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.4 3.2v17.6"/><path d="M6.4 4.6h10.2l-2.3 4.1 2.3 4.1H6.4Z"/></svg>'
+  };
+
+  var BUNNY = '<svg class="bunny" viewBox="0 0 64 64" fill="none" aria-hidden="true">' +
+    '<ellipse cx="23" cy="17" rx="6.2" ry="12.5" fill="#FBF5E9" stroke="#D9C8AE" stroke-width="1.5" transform="rotate(-10 23 17)"/>' +
+    '<ellipse cx="41" cy="17" rx="6.2" ry="12.5" fill="#FBF5E9" stroke="#D9C8AE" stroke-width="1.5" transform="rotate(10 41 17)"/>' +
+    '<ellipse cx="23" cy="18" rx="2.5" ry="7.5" fill="#F3CCC6"/><ellipse cx="41" cy="18" rx="2.5" ry="7.5" fill="#F3CCC6"/>' +
+    '<circle cx="32" cy="39" r="17" fill="#FBF5E9" stroke="#D9C8AE" stroke-width="1.5"/>' +
+    '<path d="M15.5 32.6Q32 25.4 48.5 32.6l-1 3.6Q32 29.6 16.5 36.2Z" fill="#6E8B6E" stroke="#4E6B50" stroke-width="1.2" stroke-linejoin="round"/>' +
+    '<circle cx="32" cy="28.4" r="2.1" fill="#E3B85C" stroke="#A98164" stroke-width=".9"/>' +
+    '<circle cx="25.6" cy="41" r="2" fill="#4A4740"/><circle cx="38.4" cy="41" r="2" fill="#4A4740"/>' +
+    '<path d="M30.6 46.4q1.4 1.5 2.8 0" stroke="#B98C7C" stroke-width="1.6" stroke-linecap="round"/>' +
+    '<ellipse cx="21.8" cy="46" rx="3" ry="1.9" fill="#F3CCC6" opacity=".85"/>' +
+    '<ellipse cx="42.2" cy="46" rx="3" ry="1.9" fill="#F3CCC6" opacity=".85"/></svg>';
+
+  /* ---------- 역별 내용 ---------- */
+  var STOPS = [
+    {
+      id: 'life', no: 1, cls: 's1', icon: 'door', x: 18, y: 64,
+      cat: '생활안전', title: '문 앞 한 뼘, 계단 한 손', sub: '문 · 계단 · 교실 도구',
+      say: '문은 벽이 아니라 ‘친구가 있는 곳’이에요. 문 앞에서 한 뼘만 멈춰 볼까요?',
+      mistakes: [
+        { t: '문을 활짝 밀고 그대로 뛰어나가요', w: '문 너머에서 오는 친구와 정면으로 부딪혀요.' },
+        { t: '계단에서 주머니에 손을 넣고 까치발로 내려와요', w: '중심을 잃어도 손을 못 써서 이마부터 부딪혀요.' },
+        { t: '가위를 날 부분부터 친구에게 건네요', w: '받는 순간 뾰족한 끝이 손에 닿아요.' }
+      ],
+      details: [
+        { tag: '자세', t: '문 앞에서 한 뼘, 문은 천천히', b: '문에서 손바닥 하나만큼 떨어져 서서 천천히 밀어요. 틈이 생기면 먼저 안을 살짝 들여다보고 나가요. <i>문은 벽이 아니라 ‘친구가 있는 곳’</i>이에요.' },
+        { tag: '손동작', t: '문손잡이는 두 손으로, 뒤 친구는 잠깐 잡아 주기', b: '한 손으로 밀면 문이 튕겨 돌아와 손가락이 끼어요. 문을 연 사람이 잠깐 잡아 주면 뒤따라오는 친구가 안전하게 지나가요.' },
+        { tag: '자세', t: '경첩 쪽 문틈엔 손을 대지 않기', b: '경첩 쪽은 문이 닫힐 때 손가락이 딱 들어가는 좁은 틈이에요. 그 틈에 손끝이 끼면 혼자서는 잘 빠지지 않아요.' },
+        { tag: '자세', t: '계단은 한 손은 난간, 발바닥 전체로 한 칸씩', b: '난간을 잡은 손으로 균형을 잡고 까치발 대신 발바닥 전체를 딛어요. 주머니에 손 넣기, 뒷걸음, 한 칸 건너뛰기는 금지예요.' },
+        { tag: '손동작', t: '가위는 날을 내 손 안에 감싸 쥐고, 손잡이를 친구 쪽으로', b: '주머니처럼 손잡이 두 구멍에 손가락을 넣은 채 건네면 친구가 자연스럽게 잡아요. 가위를 들고 걷지 않고, 쓰고 나면 바로 제자리에 놓아요.' },
+        { tag: '손동작', t: '연필·막대는 뾰족한 끝을 내 몸 쪽으로', b: '건넬 때는 끝을 손으로 감싸고 손잡이 쪽을 내밀어요. 돌리거나 던져서 건네지 않아요.' }
+      ],
+      trial: {
+        q: '가위를 친구에게 건넬 때, 친구 쪽을 향해야 하는 건?',
+        opts: ['뾰족한 날 부분', '손잡이 부분', '아무 쪽이나 괜찮아요'], a: 1,
+        good: '정답이에요! 손잡이는 친구 쪽, 날은 내 손 안에 감싸 쥔 채예요.',
+        bad: '한 번 더 생각해 봐요. 받는 친구 손에 닿는 쪽이 어디여야 할까요?'
+      },
+      parent: '문·계단 사고는 대부분 ‘서두름’에서 시작돼요. 유치원 문은 무겁고 손잡이가 아이 어깨 높이라, 뛰어오던 아이가 문틈에 손을 넣는 사고가 생겨요. 계단에서는 주머니에 손을 넣은 채 넘어지면 얼굴과 이마를 먼저 부딪혀요. 집에서도 “문 앞 한 뼘” 한 마디면 충분해요.',
+      home: '우리 집 방문을 열 때 아이가 “한 뼘!”을 외치게 해 보세요.'
+    },
+    {
+      id: 'traffic', no: 2, cls: 's2', icon: 'light', x: 31, y: 76,
+      cat: '교통안전', title: '초록불 뒤, 3초의 법칙', sub: '횡단보도 · 사각지대',
+      say: '초록불은 ‘출발’ 신호가 아니라 ‘확인’ 신호예요.',
+      mistakes: [
+        { t: '초록불이 켜지자마자 달려서 건너요', w: '같은 순간에 들어오는 우회전 차와 부딪혀요.' },
+        { t: '손을 귀 옆에 대고 건너요', w: '그 손은 차 앞부분에 가려 운전자에게 보이지 않아요.' },
+        { t: '멈춰 선 차 앞으로 쓱 지나가요', w: '차 높이 아래라 운전자 눈에 들어오지 않아요.' }
+      ],
+      details: [
+        { tag: '순서', t: '초록불에도 ‘하나·둘·셋’', b: '보행자 신호가 켜져도 우회전 차와 신호를 어긴 차는 그 순간에도 들어올 수 있어요. 3초는 차가 멈출 시간을 벌어 주는 여유예요.' },
+        { tag: '순서', t: '왼쪽 → 오른쪽 → 왼쪽, 고개를 돌려 눈으로', b: '첫 왼쪽은 가까운 차선, 오른쪽은 먼 차선, 마지막 왼쪽은 다시 가까운 차선이에요. 아이는 시야가 좁아서 고개를 돌려야 차가 보여요.' },
+        { tag: '눈맞춤', t: '멈춰 선 차의 운전자와 눈 마주치기', b: '앞유리 너머 운전자 얼굴을 봐요. 눈이 마주치지 않으면 그 차는 나를 못 본 거예요. 손을 흔들어 보여도 좋아요.' },
+        { tag: '손동작', t: '손은 귀 옆이 아니라 머리 위로 번쩍', b: '어깨 위로 쭉 들어 손바닥을 보이면 운전자가 멀리서도 알아봐요. 귀 옆에 붙인 손은 차체에 가려 보이지 않아요.' },
+        { tag: '자세', t: '주차된 차의 바퀴 옆 3걸음은 사각지대', b: '차 앞·뒤 범퍼 가까이는 운전자가 앉아서도 볼 수 없는 자리예요. 차 사이에서 바로 나가지 말고, 차 옆에서 한 번 멈춰 얼굴을 내밀어 차도를 확인해요.' },
+        { tag: '자세', t: '건널 땐 걷기, 신호가 깜빡이면 서두르지 않기', b: '뛰면 넘어져 차도에 손을 짚게 돼요. 신호가 깜빡이기 시작했으면 무리해서 뛰지 말고 다음 신호를 기다려요.' },
+        { tag: '손동작', t: '걸을 땐 어른 손이나 옷자락, 이어폰은 넣어 두기', b: '어른이 휴대폰을 보며 걸으면 아이도 그대로 배워요.' }
+      ],
+      trial: {
+        q: '초록불이 켜졌어요. 가장 먼저 할 일은?',
+        opts: ['바로 건너요', '하나·둘·셋 세며 좌우를 확인해요', '눈을 감고 기다려요'], a: 1,
+        good: '맞아요! 3초 동안 왼쪽·오른쪽·왼쪽을 눈으로 확인해요.',
+        bad: '조금만 더 생각해 봐요. 초록불이 켜진 뒤에도 차가 들어올 수 있어요.'
+      },
+      parent: '어린이 보행사고는 횡단보도 위에서, 특히 우회전 차량과 많이 생겨요. 아이는 소리만으로 차의 방향을 알기 어렵고, 키가 낮아 운전자 시야 밖에 들어가요. 그래서 ‘3초’와 ‘눈 마주치기’는 아이가 스스로 차를 확인하는 첫 습관이 돼요.',
+      home: '등원길 횡단보도에서 아이와 소리 내어 “하나·둘·셋”, 그리고 운전자와 눈 맞추기.'
+    },
+    {
+      id: 'fire', no: 3, cls: 's3', icon: 'fire', x: 44, y: 57,
+      cat: '화재안전', title: '낮게, 벽을 짚고, 손등부터', sub: '소방대피 손동작 · 자세',
+      say: '불보다 무서운 건 연기예요. 낮게, 벽을 짚고, 문은 손등으로 확인해요.',
+      mistakes: [
+        { t: '연기 속에서 똑바로 서서 뛰어가요', w: '연기는 위로 차서 서 있으면 연기를 그대로 마셔요.' },
+        { t: '문을 그냥 활짝 열어요', w: '문 안쪽에 불이 있으면 불길이 얼굴로 확 와요.' },
+        { t: '엘리베이터를 타고 내려가요', w: '불이 나면 전원이 끊겨 갇힐 수 있어요.' }
+      ],
+      details: [
+        { tag: '손동작', t: '한 손은 젖은 수건·옷깃으로 코와 입', b: '마른 손으로 가리면 연기가 그대로 새요. 수건이 없으면 옷깃이나 소매라도 물에 적셔요. 급하면 마른 옷이라도 여러 겹이 낫아요.' },
+        { tag: '손동작', t: '다른 한 손은 벽을 짚고 출구 찾기', b: '불이 나면 연기 때문에 앞이 잘 안 보여요. 벽을 따라가면 문과 계단을 놓치지 않고, 지나온 문을 셀 수도 있어요.' },
+        { tag: '자세', t: '무릎 굽혀 코 높이 낮추기, 허리 아래로', b: '연기는 위로 올라가서 바닥 가까이에 맑은 공기가 남아요. 허리를 숙이고 기어가듯 이동해요.' },
+        { tag: '손동작', t: '문을 열기 전, 손등을 문손잡이에 대 보기', b: '뜨거우면 그 문 너머는 불이에요. 손바닥이 아니라 손등으로 대는 이유는, 뜨거울 때 손이 저절로 오므라들어 손바닥이 더 크게 데지 않게 하기 위해서예요.' },
+        { tag: '순서', t: '엘리베이터는 절대 금지, 계단은 벽 쪽으로', b: '계단에서는 한 줄로, 벽을 짚으며 내려가요.' },
+        { tag: '자세', t: '옷에 불이 붙으면 멈추고 · 엎드리고 · 구르기', b: '뛰면 바람이 불을 키워요. 엎드려 얼굴을 가리고 좌우로 구르면 불이 꺼져요.' },
+        { tag: '순서', t: '나오면서 불이 난 방 문은 닫기', b: '문을 닫아 두면 연기와 불이 번지는 시간을 늘려 줘요. 밖으로 나온 뒤에는 다시 들어가지 않아요.' }
+      ],
+      trial: {
+        q: '대피하다 문손잡이가 뜨거웠어요. 어떻게 할까요?',
+        opts: ['문을 열고 확인해요', '열지 말고 다른 길을 찾아 창문으로 구조 요청해요', '그 방에 숨어 있어요'], a: 1,
+        good: '정답! 뜨거운 문을 열면 불길이 얼굴로 와요. 문은 닫아 두고 다른 길을 찾아요.',
+        bad: '한 번 더 생각해 봐요. 뜨거운 문 너머에는 무엇이 있을까요?'
+      },
+      parent: '화재 사망의 가장 큰 원인은 불길이 아니라 연기 흡입이에요. 연기는 계단을 타고 몇 초 만에 위층까지 채워요. 그래서 “낮게”와 “벽 짚기”가 몸에 익어야 하고, 집에서 손등으로 문을 대 보는 연습이 실제 상황에서 그대로 나와요.',
+      home: '집 대피로를 한 번 걸어 보고, 아이가 방문 손잡이를 손등으로 대 보게 해 주세요.'
+    },
+    {
+      id: 'quake', no: 4, cls: 's4', icon: 'quake', x: 56, y: 72,
+      cat: '지진안전', title: '책상 아래 30초, 문 먼저, 담장 멀리', sub: '3단계 대피',
+      say: '흔들릴 때 뛰어나가면 더 다쳐요. 순서가 있어요 — 몸, 문, 넓은 곳.',
+      mistakes: [
+        { t: '흔들리자마자 밖으로 뛰어나가요', w: '계단·복도에서 넘어지거나 유리에 다쳐요.' },
+        { t: '책상 밖으로 머리를 내밀고 있어요', w: '떨어지는 물건에 머리를 다쳐요.' },
+        { t: '책상 다리를 잡지 않아요', w: '책상이 밀려나 보호 공간이 사라져요.' }
+      ],
+      details: [
+        { tag: '1단계', t: '한 손(또는 방석·가방)으로 목과 뒷머리 덮기', b: '떨어지는 물건에 가장 먼저 다치는 곳이 머리와 목이에요. 가방은 머리 위에 얹고, 손이 없으면 방석이라도 머리에 올려요.' },
+        { tag: '1단계', t: '다른 한 손으로 책상 다리 꽉 잡기', b: '흔들리면 책상이 미끄러져요. 다리를 잡으면 책상이 나를 따라와요.' },
+        { tag: '1단계', t: '무릎 꿇고 머리는 책상 안쪽으로', b: '책상 위에서 떨어지는 유리와 형광등 조각을 피해요. “머리 내밀지 않기”가 핵심이에요.' },
+        { tag: '2단계', t: '흔들림이 멈추면 문부터 살짝 열기', b: '흔들림에 문틀이 휘면 문이 안 열려 갇혀요. 문을 열어 두고 신발도 신어요. 바닥에 유리가 깔려 있을 수 있어요.' },
+        { tag: '3단계', t: '가방·책으로 머리 덮고 계단 벽 쪽으로', b: '창문·유리·간판·담장·전봇대에서 멀리 떨어져요. 계단은 벽을 짚고 한 줄로 내려가요.' },
+        { tag: '3단계', t: '밖에서는 넓은 공터, 건물 벽에서 떨어져', b: '여진이 오면 벽과 담장이 먼저 무너져요. 건물 모서리와 유리창 아래는 피해요.' },
+        { tag: '순서', t: '엘리베이터 대신 계단, 다시 들어가지 않기', b: '한 번 나오면 다시 들어가지 않아요. 아이가 좋아하는 인형도 나중에예요.' }
+      ],
+      trial: {
+        q: '흔들릴 때 책상 아래에서 두 손은 어떻게?',
+        opts: ['두 손으로 귀를 막아요', '한 손은 목·머리, 다른 손은 책상 다리', '두 손으로 책상을 밀어요'], a: 1,
+        good: '맞아요! 머리는 지키고, 책상은 나를 따라오게.',
+        bad: '책상이 밀려나면 보호 공간이 없어져요. 두 손이 어디로 가야 할까요?'
+      },
+      parent: '지진은 대개 1~2분이에요. 그 안에 밖으로 나가려다 다치는 경우가 많아서, ‘책상 아래에서 몸 보호 → 문 열기 → 벽 쪽 계단’ 순서를 몸으로 익히는 게 중요해요. 3단계를 놀이처럼 한 번 해 보면 실제에선 몸이 먼저 움직여요.',
+      home: '아이 책상 다리를 잡고 30초 버티기, 그리고 현관문부터 “문 열기”까지 한 번.'
+    },
+    {
+      id: 'stranger', no: 5, cls: 's5', icon: 'hand', x: 67, y: 52,
+      cat: '신변보호', title: '어른 팔 두 개, 반대 방향, 이름 부르기', sub: '거리 · 방향 · 외침',
+      say: '“도와주세요”보다 “이 사람 몰라요!”가 훨씬 멀리 들려요.',
+      mistakes: [
+        { t: '모르는 어른에게 다가가 길을 알려 줘요', w: '어른은 아이에게 길을 묻지 않아요. 그건 말을 걸기 위한 핑계예요.' },
+        { t: '“도와주세요”만 외쳐요', w: '주변 어른이 엄마와 떼쓰는 아이로 오해해 지나가요.' },
+        { t: '차가 따라오면 차가 가는 쪽으로 뛰어요', w: '차가 앞질러 길을 막기 쉬워요.' }
+      ],
+      details: [
+        { tag: '자세', t: '안전거리는 어른 팔 두 개만큼', b: '말을 걸어도 두세 걸음 뒤로 물러서요. 손을 잡으려 하면 더 멀리, 사람이 있는 쪽으로 움직여요.' },
+        { tag: '말', t: '“이 사람 몰라요! 도와주세요!”', b: '누가 위험한지 말해야 주변 어른이 바로 알아들어요. 가게 안에서는 “이 사람 몰라요, 경찰 불러 주세요”라고 또박또박 말해요.' },
+        { tag: '자세', t: '차가 따라오면 차가 오는 반대 방향으로', b: '차는 유턴하는 데 시간이 걸려요. 큰길·가게·사람 많은 곳으로 가고, 골목으로는 들어가지 않아요.' },
+        { tag: '말', t: '어른이 길을 묻거나 이름을 부르면 그 자리에서 뒤로', b: '이름을 아는 사람이라도 부모가 보낸 사람인지 확인하기 전에는 따라가지 않아요.' },
+        { tag: '말', t: '가족 암호를 물어보기', b: '엄마·아빠 대신 데리러 온 사람에게는 우리 가족만 아는 단어 하나를 물어봐요. “엄마가 보냈대”는 암호가 아니에요.' },
+        { tag: '장소', t: '아동안전지킴이집·편의점·문구점으로', b: '초록 지킴이집 표시가 있는 곳에 들어가 도움을 요청해요. 혼자 골목에 서 있지 않아요.' }
+      ],
+      trial: {
+        q: '모르는 어른이 “차 태워 줄게” 해요. 어떻게 말할까요?',
+        opts: ['“네, 고마워요” 하고 타요', '“싫어요! 이 사람 몰라요!” 하고 사람 많은 곳으로', '가만히 서 있어요'], a: 1,
+        good: '정답! 큰 소리로 ‘몰라요’를 말하고 사람이 있는 곳으로 가요.',
+        bad: '차에 타면 도와줄 사람이 없어요. 무슨 말을 큰 소리로 해야 할까요?'
+      },
+      parent: '아이를 데려가려는 일은 대부분 ‘말 걸기’에서 시작해요. “어른은 아이에게 길을 묻지 않는다”는 규칙 하나만 알려 주세요. 그리고 큰 소리로 “몰라요”를 말해 본 아이는 실제에도 목소리를 낼 수 있어요.',
+      home: '가족 암호 하나 정하고, 아이와 함께 큰 소리로 “이 사람 몰라요!” 해 보기.'
+    },
+    {
+      id: 'firstaid', no: 6, cls: 's6', icon: 'phone', x: 78, y: 68,
+      cat: '응급·생활', title: '119 세 가지, 물 15분, 손가락 넣지 않기', sub: '119 · 화상 · 기도막힘',
+      say: '급할수록 순서대로. 119는 “어디”부터 말해요.',
+      mistakes: [
+        { t: '119에 “엄마가 다쳤어요”만 하고 끊어요', w: '어디인지 몰라 출동이 늦어져요.' },
+        { t: '화상에 얼음을 대요', w: '얼음은 피부를 더 상하게 하고 회복을 늦춰요.' },
+        { t: '목에 걸린 것에 손가락을 넣어요', w: '걸린 것을 더 깊이 밀어 넣을 수 있어요.' }
+      ],
+      details: [
+        { tag: '순서 ①', t: '119에 말할 첫 번째 — 우리가 있는 곳', b: '건물 이름, 가게 간판, 몇 층인지까지 말해요. “유치원”보다 “○○초등학교 옆 △△유치원”처럼 알아듣기 쉽게요.' },
+        { tag: '순서 ②', t: '누가 어떻게 다쳤는지, 깨어 있는지', b: '나이, 의식이 있는지, 숨을 쉬는지, 피가 나는지를 차례로 말해요.' },
+        { tag: '순서 ③', t: '먼저 끊지 말고 기다리기', b: '구급대원이 오는 동안 무엇을 해야 하는지 전화로 알려 줘요. 먼저 끊으면 그 안내를 못 들어요.' },
+        { tag: '손동작', t: '화상은 흐르는 시원한 물에 15~20분', b: '얼음을 직접 대지 않고, 물집을 터뜨리지 않아요. 옷이 피부에 달라붙었으면 억지로 벗기지 말고 그대로 물로 식혀요. 기름·된장·치약·키친타월은 금지예요.' },
+        { tag: '자세', t: '기도막힘은 손가락 대신 기침하게', b: '기침을 할 수 있으면 기침이 가장 좋은 방법이에요. 말을 못 하고 얼굴이 빨개지면 바로 어른을 불러요. 어른이 등을 두드려 줄 때 아이는 고개를 숙여요.' },
+        { tag: '순서', t: '먹을 땐 뛰지도, 웃지도, 말하며 먹지도 않기', b: '기도막힘은 대부분 먹으면서 장난치다 생겨요. 잘게 썰고 한 번에 많이 넣지 않아요.' },
+        { tag: '자세', t: '코피는 고개를 숙이고 5~10분 콧방울 압박', b: '뒤로 젖히면 피가 목으로 넘어가요. 콧등이 아니라 콧방울(부드러운 부분)을 눌러요.' },
+        { tag: '원칙', t: '다친 아이를 함부로 안아 옮기지 않기', b: '목이나 허리를 다쳤을 수 있어요. 그 자리에서 119 안내를 따라요.' }
+      ],
+      trial: {
+        q: '119에 가장 먼저 말할 것은?',
+        opts: ['다친 사람 이름', '지금 있는 곳(간판·주소)', '우리 집 전화번호'], a: 1,
+        good: '맞아요! 구급차가 찾아올 수 있게 “어디”부터 말해요.',
+        bad: '한 번 더 생각해 봐요. 구급차가 가장 먼저 알아야 하는 건 뭘까요?'
+      },
+      parent: '119 신고에서 출동이 늦어지는 가장 흔한 이유는 위치를 바로 말하지 못하는 거예요. 등원길에서 “우리 집은 ○○ 앞이야”처럼 간판으로 말해 보게 해 주세요. 화상은 “15분 물” 하나만 기억해도 흉터를 크게 줄여요.',
+      home: '아이와 119 역할놀이 — “어디예요?” “누가 다쳤어요?” “끊지 마세요” 세 문장.'
+    },
+    {
+      id: 'digital', no: 7, cls: 's7', icon: 'screen', x: 88, y: 46,
+      cat: '디지털안전', title: '화면은 한 뼘 반, 20분마다 먼 곳', sub: '거리 · 쉬기 · 링크',
+      say: '눈은 쉬어야 오래 봐요. 20분 보면 20초, 창밖을 봐요.',
+      mistakes: [
+        { t: '화면을 코에 닿을 만큼 가까이 봐요', w: '눈의 초점 근육이 금방 지쳐요.' },
+        { t: '어두운 방에서 화면만 환하게 봐요', w: '동공이 커져 더 빨리 피로해져요.' },
+        { t: '모르는 링크나 선물을 그냥 눌러요', w: '아이 계정으로 결제되거나 이상한 화면이 열려요.' }
+      ],
+      details: [
+        { tag: '자세', t: '화면 거리는 팔꿈치 하나 + 한 뼘', b: '대략 30~40cm예요. 화면 위쪽이 눈높이보다 살짝 아래로 오게 해요.' },
+        { tag: '순서', t: '20분 보면 20초, 6m 먼 곳 보기', b: '창밖 나무나 건너편 건물을 봐요. 가까운 곳만 보던 눈의 근육이 쉬어요.' },
+        { tag: '자세', t: '방은 밝게, 화면 밝기는 주변과 비슷하게', b: '어두운 방에서 밝은 화면을 보면 눈이 더 피로해져요.' },
+        { tag: '자세', t: '눕거나 엎드려서 보지 않기', b: '고개를 숙인 자세는 목에도 부담이 돼요. 식탁이나 책상에 앉아서 봐요.' },
+        { tag: '순서', t: '한 번에 30분을 넘기지 않기', b: '끝나는 시간을 미리 약속해 두면 “그만”이라고 말로 싸우지 않아도 돼요.' },
+        { tag: '말', t: '모르는 사람의 선물·링크는 누르지 말고 어른에게', b: '화면에 뜬 “무료 선물”은 대부분 누르면 결제로 이어져요.' }
+      ],
+      trial: {
+        q: '화면을 20분 봤어요. 다음은?',
+        opts: ['계속 봐요', '20초 동안 6m 먼 곳을 봐요', '눈을 손으로 비벼요'], a: 1,
+        good: '정답! 20분 보면 20초, 먼 곳을 봐요.',
+        bad: '눈을 비비면 더 나빠질 수 있어요. 눈이 쉬려면 어디를 봐야 할까요?'
+      },
+      parent: '아이의 눈은 가까운 곳에 초점을 계속 맞추면 조절 근육이 금방 지쳐요. “20분 보면 20초 먼 곳”은 성인 기준이지만 아이에게도 “창밖 20초”로 충분히 통했어요. 화면 밝기와 방 밝기가 비슷해야 눈이 덜 피로해요.',
+      home: '우리 집 거실에서 6m 되는 자리를 아이와 함께 찾아 표시해 두기.'
+    }
+  ];
+
+  var FINISH = { x: 94, y: 33, label: '도착 · 안전가방' };
+
+  var CHECKS = [
+    { g: '등원길에서', em: '🚸', items: [
+      '집 앞에서 <b>하나·둘·셋</b> 소리 내어 세어 보기',
+      '횡단보도에서 <b>멈춘 차의 운전자와 눈 마주치기</b>',
+      '건널 때 <b>손을 머리 위로 번쩍</b> 들어 보이기',
+      '주차된 차 옆 <b>3걸음에서 멈춰</b> 좌우 확인하기'
+    ]},
+    { g: '집 안에서', em: '🏠', items: [
+      '방문 손잡이를 <b>손등으로</b> 대 보기',
+      '젖은 수건으로 코·입 가리고 <b>낮게 걸어 보기</b>',
+      '책상 아래에서 <b>다리 잡고 30초</b> 버티기',
+      '가위 건넬 때 <b>손잡이가 상대 쪽</b>인지 확인하기'
+    ]},
+    { g: '비상 준비', em: '🎒', items: [
+      '119에 말할 <b>우리 집 주소</b>를 아이와 함께 말해 보기',
+      '화상 땐 <b>흐르는 물 15분</b> — 욕실에서 위치 확인하기',
+      '<b>가족 암호</b> 하나 정하기'
+    ]}
+  ];
+
+  /* ---------- 저장 (이 기기에만) ---------- */
+  var NS = 'safetyjourney:';
+  var store = {
+    get: function (k, d) { try { var v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set: function (k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+  };
+  var state = {
+    visited: store.get('visited', {}) || {},
+    done: store.get('done', {}) || {},
+    checks: store.get('checks', {}) || {},
+    voice: store.get('voice', true) !== false
+  };
+  var CHECK_TOTAL = CHECKS.reduce(function (n, g) { return n + g.items.length; }, 0);
+
+  /* ---------- 음성 안내 ---------- */
+  var voice = null;
+  function pickVoice() {
+    try {
+      if (!('speechSynthesis' in window)) return null;
+      var vs = window.speechSynthesis.getVoices() || [];
+      if (!vs.length) return null;
+      var ko = vs.filter(function (v) { return /^ko/i.test(v.lang || ''); });
+      var pref = ['Yuna', 'Sora', 'Google', 'Microsoft', 'Heami'];
+      for (var p = 0; p < pref.length; p++) {
+        for (var i = 0; i < ko.length; i++) {
+          if ((ko[i].name || '').indexOf(pref[p]) >= 0) return ko[i];
+        }
+      }
+      return ko[0] || null;
+    } catch (e) { return null; }
+  }
+  function plain(html) {
+    var d = document.createElement('div');
+    d.innerHTML = String(html == null ? '' : html);
+    return (d.textContent || '').replace(/\s+/g, ' ').trim();
+  }
+  function chunk(text) {
+    var parts = String(text).match(/[^.!?。…]+[.!?。…]+|[^.!?。…]+$/g) || [text];
+    var out = [], buf = '';
+    parts.forEach(function (s) {
+      s = s.trim();
+      if (!s) return;
+      if ((buf + ' ' + s).length > 110) { if (buf) out.push(buf); buf = s; }
+      else buf = buf ? buf + ' ' + s : s;
+    });
+    if (buf) out.push(buf);
+    return out;
+  }
+  function speak(text) {
+    if (!state.voice || !text) return;
+    try {
+      if (!('speechSynthesis' in window) || typeof window.SpeechSynthesisUtterance !== 'function') return;
+      window.speechSynthesis.cancel();
+      if (!voice) voice = pickVoice();
+      chunk(text).forEach(function (piece) {
+        var u = new window.SpeechSynthesisUtterance(piece);
+        u.lang = 'ko-KR';
+        if (voice) u.voice = voice;
+        u.rate = 0.94; u.pitch = 1.04; u.volume = 1;
+        window.speechSynthesis.speak(u);
+      });
+    } catch (e) {}
+  }
+  function hush() { try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) {} }
+  if ('speechSynthesis' in window && typeof window.speechSynthesis.addEventListener === 'function') {
+    window.speechSynthesis.addEventListener('voiceschanged', function () { voice = pickVoice(); });
+  }
+
+  /* ---------- 토스트 ---------- */
+  var toasts = $('#toasts');
+  function toast(msg, em) {
+    var el = document.createElement('div');
+    el.className = 'toast';
+    el.innerHTML = (em ? '<span>' + em + '</span>' : '') + '<span>' + esc(msg) + '</span>';
+    toasts.appendChild(el);
+    setTimeout(function () {
+      el.style.transition = 'opacity .3s, transform .3s';
+      el.style.opacity = '0'; el.style.transform = 'translateY(8px)';
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+    }, 2600);
+  }
+
+  /* ---------- 여정 길 그리기 ---------- */
+  function smoothPath(pts) {
+    if (!pts.length) return '';
+    var d = 'M' + pts[0][0] + ' ' + pts[0][1];
+    for (var i = 0; i < pts.length - 1; i++) {
+      var p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2;
+      var c1x = p1[0] + (p2[0] - p0[0]) / 6, c1y = p1[1] + (p2[1] - p0[1]) / 6;
+      var c2x = p2[0] - (p3[0] - p1[0]) / 6, c2y = p2[1] - (p3[1] - p1[1]) / 6;
+      d += 'C' + c1x.toFixed(1) + ' ' + c1y.toFixed(1) + ',' + c2x.toFixed(1) + ' ' + c2y.toFixed(1) + ',' + p2[0] + ' ' + p2[1];
+    }
+    return d;
+  }
+  function drawTrail() {
+    var pts = [[112, 702]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 9]; })).concat([[FINISH.x * 16, FINISH.y * 9]]);
+    var d = smoothPath(pts);
+    ['trailShadow', 'trailEdge', 'trailFill', 'trailDash'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.setAttribute('d', d);
+    });
+  }
+
+  /* ---------- 지도 역 ---------- */
+  var stopsEl = $('#stops');
+  function renderStops() {
+    var html = STOPS.map(function (s, i) {
+      return '<button class="stop ' + s.cls + (state.done[s.id] ? ' is-done' : '') + '" data-id="' + s.id + '" ' +
+        'style="--x:' + s.x + '%;--y:' + s.y + '%;--d:' + (0.08 + i * 0.07).toFixed(2) + 's" ' +
+        'aria-label="' + s.no + '번 역 ' + esc(s.cat) + ', ' + esc(s.title) + '">' +
+        '<span class="stop-dot">' + IC[s.icon] +
+        '<span class="stop-num">' + s.no + '</span><span class="stop-star">★</span></span>' +
+        '<span class="stop-label">' + esc(s.cat) + '</span></button>';
+    }).join('');
+    html += '<button class="stop stop-finish s4" data-finish="1" style="--x:' + FINISH.x + '%;--y:' + FINISH.y + '%;--d:.62s" aria-label="도착, 가족 안전 체크로 가기">' +
+      '<span class="stop-dot">' + IC.flag + '</span><span class="stop-label">' + esc(FINISH.label) + '</span></button>';
+    stopsEl.innerHTML = html;
+  }
+
+  function renderJump() {
+    $('#jumpRow').innerHTML = '<span class="lbl">바로가기</span>' + STOPS.map(function (s) {
+      return '<button class="jump ' + (state.done[s.id] ? 'is-done' : '') + '" data-id="' + s.id + '">' +
+        '<span class="n">' + s.no + '</span>' + esc(s.cat) + '<span class="st">★</span></button>';
+    }).join('') + '<button class="jump" data-finish="1"><span class="n">🏁</span>도착 · 가족 안전 체크</button>';
+  }
+
+  function renderMapList() {
+    var html = '<div class="ml">' + STOPS.map(function (s) {
+      return '<button class="ml-row ' + s.cls + (state.done[s.id] ? ' is-done' : '') + '" data-id="' + s.id + '">' +
+        '<span class="ml-dot">' + IC[s.icon] + '<span class="n">' + s.no + '</span></span>' +
+        '<span class="ml-body"><b>' + esc(s.cat) + '</b><em>' + esc(s.sub) + '</em></span>' +
+        '<span class="star">★</span><span class="ml-go">›</span></button>';
+    }).join('') + '</div>' +
+      '<button class="primary quiet ml-finish" data-finish="1" style="width:100%;margin-top:2px">🏁 도착 · 가족 안전 체크로</button>';
+    $('#mapList').innerHTML = html;
+  }
+
+  /* ---------- 진행 상황 ---------- */
+  function doneCount() { return STOPS.filter(function (s) { return state.done[s.id]; }).length; }
+  function paintProgress() {
+    var n = doneCount(), C = 119.4;
+    var ring = $('#ringFg');
+    if (ring) {
+      ring.setAttribute('stroke-dashoffset', String(C * (1 - n / STOPS.length)));
+      ring.setAttribute('stroke', n === STOPS.length ? '#C99A2E' : '#6E8B6E');
+    }
+    $('#ringTxt').textContent = n + '/' + STOPS.length;
+    var note = n === 0 ? '아직 출발 전이에요' : n < 3 ? '여정을 시작했어요' : n < 5 ? '절반을 지나왔어요' : n < STOPS.length ? '거의 다 왔어요' : '모든 이정표를 지났어요';
+    $('#progNote').textContent = note;
+    $('#bagBadge').classList.toggle('is-on', n === STOPS.length);
+    $$('.stop[data-id], .jump[data-id], .ml-row[data-id]').forEach(function (b) {
+      b.classList.toggle('is-done', !!state.done[b.getAttribute('data-id')]);
+    });
+  }
+
+  /* ---------- 역 상세 ---------- */
+  var overlay = $('#overlay'), sheetBody = $('#sheetBody'), curIdx = -1, opener = null;
+
+  function sheetHTML(s) {
+    var done = !!state.done[s.id];
+    var h = '';
+    h += '<div class="say">' + BUNNY + '<p><b>달콩이</b><br>' + esc(s.say) + '</p></div>';
+
+    h += '<div class="sec"><span class="em">🙅</span><h3>흔한 실수</h3><span class="cnt">' + s.mistakes.length + '가지</span></div>';
+    h += '<ul class="wrong-list">' + s.mistakes.map(function (m) {
+      return '<li><span class="x">✕</span><span><b>' + esc(m.t) + '</b><br>' + esc(m.w) + '</span></li>';
+    }).join('') + '</ul>';
+
+    h += '<div class="sec"><span class="em">✅</span><h3>진짜 안전 디테일</h3><span class="cnt">' + s.details.length + '가지</span></div>';
+    h += '<div class="steps two">' + s.details.map(function (d, i) {
+      return '<div class="step"><span class="n">' + (i + 1) + '</span><span class="sb">' +
+        '<span class="st-row"><span class="tag">' + esc(d.tag) + '</span><b>' + esc(d.t) + '</b></span>' +
+        '<p>' + d.b + '</p></span></div>';
+    }).join('') + '</div>';
+
+    h += '<div class="sec"><span class="em">✋</span><h3>10초 미니 체험</h3></div>';
+    h += '<div class="trial"><p class="tq">' + esc(s.trial.q) + '</p><div class="opts">' +
+      s.trial.opts.map(function (o, i) {
+        return '<button class="opt' + (done && i === s.trial.a ? ' is-right' : '') + '" data-i="' + i + '"' + (done ? ' disabled' : '') + '>' +
+          '<span class="mk">✓</span><span>' + esc(o) + '</span></button>';
+      }).join('') + '</div>' +
+      '<div class="fb' + (done ? ' is-on' : '') + '" id="fb">' + (done ? esc(s.trial.good) : '') + '</div></div>';
+
+    h += '<div class="sec"><span class="em">🍀</span><h3>부모님께</h3></div>';
+    h += '<div class="pnote"><b>왜 이 디테일이 중요할까요?</b><p>' + esc(s.parent) + '</p></div>';
+    h += '<div class="pnote" style="margin-top:9px;background:#F7F1E1;border-color:var(--wood)"><b>오늘 집에서 한 번</b><p>' + esc(s.home) + '</p></div>';
+    return h;
+  }
+
+  function openSheet(id, fromEl) {
+    var idx = STOPS.findIndex(function (s) { return s.id === id; });
+    if (idx < 0) return;
+    curIdx = idx;
+    opener = fromEl || null;
+    var s = STOPS[idx];
+    state.visited[s.id] = true; store.set('visited', state.visited);
+
+    var dot = $('#sheetDot');
+    dot.className = 'hdot ' + s.cls;
+    dot.innerHTML = IC[s.icon];
+    $('#sheetTitle').textContent = s.title;
+    $('#sheetSub').textContent = s.cat + ' · ' + s.sub;
+    $('#sheetWho').textContent = '역 ' + s.no + ' / ' + STOPS.length + ' · 대전동산초등학교병설유치원 달누리반';
+    sheetBody.innerHTML = sheetHTML(s);
+    sheetBody.scrollTop = 0;
+
+    var prev = $('#sheetPrev'), next = $('#sheetNext');
+    prev.disabled = idx === 0;
+    prev.style.opacity = idx === 0 ? '.45' : '1';
+    next.textContent = idx === STOPS.length - 1 ? '가족 안전 체크 →' : '다음 역 →';
+
+    overlay.classList.add('is-on');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    $('#sheetClose').focus({ preventScroll: true });
+
+    speak(s.cat + '. ' + s.say);
+  }
+
+  function closeSheet() {
+    overlay.classList.remove('is-on');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    hush();
+    if (opener && opener.focus) opener.focus({ preventScroll: true });
+  }
+
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeSheet(); });
+  $('#sheetClose').addEventListener('click', closeSheet);
+  $('#sheetPrev').addEventListener('click', function () {
+    if (curIdx > 0) openSheet(STOPS[curIdx - 1].id);
+  });
+  $('#sheetNext').addEventListener('click', function () {
+    if (curIdx < STOPS.length - 1) openSheet(STOPS[curIdx + 1].id);
+    else { closeSheet(); switchView('check'); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-on')) closeSheet();
+  });
+
+  sheetBody.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.opt') : null;
+    if (!btn || btn.disabled) return;
+    var s = STOPS[curIdx];
+    var i = Number(btn.getAttribute('data-i'));
+    var fb = $('#fb');
+    if (i === s.trial.a) {
+      $$('.opt', sheetBody).forEach(function (b) { b.disabled = true; });
+      btn.classList.add('is-right');
+      fb.classList.remove('bad');
+      fb.textContent = s.trial.good;
+      fb.classList.add('is-on');
+      if (!state.done[s.id]) {
+        state.done[s.id] = true; store.set('done', state.done);
+        toast('이정표 ' + s.no + ' 완료! ' + (doneCount() === STOPS.length ? '안전비밀요원 배지 획득 🏅' : '다음 역으로 가 볼까요?'), '★');
+        if (doneCount() === STOPS.length) toast('일곱 개 이정표를 모두 지났어요. 달콩이가 배지를 보내요!', '🏅');
+      }
+      paintProgress();
+      speak(s.trial.good);
+    } else {
+      btn.classList.add('is-wrong');
+      setTimeout(function () { btn.classList.remove('is-wrong'); }, 500);
+      fb.textContent = s.trial.bad;
+      fb.classList.add('is-on', 'bad');
+      speak(s.trial.bad);
+    }
+  });
+
+  $('#sheetVoice').addEventListener('click', function () {
+    var s = STOPS[curIdx];
+    if (!s) return;
+    var text = s.cat + '. ' + s.title + '. ' + s.say + ' 흔한 실수. ' +
+      s.mistakes.map(function (m) { return m.t + '. ' + m.w; }).join(' ') + ' 진짜 안전 디테일. ' +
+      s.details.map(function (d, i) { return (i + 1) + '. ' + d.t + '. ' + plain(d.b); }).join(' ') +
+      ' 부모님께. ' + s.parent;
+    if (!state.voice) { speak(text); return; }
+    speak(text);
+  });
+
+  /* ---------- 부모님 가이드 ---------- */
+  function renderGuide() {
+    $('#guideGrid').innerHTML = STOPS.map(function (s) {
+      return '<div class="gcard ' + s.cls + '">' +
+        '<div class="gtop"><span class="gdot">' + IC[s.icon] + '</span>' +
+        '<div><h3>' + s.no + '. ' + esc(s.cat) + '</h3><span class="gcat">' + esc(s.sub) + '</span></div></div>' +
+        '<div class="gwhy"><b>왜 중요한가요?</b> ' + esc(s.parent) + '</div>' +
+        '<div class="gmiss">🙅 ' + esc(s.mistakes[0].t) + ' → ' + esc(s.mistakes[0].w) + '</div>' +
+        '<div class="ghome"><span>🏠</span><span>' + esc(s.home) + '</span></div>' +
+        '<div class="gmore"><button class="ghost" data-id="' + s.id + '">여정에서 보기 →</button></div></div>';
+    }).join('');
+  }
+  $('#guideGrid').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('[data-id]') : null;
+    if (b) openSheet(b.getAttribute('data-id'), b);
+  });
+
+  /* ---------- 가족 안전 체크 ---------- */
+  function renderChecks() {
+    var html = CHECKS.map(function (g, gi) {
+      return '<div class="cgroup"><h3><span class="em">' + g.em + '</span>' + g.g + '</h3>' +
+        g.items.map(function (t, ii) {
+          var k = gi + ':' + ii, on = !!state.checks[k];
+          return '<button class="citem' + (on ? ' on' : '') + '" data-k="' + k + '" aria-pressed="' + (on ? 'true' : 'false') + '">' +
+            '<span class="box">✓</span><span class="ct">' + t + '</span></button>';
+        }).join('') + '</div>';
+    }).join('');
+    $('#checkList').innerHTML = html;
+    paintChecks();
+  }
+  function checkCount() {
+    var n = 0;
+    Object.keys(state.checks).forEach(function (k) { if (state.checks[k]) n++; });
+    return n;
+  }
+  function paintChecks() {
+    var n = checkCount();
+    $('#checkCount').textContent = n + ' / ' + CHECK_TOTAL;
+    $('#checkBar').style.width = Math.round(n / CHECK_TOTAL * 100) + '%';
+    var msg;
+    if (n === 0) msg = '<b>달콩이:</b> 체크는 이 기기에만 저장돼요. 집에서 아이와 함께 하나씩 눌러 보세요!';
+    else if (n < 5) msg = '<b>달콩이:</b> 좋아요! 오늘 한 가지를 몸으로 해 봤어요. 아이는 그 동작을 기억해요.';
+    else if (n < 9) msg = '<b>달콩이:</b> 우와, 절반을 넘었어요! 등원길에서 한 번 더 해 보면 더 오래 남아요.';
+    else if (n < CHECK_TOTAL) msg = '<b>달콩이:</b> 거의 다 왔어요. 마지막 하나만 더 해 볼까요?';
+    else msg = '<b>달콩이:</b> 오늘의 안전 미션 완성! 달콩이가 칭찬 배지를 보내요 🏅';
+    $('#bunnyNote').innerHTML = msg;
+  }
+  $('#checkList').addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.citem') : null;
+    if (!b) return;
+    var k = b.getAttribute('data-k');
+    state.checks[k] = !state.checks[k];
+    store.set('checks', state.checks);
+    b.classList.toggle('on', !!state.checks[k]);
+    b.setAttribute('aria-pressed', state.checks[k] ? 'true' : 'false');
+    var before = checkCount();
+    paintChecks();
+    if (before === CHECK_TOTAL && state.checks[k]) {
+      toast('오늘의 안전 미션 완성! 달콩이 배지 🏅', '🏅');
+      speak('와, 오늘의 안전 미션을 모두 마쳤어요. 정말 멋져요!');
+    }
+  });
+  $('#checkReset').addEventListener('click', function () {
+    if (!confirm('체크한 내용을 모두 지울까요?')) return;
+    state.checks = {}; store.set('checks', {});
+    renderChecks();
+    toast('새로 시작할 수 있어요.', '🌱');
+  });
+
+  /* ---------- 화면 전환 ---------- */
+  function switchView(name) {
+    $$('.view').forEach(function (v) { v.classList.toggle('is-on', v.id === 'view-' + name); });
+    $$('.tab').forEach(function (t) {
+      var on = t.getAttribute('data-view') === name;
+      t.classList.toggle('is-on', on);
+      t.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  $$('.tab').forEach(function (t) {
+    t.addEventListener('click', function () { hush(); switchView(t.getAttribute('data-view')); });
+  });
+  $('#goCheck').addEventListener('click', function () { switchView('check'); });
+
+  /* ---------- 음성 · 전체화면 ---------- */
+  function paintVoice() {
+    var b = $('#voiceToggle');
+    b.classList.toggle('is-off', !state.voice);
+    b.setAttribute('aria-pressed', state.voice ? 'true' : 'false');
+    $('#voiceLabel').textContent = state.voice ? '음성 안내' : '음성 꺼짐';
+  }
+  $('#voiceToggle').addEventListener('click', function () {
+    state.voice = !state.voice; store.set('voice', state.voice);
+    paintVoice();
+    if (state.voice) { speak('음성 안내를 켰어요. 이제 천천히 읽어 줄게요.'); toast('음성 안내를 켰어요.', '🔊'); }
+    else { hush(); toast('음성 안내를 껐어요.', '🔈'); }
+  });
+  $('#fsBtn').addEventListener('click', function () {
+    try {
+      if (!document.fullscreenElement && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+      else if (document.exitFullscreen) document.exitFullscreen();
+    } catch (e) {}
+  });
+
+  /* ---------- 지도 클릭 ---------- */
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest ? e.target.closest('[data-id],[data-finish]') : null;
+    if (!t) return;
+    if (t.hasAttribute('data-finish')) { switchView('check'); return; }
+    if (t.closest('#guideGrid')) return;
+    openSheet(t.getAttribute('data-id'), t);
+  });
+
+  /* ---------- 시작 ---------- */
+  var slot = $('#bunnyNoteSlot');
+  if (slot) slot.innerHTML = BUNNY;
+  renderStops();
+  drawTrail();
+  renderJump();
+  renderMapList();
+  renderGuide();
+  renderChecks();
+  paintProgress();
+  paintVoice();
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { drawTrail(); }).catch(function () {});
+  }
+})();
+</script>
+</body>
+</html>
