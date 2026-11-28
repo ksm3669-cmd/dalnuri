@@ -161,12 +161,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .stops{position:absolute;inset:0;z-index:3}
 .stop{
   position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);
-  display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:var(--ds,76px);height:var(--ds,76px);display:block;
   animation:pop .45s cubic-bezier(.2,1.3,.4,1) both;animation-delay:var(--d,0s);
 }
 @keyframes pop{from{opacity:0;transform:translate(-50%,-42%) scale(.82)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 .stop-dot{
-  width:76px;height:76px;border-radius:50%;display:grid;place-items:center;position:relative;
+  width:100%;height:100%;border-radius:50%;display:grid;place-items:center;position:relative;
   background:radial-gradient(circle at 34% 26%, #FFFDF6 8%, var(--s1) 92%);
   border:2.5px solid var(--s2);
   box-shadow:0 9px 20px rgba(94,80,58,.2), inset 0 2px 6px rgba(255,255,255,.9);
@@ -189,13 +189,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .stop.is-done .stop-star{display:grid}
 .stop.is-done .stop-dot{background:radial-gradient(circle at 34% 26%, #FFFDF6 8%, #F4EFDF 92%)}
 .stop-label{
+  position:absolute;top:calc(100% + 6px);left:50%;transform:translateX(-50%);
   font-family:var(--display);font-weight:700;font-size:15.5px;line-height:1.15;color:#48453B;
   background:rgba(255,253,248,.93);border:1.6px solid var(--s2);border-radius:999px;
   padding:4px 13px;white-space:nowrap;box-shadow:0 4px 10px rgba(94,80,58,.14);
   display:flex;align-items:baseline;gap:5px;
 }
 .stop-label small{font-family:var(--body);font-size:10.5px;font-weight:400;color:#8A8374;letter-spacing:-.2px}
-.stop-finish .stop-dot{width:66px;height:66px}
+.stop-finish{--ds:64px}
 .map-hint{
   position:absolute;left:18px;bottom:14px;z-index:4;
   font-family:var(--display);font-size:.86rem;color:#6E6449;background:rgba(255,253,248,.86);
@@ -710,9 +711,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 
             <!-- 여정 길 (스크립트가 그려요) -->
             <g id="trailLayer" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path id="trailShadow" stroke="#8F7B58" stroke-width="54" opacity=".13" filter="url(#blur6)"/>
-              <path id="trailEdge" stroke="#E6D3AE" stroke-width="48"/>
-              <path id="trailFill" stroke="#FBF1DC" stroke-width="39"/>
+              <path id="trailShadow" stroke="#8F7B58" stroke-width="50" opacity=".12" filter="url(#blur6)"/>
+              <path id="trailEdge" stroke="#E7D5B1" stroke-width="44"/>
+              <path id="trailFill" stroke="#FCF3E1" stroke-width="35"/>
               <path id="trailDash" stroke="#FFFDF8" stroke-width="3.2" stroke-dasharray="1 23"/>
             </g>
 
@@ -1235,7 +1236,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     return d;
   }
   function drawTrail() {
-    var pts = [[118, 592]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 9]; })).concat([[FINISH.x * 16, FINISH.y * 9]]);
+    var pts = [[118, 592]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 7.2]; })).concat([[FINISH.x * 16, FINISH.y * 7.2]]);
     var d = smoothPath(pts);
     ['trailShadow', 'trailEdge', 'trailFill', 'trailDash'].forEach(function (id) {
       var el = document.getElementById(id);
