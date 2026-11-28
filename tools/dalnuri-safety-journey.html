@@ -113,17 +113,17 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
 /* ============ 히어로 ============ */
-.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:14px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:11px}
 .hero .kicker{
   display:inline-flex;align-items:center;gap:7px;font-family:var(--display);font-weight:700;font-size:.9rem;color:#7A5A2E;
   background:linear-gradient(180deg,#FBF1D8,#F6E5BE);border:1.4px dashed var(--wood-d);border-radius:999px;padding:4px 13px;margin-bottom:8px;
 }
-.hero h1{font-size:clamp(1.55rem,3.2vw,2.4rem);line-height:1.22;letter-spacing:-.6px}
+.hero h1{font-size:clamp(1.4rem,2.5vw,2.05rem);line-height:1.2;letter-spacing:-.5px}
 .hero h1 em{
   font-style:normal;white-space:nowrap;padding:0 3px;border-radius:5px;
   background:linear-gradient(transparent 56%, rgba(227,184,92,.34) 56%, rgba(169,191,164,.40) 94%, transparent 94%);
 }
-.hero p.lead{margin-top:6px;color:#5F5A4C;font-size:clamp(.9rem,1.5vw,1rem)}
+.hero p.lead{margin-top:3px;color:#5F5A4C;font-size:clamp(.86rem,1.3vw,.96rem)}
 .hero-side{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 .prog-card{
   display:flex;align-items:center;gap:12px;background:var(--card);border:1.5px solid var(--line);
@@ -141,7 +141,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .mapscroll::-webkit-scrollbar{height:9px}
 .mapscroll::-webkit-scrollbar-thumb{background:#DDD4C1;border-radius:9px}
 .mapbox{
-  position:relative;min-width:1080px;width:100%;aspect-ratio:16/9;
+  position:relative;min-width:1080px;width:100%;aspect-ratio:20/9;
   border-radius:26px;border:2px solid var(--wood);overflow:hidden;
   box-shadow:0 18px 40px rgba(94,80,58,.16), inset 0 0 0 6px rgba(255,253,248,.5);
   background:#EFF5EC;
@@ -580,11 +580,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     <div class="mapstage">
       <div class="mapscroll" id="mapScroll">
         <div class="mapbox">
-          <svg class="scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <svg class="scene" viewBox="0 0 1600 720" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
             <defs>
               <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stop-color="#E4F0F3"/>
-                <stop offset="46%" stop-color="#EFF6EA"/>
+                <stop offset="52%" stop-color="#EFF6EA"/>
                 <stop offset="100%" stop-color="#FAF7EE"/>
               </linearGradient>
               <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
@@ -606,7 +606,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
                 <stop offset="0" stop-color="#FBF0CE" stop-opacity=".95"/>
                 <stop offset="100%" stop-color="#FBF0CE" stop-opacity="0"/>
               </radialGradient>
-              <filter id="blur14" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
               <filter id="blur6" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="6"/></filter>
               <filter id="grainF">
                 <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="n"/>
@@ -643,90 +642,90 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
               </symbol>
             </defs>
 
-            <rect width="1600" height="900" fill="url(#skyG)"/>
-            <circle cx="188" cy="128" r="150" fill="url(#sunG)"/>
-            <g fill="#FFFDF8" opacity=".82">
-              <ellipse cx="300" cy="150" rx="86" ry="26"/><ellipse cx="370" cy="138" rx="56" ry="20"/><ellipse cx="240" cy="140" rx="44" ry="16"/>
-              <ellipse cx="1120" cy="128" rx="70" ry="21"/><ellipse cx="1176" cy="118" rx="44" ry="15"/>
-              <ellipse cx="1440" cy="290" rx="62" ry="18" opacity=".7"/><ellipse cx="1490" cy="282" rx="38" ry="12" opacity=".7"/>
+            <rect width="1600" height="720" fill="url(#skyG)"/>
+            <circle cx="170" cy="88" r="150" fill="url(#sunG)"/>
+            <g fill="#FFFDF8" opacity=".8">
+              <ellipse cx="300" cy="118" rx="86" ry="24"/><ellipse cx="372" cy="106" rx="54" ry="18"/><ellipse cx="240" cy="108" rx="42" ry="14"/>
+              <ellipse cx="1052" cy="104" rx="66" ry="19"/><ellipse cx="1108" cy="94" rx="42" ry="14"/>
+              <ellipse cx="1442" cy="214" rx="58" ry="16" opacity=".65"/>
             </g>
-            <g stroke="#8FA9A6" stroke-width="2.4" stroke-linecap="round" fill="none" opacity=".45">
-              <path d="M900 150q7-8 14 0"/><path d="M920 140q6-7 12 0"/><path d="M736 196q6-7 12 0"/>
+            <g stroke="#8FA9A6" stroke-width="2.2" stroke-linecap="round" fill="none" opacity=".4">
+              <path d="M872 116q7-8 14 0"/><path d="M892 106q6-7 12 0"/><path d="M728 158q6-7 12 0"/>
             </g>
 
             <!-- 먼 산 · 가까운 언덕 -->
-            <path d="M0 512c150-58 286-46 430-8 148 40 262 22 402-6 138-28 268-10 388 18l380 12v372H0Z" fill="url(#hillFar)" opacity=".95"/>
-            <path d="M0 600c168-52 316-34 470-4 156 30 280 12 424-14 132-24 246-2 366 26l340 10v282H0Z" fill="url(#hillMid)" opacity=".9"/>
-            <path d="M0 664c196-46 358-22 540 6 168 26 300 6 440-16 96-16 178-4 262 8l358 8v230H0Z" fill="url(#grassG)"/>
+            <path d="M0 356c150-52 286-42 430-8 148 34 262 18 402-6 138-24 268-8 388 16l380 10v352H0Z" fill="url(#hillFar)" opacity=".95"/>
+            <path d="M0 434c168-44 316-28 470-2 156 26 280 10 424-12 132-20 246-2 366 22l340 8v270H0Z" fill="url(#hillMid)" opacity=".9"/>
+            <path d="M0 490c196-40 358-18 540 6 168 22 300 4 440-14 96-14 178-2 262 8l358 6v224H0Z" fill="url(#grassG)"/>
             <!-- 오른쪽 언덕(도착지) -->
-            <path d="M1128 706c96-138 190-282 300-372 52-42 112-68 172-84v650H1128Z" fill="url(#hillRight)"/>
-            <path d="M1196 700c84-124 168-250 264-330 40-34 84-56 140-74" fill="none" stroke="#C2DBB6" stroke-width="6" opacity=".5" stroke-linecap="round"/>
+            <path d="M1112 566c98-114 194-234 306-308 54-34 116-54 182-66v528H1112Z" fill="url(#hillRight)"/>
+            <path d="M1180 560c86-102 172-208 272-276 26-18 52-30 84-40" fill="none" stroke="#C2DBB6" stroke-width="6" opacity=".45" stroke-linecap="round"/>
             <!-- 연못 -->
-            <ellipse cx="286" cy="826" rx="214" ry="64" fill="url(#waterG)"/>
-            <ellipse cx="286" cy="820" rx="176" ry="46" fill="#E4F1F4" opacity=".5"/>
-            <path d="M120 828q40-10 84-2M300 846q54-12 104-2" stroke="#FFFDF8" stroke-width="3.6" stroke-linecap="round" fill="none" opacity=".75"/>
+            <ellipse cx="286" cy="656" rx="204" ry="56" fill="url(#waterG)"/>
+            <ellipse cx="286" cy="650" rx="166" ry="40" fill="#E4F1F4" opacity=".45"/>
+            <path d="M128 656q40-9 84-2M300 672q54-11 100-2" stroke="#FFFDF8" stroke-width="3.4" stroke-linecap="round" fill="none" opacity=".75"/>
             <!-- 나무 · 덤불 · 꽃 -->
-            <use href="#tree" x="122" y="376" width="104" height="126"/>
-            <use href="#tree" x="400" y="392" width="88" height="106"/>
-            <use href="#tree" x="596" y="330" width="96" height="116"/>
-            <use href="#tree" x="842" y="352" width="112" height="136"/>
-            <use href="#tree" x="996" y="326" width="82" height="100"/>
-            <use href="#tree" x="1176" y="430" width="86" height="104"/>
-            <use href="#tree" x="1512" y="400" width="92" height="112"/>
-            <use href="#tree" x="700" y="742" width="92" height="112"/>
-            <use href="#tree" x="952" y="768" width="76" height="92"/>
-            <use href="#tree" x="1116" y="742" width="86" height="104"/>
-            <use href="#bush" x="368" y="536" width="88" height="55"/>
-            <use href="#bush" x="636" y="452" width="76" height="48"/>
-            <use href="#bush" x="884" y="520" width="82" height="52"/>
-            <use href="#bush" x="1186" y="546" width="78" height="49"/>
-            <use href="#bush" x="486" y="742" width="94" height="58"/>
-            <use href="#bush" x="1330" y="612" width="72" height="45"/>
-            <use href="#flower" x="176" y="632" width="22" height="22"/>
-            <use href="#flower" x="352" y="700" width="20" height="20"/>
-            <use href="#flower" x="556" y="596" width="22" height="22"/>
-            <use href="#flower" x="664" y="708" width="20" height="20"/>
-            <use href="#flower" x="806" y="672" width="22" height="22"/>
-            <use href="#flower" x="1032" y="628" width="20" height="20"/>
-            <use href="#flower" x="1092" y="706" width="22" height="22"/>
-            <use href="#flower" x="1206" y="726" width="20" height="20"/>
-            <use href="#flower" x="1312" y="656" width="22" height="22"/>
-            <use href="#flower" x="1466" y="640" width="20" height="20"/>
-            <use href="#flower" x="1504" y="540" width="22" height="22"/>
-            <use href="#flower" x="408" y="656" width="20" height="20"/>
-            <use href="#flower" x="900" y="712" width="22" height="22"/>
-            <use href="#flower" x="244" y="596" width="20" height="20"/>
-            <use href="#flower" x="1372" y="742" width="22" height="22"/>
-            <use href="#tuft" x="232" y="600" width="40" height="26"/>
-            <use href="#tuft" x="470" y="762" width="40" height="26"/>
-            <use href="#tuft" x="752" y="556" width="40" height="26"/>
-            <use href="#tuft" x="936" y="722" width="40" height="26"/>
-            <use href="#tuft" x="1168" y="664" width="40" height="26"/>
-            <use href="#tuft" x="1424" y="700" width="40" height="26"/>
-            <use href="#tuft" x="108" y="782" width="40" height="26"/>
+            <use href="#tree" x="122" y="318" width="104" height="126"/>
+            <use href="#tree" x="404" y="340" width="86" height="104"/>
+            <use href="#tree" x="596" y="288" width="94" height="114"/>
+            <use href="#tree" x="842" y="312" width="110" height="134"/>
+            <use href="#tree" x="998" y="286" width="80" height="98"/>
+            <use href="#tree" x="1178" y="386" width="84" height="102"/>
+            <use href="#tree" x="1500" y="330" width="90" height="110"/>
+            <use href="#tree" x="700" y="606" width="92" height="112"/>
+            <use href="#tree" x="952" y="628" width="74" height="90"/>
+            <use href="#tree" x="1112" y="612" width="86" height="104"/>
+            <use href="#bush" x="372" y="462" width="86" height="54"/>
+            <use href="#bush" x="640" y="376" width="74" height="46"/>
+            <use href="#bush" x="880" y="440" width="80" height="50"/>
+            <use href="#bush" x="1194" y="482" width="76" height="48"/>
+            <use href="#bush" x="492" y="622" width="92" height="57"/>
+            <use href="#bush" x="1320" y="536" width="70" height="44"/>
+            <use href="#flower" x="182" y="472" width="21" height="21"/>
+            <use href="#flower" x="352" y="536" width="20" height="20"/>
+            <use href="#flower" x="556" y="452" width="21" height="21"/>
+            <use href="#flower" x="664" y="556" width="20" height="20"/>
+            <use href="#flower" x="800" y="500" width="21" height="21"/>
+            <use href="#flower" x="1024" y="470" width="20" height="20"/>
+            <use href="#flower" x="1084" y="548" width="21" height="21"/>
+            <use href="#flower" x="1198" y="572" width="20" height="20"/>
+            <use href="#flower" x="1300" y="508" width="21" height="21"/>
+            <use href="#flower" x="1462" y="512" width="20" height="20"/>
+            <use href="#flower" x="1496" y="430" width="21" height="21"/>
+            <use href="#flower" x="408" y="506" width="20" height="20"/>
+            <use href="#flower" x="896" y="584" width="21" height="21"/>
+            <use href="#flower" x="248" y="452" width="20" height="20"/>
+            <use href="#flower" x="1358" y="600" width="21" height="21"/>
+            <use href="#tuft" x="232" y="452" width="38" height="25"/>
+            <use href="#tuft" x="470" y="638" width="38" height="25"/>
+            <use href="#tuft" x="748" y="440" width="38" height="25"/>
+            <use href="#tuft" x="930" y="612" width="38" height="25"/>
+            <use href="#tuft" x="1166" y="560" width="38" height="25"/>
+            <use href="#tuft" x="1420" y="586" width="38" height="25"/>
+            <use href="#tuft" x="112" y="676" width="38" height="25"/>
 
             <!-- 여정 길 (스크립트가 그려요) -->
             <g id="trailLayer" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path id="trailShadow" stroke="#8F7B58" stroke-width="58" opacity=".14" filter="url(#blur6)"/>
-              <path id="trailEdge" stroke="#E6D3AE" stroke-width="52"/>
-              <path id="trailFill" stroke="#FBF1DC" stroke-width="42"/>
-              <path id="trailDash" stroke="#FFFDF8" stroke-width="3.4" stroke-dasharray="1 24"/>
+              <path id="trailShadow" stroke="#8F7B58" stroke-width="54" opacity=".13" filter="url(#blur6)"/>
+              <path id="trailEdge" stroke="#E6D3AE" stroke-width="48"/>
+              <path id="trailFill" stroke="#FBF1DC" stroke-width="39"/>
+              <path id="trailDash" stroke="#FFFDF8" stroke-width="3.2" stroke-dasharray="1 23"/>
             </g>
 
             <!-- 출발 표지판 -->
-            <g transform="translate(58,556) rotate(-3)">
-              <rect x="52" y="34" width="9" height="76" rx="4" fill="#C39A72"/>
-              <rect x="0" y="0" width="120" height="42" rx="9" fill="#EBD9B8" stroke="#B9926C" stroke-width="2.4"/>
-              <text x="60" y="28" text-anchor="middle" font-size="22" fill="#6E5A3E" font-weight="700">여정 시작</text>
+            <g transform="translate(52,432) rotate(-3)">
+              <rect x="50" y="32" width="9" height="86" rx="4" fill="#C39A72"/>
+              <rect x="0" y="0" width="116" height="40" rx="9" fill="#EBD9B8" stroke="#B9926C" stroke-width="2.4"/>
+              <text x="58" y="27" text-anchor="middle" font-size="21" fill="#6E5A3E" font-weight="700">여정 시작</text>
             </g>
             <!-- 도착 깃발 -->
-            <g transform="translate(1508,158)">
-              <rect x="-3" y="0" width="6" height="132" rx="3" fill="#B9926C"/>
-              <path d="M3 6 76 26 3 48Z" fill="#C4887C" stroke="#A26C60" stroke-width="1.6" stroke-linejoin="round"/>
-              <circle cx="0" cy="0" r="7" fill="#E3B85C" stroke="#B9926C" stroke-width="1.8"/>
+            <g transform="translate(1544,146)">
+              <rect x="-3" y="0" width="6" height="92" rx="3" fill="#B9926C"/>
+              <path d="M3 4 46 22 3 40Z" fill="#C4887C" stroke="#A26C60" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle cx="0" cy="0" r="6.5" fill="#E3B85C" stroke="#B9926C" stroke-width="1.7"/>
             </g>
             <!-- 종이 결 -->
-            <rect width="1600" height="900" filter="url(#grainF)" opacity=".05" style="mix-blend-mode:multiply"/>
+            <rect width="1600" height="720" filter="url(#grainF)" opacity=".05" style="mix-blend-mode:multiply"/>
           </svg>
 
           <div class="map-sign">
@@ -926,7 +925,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   /* ---------- 역별 내용 ---------- */
   var STOPS = [
     {
-      id: 'life', no: 1, cls: 's1', icon: 'door', x: 18, y: 64,
+      id: 'life', no: 1, cls: 's1', icon: 'door', x: 18, y: 65,
       cat: '생활안전', title: '문 앞 한 뼘, 계단 한 손', sub: '문 · 계단 · 교실 도구',
       say: '문은 벽이 아니라 ‘친구가 있는 곳’이에요. 문 앞에서 한 뼘만 멈춰 볼까요?',
       mistakes: [
@@ -952,7 +951,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '우리 집 방문을 열 때 아이가 “한 뼘!”을 외치게 해 보세요.'
     },
     {
-      id: 'traffic', no: 2, cls: 's2', icon: 'light', x: 31, y: 76,
+      id: 'traffic', no: 2, cls: 's2', icon: 'light', x: 30.8, y: 76.7,
       cat: '교통안전', title: '초록불 뒤, 3초의 법칙', sub: '횡단보도 · 사각지대',
       say: '초록불은 ‘출발’ 신호가 아니라 ‘확인’ 신호예요.',
       mistakes: [
@@ -979,7 +978,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '등원길 횡단보도에서 아이와 소리 내어 “하나·둘·셋”, 그리고 운전자와 눈 맞추기.'
     },
     {
-      id: 'fire', no: 3, cls: 's3', icon: 'fire', x: 44, y: 57,
+      id: 'fire', no: 3, cls: 's3', icon: 'fire', x: 43.8, y: 58.3,
       cat: '화재안전', title: '낮게, 벽을 짚고, 손등부터', sub: '소방대피 손동작 · 자세',
       say: '불보다 무서운 건 연기예요. 낮게, 벽을 짚고, 문은 손등으로 확인해요.',
       mistakes: [
@@ -1006,7 +1005,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '집 대피로를 한 번 걸어 보고, 아이가 방문 손잡이를 손등으로 대 보게 해 주세요.'
     },
     {
-      id: 'quake', no: 4, cls: 's4', icon: 'quake', x: 56, y: 72,
+      id: 'quake', no: 4, cls: 's4', icon: 'quake', x: 56, y: 75,
       cat: '지진안전', title: '책상 아래 30초, 문 먼저, 담장 멀리', sub: '3단계 대피',
       say: '흔들릴 때 뛰어나가면 더 다쳐요. 순서가 있어요 — 몸, 문, 넓은 곳.',
       mistakes: [
@@ -1033,7 +1032,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '아이 책상 다리를 잡고 30초 버티기, 그리고 현관문부터 “문 열기”까지 한 번.'
     },
     {
-      id: 'stranger', no: 5, cls: 's5', icon: 'hand', x: 67, y: 52,
+      id: 'stranger', no: 5, cls: 's5', icon: 'hand', x: 66.8, y: 55.6,
       cat: '신변보호', title: '어른 팔 두 개, 반대 방향, 이름 부르기', sub: '거리 · 방향 · 외침',
       say: '“도와주세요”보다 “이 사람 몰라요!”가 훨씬 멀리 들려요.',
       mistakes: [
@@ -1059,7 +1058,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '가족 암호 하나 정하고, 아이와 함께 큰 소리로 “이 사람 몰라요!” 해 보기.'
     },
     {
-      id: 'firstaid', no: 6, cls: 's6', icon: 'phone', x: 78, y: 68,
+      id: 'firstaid', no: 6, cls: 's6', icon: 'phone', x: 77.5, y: 72.2,
       cat: '응급·생활', title: '119 세 가지, 물 15분, 손가락 넣지 않기', sub: '119 · 화상 · 기도막힘',
       say: '급할수록 순서대로. 119는 “어디”부터 말해요.',
       mistakes: [
@@ -1087,7 +1086,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       home: '아이와 119 역할놀이 — “어디예요?” “누가 다쳤어요?” “끊지 마세요” 세 문장.'
     },
     {
-      id: 'digital', no: 7, cls: 's7', icon: 'screen', x: 88, y: 46,
+      id: 'digital', no: 7, cls: 's7', icon: 'screen', x: 87.5, y: 48.6,
       cat: '디지털안전', title: '화면은 한 뼘 반, 20분마다 먼 곳', sub: '거리 · 쉬기 · 링크',
       say: '눈은 쉬어야 오래 봐요. 20분 보면 20초, 창밖을 봐요.',
       mistakes: [
@@ -1114,7 +1113,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     }
   ];
 
-  var FINISH = { x: 94, y: 33, label: '도착 · 안전가방' };
+  var FINISH = { x: 93.8, y: 30.6, label: '도착 · 안전가방' };
 
   var CHECKS = [
     { g: '등원길에서', em: '🚸', items: [
@@ -1231,7 +1230,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
     return d;
   }
   function drawTrail() {
-    var pts = [[112, 702]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 9]; })).concat([[FINISH.x * 16, FINISH.y * 9]]);
+    var pts = [[118, 592]].concat(STOPS.map(function (s) { return [s.x * 16, s.y * 9]; })).concat([[FINISH.x * 16, FINISH.y * 9]]);
     var d = smoothPath(pts);
     ['trailShadow', 'trailEdge', 'trailFill', 'trailDash'].forEach(function (id) {
       var el = document.getElementById(id);
