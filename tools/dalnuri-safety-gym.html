@@ -201,7 +201,7 @@ body.playing .topbar{display:none}
 .spark.s1{left:8%;top:12%}.spark.s2{right:7%;top:20%;animation-delay:.5s}.spark.s3{right:12%;bottom:22%;animation-delay:1s}
 @keyframes tw{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:.95;transform:scale(1.15)}}
 
-.pinfo{min-width:0;display:flex;flex-direction:column;gap:10px;overflow-y:auto;overflow-x:hidden;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+.pinfo{min-width:0;display:flex;flex-direction:column;justify-content:center;gap:10px;overflow-y:auto;overflow-x:hidden;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
 .pinfo::-webkit-scrollbar{width:0;height:0}
 .mno{font-family:var(--hand);font-weight:700;color:var(--acc);font-size:.95rem;letter-spacing:.06em}
 .hname{font-size:clamp(1.7rem,3.4vw,2.9rem);color:var(--sage-d);margin-top:2px}
@@ -337,6 +337,7 @@ body.playing .topbar{display:none}
   .villages{grid-template-columns:repeat(2,minmax(0,1fr))}
   .brand b{font-size:1.02rem}
   .btn-ghost{padding:6px 11px;font-size:.8rem}
+  .hide-sm{display:none}
   .tb-in{gap:8px}
   .cta{flex-direction:column;align-items:stretch}
   .btn-big{justify-content:center;padding:13px 18px}
@@ -353,7 +354,7 @@ body.playing .topbar{display:none}
   .mno{font-size:.82rem}
   .hname{font-size:1.3rem}
   .chant{font-size:1rem;margin-top:0}
-  .pinfo{gap:6px}
+  .pinfo{gap:6px;justify-content:flex-start}
   .step{padding:5px 8px;font-size:.82rem;gap:7px;border-radius:11px}
   .step .n{width:1.5em;height:1.5em;font-size:.76em}
   .pcard{padding:9px 11px;border-radius:14px}
@@ -388,7 +389,7 @@ body.playing .topbar{display:none}
       <span><b>달콩이 안전체조</b><span>달누리반 · 집에서 함께하는 3분</span></span>
     </div>
     <span class="tb-sp"></span>
-    <a class="btn-ghost" href="https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-safety-journey.html" target="_blank" rel="noopener">🗺️ 안전 배움의 여정</a>
+    <a class="btn-ghost hide-sm" href="https://ksm3669-cmd.github.io/dalnuri/tools/dalnuri-safety-journey.html" target="_blank" rel="noopener">🗺️ 안전 배움의 여정</a>
     <button class="btn-ghost" id="bSheet">💌 부모님 안내</button>
   </div>
 </header>
