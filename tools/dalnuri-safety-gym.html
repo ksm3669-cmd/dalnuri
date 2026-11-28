@@ -201,7 +201,8 @@ body.playing .topbar{display:none}
 .spark.s1{left:8%;top:12%}.spark.s2{right:7%;top:20%;animation-delay:.5s}.spark.s3{right:12%;bottom:22%;animation-delay:1s}
 @keyframes tw{0%,100%{opacity:.25;transform:scale(.85)}50%{opacity:.95;transform:scale(1.15)}}
 
-.pinfo{min-width:0;display:flex;flex-direction:column;gap:10px;overflow-y:auto;overflow-x:hidden;padding-bottom:4px}
+.pinfo{min-width:0;display:flex;flex-direction:column;gap:10px;overflow-y:auto;overflow-x:hidden;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none}
+.pinfo::-webkit-scrollbar{width:0;height:0}
 .mno{font-family:var(--hand);font-weight:700;color:var(--acc);font-size:.95rem;letter-spacing:.06em}
 .hname{font-size:clamp(1.7rem,3.4vw,2.9rem);color:var(--sage-d);margin-top:2px}
 .chant{font-family:var(--hand);font-weight:700;font-size:clamp(1.15rem,2vw,1.6rem);color:var(--wood-d);margin-top:2px}
@@ -341,10 +342,35 @@ body.playing .topbar{display:none}
   .setts{gap:6px}
   .setts .lb{display:none}
   .hero h1{font-size:2.05rem}
-  .cb.stamp{padding:0 13px;font-size:.8rem}
-  .steps .step{font-size:.86rem;padding:6px 9px}
-  .why{font-size:.78rem}
-  .prow{font-size:.84rem}
+  /* 플레이어: 한 화면에 이미지·구령·디테일까지 */
+  .pbar{padding:6px 10px;gap:8px}
+  .ptrack{padding:6px 10px 0}
+  .pstage{padding:8px 10px 0;grid-template-rows:minmax(0,.86fr) minmax(0,1.14fr);gap:8px}
+  .figbox .art{object-position:50% 32%}
+  .bubble{top:8px;font-size:.95rem;padding:6px 12px;border-radius:14px}
+  .kbadge{bottom:10px;font-size:.76rem;padding:5px 10px;max-width:94%}
+  .mno{font-size:.82rem}
+  .hname{font-size:1.3rem}
+  .chant{font-size:1rem;margin-top:0}
+  .pinfo{gap:6px}
+  .step{padding:5px 8px;font-size:.82rem;gap:7px;border-radius:11px}
+  .step .n{width:1.5em;height:1.5em;font-size:.76em}
+  .pcard{padding:9px 11px;border-radius:14px}
+  .pcard .hd{font-size:.85rem}
+  .pcard .hd em{font-size:.66rem;padding:1px 7px}
+  .prow{font-size:.8rem;margin-top:5px;line-height:1.5}
+  .why{font-size:.74rem;margin-top:6px;padding-top:6px;line-height:1.5}
+  .pbottom{padding:2px 10px calc(6px + var(--sb))}
+  .beats{padding:0}
+  .dots i{width:10px;height:10px}
+  .slab{font-size:.82rem;min-width:58px}
+  .ctrl{gap:7px}
+  .cb{width:46px;font-size:.95rem}
+  .cb.pp{width:56px;font-size:1.2rem}
+  .cb.stamp{padding:0 11px;font-size:.76rem;gap:5px}
+  #done .dwrap{padding-top:6px}
+  .vs{width:calc(25% - 8px);padding:6px 2px}
+  .sec{padding:10px 12px}
 }
 @media (prefers-reduced-motion:reduce){
   .art,.spot,.bubble,.kbadge,.spark{animation:none!important}
@@ -376,11 +402,11 @@ body.playing .topbar{display:none}
         <p class="lead">
           <b>7개 안전 마을 · 21동작</b>을 달콩이와 함께 따라 해요.<br>
           동작마다 <b>“왜 그렇게 해야 하는지”</b>와 <b>흔한 실수 vs 진짜 디테일</b>을 함께 보여 드려요.<br>
-          집에서 아이와 딱 3분, 같은 구호를 외치면 실제 상황에서 몸이 먼저 움직여요.
+          집에서 아이와 하루 3분, 같은 구호를 외치면 실제 상황에서 몸이 먼저 움직여요.
         </p>
 
         <div class="cta">
-          <button class="btn-big" id="bAll">▶ 전체 체조 <small>21동작 · 약 4분</small></button>
+          <button class="btn-big" id="bAll">▶ 전체 체조 <small>21동작 · 약 5분</small></button>
           <button class="btn-big alt" id="bToday">⏱ 오늘의 1분 딱! 체조 <small>3동작</small></button>
         </div>
 
