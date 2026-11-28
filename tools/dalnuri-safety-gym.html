@@ -239,7 +239,11 @@ body.playing .topbar{display:none}
 .cb{width:clamp(44px,5.4vw,56px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-size:1.05rem;
   background:var(--card);border:1.5px solid var(--line);box-shadow:var(--shadow-s);transition:transform .12s}
 .cb:active{transform:scale(.93)}
-.cb.pp{width:clamp(58px,7vw,74px);font-size:1.35rem;color:#fff;border:0;
+.cb.pp{width:clamp(58px,7vw,74px);color:#fff;border:0;
+  display:grid;place-items:center}
+.cb.pp svg,.cb#bExit svg{width:34%;height:34%;fill:currentColor}
+.cb.pp:before{content:none}
+.cb.pp{
   background:linear-gradient(180deg,#6E8B6E,var(--sage));box-shadow:0 5px 0 #4C634E,0 12px 22px rgba(95,122,97,.28)}
 .cb.pp:active{transform:translateY(4px);box-shadow:0 1px 0 #4C634E}
 .cb.stamp{width:auto;padding:0 16px;border-radius:999px;gap:7px;font-size:.85rem;font-weight:700;color:var(--sage-d);
@@ -510,10 +514,10 @@ body.playing .topbar{display:none}
     </div>
     <div class="ctrl">
       <button class="cb" id="bPrev" aria-label="이전 동작">◀</button>
-      <button class="cb pp" id="pp" aria-label="재생·일시정지">⏸</button>
+      <button class="cb pp" id="pp" aria-label="재생·일시정지"></button>
       <button class="cb" id="bNext" aria-label="다음 동작">▶</button>
       <button class="cb stamp" id="bStamp">🙌 따라 했어요</button>
-      <button class="cb" id="bExit" aria-label="나가기">⏏</button>
+      <button class="cb" id="bExit" aria-label="나가기"></button>
     </div>
   </div>
 </main>
@@ -989,6 +993,10 @@ function ready(cb){
   },640);
 }
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+var SVG_PLAY='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4.8c0-.9 1-1.5 1.8-1l10 6.2c.8.5.8 1.6 0 2L9.8 18.2c-.8.5-1.8-.1-1.8-1z"/></svg>';
+var SVG_PAUSE='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.4" y="4.6" width="4.2" height="14.8" rx="1.4"/><rect x="13.4" y="4.6" width="4.2" height="14.8" rx="1.4"/></svg>';
+var SVG_X='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>';
+function setPP(on){ var b=$('#pp'); if(b) b.innerHTML = on? SVG_PAUSE : SVG_PLAY; }
 
 function tick(){
   cnt++;
@@ -1021,7 +1029,7 @@ function tick(){
 function run(){
   if(transiting)return;
   playing=true;
-  $('#pp').textContent='⏸';
+  setPP(true);
   $('#play').classList.remove('paused');
   stopTimer();
   say(list[idx].ch);
@@ -1030,7 +1038,7 @@ function run(){
 function toggle(){
   if(playing){
     stopTimer(); playing=false;
-    $('#pp').textContent='▶';
+    setPP(false);
     $('#play').classList.add('paused');
     hush();
   }else{
@@ -1052,6 +1060,7 @@ $('#bPrev').onclick=function(){jump(-1);};
 $('#bNext').onclick=function(){jump(1);};
 $('#pBack').onclick=stop;
 $('#bExit').onclick=stop;
+$('#bExit').innerHTML=SVG_X;
 $('#pFs').onclick=fs;
 
 $('#bStamp').onclick=function(){
@@ -1374,6 +1383,7 @@ HERO_IMG.onload=function(){IMG.__heroEl=HERO_IMG;};
 HERO_IMG.src=IMG.hero;
 placeBadge();
 paintHome();
+setPP(false);
 if(document.fonts&&document.fonts.load){
   document.fonts.load('400 40px Jua'); document.fonts.load('700 40px Gaegu'); document.fonts.load('400 40px "Gowun Dodum"');
 }
