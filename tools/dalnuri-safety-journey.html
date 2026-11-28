@@ -328,7 +328,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .primary.quiet{background:var(--paper-2);color:var(--sage-d);border:1.5px solid var(--sage-mid);box-shadow:var(--shadow-s)}
 
 /* ============ 부모님 가이드 ============ */
-.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:13px}
+.guide-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:13px}
 .gcard{
   background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:15px 16px;
   box-shadow:var(--shadow-s);display:flex;flex-direction:column;gap:9px;position:relative;
@@ -360,6 +360,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .qa p{font-size:.9rem;color:#4C4940;padding-left:18px}
 
 /* ============ 가족 안전 체크 ============ */
+.checkcard{max-width:920px;margin:0 auto}
+.checkcard .citem{padding:12px 15px}
+.checkcard .cgroup h3{font-size:1.06rem}
 .check-top{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
 .check-meter{flex:1;min-width:220px}
 .bar{height:14px;border-radius:999px;background:var(--paper-2);border:1.4px solid var(--line);overflow:hidden}
@@ -845,7 +848,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
       <p id="bunnyNote"><b>달콩이:</b> 체크는 이 기기에만 저장돼요. 집에서 아이와 함께 하나씩 눌러 보세요!</p>
     </div>
 
-    <div class="card">
+    <div class="card checkcard">
       <div class="check-top">
         <div class="check-meter">
           <div class="lab"><span>오늘의 실천</span><b id="checkCount">0 / 11</b></div>
