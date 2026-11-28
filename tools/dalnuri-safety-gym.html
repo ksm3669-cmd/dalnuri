@@ -127,8 +127,8 @@ body.playing .topbar{display:none}
 .vcard .nm .ic{font-size:.95em}
 .vcard .meta{padding:0 11px 12px;display:flex;align-items:center;justify-content:space-between;gap:6px;margin-top:-2px}
 .vcard .meta small{font-size:.7rem;color:var(--muted);font-weight:700}
-.vcard .stamp{font-size:.72rem;color:var(--sage);opacity:0;transform:scale(.6);transition:.25s}
-.vcard.done .stamp{opacity:1;transform:none}
+.vcard .meta:after{content:"✓ 완료";font-size:.72rem;font-weight:700;color:var(--sage);opacity:0;transform:scale(.6);transition:.25s}
+.vcard.done .meta:after{opacity:1;transform:none}
 .vcard.done{border-color:var(--sage-mid);background:linear-gradient(180deg,#FFFDF8,#F4F7F0)}
 .vcard .pips{display:flex;gap:3px}
 .vcard .pips i{width:6px;height:6px;border-radius:50%;background:rgba(126,120,104,.22)}
@@ -569,7 +569,7 @@ body.playing .topbar{display:none}
     </ul>
 
     <h3>교사용 진행 멘트 (오리엔테이션)</h3>
-    <p class="q">“지금 보시는 체조는 교통·화재·재난·물놀이·생활·디지털·보건 <b>7개 영역 21동작</b>입니다. 동작마다 ‘왜 그렇게 해야 하는지’가 한 줄로 같이 뜹니다. 4분 동안 7개 안전 영역을 한 번 돌 수 있어요. 함께 일어나 주시겠어요?”</p>
+    <p class="q">“지금 보시는 체조는 교통·화재·재난·물놀이·생활·디지털·보건 <b>7개 영역 21동작</b>입니다. 동작마다 ‘왜 그렇게 해야 하는지’가 한 줄로 같이 뜹니다. 4~5분이면 7개 안전 영역을 한 번 돌 수 있어요. 함께 일어나 주시겠어요?”</p>
     <p class="q">(마무리) “가정에서 <b>등원 전 1분만</b> 같은 동작, 같은 구호를 함께 해 주시면 아이 안에 두 배로 쌓입니다. 아이 안전은 유치원과 가정이 <b>같은 문장을 쓸 때</b> 가장 강해집니다.”</p>
 
     <h3>🏡 우리 가족 1분 안전 미션</h3>
@@ -844,7 +844,7 @@ function paintHome(){
       +'<span class="thumb"><img src="'+IMG[v.moves[0].img]+'" alt=""><span class="nm"><span class="ic">'+v.ic+'</span>'+v.n+'</span></span>'
       +'<span class="meta"><span class="pips">'
         +'<i class="'+(d>0?'on':'')+'"></i><i class="'+(d>1?'on':'')+'"></i><i class="'+(d>2?'on':'')+'"></i></span>'
-        +'<span class="stamp" aria-hidden="true">✓ 완료</span></span></button>';
+        +'</span></button>';
   }).join('');
   [].forEach.call($('#villages').querySelectorAll('.vcard'),function(b){
     b.onclick=function(){startVillage(+b.dataset.i);};
