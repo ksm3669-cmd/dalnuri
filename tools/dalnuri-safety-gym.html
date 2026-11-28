@@ -1263,7 +1263,7 @@ function drawCert(){
     ctx.fill();
     ctx.strokeStyle = on? '#7A9676' : '#D3CBB8'; ctx.lineWidth=2.5; ctx.stroke();
     ctx.fillStyle = on? '#3F5544' : '#A39C8B';
-    ctx.font='400 25px Jua, sans-serif';
+    ctx.font='400 23px Jua, sans-serif';
     ctx.fillText(labels[i],cx,cy+9);
     ctx.font='700 19px Gaegu, sans-serif';
     ctx.fillStyle = on? '#5F7A61' : '#BEB7A6';
@@ -1302,7 +1302,7 @@ function drawCert(){
     ctx.clip();
     var s=Math.max((R*2)/img.naturalWidth,(R*2)/img.naturalHeight)*1.02;
     var iw=img.naturalWidth*s, ih=img.naturalHeight*s;
-    ctx.drawImage(img,CX-iw/2,CY-ih/2-ih*.22,iw,ih);
+    ctx.drawImage(img,CX-iw/2,CY-ih/2-ih*.06,iw,ih);
     ctx.restore();
     ctx.beginPath(); ctx.arc(CX,CY,R,0,Math.PI*2);
     ctx.strokeStyle='rgba(143,169,140,.9)'; ctx.lineWidth=4; ctx.stroke();
